@@ -55,6 +55,58 @@ public class RewindManager : MonoSingleTon<RewindManager>
             timer += Time.deltaTime;
             // 엔딩
         }
+        ExcuteUpdate();
+    }
+
+    private void ExcuteUpdate()
+    {
+        // 끝남
+        if (IsEnd)
+        {
+            // 순행 오브젝트
+            for (int i = 0; i < recordObjectList.Count; i++)
+            {
+                recordObjectList[i].OnRewindUpdate();
+            }
+
+            // 역행 오브젝트
+            for (int i = 0; i < rewindObjectList.Count; i++)
+            {
+                rewindObjectList[i].OnRewindUpdate();
+            }
+        }
+
+        // 순행
+        else if (!IsRewinding)
+        {
+            // 순행 오브젝트
+            for (int i = 0; i < recordObjectList.Count; i++)
+            {
+                recordObjectList[i].OnUpdate();
+            }
+
+            // 역행 오브젝트
+            for (int i = 0; i < rewindObjectList.Count; i++)
+            {
+                rewindObjectList[i].OnRewindUpdate();
+            }
+        }
+
+        // 역행
+        else if (IsRewinding)
+        {
+            // 순행 오브젝트
+            for (int i = 0; i < recordObjectList.Count; i++)
+            {
+                recordObjectList[i].OnRewindUpdate();
+            }
+
+            // 역행 오브젝트
+            for (int i = 0; i < rewindObjectList.Count; i++)
+            {
+                rewindObjectList[i].OnUpdate();
+            }
+        }
     }
 
     private void Recorde()
@@ -115,6 +167,7 @@ public class RewindManager : MonoSingleTon<RewindManager>
                     }
 
                     Debug.Log("역행 시작!");
+                    PlayerSpawner.Instance.Spawn();
                 }
             }
         }
