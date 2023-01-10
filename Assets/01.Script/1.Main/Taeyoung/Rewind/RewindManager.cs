@@ -167,7 +167,6 @@ public class RewindManager : MonoSingleTon<RewindManager>
                     }
 
                     Debug.Log("역행 시작!");
-                    PlayerSpawner.Instance.Spawn();
                 }
             }
         }
