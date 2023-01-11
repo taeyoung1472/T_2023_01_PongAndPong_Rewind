@@ -9,12 +9,8 @@ public class PlayerJump : MonoBehaviour
     public bool Jumpable { get => _jumpable; set => _jumpable = value; }
 
     [SerializeField]
-    private float _jumpContinueTime = 0.2f;
-    [SerializeField]
-    private int _jumpCount = 1;
+    private PlayerMovementSO _playerMovementSO = null;
     private int _curJumpCount = 0;
-    [SerializeField]
-    private float _jumpPower = 2f;
     [SerializeField]
     private float _raySize = 0.1f;
     [SerializeField]
@@ -39,11 +35,11 @@ public class PlayerJump : MonoBehaviour
 
     public void JumpStart()
     {
-        if (_curJumpCount >= _jumpCount || _jumpable == false)
+        if (_curJumpCount >= _playerMovementSO.jumpCount || _jumpable == false)
             return;
         _curJumpCount++;
         _isJumped = true;
-        _rigid.velocity = new Vector2(_rigid.velocity.x, _jumpPower);
+        _rigid.velocity = new Vector2(_rigid.velocity.x, _playerMovementSO.jumpPower);
         OnJump?.Invoke();
     }
 
@@ -82,7 +78,7 @@ public class PlayerJump : MonoBehaviour
         if (_isJumped)
         {
             _jumpTimer += Time.deltaTime;
-            if (_jumpTimer >= _jumpContinueTime)
+            if (_jumpTimer >= _playerMovementSO.jumpContinueTime)
             {
                 JumpEnd();
             }

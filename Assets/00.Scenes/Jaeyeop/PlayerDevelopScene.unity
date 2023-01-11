@@ -247,13 +247,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 129372310}
-  - component: {fileID: 129372312}
+  - component: {fileID: 129372314}
   - component: {fileID: 129372311}
   - component: {fileID: 129372315}
-  - component: {fileID: 129372314}
   - component: {fileID: 129372316}
-  - component: {fileID: 129372313}
   - component: {fileID: 129372317}
+  - component: {fileID: 129372312}
+  - component: {fileID: 129372313}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -292,7 +292,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa1e8b3f7563f3c47b54d7afdcec02b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 4
+  _playerMovementSO: {fileID: 11400000, guid: 748efabc6c5c8e54a8a09536a14d9e8e, type: 2}
 --- !u!114 &129372312
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -456,9 +456,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 051add2d57457ba4d8b364e68e83017f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _jumpContinueTime: 0.2
-  _jumpCount: 1
-  _jumpPower: 8
+  _playerMovementSO: {fileID: 11400000, guid: 748efabc6c5c8e54a8a09536a14d9e8e, type: 2}
   _raySize: 0.05
   _mask:
     serializedVersion: 2
@@ -517,9 +515,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9392268e942856e4c8865675d6637f46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _dashPower: 8
-  _dashCount: 1
-  _dashContinueTime: 0.2
+  _playerMovementSO: {fileID: 11400000, guid: 748efabc6c5c8e54a8a09536a14d9e8e, type: 2}
   OnDashStarted:
     m_PersistentCalls:
       m_Calls:
@@ -562,13 +558,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3a6e7db70063be4da283feb4300a740, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _weaponSwitchingDelay: 0.2
-  _meleeAttackPower: 1
-  _rangeAttackPower: 1
-  _meleeAttackDelay: 0.1
-  _rangeAttackDelay: 0.1
-  _bulletSpeed: 3
-  _bulletPrefab: {fileID: 0}
+  _playerAttackSO: {fileID: 11400000, guid: 9c0314343253bb54a9880059056c3f23, type: 2}
   OnMeleeAttack:
     m_PersistentCalls:
       m_Calls:

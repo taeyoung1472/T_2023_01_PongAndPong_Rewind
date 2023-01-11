@@ -12,19 +12,7 @@ public class PlayerAttack : MonoBehaviour
     public bool Switchingable { get => _switchingable; set => _switchingable = value; }
 
     [SerializeField]
-    private float _weaponSwitchingDelay = 0.2f;
-    [SerializeField]
-    private int _meleeAttackPower = 1;
-    [SerializeField]
-    private int _rangeAttackPower = 1;
-    [SerializeField]
-    private float _meleeAttackDelay = 0.1f;
-    [SerializeField]
-    private float _rangeAttackDelay = 0.1f;
-    [SerializeField]
-    private float _bulletSpeed = 3f;
-    [SerializeField]
-    private GameObject _bulletPrefab = null;
+    private PlayerAttackSO _playerAttackSO = null;
 
     [SerializeField]
     private UnityEvent<int> OnMeleeAttack = null;
@@ -56,8 +44,8 @@ public class PlayerAttack : MonoBehaviour
         Vector3 distance = Cam.ScreenToWorldPoint(Input.mousePosition) - transform.position;
         float angle = Mathf.Rad2Deg * Mathf.Atan2(distance.y, distance.x);
         Quaternion rot = Quaternion.AngleAxis(angle, Vector3.forward);
-        GameObject bullet = Instantiate(_bulletPrefab, transform.position, rot);
-        bullet.AddComponent<Rigidbody>().velocity = bullet.transform.right * _bulletSpeed;
+        GameObject bullet = Instantiate(_playerAttackSO.bulletPrefab, transform.position, rot);
+        bullet.AddComponent<Rigidbody>().velocity = bullet.transform.right * _playerAttackSO.bulletSpeed;
         OnRangeAttack?.Invoke();
     }
 
@@ -71,7 +59,7 @@ public class PlayerAttack : MonoBehaviour
     private IEnumerator SwitchingCoroutine()
     {
         _switchingable = false; 
-        yield return new WaitForSeconds(_weaponSwitchingDelay);
+        yield return new WaitForSeconds(_playerAttackSO.weaponSwitchingDelay);
         _switchingable = true;
     }
 }

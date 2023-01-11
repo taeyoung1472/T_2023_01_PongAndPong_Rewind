@@ -9,12 +9,8 @@ public class PlayerDash : MonoBehaviour
     public bool Dashable { get => _dashable; set => _dashable = value; }
 
     [SerializeField]
-    private float _dashPower = 3f;
-    [SerializeField]
-    private int _dashCount = 1;
+    private PlayerMovementSO _playerMovementSO = null;
     private int _curDashCount = 0;
-    [SerializeField]
-    private float _dashContinueTime = 0.2f;
     [SerializeField]
     private UnityEvent<Vector2> OnDashStarted = null;
     [SerializeField]
@@ -40,7 +36,7 @@ public class PlayerDash : MonoBehaviour
 
     public void Dash()
     {
-        if (_dashable == false || _curDashCount >= _dashCount || _inputDir.sqrMagnitude == 0f)
+        if (_dashable == false || _curDashCount >= _playerMovementSO.dashCount || _inputDir.sqrMagnitude == 0f)
             return;
         _curDashCount++;
         //_player.Jumpable = false;
@@ -48,7 +44,7 @@ public class PlayerDash : MonoBehaviour
         _dashable = false;
         _dashed = true;
         _rigid.useGravity = false;
-        _rigid.velocity = _inputDir * _dashPower;
+        _rigid.velocity = _inputDir * _playerMovementSO.dashPower;
         OnDashStarted?.Invoke(_inputDir);
     }
 
@@ -77,7 +73,7 @@ public class PlayerDash : MonoBehaviour
         if(_dashed)
         {
             _curDashTime += Time.deltaTime;
-            if (_curDashTime >= _dashContinueTime)
+            if (_curDashTime >= _playerMovementSO.dashContinueTime)
                 DashExit();
         }
     }
