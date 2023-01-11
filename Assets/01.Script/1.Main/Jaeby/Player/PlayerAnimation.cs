@@ -38,9 +38,13 @@ public class PlayerAnimation : MonoBehaviour
         _animator.Update(0);
     }
 
-    public void WallGrabAnimation()
+    public void WallGrabAnimation(bool val)
     {
-        _animator.Play("WallAnimation");
+        if (val == false)
+            return;
+        _animator.SetTrigger("AttackForceExit");
+        _animator.Update(0);
+        _animator.Play("PlayerWallGrab");
         _animator.Update(0);
     }
 

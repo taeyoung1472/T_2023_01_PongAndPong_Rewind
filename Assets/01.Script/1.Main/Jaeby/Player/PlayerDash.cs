@@ -39,23 +39,25 @@ public class PlayerDash : MonoBehaviour
         if (_dashable == false || _curDashCount >= _playerMovementSO.dashCount || _inputDir.sqrMagnitude == 0f)
             return;
         _curDashCount++;
-        //_player.Jumpable = false;
-        _player.Moveable = false;
+        _player.PlayerMove.Moveable = false;
         _dashable = false;
         _dashed = true;
-        _rigid.useGravity = false;
+        _player.GravityModule.UseGravity = false;
         _rigid.velocity = _inputDir * _playerMovementSO.dashPower;
         OnDashStarted?.Invoke(_inputDir);
     }
 
     public void DashExit()
     {
-        //_player.Jumpable = true;
-        _player.Moveable = true;
-        _dashed = false;
-        _rigid.useGravity = true;
         _curDashTime = 0f;
-        OnDashEnded?.Invoke(_player.IsGrounded);
+        _player.GravityModule.UseGravity = true;
+        _dashed = false;
+
+        if (_player.PlayerWallGrab.WallGrabed)
+            return;
+
+        _player.PlayerMove.Moveable = true;
+        OnDashEnded?.Invoke(_player.PlayerJump.IsGrounded);
         _rigid.velocity = Vector3.zero;
     }
 

@@ -6,6 +6,7 @@ public class PlayerMovementSO : ScriptableObject
     [Header("이동 관련")]
     public float speed = 4f;
     [Header("점프 관련")]
+    public float downGravityScale = 2f;
     public float jumpContinueTime = 0.2f;
     public float jumpPower = 8f;
     public int jumpCount = 1;
@@ -14,5 +15,7 @@ public class PlayerMovementSO : ScriptableObject
     public float dashContinueTime = 0.2f;
     public int dashCount = 1;
     [Header("벽 짚기 관련")]
-    public float aaa;
+    public float wallGrabJumpPower = 3f;
+    public float wallSlideGravityScale = 0.5f;
+    public float wallGrabJumpContinueTime = 0.12f;
 }

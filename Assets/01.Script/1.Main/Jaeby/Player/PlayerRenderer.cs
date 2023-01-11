@@ -6,6 +6,7 @@ using UnityEngine.Events;
 public class PlayerRenderer : MonoBehaviour
 {
     private bool _fliped = false;
+    public bool Fliped => _fliped;
 
     [SerializeField]
     private UnityEvent<bool> OnFliped = null;

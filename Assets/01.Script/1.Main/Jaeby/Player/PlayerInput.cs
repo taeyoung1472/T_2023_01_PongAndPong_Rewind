@@ -25,7 +25,7 @@ public class PlayerInput : MonoBehaviour
 
     private void Update()
     {
-        if(_player.Moveable)
+        if(_player.PlayerMove.Moveable)
             OnMoveInput?.Invoke(new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")));
         if (Input.GetKeyDown(KeyCode.Space))
             OnJumpStart?.Invoke();

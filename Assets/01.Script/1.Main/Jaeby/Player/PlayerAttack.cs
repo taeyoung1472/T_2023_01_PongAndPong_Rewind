@@ -23,13 +23,27 @@ public class PlayerAttack : MonoBehaviour
     private readonly int _maxAttackIndex = 3;
 
     private AttackState _attackState = AttackState.Melee;
+    private Coroutine _switchingCo = null;
+    private Coroutine _attackDelayCo = null;
+    private Player _player = null;
+
+    private void Start()
+    {
+        _player = GetComponent<Player>();
+    }
 
     public void Attack()
     {
+        if (_attackable == false)
+            return;
+
         if (_attackState == AttackState.Melee)
             MeleeAttack();
         else
             RangeAttack();
+        if (_attackDelayCo != null)
+            StopCoroutine(_attackDelayCo);
+        _attackDelayCo = StartCoroutine(DelayCoroutine());
     }
 
     private void MeleeAttack()
@@ -51,8 +65,13 @@ public class PlayerAttack : MonoBehaviour
 
     public void WeaponSwitching()
     {
+        if (_switchingable == false)
+            return;
+
         _attackState = _attackState == AttackState.Melee ? AttackState.Range : AttackState.Melee;
         _attackIndex = 0;
+        if (_switchingCo != null)
+            StopCoroutine(_switchingCo);
         StartCoroutine(SwitchingCoroutine());
     }
 
@@ -61,6 +80,20 @@ public class PlayerAttack : MonoBehaviour
         _switchingable = false; 
         yield return new WaitForSeconds(_playerAttackSO.weaponSwitchingDelay);
         _switchingable = true;
+    }
+
+    private IEnumerator DelayCoroutine()
+    {
+        _attackable = false;
+        _player.PlayerMove.Moveable = false;
+        float time = 0f;
+        if (_attackState == AttackState.Melee)
+            time = _playerAttackSO.meleeAttackDelay;
+        else
+            time = _playerAttackSO.rangeAttackDelay;
+        yield return new WaitForSeconds(time);
+        _attackable = !_player.PlayerWallGrab.WallGrabed;
+        _player.PlayerMove.Moveable = !_player.PlayerWallGrab.WallGrabed;
     }
 }
 
