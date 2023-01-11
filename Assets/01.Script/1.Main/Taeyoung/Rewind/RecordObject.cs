@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public abstract class RecordObject : MonoBehaviour    
+public abstract class RecordObject : MonoBehaviour
 {
     //protected bool isRewinding { get { return RewindManager.Instance.IsRewinding; } }
     //protected bool isEnd { get { return RewindManager.Instance.IsEnd; } }
@@ -8,7 +8,7 @@ public abstract class RecordObject : MonoBehaviour
 
     // 본인 흐름의 실행되는 업데이트
     public virtual void OnUpdate() { }
-    
+
     // 본인 역 흐음때 실행되는 업데이트
     public virtual void OnRewindUpdate() { }
 
@@ -26,7 +26,7 @@ public abstract class RecordObject : MonoBehaviour
 
     // 정보 저장
     public abstract void Recorde(int index);
-    
+
     // 정보 불러오기
     public abstract void ApplyData(int index);
 }

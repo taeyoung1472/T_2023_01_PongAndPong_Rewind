@@ -24,12 +24,19 @@ public class TransformRecord : RecordObject
 
     Rigidbody rb;
 
+    private float aaa;
+
     RigidbodyConstraints rbConstraints;
 
     public void Start()
     {
         SaveRigidbodyData();
         Register();
+    }
+
+    private void Update()
+    {
+        aaa = RecordingPercent;
     }
 
     private void SaveRigidbodyData()
@@ -101,21 +108,23 @@ public class TransformRecord : RecordObject
 
     public override void ApplyData(int index)
     {
+        index = Mathf.Clamp(index, 0, rotationList.Count - 1);
+        int nextIndex = Mathf.Clamp(index + 1, 0, rotationList.Count - 1);
         if (isRecordPosition)
         {
-            curLerpPos = positionList[index + 1];
+            curLerpPos = positionList[nextIndex];
             nextLerpPos = positionList[index];
         }
 
         if (isRecordRotation)
         {
-            curLerpRot = rotationList[index + 1];
+            curLerpRot = rotationList[nextIndex];
             nextLerpRot = rotationList[index];
         }
 
         if (isRecordScale)
         {
-            curLerpScale = scaleList[index + 1];
+            curLerpScale = scaleList[nextIndex];
             nextLerpScale = scaleList[index];
         }
     }
