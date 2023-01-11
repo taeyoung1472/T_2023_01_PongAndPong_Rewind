@@ -5,6 +5,9 @@ using UnityEngine.Events;
 
 public class PlayerJump : MonoBehaviour
 {
+    private bool _jumpable = true;
+    public bool Jumpable { get => _jumpable; set => _jumpable = value; }
+
     [SerializeField]
     private float _jumpContinueTime = 0.2f;
     [SerializeField]
@@ -26,8 +29,6 @@ public class PlayerJump : MonoBehaviour
     private bool _isGrounded = false;
     public bool IsGrounded => _isGrounded;
     private bool _isJumped = false;
-    private bool _jumpable = true;
-    public bool Jumpable { get => _jumpable; set => _jumpable = value; }
     private float _jumpTimer = 0f;
     private bool _jumpEndCheck = false;
 

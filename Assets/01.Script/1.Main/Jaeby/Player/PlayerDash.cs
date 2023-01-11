@@ -5,6 +5,9 @@ using UnityEngine.Events;
 
 public class PlayerDash : MonoBehaviour
 {
+    private bool _dashable = true;
+    public bool Dashable { get => _dashable; set => _dashable = value; }
+
     [SerializeField]
     private float _dashPower = 3f;
     [SerializeField]
@@ -19,8 +22,6 @@ public class PlayerDash : MonoBehaviour
 
     private float _curDashTime = 0f;
     private bool _dashed = false;
-    private bool _dashable = true;
-    public bool Dashable { get => _dashable; set => _dashable = value; }
     private Vector2 _inputDir = Vector2.zero;
 
     private Rigidbody _rigid = null;

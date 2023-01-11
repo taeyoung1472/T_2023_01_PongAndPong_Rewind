@@ -13,6 +13,8 @@ public class PlayerInput : MonoBehaviour
     private UnityEvent OnJumpEnd = null;
     [SerializeField]
     private UnityEvent OnDash = null;
+    [SerializeField]
+    private UnityEvent OnAttack = null;
 
     private Player _player = null;
 
@@ -31,6 +33,8 @@ public class PlayerInput : MonoBehaviour
             OnJumpEnd?.Invoke();
         if (Input.GetMouseButtonDown(1))
             OnDash?.Invoke();
+        if (Input.GetMouseButtonDown(0))
+            OnAttack?.Invoke();
     }
 
 }

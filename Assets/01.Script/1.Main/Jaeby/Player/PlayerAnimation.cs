@@ -6,6 +6,9 @@ public class PlayerAnimation : MonoBehaviour
 {
     private Animator _animator = null;
     private Rigidbody _rigid = null;
+    private bool _isGrounded = false;
+
+    private Coroutine _attackAniCorou = null;
 
     private void Start()
     {
@@ -49,7 +52,8 @@ public class PlayerAnimation : MonoBehaviour
 
     public void FallOrIdleAnimation(bool isGround)
     {
-        if (isGround == false)
+        _isGrounded = isGround;
+        if (_isGrounded == false)
         {
             _animator.Play("PlayerFall");
             _animator.Update(0);
@@ -63,6 +67,31 @@ public class PlayerAnimation : MonoBehaviour
     public void AnimationGroundCheck(bool value)
     {
         _animator.SetBool("IsGround", value);
+    }
+
+    public void MeleeAttackAnimation(int index)
+    {
+        string name = $"PlayerMeleeAttack{index}";
+        _animator.Play(name);
+        _animator.Update(0);
+        if (_attackAniCorou != null)
+            StopCoroutine(_attackAniCorou);
+        _attackAniCorou = StartCoroutine(AttackAnimationEndWaitCoroutine(name));
+    }
+
+    public void RangeAttackAnimation()
+    {
+        _animator.Play("PlayerRangeAttack");
+        _animator.Update(0);
+        if (_attackAniCorou != null)
+            StopCoroutine(_attackAniCorou);
+        _attackAniCorou = StartCoroutine(AttackAnimationEndWaitCoroutine("PlayerRangeAttack"));
+    }
+
+    private IEnumerator AttackAnimationEndWaitCoroutine(string aniName)
+    {
+        yield return new WaitUntil(() => _animator.GetCurrentAnimatorStateInfo(0).IsName(aniName) == false);
+        FallOrIdleAnimation(_isGrounded);
     }
 
     private void Update()

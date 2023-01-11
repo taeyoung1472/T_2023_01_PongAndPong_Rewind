@@ -4,14 +4,15 @@ using UnityEngine;
 
 public class PlayerMove : MonoBehaviour
 {
+    private bool _moveable = true;
+    public bool Moveable { get => _moveable; set => _moveable = value; }
+
     [SerializeField]
     private float _speed = 2f;
 
     private Rigidbody _rigid = null;
     private Vector2 _moveVelocity = Vector2.zero;
 
-    private bool _moveable = true;
-    public bool Moveable { get => _moveable; set => _moveable = value; }
 
     private void Start()
     {
