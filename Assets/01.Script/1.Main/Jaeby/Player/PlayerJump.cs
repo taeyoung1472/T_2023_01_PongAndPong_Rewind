@@ -9,20 +9,22 @@ public class PlayerJump : MonoBehaviour
     private float _jumpContinueTime = 0.2f;
     [SerializeField]
     private int _jumpCount = 1;
+    private int _curJumpCount = 0;
     [SerializeField]
     private float _jumpPower = 2f;
-    private int _curJumpCount = 0;
-
     [SerializeField]
     private float _raySize = 0.1f;
     [SerializeField]
     private LayerMask _mask = 0;
     [SerializeField]
     private UnityEvent<bool> OnGroundCheck = null;
+    [SerializeField]
+    private UnityEvent OnJump = null;
 
     private Rigidbody _rigid = null;
 
     private bool _isGrounded = false;
+    public bool IsGrounded => _isGrounded;
     private bool _isJumped = false;
     private bool _jumpable = true;
     public bool Jumpable { get => _jumpable; set => _jumpable = value; }
@@ -41,6 +43,7 @@ public class PlayerJump : MonoBehaviour
         _curJumpCount++;
         _isJumped = true;
         _rigid.velocity = new Vector2(_rigid.velocity.x, _jumpPower);
+        OnJump?.Invoke();
     }
 
     public void JumpEnd()
@@ -56,7 +59,11 @@ public class PlayerJump : MonoBehaviour
     private void GroundCheck()
     {
         if (_rigid.velocity.y > 0)
+        {
+            _isGrounded = false;
+            OnGroundCheck?.Invoke(_isGrounded);
             return;
+        }
 
         _isGrounded = Physics.BoxCast(transform.position, transform.lossyScale * 0.5f, transform.up * -1f, transform.rotation, _raySize, _mask);
 
@@ -64,11 +71,6 @@ public class PlayerJump : MonoBehaviour
         {
             _curJumpCount = 0;
             _jumpEndCheck = false;
-            Debug.Log("¤¸");
-        }
-        else
-        {
-
         }
         OnGroundCheck?.Invoke(_isGrounded);
     }

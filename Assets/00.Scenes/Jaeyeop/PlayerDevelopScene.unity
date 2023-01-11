@@ -291,7 +291,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa1e8b3f7563f3c47b54d7afdcec02b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 2
+  _speed: 4
 --- !u!114 &129372312
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -322,6 +322,30 @@ MonoBehaviour:
       - m_Target: {fileID: 129372316}
         m_TargetAssemblyTypeName: PlayerDash, Assembly-CSharp
         m_MethodName: DashDirSet
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 507088720}
+        m_TargetAssemblyTypeName: PlayerRenderer, Assembly-CSharp
+        m_MethodName: Flip
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 507088722}
+        m_TargetAssemblyTypeName: PlayerAnimation, Assembly-CSharp
+        m_MethodName: MoveAnimation
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -429,6 +453,33 @@ MonoBehaviour:
       - m_Target: {fileID: 129372316}
         m_TargetAssemblyTypeName: PlayerDash, Assembly-CSharp
         m_MethodName: DashCountReset
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 507088722}
+        m_TargetAssemblyTypeName: PlayerAnimation, Assembly-CSharp
+        m_MethodName: AnimationGroundCheck
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnJump:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 507088722}
+        m_TargetAssemblyTypeName: PlayerAnimation, Assembly-CSharp
+        m_MethodName: JumpAnimation
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -450,9 +501,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9392268e942856e4c8865675d6637f46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _dashPower: 3
+  _dashPower: 8
   _dashCount: 1
   _dashContinueTime: 0.2
+  OnDashStarted:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 507088722}
+        m_TargetAssemblyTypeName: PlayerAnimation, Assembly-CSharp
+        m_MethodName: DashAnimation
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnDashEnded:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 507088722}
+        m_TargetAssemblyTypeName: PlayerAnimation, Assembly-CSharp
+        m_MethodName: FallOrIdleAnimation
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &436780824
 GameObject:
   m_ObjectHideFlags: 0
@@ -496,6 +577,9 @@ GameObject:
   m_Component:
   - component: {fileID: 507088718}
   - component: {fileID: 507088719}
+  - component: {fileID: 507088721}
+  - component: {fileID: 507088720}
+  - component: {fileID: 507088722}
   m_Layer: 0
   m_Name: AgentRenderer
   m_TagString: Untagged
@@ -570,6 +654,53 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &507088720
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 507088717}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84d4c1d9e89382d489f9671c55fd2b24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnFliped:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!95 &507088721
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 507088717}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: dcf2378874b32c24185b0e0f211e648e, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+--- !u!114 &507088722
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 507088717}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fc5683949aa93f428d200dfb89866c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &517366696
 GameObject:
   m_ObjectHideFlags: 0
@@ -980,7 +1111,7 @@ Transform:
   m_GameObject: {fileID: 1724506436}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.48766628, y: -1.35, z: -0.4123495}
-  m_LocalScale: {x: 15.11, y: 1, z: 1}
+  m_LocalScale: {x: 24.06, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}

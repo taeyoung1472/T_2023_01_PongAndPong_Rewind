@@ -8,6 +8,8 @@ public class Player : MonoBehaviour
     private PlayerJump _playerJump = null;
     private PlayerDash _playerDash = null;
 
+    public bool IsGrounded => _playerJump.IsGrounded;
+
     public bool Moveable { get => _playerMove.Moveable; set => _playerMove.Moveable = value; }
     public bool Jumpable { get => _playerJump.Jumpable; set => _playerJump.Jumpable = value; }
     public bool Dashable { get => _playerDash.Dashable; set => _playerDash.Dashable = value; }
