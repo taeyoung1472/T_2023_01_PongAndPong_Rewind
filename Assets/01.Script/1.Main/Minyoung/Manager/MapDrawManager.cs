@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 public class MapDrawManager : MonoSingleTon<MapDrawManager>
 {
@@ -12,13 +14,14 @@ public class MapDrawManager : MonoSingleTon<MapDrawManager>
 
     public List<GameObject> gimmickBtns;
 
-    private Sprite currentSelectSprite;
-    public Sprite CurrentSelectSprite { get { return currentSelectSprite; } set { currentSelectSprite = value; } }
+    private bool canDeleteObj = false;
 
+    private GameObject onMapObj;
+    public GameObject OnMapObj { get { return onMapObj; } set { onMapObj = value; } }
 
-    // private GameObject onMapObj;
-    public GameObject OnMapObj;// { get { return onMapObj; } set { onMapObj = value; } }
-
+    [SerializeField] private Button modeChangeBtn;
+    [SerializeField] private TextMeshProUGUI modeTxt;
+    
     void Awake()
     {
         CreateGimmickSprite();
@@ -41,32 +44,45 @@ public class MapDrawManager : MonoSingleTon<MapDrawManager>
 
     private void Update()
     {
-        //transform.GetComponent<SpriteRenderer>().sprite = currentSelectSprite;
-
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject() && !canDeleteObj)
         {
-            if (OnMapObj == null)
+            if (onMapObj == null)
             {
                 return;
             }
-
             Vector3 pos = Input.mousePosition;
             pos.z = 15; //카메라 z값이 -15기떄문에 15 + (-15)
             Vector3 targetPos = Camera.main.ScreenToWorldPoint(pos);
             Debug.Log(targetPos);
-            GameObject obj = Instantiate(OnMapObj, targetPos, Quaternion.identity);
-            //obj.transform.position = new Vector3(targetPos.x, targetPos.y , 0);
-            {
-                //Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                //RaycastHit hit;
+            GameObject obj = Instantiate(onMapObj, targetPos, Quaternion.identity);
+        }
 
-                //if (Physics.Raycast(ray, out hit, 100f))
-                //{
-                //    Vector3 hitPos = hit.point;
-                //    GameObject obj = Instantiate(OnMapObj);
-                //    obj.transform.position = hitPos;
-                //}
+        if (Input.GetMouseButtonDown(1) && !EventSystem.current.IsPointerOverGameObject() && canDeleteObj == true)
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            Debug.Log(ray);
+
+            if (Physics.Raycast(ray, out hit, 100f))
+            {
+                Debug.Log(hit.transform.gameObject.name);
+                Destroy(hit.transform.gameObject);
             }
+        }   
+    }
+
+    public void PushDeleteMode()
+    {
+        canDeleteObj = !canDeleteObj;
+
+        if (canDeleteObj)
+        {
+            modeTxt.text = "지우는 모드";
+        }
+        else
+        {
+            modeTxt.text = "배치 모드";
         }
     }
 }
+
