@@ -50,12 +50,16 @@ public class PlayerJump : MonoBehaviour
         }
         if (_curJumpCount >= _playerMovementSO.jumpCount)
             return;
+        _rigid.velocity = new Vector2(_rigid.velocity.x, 0f);
+
         _curJumpCount++;
         _isJumped = true;
         _jumpTimer = 0f;
-        _rigid.velocity = new Vector2(_rigid.velocity.x, _playerMovementSO.jumpPower);
+        _rigid.AddForce(Vector3.up * _playerMovementSO.jumpPower, ForceMode.Impulse);
+        //_rigid.velocity = new Vector2(_rigid.velocity.x, _playerMovementSO.jumpPower);
         OnJump?.Invoke();
     }
+
 
     public void JumpEnd()
     {
@@ -64,7 +68,7 @@ public class PlayerJump : MonoBehaviour
         _jumpEndCheck = true;
         _isJumped = false;
         _jumpTimer = 0f;
-        _rigid.velocity = new Vector2(_rigid.velocity.x, 0f);
+        //_rigid.velocity = new Vector2(_rigid.velocity.x, curJumpForce);
     }
 
     public void MoreJump()
@@ -119,5 +123,14 @@ public class PlayerJump : MonoBehaviour
                 JumpEnd();
             }
         }
+    }
+
+    private void FixedUpdate()
+    {
+        /*if (_isJumped)
+        {
+            if(_player.PlayerWallGrab.WallGrabed == false)
+                _rigid.AddForce(Vector3.up * _playerMovementSO.jumpHoldPower);
+        }*/
     }
 }

@@ -9,6 +9,7 @@ public class PlayerMovementSO : ScriptableObject
     public float downGravityScale = 2f;
     public float jumpContinueTime = 0.2f;
     public float jumpPower = 8f;
+    public float jumpHoldPower = 3f;
     public int jumpCount = 1;
     [Header("대쉬 관련")]
     public float dashPower = 8f;

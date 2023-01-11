@@ -55,11 +55,13 @@ public class PlayerAttack : MonoBehaviour
 
     private void RangeAttack()
     {
-        Vector3 distance = Cam.ScreenToWorldPoint(Input.mousePosition) - transform.position;
-        float angle = Mathf.Rad2Deg * Mathf.Atan2(distance.y, distance.x);
+        Vector3 pos = Input.mousePosition;
+        pos.z = 8;
+        Vector3 distance = (Cam.ScreenToWorldPoint(pos) - transform.position);
+        float angle = Mathf.Atan2(distance.y, distance.x) * Mathf.Rad2Deg;
         Quaternion rot = Quaternion.AngleAxis(angle, Vector3.forward);
-        GameObject bullet = Instantiate(_playerAttackSO.bulletPrefab, transform.position, rot);
-        bullet.AddComponent<Rigidbody>().velocity = bullet.transform.right * _playerAttackSO.bulletSpeed;
+        GameObject bullet = Instantiate(_playerAttackSO.bulletPrefab);
+        bullet.GetComponent<Bullet>().Init(transform.position, rot, _playerAttackSO.bulletSpeed, _playerAttackSO.rangeAttackPower);
         OnRangeAttack?.Invoke();
     }
 

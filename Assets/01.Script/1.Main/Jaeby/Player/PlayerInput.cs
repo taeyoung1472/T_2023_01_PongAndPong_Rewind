@@ -15,6 +15,8 @@ public class PlayerInput : MonoBehaviour
     private UnityEvent OnDash = null;
     [SerializeField]
     private UnityEvent OnAttack = null;
+    [SerializeField]
+    private UnityEvent OnWeaponChange = null;
 
     private Player _player = null;
 
@@ -35,6 +37,8 @@ public class PlayerInput : MonoBehaviour
             OnDash?.Invoke();
         if (Input.GetMouseButtonDown(0))
             OnAttack?.Invoke();
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+            OnWeaponChange?.Invoke();
     }
 
 }
