@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
 public class TransformRecord : RecordObject
 {
     [Header("[Check List]")]
@@ -21,9 +22,21 @@ public class TransformRecord : RecordObject
     private Vector3 curLerpScale;
     private Vector3 nextLerpScale;
 
+    Rigidbody rb;
+
+    RigidbodyConstraints rbConstraints;
+
     public void Start()
     {
+        SaveRigidbodyData();
         Register();
+    }
+
+    private void SaveRigidbodyData()
+    {
+        rb = GetComponent<Rigidbody>();
+
+        rbConstraints = rb.constraints;
     }
 
     public override void OnRewindUpdate()
@@ -135,5 +148,19 @@ public class TransformRecord : RecordObject
 
         curLerpScale = transform.localScale;
         nextLerpScale = transform.localScale;
+
+        rb.constraints = RigidbodyConstraints.FreezeAll;
+    }
+
+    public override void InitOnPlay()
+    {
+        rb.constraints = rbConstraints;
+    }
+
+    struct Vector3Bool
+    {
+        public bool x;
+        public bool y;
+        public bool z;
     }
 }
