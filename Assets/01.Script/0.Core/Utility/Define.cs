@@ -1,3 +1,4 @@
+using Cinemachine;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -39,6 +40,49 @@ public static class Define
             VectorDir.Back => Vector3.back,
             _ => Vector3.zero,
         };
+    }
+
+    private static Camera _cam = null;
+    public static Camera Cam
+    {
+        get
+        {
+            if (_cam == null)
+                _cam = Camera.main;
+            return _cam;
+        }
+    }
+
+    private static CinemachineVirtualCamera _vCamOne = null;
+    private static CinemachineVirtualCamera _vCamTwo = null;
+    private static CinemachineVirtualCamera _cartCam = null;
+
+    public static CinemachineVirtualCamera VCamOne
+    {
+        get
+        {
+            if (_vCamOne == null)
+                _vCamOne = GameObject.FindObjectOfType<CameraManager>().transform.GetChild(0).GetComponent<CinemachineVirtualCamera>();
+            return _vCamOne;
+        }
+    }
+    public static CinemachineVirtualCamera VCamTwo
+    {
+        get
+        {
+            if (_vCamTwo == null)
+                _vCamTwo = GameObject.FindObjectOfType<CameraManager>().transform.GetChild(1).GetComponent<CinemachineVirtualCamera>();
+            return _vCamTwo;
+        }
+    }
+    public static CinemachineVirtualCamera CartCam
+    {
+        get
+        {
+            if (_cartCam == null)
+                _cartCam = GameObject.FindObjectOfType<CameraManager>().transform.GetChild(2).GetComponent<CinemachineVirtualCamera>();
+            return _cartCam;
+        }
     }
 }
 #region Vector
