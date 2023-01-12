@@ -24,19 +24,12 @@ public class TransformRecord : RecordObject
 
     Rigidbody rb;
 
-    private float aaa;
-
     RigidbodyConstraints rbConstraints;
 
     public void Start()
     {
         SaveRigidbodyData();
         Register();
-    }
-
-    private void Update()
-    {
-        aaa = RecordingPercent;
     }
 
     private void SaveRigidbodyData()
@@ -60,7 +53,7 @@ public class TransformRecord : RecordObject
 
         if (isRecordScale)
         {
-            transform.position = Vector3.Lerp(curLerpScale, nextLerpScale, RecordingPercent);
+            transform.localScale = Vector3.Lerp(curLerpScale, nextLerpScale, RecordingPercent);
         }
     }
 
@@ -106,10 +99,10 @@ public class TransformRecord : RecordObject
 
     }
 
-    public override void ApplyData(int index)
+    public override void ApplyData(int index, int nextIndexDiff)
     {
-        index = Mathf.Clamp(index, 0, rotationList.Count - 1);
-        int nextIndex = Mathf.Clamp(index + 1, 0, rotationList.Count - 1);
+        index = Mathf.Clamp(index, 0, TotalRecordCount - 1);
+        int nextIndex = Mathf.Clamp(index + nextIndexDiff, 0, TotalRecordCount - 1);
         if (isRecordPosition)
         {
             curLerpPos = positionList[nextIndex];
@@ -166,10 +159,4 @@ public class TransformRecord : RecordObject
         rb.constraints = rbConstraints;
     }
 
-    struct Vector3Bool
-    {
-        public bool x;
-        public bool y;
-        public bool z;
-    }
 }

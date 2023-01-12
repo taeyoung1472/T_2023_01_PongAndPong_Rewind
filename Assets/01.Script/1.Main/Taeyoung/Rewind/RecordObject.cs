@@ -2,9 +2,8 @@ using UnityEngine;
 
 public abstract class RecordObject : MonoBehaviour
 {
-    //protected bool isRewinding { get { return RewindManager.Instance.IsRewinding; } }
-    //protected bool isEnd { get { return RewindManager.Instance.IsEnd; } }
     protected float RecordingPercent { get { return RewindManager.Instance.CurRecordingPercent; } }
+    protected int TotalRecordCount { get { return RewindManager.Instance.TotalRecordCount; } }
 
     // 본인 흐름의 실행되는 업데이트
     public virtual void OnUpdate() { }
@@ -28,5 +27,5 @@ public abstract class RecordObject : MonoBehaviour
     public abstract void Recorde(int index);
 
     // 정보 불러오기
-    public abstract void ApplyData(int index);
+    public abstract void ApplyData(int index, int nextIndexDiff);
 }
