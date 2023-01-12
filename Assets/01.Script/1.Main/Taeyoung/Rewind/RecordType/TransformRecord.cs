@@ -53,7 +53,7 @@ public class TransformRecord : RecordObject
 
         if (isRecordScale)
         {
-            transform.position = Vector3.Lerp(curLerpScale, nextLerpScale, RecordingPercent);
+            transform.localScale = Vector3.Lerp(curLerpScale, nextLerpScale, RecordingPercent);
         }
     }
 
@@ -99,23 +99,25 @@ public class TransformRecord : RecordObject
 
     }
 
-    public override void ApplyData(int index)
+    public override void ApplyData(int index, int nextIndexDiff)
     {
+        index = Mathf.Clamp(index, 0, TotalRecordCount - 1);
+        int nextIndex = Mathf.Clamp(index + nextIndexDiff, 0, TotalRecordCount - 1);
         if (isRecordPosition)
         {
-            curLerpPos = positionList[index + 1];
+            curLerpPos = positionList[nextIndex];
             nextLerpPos = positionList[index];
         }
 
         if (isRecordRotation)
         {
-            curLerpRot = rotationList[index + 1];
+            curLerpRot = rotationList[nextIndex];
             nextLerpRot = rotationList[index];
         }
 
         if (isRecordScale)
         {
-            curLerpScale = scaleList[index + 1];
+            curLerpScale = scaleList[nextIndex];
             nextLerpScale = scaleList[index];
         }
     }
@@ -157,10 +159,4 @@ public class TransformRecord : RecordObject
         rb.constraints = rbConstraints;
     }
 
-    struct Vector3Bool
-    {
-        public bool x;
-        public bool y;
-        public bool z;
-    }
 }
