@@ -1,20 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerDash : MonoBehaviour
 {
-    [SerializeField]
-    private float _dashPower = 3f;
-    [SerializeField]
-    private int _dashCount = 1;
-    private int _curDashCount = 0;
-    [SerializeField]
-    private float _dashContinueTime = 0.2f;
-    private float _curDashTime = 0f;
-    private bool _dashed = false;
     private bool _dashable = true;
     public bool Dashable { get => _dashable; set => _dashable = value; }
+
+    [SerializeField]
+    private PlayerMovementSO _playerMovementSO = null;
+    private int _curDashCount = 0;
+    [SerializeField]
+    private UnityEvent<Vector2> OnDashStarted = null;
+    [SerializeField]
+    private UnityEvent<bool> OnDashEnded = null;
+
+    private float _curDashTime = 0f;
+    private bool _dashed = false;
     private Vector2 _inputDir = Vector2.zero;
 
     private Rigidbody _rigid = null;
@@ -33,29 +36,38 @@ public class PlayerDash : MonoBehaviour
 
     public void Dash()
     {
-        if (_dashable == false || _curDashCount >= _dashCount)
+        if (_dashable == false || _curDashCount >= _playerMovementSO.dashCount || _inputDir.sqrMagnitude == 0f || _player.PlayerAttack.Attacking)
             return;
         _curDashCount++;
-        _player.Jumpable = false;
-        _player.Moveable = false;
+        _player.PlayerJump.Jumpable = false;
+        _player.PlayerMove.Moveable = false;
         _dashable = false;
         _dashed = true;
-        _rigid.useGravity = false;
-        _rigid.velocity = _inputDir * _dashPower;
+        _player.GravityModule.UseGravity = false;
+        _rigid.velocity = _inputDir * _playerMovementSO.dashPower;
+        OnDashStarted?.Invoke(_inputDir);
     }
 
     public void DashExit()
     {
-        _player.Jumpable = true;
-        _player.Moveable = true;
-        _dashed = false;
-        _rigid.useGravity = true;
-        _rigid.velocity = Vector3.zero;
         _curDashTime = 0f;
+        _player.GravityModule.UseGravity = true;
+        _dashed = false;
+
+        if (_player.PlayerWallGrab.WallGrabed)
+            return;
+
+        _player.PlayerMove.Moveable = true;
+        _player.PlayerJump.Jumpable = true;
+        OnDashEnded?.Invoke(_player.PlayerJump.IsGrounded);
+        _rigid.velocity = Vector3.zero;
     }
 
-    public void DashCountReset()
+    public void DashCountReset(bool isGrounded)
     {
+        if (isGrounded == false)
+            return;
+
         _dashable = true;
         _curDashCount = 0;
     }
@@ -65,7 +77,7 @@ public class PlayerDash : MonoBehaviour
         if(_dashed)
         {
             _curDashTime += Time.deltaTime;
-            if (_curDashTime >= _dashContinueTime)
+            if (_curDashTime >= _playerMovementSO.dashContinueTime)
                 DashExit();
         }
     }
