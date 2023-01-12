@@ -13,6 +13,8 @@ public class PlayerJump : MonoBehaviour
     private PlayerMovementSO _playerMovementSO = null;
     private int _curJumpCount = 0;
     [SerializeField]
+    private Transform _rayStartTrm = null;
+    [SerializeField]
     private float _raySize = 0.1f;
     [SerializeField]
     private LayerMask _mask = 0;
@@ -28,6 +30,7 @@ public class PlayerJump : MonoBehaviour
     private bool _isGrounded = false;
     public bool IsGrounded => _isGrounded;
     private bool _isJumped = false;
+    public bool IsJumped => _isJumped;
     private float _jumpTimer = 0f;
     private bool _jumpEndCheck = false;
 
@@ -39,24 +42,24 @@ public class PlayerJump : MonoBehaviour
 
     public void JumpStart()
     {
-        if (_jumpable == false)
+        if (_jumpable == false || _player.PlayerAttack.Attacking)
             return;
         if (_player.PlayerWallGrab.WallGrabed)
         {
-            OnWallGrabJump?.Invoke();
             ForceJump(_player.PlayerRenderer.Fliped ? new Vector2(1, 1) : new Vector2(-1, 1));
             _player.PlayerRenderer.ForceFlip();
+            OnWallGrabJump?.Invoke();
             return;
         }
         if (_curJumpCount >= _playerMovementSO.jumpCount)
             return;
-        _rigid.velocity = new Vector2(_rigid.velocity.x, 0f);
 
         _curJumpCount++;
+        _jumpEndCheck = false;
         _isJumped = true;
         _jumpTimer = 0f;
+        _rigid.velocity = new Vector2(_rigid.velocity.x, 0f);
         _rigid.AddForce(Vector3.up * _playerMovementSO.jumpPower, ForceMode.Impulse);
-        //_rigid.velocity = new Vector2(_rigid.velocity.x, _playerMovementSO.jumpPower);
         OnJump?.Invoke();
     }
 
@@ -65,10 +68,10 @@ public class PlayerJump : MonoBehaviour
     {
         if (_jumpEndCheck)
             return;
+
         _jumpEndCheck = true;
         _isJumped = false;
         _jumpTimer = 0f;
-        //_rigid.velocity = new Vector2(_rigid.velocity.x, curJumpForce);
     }
 
     public void MoreJump()
@@ -87,34 +90,28 @@ public class PlayerJump : MonoBehaviour
 
     public void TryGravityUp(Vector2 input)
     {
-        if (_isGrounded || input.y > -0.1f)
+        if (_isGrounded || _player.PlayerWallGrab.WallGrabed || input.y > -0.1f)
             return;
         _player.GravityModule.GravityScale = _playerMovementSO.downGravityScale;
     }
 
     private void GroundCheck()
     {
-        if (_rigid.velocity.y > 0)
-        {
-            _isGrounded = false;
-            OnGroundCheck?.Invoke(_isGrounded);
+        bool prevCheck = _isGrounded;
+        _isGrounded = Physics.BoxCast(_rayStartTrm.position, _rayStartTrm.lossyScale * 0.5f, _rayStartTrm.up * -1f, transform.rotation, _raySize, _mask);
+        if (prevCheck == _isGrounded)
             return;
-        }
-
-        _isGrounded = Physics.BoxCast(transform.position, transform.lossyScale * 0.5f, transform.up * -1f, transform.rotation, _raySize, _mask);
 
         if (_isGrounded)
         {
             _player.GravityModule.GravityScale = _player.GravityModule.OriginGravityScale;
             _curJumpCount = 0;
-            _jumpEndCheck = false;
         }
         OnGroundCheck?.Invoke(_isGrounded);
     }
 
     private void Update()
     {
-        GroundCheck();
         if (_isJumped)
         {
             _jumpTimer += Time.deltaTime;
@@ -127,10 +124,11 @@ public class PlayerJump : MonoBehaviour
 
     private void FixedUpdate()
     {
-        /*if (_isJumped)
+        GroundCheck();
+        if (_isJumped)
         {
             if(_player.PlayerWallGrab.WallGrabed == false)
-                _rigid.AddForce(Vector3.up * _playerMovementSO.jumpHoldPower);
-        }*/
+                _rigid.AddForce(Vector3.up * _playerMovementSO.jumpHoldPower, ForceMode.Acceleration);
+        }
     }
 }

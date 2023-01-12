@@ -36,9 +36,10 @@ public class PlayerDash : MonoBehaviour
 
     public void Dash()
     {
-        if (_dashable == false || _curDashCount >= _playerMovementSO.dashCount || _inputDir.sqrMagnitude == 0f)
+        if (_dashable == false || _curDashCount >= _playerMovementSO.dashCount || _inputDir.sqrMagnitude == 0f || _player.PlayerAttack.Attacking)
             return;
         _curDashCount++;
+        _player.PlayerJump.Jumpable = false;
         _player.PlayerMove.Moveable = false;
         _dashable = false;
         _dashed = true;
@@ -57,6 +58,7 @@ public class PlayerDash : MonoBehaviour
             return;
 
         _player.PlayerMove.Moveable = true;
+        _player.PlayerJump.Jumpable = true;
         OnDashEnded?.Invoke(_player.PlayerJump.IsGrounded);
         _rigid.velocity = Vector3.zero;
     }

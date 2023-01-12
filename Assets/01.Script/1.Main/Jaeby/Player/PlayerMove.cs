@@ -14,14 +14,17 @@ public class PlayerMove : MonoBehaviour
     [SerializeField]
     private PlayerMovementSO _playerMovementSO = null;
 
+    private Player _player = null;
+
     private void Start()
     {
+        _player = GetComponent<Player>();
         _rigid = GetComponent<Rigidbody>();
     }
 
     public void Move(Vector2 dir)
     {
-        if (_moveable == false)
+        if (_moveable == false || _player.PlayerAttack.Attacking)
             return;
         dir.y = 0f;
         _moveVelocity = dir.normalized * _playerMovementSO.speed;
@@ -29,7 +32,7 @@ public class PlayerMove : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (_moveable == false)
+        if (_moveable == false || _player.PlayerAttack.Attacking)
             return;
         _moveVelocity.y = _rigid.velocity.y;
         _rigid.velocity = _moveVelocity;

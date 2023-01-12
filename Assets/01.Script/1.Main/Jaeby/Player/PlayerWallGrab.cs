@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,6 +11,8 @@ public class PlayerWallGrab : MonoBehaviour
 
     [SerializeField]
     private LayerMask _wallMask = 0;
+    [SerializeField]
+    private Transform _rayStartTrm = null;
     [SerializeField]
     private float _rayLength = 0.05f;
     [SerializeField]
@@ -27,7 +30,7 @@ public class PlayerWallGrab : MonoBehaviour
         _player = GetComponent<Player>();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         WallCheck();
     }
@@ -53,23 +56,32 @@ public class PlayerWallGrab : MonoBehaviour
     private void WallCheck()
     {
         bool oldCheck = _wallGrabed;
-        _wallGrabed = Physics.BoxCast(transform.position, transform.lossyScale * 0.5f, _player.PlayerRenderer.Fliped ? transform.right * -1f : transform.right, transform.rotation, _rayLength, _wallMask);
+        _wallGrabed = Physics.BoxCast(_rayStartTrm.position, _rayStartTrm.lossyScale * 0.5f, _player.PlayerRenderer.Fliped ? _rayStartTrm.right * -1f : _rayStartTrm.right, transform.rotation, _rayLength, _wallMask);
         if (oldCheck == _wallGrabed)
             return;
+
         if(_wallGrabed)
-        {
-            _player.GravityModule.UseGravity = true;
-            _rigid.velocity = Vector3.zero;
-            _player.GravityModule.GravityScale = _playerMovementSO.wallSlideGravityScale;
-            _player.PlayerAllActionSet(false);
-            _player.PlayerJump.Jumpable = true;
-        }
+            WallGrabEnter();
         else
-        {
-            _player.GravityModule.GravityScale = _player.GravityModule.OriginGravityScale;
-            _player.PlayerAllActionSet(true);
-            _player.PlayerAnimation.FallOrIdleAnimation(_player.PlayerJump.IsGrounded);
-        }
+            WallGrabExit();
+
         OnWallGrabed?.Invoke(_wallGrabed);
+    }
+
+    private void WallGrabExit()
+    {
+        _player.GravityModule.GravityScale = _player.GravityModule.OriginGravityScale;
+        _player.PlayerAllActionSet(true);
+        if(_player.PlayerJump.IsJumped == false)
+         _player.PlayerAnimation.FallOrIdleAnimation(_player.PlayerJump.IsGrounded);
+    }
+
+    private void WallGrabEnter()
+    {
+        _player.GravityModule.UseGravity = true;
+        _rigid.velocity = Vector3.zero;
+        _player.GravityModule.GravityScale = _playerMovementSO.wallSlideGravityScale;
+        _player.PlayerAllActionSet(false);
+        _player.PlayerJump.Jumpable = true;
     }
 }

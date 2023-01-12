@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerAnimation : MonoBehaviour
 {
@@ -10,8 +11,16 @@ public class PlayerAnimation : MonoBehaviour
 
     private Coroutine _attackAniCorou = null;
 
+    [SerializeField]
+    private UnityEvent OnAttackStarted = null;
+    [SerializeField]
+    private UnityEvent OnAttackEnded = null;
+
+    private Player _player = null;
+
     private void Start()
     {
+        _player = GetComponentInParent<Player>();
         _rigid = GetComponentInParent<Rigidbody>();
         _animator = GetComponent<Animator>();
     }
@@ -57,14 +66,14 @@ public class PlayerAnimation : MonoBehaviour
     public void FallOrIdleAnimation(bool isGround)
     {
         _isGrounded = isGround;
-        if (_isGrounded == false)
+        if (_isGrounded)
         {
-            _animator.Play("PlayerFall");
-            _animator.Update(0);
+            IdleAnimation();
         }
         else
         {
-            IdleAnimation();
+            _animator.Play("PlayerFall");
+            _animator.Update(0);
         }
     }
 
@@ -94,8 +103,13 @@ public class PlayerAnimation : MonoBehaviour
 
     private IEnumerator AttackAnimationEndWaitCoroutine(string aniName)
     {
-        yield return new WaitUntil(() => _animator.GetCurrentAnimatorStateInfo(0).IsName(aniName) == false);
-        FallOrIdleAnimation(_isGrounded);
+        OnAttackStarted?.Invoke();
+        //yield return new WaitUntil(() => _animator.GetCurrentAnimatorStateInfo(1).IsName(aniName) == false);
+        yield return new WaitUntil(() => (_animator.GetCurrentAnimatorStateInfo(1).normalizedTime >= 0.5f) || (_animator.GetCurrentAnimatorStateInfo(1).IsName(aniName) == false));
+
+        if (_player.PlayerWallGrab.WallGrabed == false)
+            FallOrIdleAnimation(_isGrounded);
+        OnAttackEnded?.Invoke();
     }
 
     private void Update()

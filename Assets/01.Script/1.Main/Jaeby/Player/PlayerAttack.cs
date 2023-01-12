@@ -10,6 +10,8 @@ public class PlayerAttack : MonoBehaviour
     public bool Attackable { get => _attackable; set => _attackable = value; }
     private bool _switchingable = true;
     public bool Switchingable { get => _switchingable; set => _switchingable = value; }
+    private bool _attacking = false;
+    public bool Attacking => _attacking;
 
     [SerializeField]
     private PlayerAttackSO _playerAttackSO = null;
@@ -41,9 +43,9 @@ public class PlayerAttack : MonoBehaviour
             MeleeAttack();
         else
             RangeAttack();
-        if (_attackDelayCo != null)
-            StopCoroutine(_attackDelayCo);
-        _attackDelayCo = StartCoroutine(DelayCoroutine());
+        //if (_attackDelayCo != null)
+        //    StopCoroutine(_attackDelayCo);
+        //_attackDelayCo = StartCoroutine(DelayCoroutine());
     }
 
     private void MeleeAttack()
@@ -88,14 +90,30 @@ public class PlayerAttack : MonoBehaviour
     {
         _attackable = false;
         _player.PlayerMove.Moveable = false;
+        _player.PlayerJump.Jumpable = false;
         float time = 0f;
+
         if (_attackState == AttackState.Melee)
             time = _playerAttackSO.meleeAttackDelay;
         else
             time = _playerAttackSO.rangeAttackDelay;
         yield return new WaitForSeconds(time);
+
         _attackable = !_player.PlayerWallGrab.WallGrabed;
         _player.PlayerMove.Moveable = !_player.PlayerWallGrab.WallGrabed;
+        _player.PlayerJump.Jumpable = !_player.PlayerWallGrab.WallGrabed;
+    }
+
+    public void AttackStart()
+    {
+        _attackable = false;
+        _attacking = true;
+    }
+
+    public void AttackEnd()
+    {
+        _attackable = !_player.PlayerWallGrab.WallGrabed;
+        _attacking = false;
     }
 }
 
