@@ -13,7 +13,7 @@ public class SaveManager : MonoSingleTon<SaveManager>
     public List<TransformInfo> transformList;
     public MapData mapData;
 
-    public List<GameObject> gimmickObjs;
+    public TotalGimmickSO totalGimmickSO;
     public void Save()
     {
         mapData.pos.Clear();
@@ -55,7 +55,7 @@ public class SaveManager : MonoSingleTon<SaveManager>
 
         for (int i = 0; i < mapObjData.pos.Count; i++)
         {
-            GameObject obj = Instantiate(gimmickObjs[mapObjData.index[i]], transform.position, Quaternion.identity);
+            GameObject obj = Instantiate(totalGimmickSO.gimmickInfo[mapData.index[i]].prefab, transform.position, Quaternion.identity);
             obj.transform.position = mapObjData.pos[i];
             obj.transform.rotation = mapObjData.rot[i];
             obj.transform.localScale = mapObjData.scale[i];

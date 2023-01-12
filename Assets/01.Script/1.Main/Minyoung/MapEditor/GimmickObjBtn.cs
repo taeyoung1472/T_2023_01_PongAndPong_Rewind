@@ -7,15 +7,25 @@ using UnityEngine.UI;
 
 public class GimmickObjBtn : MonoBehaviour
 {
-    public GimmickSpriteSO so;
-    public int i;
-    private void Start()
+    private Button myButton;
+    [SerializeField] private Image contentImage;
+
+    public GimmickInfoSO gimmickInfo;
+    private int index;
+
+    public void Init(int idx)
     {
-       // myObj = MapDrawManager.Instance.gimmickBtns();
-        transform.GetComponent<Button>().onClick.AddListener(() =>
+        index = idx;
+
+        myButton = GetComponent<Button>();
+        contentImage.sprite = gimmickInfo.sprite;
+
+        myButton.onClick.AddListener(() =>
         {
-            MapDrawManager.Instance.OnMapObj = so.gimmickObj[i];
-            //Select();
+            MapDrawManager.Instance.OnMapObj = gimmickInfo.prefab;
+
+            MapDrawManager.Instance.SetGhostObject(gimmickInfo.prefab);
+            MapDrawManager.Instance.isSelected = true;
         });
     }
 

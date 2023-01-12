@@ -9,8 +9,7 @@ public class LoadNextMapManager : MonoBehaviour
     private string SAVE_PATH = "Json";
     private string SAVE_FILENAME = "/mapData.txt";
 
-    [SerializeField] private List<GameObject> gimmickObjs;
-
+    public TotalGimmickSO totalGimmickSO;
     void Start()
     {
         LoadMapData();
@@ -26,7 +25,7 @@ public class LoadNextMapManager : MonoBehaviour
         //»ý¼º
         for (int i = 0; i < mapData.pos.Count; i++)
         {
-            GameObject obj = Instantiate(gimmickObjs[mapData.index[i]], transform.position, Quaternion.identity);
+            GameObject obj = Instantiate(totalGimmickSO.gimmickInfo[mapData.index[i]].prefab, transform.position, Quaternion.identity);
             obj.transform.position = mapData.pos[i];
             obj.transform.rotation = mapData.rot[i];
             obj.transform.localScale = mapData.scale[i];
