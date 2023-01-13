@@ -5,6 +5,9 @@ using UnityEngine.Events;
 
 public class PlayerAnimation : MonoBehaviour
 {
+    [SerializeField]
+    private PlayerAttackSO _playerAttackSO = null;
+
     private Animator _animator = null;
     private Rigidbody _rigid = null;
     private bool _isGrounded = false;
@@ -105,7 +108,7 @@ public class PlayerAnimation : MonoBehaviour
     {
         OnAttackStarted?.Invoke();
         //yield return new WaitUntil(() => _animator.GetCurrentAnimatorStateInfo(1).IsName(aniName) == false);
-        yield return new WaitUntil(() => (_animator.GetCurrentAnimatorStateInfo(1).normalizedTime >= 0.5f) || (_animator.GetCurrentAnimatorStateInfo(1).IsName(aniName) == false));
+        yield return new WaitUntil(() => (_animator.GetCurrentAnimatorStateInfo(1).normalizedTime >= _playerAttackSO.attackAnimationDelayNomalizeTime) || (_animator.GetCurrentAnimatorStateInfo(1).IsName(aniName) == false));
 
         if (_player.PlayerWallGrab.WallGrabed == false)
             FallOrIdleAnimation(_isGrounded);

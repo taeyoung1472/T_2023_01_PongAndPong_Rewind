@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 public class RewindManager : MonoSingleTon<RewindManager>
@@ -27,9 +26,9 @@ public class RewindManager : MonoSingleTon<RewindManager>
             lastChangeTime = Time.time;
 
             value = Mathf.Clamp(value, 0, totalRecordCount - 1);
-            
+
             int diff = curRecordingIndex - value;
-            
+
             curRecordingIndex = value;
             OnTimeChanging?.Invoke(value);
 
@@ -66,10 +65,10 @@ public class RewindManager : MonoSingleTon<RewindManager>
 
     // Logic
     private bool isRewinding = false;
-    public bool IsRewinding 
-    { 
+    public bool IsRewinding
+    {
         get { return isRewinding; }
-        set 
+        set
         {
             isRewinding = value;
             RecordObjectInit(RecordType.Default);
@@ -94,7 +93,7 @@ public class RewindManager : MonoSingleTon<RewindManager>
     private IEnumerator Start()
     {
         timer = Time.time + recordeTurm;
-        IsRewinding = false;
+        IsRewinding = false; 
 
         Time.timeScale = 0;
         yield return new WaitForSecondsRealtime(3f);
@@ -129,12 +128,12 @@ public class RewindManager : MonoSingleTon<RewindManager>
                 CurRecordingIndex--;
             else
                 CurRecordingIndex++;
-            
-            if(IsRewinding && CurRecordingIndex == 0)
+
+            if (IsRewinding && CurRecordingIndex == 0)
             {
                 IsEnd = true;
             }
-            if(!IsRewinding && CurRecordingIndex == totalRecordCount - 1)
+            if (!IsRewinding && CurRecordingIndex == totalRecordCount - 1)
             {
                 timer = Time.time + 1;
                 IsRewinding = true;
@@ -151,6 +150,8 @@ public class RewindManager : MonoSingleTon<RewindManager>
     public void RecordObjectInit(RecordType type)
     {
         List<RecordObject> targetList = GetRecordObjectByType(type);
+
+        Debug.Log($"Init {targetList.Count} / {type}");
 
         for (int i = 0; i < targetList.Count; ++i)
         {
@@ -203,7 +204,7 @@ public class RewindManager : MonoSingleTon<RewindManager>
 
         for (int i = 0; i < targetList.Count; ++i)
         {
-            if(IsEnd)
+            if (IsEnd)
                 targetList[i].OnRewindUpdate();
             else
             {
