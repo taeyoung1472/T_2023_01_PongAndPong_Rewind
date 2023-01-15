@@ -119,7 +119,6 @@ public class TransformRecord : RecordObject
 
     public override void Recorde(int index)
     {
-        print("Record");
         if (isRecordPosition)
         {
             positionList[index] = transform.position;
