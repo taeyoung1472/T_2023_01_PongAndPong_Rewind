@@ -41,11 +41,11 @@ public class MovePad : TransformRecord
 
         colorList.Capacity = TotalRecordCount;
         colorList.AddRange(new Color[TotalRecordCount]);
-        colorList[InitIndex] = meshRenderer.material.color;
+        colorList[0] = meshRenderer.material.color;
 
         valueList.Capacity = TotalRecordCount;
         valueList.AddRange(new float[TotalRecordCount]);
-        valueList[InitIndex] = 0;
+        valueList[0] = 0;
     }
 
     public override void Recorde(int index)

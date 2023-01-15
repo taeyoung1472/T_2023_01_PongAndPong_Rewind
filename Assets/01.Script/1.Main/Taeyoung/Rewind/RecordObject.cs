@@ -3,7 +3,6 @@ using UnityEngine;
 public abstract class RecordObject : MonoBehaviour
 {
     protected float RecordingPercent { get { return RewindManager.Instance.CurRecordingPercent; } }
-    protected int InitIndex { get { if (RewindManager.Instance.IsRewinding) { return TotalRecordCount - 1; } else { return 0; } } }
 
     protected int TotalRecordCount 
     { 

@@ -38,11 +38,11 @@ public class PlayerRecord : TransformRecord
 
         spriteList = new(TotalRecordCount);
         spriteList.AddRange(new Sprite[TotalRecordCount]);
-        spriteList[InitIndex] = spriteRenderer.sprite;
+        spriteList[0] = spriteRenderer.sprite;
 
         flipList = new(TotalRecordCount);
         flipList.AddRange(new bool[TotalRecordCount]);
-        flipList[InitIndex] = spriteRenderer.transform.localScale.x > 0 ? true : false;
+        flipList[0] = spriteRenderer.transform.localScale.x > 0 ? true : false;
     }
 
     public override void Recorde(int index)

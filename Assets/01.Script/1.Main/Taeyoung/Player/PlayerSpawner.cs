@@ -14,15 +14,13 @@ public class PlayerSpawner : RecordObject
     [SerializeField] private Transform rewindPlayerSpawnPos;
     private PlayerRecord rewindPlayer;
 
-    public void Awake()
+    public void Start()
     {
-        Debug.Log("Start");
         Register();
     }
 
     public override void InitOnPlay()
     {
-        Debug.Log("Init");
         if(defaultPlayer == null)
         {
             defaultPlayer = Instantiate(playerPrefab, defaultPlayerSpawnPos.position, Quaternion.identity);
@@ -33,6 +31,7 @@ public class PlayerSpawner : RecordObject
     {
         if (rewindPlayer == null)
         {
+            Debug.Log($"Spawn : {RewindManager.Instance.IsRewinding}");
             rewindPlayer = Instantiate(playerPrefab, rewindPlayerSpawnPos.position, Quaternion.identity);
         }
     }
