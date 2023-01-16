@@ -17,6 +17,11 @@ public class RewindManager : MonoSingleTon<RewindManager>
     // 시간 체크용
     public float timer = 0.0f;
 
+    // Volume
+    [Header("[Volume]")]
+    [SerializeField] private GameObject defaultVolume;
+    [SerializeField] private GameObject rewindVolume;
+
     // Index
     private int curRecordingIndex;
     public int CurRecordingIndex
@@ -29,7 +34,18 @@ public class RewindManager : MonoSingleTon<RewindManager>
             value = Mathf.Clamp(value, 0, totalRecordCount - 1);
             
             int diff = curRecordingIndex - value;
-            
+
+            if (diff < 0)
+            {
+                defaultVolume.SetActive(true);
+                rewindVolume.SetActive(false); 
+            }
+            else
+            {
+                defaultVolume.SetActive(false);
+                rewindVolume.SetActive(true);
+            }
+
             curRecordingIndex = value;
             OnTimeChanging?.Invoke(value);
 
@@ -86,6 +102,9 @@ public class RewindManager : MonoSingleTon<RewindManager>
     private List<RecordObject> recordObjectList = new();
     private List<RecordObject> rewindObjectList = new();
 
+    // Logic
+    [SerializeField] private bool isReadyToStart;
+
     public void Awake()
     {
         totalRecordCount = Mathf.RoundToInt(playTime / recordeTurm);
@@ -96,7 +115,7 @@ public class RewindManager : MonoSingleTon<RewindManager>
         timer = Time.time + recordeTurm;
 
         Time.timeScale = 0;
-        yield return new WaitForSecondsRealtime(3f);
+        yield return new WaitUntil(() => isReadyToStart);
         Time.timeScale = 1;
 
         IsRewinding = false;
@@ -111,13 +130,11 @@ public class RewindManager : MonoSingleTon<RewindManager>
     public void Play()
     {
         IsRewinding = false;
-        Debug.Log("순행");
     }
 
     public void ReWind()
     {
         IsRewinding = true;
-        Debug.Log("역행");
     }
 
     private void LifeCycle()
@@ -139,7 +156,6 @@ public class RewindManager : MonoSingleTon<RewindManager>
             }
             if (!IsRewinding && CurRecordingIndex == totalRecordCount - 1)
             {
-                timer = Time.time + 1;
                 IsRewinding = true;
             }
         }

@@ -66,25 +66,13 @@ public class TransformRecord : RecordObject
         int totalCount = RewindManager.Instance.TotalRecordCount;
 
         if (isRecordPosition)
-        {
-            positionList = new(totalCount);
-            positionList.AddRange(new Vector3[totalCount]);
-            positionList[0] = transform.position;
-        }
+            GenerateList<Vector3>(ref positionList, transform.position);
 
         if (isRecordRotation)
-        {
-            rotationList = new(totalCount);
-            rotationList.AddRange(new Quaternion[totalCount]);
-            rotationList[0] = transform.rotation;
-        }
+            GenerateList<Quaternion>(ref rotationList, transform.rotation);
 
         if (isRecordScale)
-        {
-            scaleList = new(totalCount);
-            scaleList.AddRange(new Vector3[totalCount]);
-            scaleList[0] = transform.localScale;
-        }
+            GenerateList<Vector3>(ref scaleList, transform.localScale);
 
         RewindManager.Instance.RegistRecorder(this);
     }

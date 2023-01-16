@@ -31,7 +31,6 @@ public class PlayerSpawner : RecordObject
     {
         if (rewindPlayer == null)
         {
-            Debug.Log($"Spawn : {RewindManager.Instance.IsRewinding}");
             rewindPlayer = Instantiate(playerPrefab, rewindPlayerSpawnPos.position, Quaternion.identity);
         }
     }

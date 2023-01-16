@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class RecordObject : MonoBehaviour
@@ -40,4 +41,13 @@ public abstract class RecordObject : MonoBehaviour
 
     // 정보 불러오기
     public abstract void ApplyData(int index, int nextIndexDiff);
+
+    protected void GenerateList<T>(ref List<T> list, T initValue)
+    {
+        int totalCount = RewindManager.Instance.TotalRecordCount;
+
+        list = new(totalCount);
+        list.AddRange(new T[totalCount]);
+        list[0] = initValue;
+    }
 }
