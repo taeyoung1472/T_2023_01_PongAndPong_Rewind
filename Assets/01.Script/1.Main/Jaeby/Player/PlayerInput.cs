@@ -40,5 +40,4 @@ public class PlayerInput : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.LeftShift))
             OnWeaponChange?.Invoke();
     }
-
 }
