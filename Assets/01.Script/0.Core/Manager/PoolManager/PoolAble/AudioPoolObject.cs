@@ -28,7 +28,13 @@ public class AudioPoolObject : PoolAbleObject
         source.volume = volume;
         source.pitch = pitch;
         source.Play();
-        StartCoroutine(WaitForPush((source.clip.length / source.pitch) * 1.05f));
+
+        if(pitch < 0)
+        {
+            source.time = clip.length * 0.99f;
+        }
+
+        StartCoroutine(WaitForPush((source.clip.length / Mathf.Abs(source.pitch)) * 1.05f));
     }
     public void Update()
     {

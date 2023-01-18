@@ -26,8 +26,6 @@ public class AudioRecord : RecordObject
 
     public void PlayAudio(AudioClip clip, float pitch = 1f, float volume = 1f)
     {
-        pitch = -1;
-
         AudioPoolObject obj = PoolManager.Pop(PoolType.Sound).GetComponent<AudioPoolObject>();
         obj.Play(clip, pitch, volume);
 
@@ -46,10 +44,9 @@ public class AudioRecord : RecordObject
         float targetPitch;
         bool isRewinding = nextIndexDiff > 0 ? true : false;
 
-        Debug.Log($"{index} , {audioDataList[index].Count}");
         for (int i = 0; i < audioDataList[index].Count; ++i)
         {
-            targetPitch = audioDataList[index][i].pitch;// * ((isRewinding ? -1 : 1) * (audioDataList[index][i].isRewinding ? -1 : 1));
+            targetPitch = -1;//audioDataList[index][i].pitch;// * ((isRewinding ? -1 : 1) * (audioDataList[index][i].isRewinding ? -1 : 1));
 
             Debug.Log(targetPitch);
 
