@@ -7,7 +7,6 @@ using Random = UnityEngine.Random;
 
 public class AudioRecord : RecordObject
 {
-
     public static AudioRecord Instance { get; private set; }
 
     int curIndex;
@@ -30,7 +29,9 @@ public class AudioRecord : RecordObject
         obj.Play(clip, pitch, volume);
 
         audioDataList[curIndex].Add(new AudioData(clip, pitch, volume, RewindManager.Instance.IsRewinding));
+        Debug.Log($"CurIndex : {curIndex}");
     }
+
     public void PlayAudioRandPitch(AudioClip clip, float pitch = 1f, float randValue = 0.1f, float volume = 1f)
     {
         AudioPoolObject obj = PoolManager.Pop(PoolType.Sound).GetComponent<AudioPoolObject>();
@@ -41,12 +42,16 @@ public class AudioRecord : RecordObject
 
     public override void ApplyData(int index, int nextIndexDiff)
     {
+        curIndex = index;
+
         float targetPitch;
         bool isRewinding = nextIndexDiff > 0 ? true : false;
 
         for (int i = 0; i < audioDataList[index].Count; ++i)
         {
             targetPitch = audioDataList[index][i].pitch * ((audioDataList[index][i].isRewinding == isRewinding) ? 1 : -1);
+
+            Debug.Log(targetPitch);
 
             AudioPoolObject obj = PoolManager.Pop(PoolType.Sound).GetComponent<AudioPoolObject>();
             obj.Play(audioDataList[index][i].clip, targetPitch, audioDataList[index][i].volume);

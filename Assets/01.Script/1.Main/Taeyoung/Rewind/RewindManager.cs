@@ -93,7 +93,7 @@ public class RewindManager : MonoSingleTon<RewindManager>
         }
     }
     private bool isEnd = false;
-    public bool IsEnd { get { return isEnd; } set { isEnd = value; } }
+    public bool IsEnd { get { return isEnd; } set { isEnd = value; EndManager.Instance.ActivePanel(); } }
 
     // Event
     public Action<int> OnTimeChanging;
@@ -125,6 +125,11 @@ public class RewindManager : MonoSingleTon<RewindManager>
     {
         ExcuteUpdate();
         LifeCycle();
+
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            isReadyToStart = true;
+        }
     }
 
     public void Play()

@@ -1,20 +1,25 @@
-using DG.Tweening;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.UI;
 
 public class TrailManager : MonoSingleTon<TrailManager>
 {
     [SerializeField] private TrailSequence[] sequenceArray;
 
-    [SerializeField] private bool isReadyToNextSequence;
+    private bool isReadyToNextSequence;
     private int curSequenceIndex = 0;
 
     public void Start()
     {
         StartCoroutine(SequenceCor());
+    }
+
+    public void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            isReadyToNextSequence = true;
+        }
     }
 
     public void Print(string s)
@@ -38,7 +43,7 @@ public class TrailManager : MonoSingleTon<TrailManager>
                 switch (curSeqUnit.seqType)
                 {
                     case SequenceType.Append:
-                        if(isAppend) yield return new WaitForSeconds(appendTime);
+                        if (isAppend) yield return new WaitForSeconds(appendTime);
                         isAppend = true;
                         curSeqUnit.callEvent?.Invoke();
                         appendTime = curSeqUnit.time;
@@ -56,7 +61,7 @@ public class TrailManager : MonoSingleTon<TrailManager>
 
             curSequenceIndex++;
 
-            if(curSequenceIndex == sequenceArray.Length)
+            if (curSequenceIndex == sequenceArray.Length)
             {
                 break;
             }
