@@ -22,7 +22,7 @@ public class PlayerInput : MonoBehaviour
 
     private void Awake()
     {
-        InputMappingManager.Instance.LoadKey();
+        KeyManager.LoadKey();
     }
 
     private void Start()

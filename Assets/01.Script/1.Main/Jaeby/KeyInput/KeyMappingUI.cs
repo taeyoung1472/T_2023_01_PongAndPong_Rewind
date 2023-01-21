@@ -40,16 +40,20 @@ public class KeyMappingUI : MonoBehaviour
 
     Event keyEvent;
 
+    private bool _keyMapping = false;
+
     private Dictionary<InputType, KeyCode> _saveKeys = new Dictionary<InputType, KeyCode>();
 
     private void Start()
     {
+        KeyManager.LoadKey();
+        _saveKeys = KeyManager.keys;
         UIInit();
     }
 
     private void UIInit()
     {
-        for(int i = 0; i < (int)InputType.Size; i++)
+        for (int i = 0; i < (int)InputType.Size; i++)
         {
             Button button = Instantiate(_keyMappingPrefab, _keyMappingPanel.transform).GetComponent<Button>();
             ButtonSet(button, i);
@@ -77,6 +81,8 @@ public class KeyMappingUI : MonoBehaviour
 
     public void KeyMappingStart(InputType type)
     {
+        if (_keyMapping)
+            return;
         _mappingStartUI.SetActive(true);
         _mappingStartUI.GetComponentInChildren<TextMeshProUGUI>().SetText($"원하는 버튼을\n준내게 누르세요\n<버튼 : {type.ToString()}>");
         StartCoroutine(KeyMappingCoroutine(type));
@@ -89,17 +95,34 @@ public class KeyMappingUI : MonoBehaviour
 
     private IEnumerator KeyMappingCoroutine(InputType type)
     {
-        while(true)
+        _keyMapping = true;
+        KeyCode value = KeyCode.None;
+        while (true)
         {
-            yield return new WaitUntil(() => keyEvent.isKey);
-            if (keyEvent.keyCode == KeyCode.None)
-                continue;
-            else
+            yield return new WaitUntil(() => keyEvent.isKey || Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1));
+            if (Input.GetMouseButtonDown(0))
+            {
+                value = KeyCode.Mouse0;
                 break;
+            }
+            else if (Input.GetMouseButtonDown(1))
+            {
+                value = KeyCode.Mouse1;
+                break;
+            }
+            else if (keyEvent.keyCode != KeyCode.None)
+            {
+                value = keyEvent.keyCode;
+                break;
+            }
+            else
+            {
+                continue;
+            }
         }
-        Debug.Log($"{type.ToString()}");
-        SaveOneKey(type, keyEvent.keyCode);
+        SaveOneKey(type, value);
         KeyMappingEnd();
+        _keyMapping = false;
     }
 
     private void OnGUI()
