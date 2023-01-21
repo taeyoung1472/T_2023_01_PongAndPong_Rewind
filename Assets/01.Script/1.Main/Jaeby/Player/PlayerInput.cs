@@ -20,6 +20,11 @@ public class PlayerInput : MonoBehaviour
 
     private Player _player = null;
 
+    private void Awake()
+    {
+        InputMappingManager.Instance.LoadKey();
+    }
+
     private void Start()
     {
         _player = GetComponent<Player>();
@@ -27,17 +32,29 @@ public class PlayerInput : MonoBehaviour
 
     private void Update()
     {
-        if(_player.PlayerMove.Moveable)
-            OnMoveInput?.Invoke(new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")));
-        if (Input.GetKeyDown(KeyCode.Space))
+
+        if (_player.PlayerMove.Moveable)
+        {
+            int x = 0, y = 0;
+            if (Input.GetKey(KeyManager.keys[InputType.Right]))
+                x++;
+            if (Input.GetKey(KeyManager.keys[InputType.Left]))
+                x--;
+            if (Input.GetKey(KeyManager.keys[InputType.Up]))
+                y++;
+            if (Input.GetKey(KeyManager.keys[InputType.Down]))
+                y--;
+            OnMoveInput?.Invoke(new Vector2(x, y));
+        }
+        if (Input.GetKeyDown(KeyManager.keys[InputType.Jump]))
             OnJumpStart?.Invoke();
-        if (Input.GetKeyUp(KeyCode.Space))
+        if (Input.GetKeyUp(KeyManager.keys[InputType.Jump]))
             OnJumpEnd?.Invoke();
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetKeyDown(KeyManager.keys[InputType.Dash]))
             OnDash?.Invoke();
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetKeyDown(KeyManager.keys[InputType.Attack]))
             OnAttack?.Invoke();
-        if (Input.GetKeyDown(KeyCode.LeftShift))
+        if (Input.GetKeyDown(KeyManager.keys[InputType.WeaponChange]))
             OnWeaponChange?.Invoke();
     }
 
