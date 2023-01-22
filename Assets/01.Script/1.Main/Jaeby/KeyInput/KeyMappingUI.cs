@@ -36,13 +36,14 @@ public class KeyMappingUI : MonoBehaviour
     private GameObject _mappingStartUI = null;
 
     [SerializeField]
-    private GameObject _keyMappingPrefab = null;
+    private KeyInputUI _keyMappingPrefab = null;
 
     Event keyEvent;
 
     private bool _keyMapping = false;
 
-    private Dictionary<InputType, KeyCode> _saveKeys = new Dictionary<InputType, KeyCode>();
+    private Dictionary<InputType, KeyCode> _saveKeys = new();
+    private Dictionary<InputType, KeyInputUI> keyUI = new();
 
     private void Start()
     {
@@ -55,10 +56,10 @@ public class KeyMappingUI : MonoBehaviour
     {
         for (int i = 0; i < (int)InputType.Size; i++)
         {
-            Button button = Instantiate(_keyMappingPrefab, _keyMappingPanel.transform).GetComponent<Button>();
-            ButtonSet(button, i);
-            TextMeshProUGUI text = button.GetComponentInChildren<TextMeshProUGUI>();
-            text.SetText($"{((InputType)i).ToString()}");
+            KeyInputUI keyUIPrefab = Instantiate(_keyMappingPrefab, _keyMappingPanel.transform);
+            ButtonSet(keyUIPrefab.GetComponent<Button>(), i);
+            keyUI.Add((InputType)i, keyUIPrefab);
+            keyUIPrefab.DisplayData((InputType)i, _saveKeys[(InputType)i]);
         }
     }
 
@@ -69,6 +70,11 @@ public class KeyMappingUI : MonoBehaviour
 
     public void UIOn()
     {
+        Debug.Log("ON");
+        for (int i = 0; i < (int)InputType.Size; i++)
+        {
+            keyUI[(InputType)i].DisplayData((InputType)i, KeyManager.keys[(InputType)i]);
+        }
         _mainPanel.SetActive(true);
         _startButton.SetActive(false);
     }
@@ -121,6 +127,7 @@ public class KeyMappingUI : MonoBehaviour
             }
         }
         SaveOneKey(type, value);
+        keyUI[type].DisplayData(type, value);
         KeyMappingEnd();
         _keyMapping = false;
     }

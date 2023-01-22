@@ -12,6 +12,7 @@ public class Tesetsetset : MonoBehaviour
             return;
         }
 
+        // TODO 가져오기
         Instantiate(StageWorldSelectData.curStageWorld, null);
     }
 }
