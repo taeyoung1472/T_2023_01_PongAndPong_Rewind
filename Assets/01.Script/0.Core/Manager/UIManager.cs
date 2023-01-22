@@ -9,6 +9,7 @@ public class UIManager : MonoBehaviour
     [Header("[Clock]")]
     [SerializeField] private Image clockFill;
     [SerializeField] private TextMeshProUGUI clockTimeText;
+
     private int totalTIme;
 
     public void Start()
@@ -19,7 +20,7 @@ public class UIManager : MonoBehaviour
 
     private void OnTimeChange(int time)
     {
-        clockFill.fillAmount = time / (float)totalTIme;
+        clockFill.fillAmount = time / (float)(totalTIme - 1);
         clockTimeText.text = $"{time * RewindManager.Instance.RecordeTurm:0}";
     }
 }
