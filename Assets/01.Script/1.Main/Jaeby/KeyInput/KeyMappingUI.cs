@@ -8,17 +8,6 @@ using UnityEngine.UI;
 
 public class KeyMappingUI : MonoBehaviour
 {
-    KeyCode[] defaultKeys = new KeyCode[]
-    {
-        KeyCode.W,
-        KeyCode.S,
-        KeyCode.A,
-        KeyCode.D,
-        KeyCode.Space,
-        KeyCode.Mouse0,
-        KeyCode.LeftShift,
-        KeyCode.Mouse1,
-    };
 
     KeyCode[] cantKey = new KeyCode[]
     {
@@ -48,7 +37,6 @@ public class KeyMappingUI : MonoBehaviour
     private void Start()
     {
         KeyManager.LoadKey();
-        _saveKeys = KeyManager.keys;
         UIInit();
     }
 
@@ -59,7 +47,7 @@ public class KeyMappingUI : MonoBehaviour
             KeyInputUI keyUIPrefab = Instantiate(_keyMappingPrefab, _keyMappingPanel.transform);
             ButtonSet(keyUIPrefab.GetComponent<Button>(), i);
             keyUI.Add((InputType)i, keyUIPrefab);
-            keyUIPrefab.DisplayData((InputType)i, _saveKeys[(InputType)i]);
+            keyUIPrefab.DisplayData((InputType)i, KeyManager.keys[(InputType)i]);
         }
     }
 
@@ -70,7 +58,6 @@ public class KeyMappingUI : MonoBehaviour
 
     public void UIOn()
     {
-        Debug.Log("ON");
         for (int i = 0; i < (int)InputType.Size; i++)
         {
             keyUI[(InputType)i].DisplayData((InputType)i, KeyManager.keys[(InputType)i]);
@@ -81,6 +68,7 @@ public class KeyMappingUI : MonoBehaviour
 
     public void UIOff()
     {
+        _saveKeys.Clear();
         _mainPanel.SetActive(false);
         _startButton.SetActive(true);
     }
@@ -149,12 +137,12 @@ public class KeyMappingUI : MonoBehaviour
     [ContextMenu("ÀúÀå!!")]
     public void SaveAllKey()
     {
-        for (int i = 0; i < (int)InputType.Size; i++)
-        {
-            _saveKeys.TryAdd((InputType)i, defaultKeys[i]);
-        }
+        KeyManager.ChangeKeySetting(_saveKeys);
+        Debug.Log(_saveKeys.Count);
+        Debug.Log(KeyManager.keys.Count);
+
         string path = Application.dataPath + "/Save/KeyData.json";
-        string json = Newtonsoft.Json.JsonConvert.SerializeObject(_saveKeys);
+        string json = Newtonsoft.Json.JsonConvert.SerializeObject(KeyManager.keys);
         Debug.Log(json);
         File.WriteAllText(path, json);
     }
