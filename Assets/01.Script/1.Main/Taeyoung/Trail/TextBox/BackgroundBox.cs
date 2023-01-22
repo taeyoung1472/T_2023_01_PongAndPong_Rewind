@@ -16,6 +16,11 @@ public class BackgroundBox : MonoBehaviour
 
     void Update()
     {
+        SetRect();
+    }
+
+    void SetRect()
+    {
         myRect.sizeDelta = targetText.sizeDelta + (Vector2.one * edgeVoid);
     }
 }

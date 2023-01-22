@@ -630,7 +630,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5320018517640244876}
-  - component: {fileID: 5320018517640244879}
+  - component: {fileID: 2687374011587122682}
   m_Layer: 8
   m_Name: Hitbox
   m_TagString: Player
@@ -653,18 +653,19 @@ Transform:
   m_Father: {fileID: 5320018517516492211}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &5320018517640244879
-BoxCollider:
+--- !u!136 &2687374011587122682
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5320018517640244877}
-  m_Material: {fileID: 13400000, guid: c303f9b4725c9fa47937c22c86065e67, type: 2}
+  m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.9, y: 1.15, z: 1}
+  m_Radius: 0.5
+  m_Height: 1
+  m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5320018517643068008
 GameObject:

@@ -130,6 +130,14 @@ public class RewindManager : MonoSingleTon<RewindManager>
         {
             isReadyToStart = true;
         }
+        if (Input.GetKeyDown(KeyCode.V))
+        {
+            Time.timeScale = 5f;
+        }
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            Time.timeScale = 1f;
+        }
     }
 
     public void Play()
