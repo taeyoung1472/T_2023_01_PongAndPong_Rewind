@@ -57,5 +57,4 @@ public class PlayerInput : MonoBehaviour
         if (Input.GetKeyDown(KeyManager.keys[InputType.WeaponChange]))
             OnWeaponChange?.Invoke();
     }
-
 }

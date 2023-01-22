@@ -17,6 +17,11 @@ public class RewindManager : MonoSingleTon<RewindManager>
     // 시간 체크용
     public float timer = 0.0f;
 
+    // Volume
+    [Header("[Volume]")]
+    [SerializeField] private GameObject defaultVolume;
+    [SerializeField] private GameObject rewindVolume;
+
     // Index
     private int curRecordingIndex;
     public int CurRecordingIndex
@@ -29,7 +34,18 @@ public class RewindManager : MonoSingleTon<RewindManager>
             value = Mathf.Clamp(value, 0, totalRecordCount - 1);
             
             int diff = curRecordingIndex - value;
-            
+
+            if (diff < 0)
+            {
+                defaultVolume.SetActive(true);
+                rewindVolume.SetActive(false); 
+            }
+            else
+            {
+                defaultVolume.SetActive(false);
+                rewindVolume.SetActive(true);
+            }
+
             curRecordingIndex = value;
             OnTimeChanging?.Invoke(value);
 
@@ -40,11 +56,11 @@ public class RewindManager : MonoSingleTon<RewindManager>
             if (IsEnd)
             {
                 ApplyData(RecordType.Default, defaultIndex, diff);
-                ApplyData(RecordType.Rewind, rewindIndex, diff);
+                ApplyData(RecordType.Rewind, rewindIndex, -diff);
             }
 
             // 순행
-            if (!IsRewinding)
+            else if (!IsRewinding)
             {
                 RecordData(RecordType.Default, defaultIndex);
                 ApplyData(RecordType.Rewind, rewindIndex, diff);
@@ -77,7 +93,7 @@ public class RewindManager : MonoSingleTon<RewindManager>
         }
     }
     private bool isEnd = false;
-    public bool IsEnd { get { return isEnd; } set { isEnd = value; } }
+    public bool IsEnd { get { return isEnd; } set { isEnd = value; EndManager.Instance.ActivePanel(); } }
 
     // Event
     public Action<int> OnTimeChanging;
@@ -85,6 +101,9 @@ public class RewindManager : MonoSingleTon<RewindManager>
     // RecordObjectList
     private List<RecordObject> recordObjectList = new();
     private List<RecordObject> rewindObjectList = new();
+
+    // Logic
+    [SerializeField] private bool isReadyToStart;
 
     public void Awake()
     {
@@ -94,29 +113,41 @@ public class RewindManager : MonoSingleTon<RewindManager>
     private IEnumerator Start()
     {
         timer = Time.time + recordeTurm;
-        IsRewinding = false;
 
         Time.timeScale = 0;
-        yield return new WaitForSecondsRealtime(3f);
+        yield return new WaitUntil(() => isReadyToStart);
         Time.timeScale = 1;
+
+        IsRewinding = false;
     }
 
     public void Update()
     {
         ExcuteUpdate();
         LifeCycle();
+
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            isReadyToStart = true;
+        }
+        if (Input.GetKeyDown(KeyCode.V))
+        {
+            Time.timeScale = 5f;
+        }
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            Time.timeScale = 1f;
+        }
     }
 
     public void Play()
     {
         IsRewinding = false;
-        Debug.Log("순행");
     }
 
     public void ReWind()
     {
         IsRewinding = true;
-        Debug.Log("역행");
     }
 
     private void LifeCycle()
@@ -133,10 +164,11 @@ public class RewindManager : MonoSingleTon<RewindManager>
             if(IsRewinding && CurRecordingIndex == 0)
             {
                 IsEnd = true;
+                RecordObjectInit(RecordType.Default);
+                RecordObjectInit(RecordType.Rewind);
             }
-            if(!IsRewinding && CurRecordingIndex == totalRecordCount - 1)
+            if (!IsRewinding && CurRecordingIndex == totalRecordCount - 1)
             {
-                timer = Time.time + 1;
                 IsRewinding = true;
             }
         }
@@ -155,7 +187,10 @@ public class RewindManager : MonoSingleTon<RewindManager>
         for (int i = 0; i < targetList.Count; ++i)
         {
             if (IsEnd)
+            {
+                targetList[i].InitOnRewind();
                 return;
+            }
             else
             {
                 switch (type)

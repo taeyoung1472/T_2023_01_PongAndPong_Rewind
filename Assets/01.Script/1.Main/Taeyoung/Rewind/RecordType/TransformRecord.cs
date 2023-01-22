@@ -26,9 +26,13 @@ public class TransformRecord : RecordObject
 
     RigidbodyConstraints rbConstraints;
 
-    public void Start()
+    public void Awake()
     {
         SaveRigidbodyData();
+    }
+
+    public void Start()
+    {
         Register();
     }
 
@@ -62,34 +66,13 @@ public class TransformRecord : RecordObject
         int totalCount = RewindManager.Instance.TotalRecordCount;
 
         if (isRecordPosition)
-        {
-            positionList = new()
-            {
-                Capacity = RewindManager.Instance.TotalRecordCount
-            };
-            positionList.AddRange(new Vector3[totalCount]);
-            positionList[0] = transform.position;
-        }
+            GenerateList<Vector3>(ref positionList, transform.position);
 
         if (isRecordRotation)
-        {
-            rotationList = new()
-            {
-                Capacity = RewindManager.Instance.TotalRecordCount
-            };
-            rotationList.AddRange(new Quaternion[totalCount]);
-            rotationList[0] = transform.rotation;
-        }
+            GenerateList<Quaternion>(ref rotationList, transform.rotation);
 
         if (isRecordScale)
-        {
-            scaleList = new()
-            {
-                Capacity = RewindManager.Instance.TotalRecordCount
-            };
-            scaleList.AddRange(new Vector3[totalCount]);
-            scaleList[0] = transform.localScale;
-        }
+            GenerateList<Vector3>(ref scaleList, transform.localScale);
 
         RewindManager.Instance.RegistRecorder(this);
     }
@@ -158,5 +141,4 @@ public class TransformRecord : RecordObject
     {
         rb.constraints = rbConstraints;
     }
-
 }
