@@ -92,7 +92,7 @@ public class PlayerAnimation : MonoBehaviour
         _animator.Update(0);
         if (_attackAniCorou != null)
             StopCoroutine(_attackAniCorou);
-        _attackAniCorou = StartCoroutine(AttackAnimationEndWaitCoroutine(name));
+        _attackAniCorou = StartCoroutine(AttackAnimationEndWaitCoroutine(name, AttackState.Melee));
     }
 
     public void RangeAttackAnimation()
@@ -101,14 +101,18 @@ public class PlayerAnimation : MonoBehaviour
         _animator.Update(0);
         if (_attackAniCorou != null)
             StopCoroutine(_attackAniCorou);
-        _attackAniCorou = StartCoroutine(AttackAnimationEndWaitCoroutine("PlayerRangeAttack"));
+        _attackAniCorou = StartCoroutine(AttackAnimationEndWaitCoroutine("PlayerRangeAttack", AttackState.Range));
     }
 
-    private IEnumerator AttackAnimationEndWaitCoroutine(string aniName)
+    private IEnumerator AttackAnimationEndWaitCoroutine(string aniName, AttackState attackState)
     {
         OnAttackStarted?.Invoke();
         //yield return new WaitUntil(() => _animator.GetCurrentAnimatorStateInfo(1).IsName(aniName) == false);
-        yield return new WaitUntil(() => (_animator.GetCurrentAnimatorStateInfo(1).normalizedTime >= _playerAttackSO.attackAnimationDelayNomalizeTime) || (_animator.GetCurrentAnimatorStateInfo(1).IsName(aniName) == false));
+        yield return new WaitUntil(() => 
+        (
+        _animator.GetCurrentAnimatorStateInfo(1).normalizedTime >= (attackState == AttackState.Melee ? _playerAttackSO.meleeAttackDelay : _playerAttackSO.rangeAttackDelay)) || 
+        (_animator.GetCurrentAnimatorStateInfo(1).IsName(aniName) == false)
+        );
 
         if (_player.PlayerWallGrab.WallGrabed == false)
             FallOrIdleAnimation(_isGrounded);
