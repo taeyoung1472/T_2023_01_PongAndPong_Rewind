@@ -4,7 +4,6 @@ using UnityEngine;
 public class PlayerAttackSO : ScriptableObject
 {
     public float weaponSwitchingDelay = 0.2f;
-    public float attackAnimationDelayNomalizeTime = 0.4f;
     public float meleeAttackDelay = 
         .1f;
     public float rangeAttackDelay = 0.1f;

@@ -45,4 +45,9 @@ public class StartSceneManager : MonoBehaviour
     {
 
     }
+
+    public void ExitGame()
+    {
+        Application.Quit();
+    }
 }
