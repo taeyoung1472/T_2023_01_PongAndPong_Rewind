@@ -14,6 +14,7 @@ public class InteractiveButton : MonoBehaviour, IPointerEnterHandler, IPointerEx
     [SerializeField] protected float activeSizeValue = 1;
     [SerializeField] protected AudioClip hoverClip;
     [SerializeField] protected AudioClip clickClip;
+    [SerializeField] protected bool isMove = false;
 
     [Header("Materials")]
     [SerializeField] private TextMeshProUGUI[] textList;
@@ -24,7 +25,9 @@ public class InteractiveButton : MonoBehaviour, IPointerEnterHandler, IPointerEx
     public virtual void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
-        originPos = rectTransform.anchoredPosition.x;
+
+        if(isMove)
+            originPos = rectTransform.anchoredPosition.x;
 
         GetComponent<Button>().onClick.AddListener(() =>
         {
@@ -36,7 +39,9 @@ public class InteractiveButton : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
         Kill();
 
-        rectTransform.DOAnchorPosX(originPos, 0.5f).SetUpdate(true);
+        if (isMove)
+            rectTransform.DOAnchorPosX(originPos, 0.5f).SetUpdate(true);
+
         rectTransform.DOScale(1, 0.25f).SetUpdate(true);
         foreach (var mat in textList)
         {
@@ -51,7 +56,9 @@ public class InteractiveButton : MonoBehaviour, IPointerEnterHandler, IPointerEx
     {
         Kill();
 
-        rectTransform.DOAnchorPosX(originPos + activeMoveValue, 0.25f).SetUpdate(true);
+        if (isMove)
+            rectTransform.DOAnchorPosX(originPos + activeMoveValue, 0.25f).SetUpdate(true);
+        
         rectTransform.DOScale(activeSizeValue, 0.2f).SetUpdate(true);
         foreach (var mat in textList)
         {
@@ -71,7 +78,9 @@ public class InteractiveButton : MonoBehaviour, IPointerEnterHandler, IPointerEx
     {
         Kill();
 
-        rectTransform.DOAnchorPosX(originPos, 0.5f).SetUpdate(true);
+        if (isMove)
+            rectTransform.DOAnchorPosX(originPos, 0.5f).SetUpdate(true);
+
         rectTransform.DOScale(1, 0.25f).SetUpdate(true);
         foreach (var mat in textList)
         {
@@ -87,7 +96,9 @@ public class InteractiveButton : MonoBehaviour, IPointerEnterHandler, IPointerEx
     {
         Kill();
 
-        rectTransform.anchoredPosition = new Vector2(originPos, rectTransform.anchoredPosition.y);
+        if(isMove)
+            rectTransform.anchoredPosition = new Vector2(originPos, rectTransform.anchoredPosition.y);
+        
         rectTransform.localScale = Vector3.one;
         foreach (var mat in textList)
         {
