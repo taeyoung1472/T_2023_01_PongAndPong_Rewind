@@ -146,11 +146,4 @@ public class KeyMappingUI : MonoBehaviour
         Debug.Log(json);
         File.WriteAllText(path, json);
     }
-
-    [ContextMenu("Å° ¸®¼Â")]
-    public void ResetKey()
-    {
-        _saveKeys.Clear();
-        SaveAllKey();
-    }
 }
