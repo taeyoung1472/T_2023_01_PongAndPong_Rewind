@@ -23,6 +23,13 @@ public static class KeyManager
     {
         string path = Application.dataPath + "/Save/KeyData.json";
         string json = File.ReadAllText(path);
+        if (json == "")
+        {
+            SetKeyDefault();
+            json = Newtonsoft.Json.JsonConvert.SerializeObject(KeyManager.keys);
+            
+            File.WriteAllText(path, json);
+        }
         keys = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<InputType, KeyCode>>(json); // json불러오기
         DefaultKeyAdd();
     }
@@ -44,5 +51,11 @@ public static class KeyManager
         {
             keys.TryAdd((InputType)i, defaultKeys[i]);
         }
+    }
+
+    public static void SetKeyDefault()
+    {
+        keys.Clear();
+        DefaultKeyAdd();
     }
 }
