@@ -22,24 +22,27 @@ public static class KeyManager
     public static void LoadKey()
     {
         string path = Application.dataPath + "/Save/KeyData.json";
-        string json = File.ReadAllText(path);
-        if (json == "")
+        string json = "";
+        if (File.Exists(path) == false) // 만약 파일이 없다면??
         {
             SetKeyDefault();
             json = Newtonsoft.Json.JsonConvert.SerializeObject(KeyManager.keys);
-            
             File.WriteAllText(path, json);
         }
-        keys = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<InputType, KeyCode>>(json); // json불러오기
-        DefaultKeyAdd();
+        else
+        {
+            json = File.ReadAllText(path);
+            keys = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<InputType, KeyCode>>(json); // json불러오기
+            DefaultKeyAdd();
+        }
     }
 
     public static void ChangeKeySetting(Dictionary<InputType, KeyCode> newKeys)
     {
-        foreach(var k in newKeys)
+        foreach (var k in newKeys)
             keys[k.Key] = k.Value;
 
-        foreach(var k in keys)
+        foreach (var k in keys)
         {
             Debug.Log(k);
         }
