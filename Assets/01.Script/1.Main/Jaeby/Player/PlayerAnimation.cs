@@ -68,6 +68,7 @@ public class PlayerAnimation : MonoBehaviour
 
     public void FallOrIdleAnimation(bool isGround)
     {
+        Debug.Log(isGround);
         _isGrounded = isGround;
         if (_isGrounded)
         {
