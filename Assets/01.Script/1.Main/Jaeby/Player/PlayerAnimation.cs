@@ -10,7 +10,6 @@ public class PlayerAnimation : MonoBehaviour
 
     private Animator _animator = null;
     private Rigidbody _rigid = null;
-    private bool _isGrounded = false;
 
     private Coroutine _attackAniCorou = null;
 
@@ -68,9 +67,7 @@ public class PlayerAnimation : MonoBehaviour
 
     public void FallOrIdleAnimation(bool isGround)
     {
-        Debug.Log(isGround);
-        _isGrounded = isGround;
-        if (_isGrounded)
+        if (isGround)
         {
             IdleAnimation();
         }
@@ -116,7 +113,7 @@ public class PlayerAnimation : MonoBehaviour
         );
 
         if (_player.PlayerWallGrab.WallGrabed == false)
-            FallOrIdleAnimation(_isGrounded);
+            FallOrIdleAnimation(_player.PlayerJump.IsGrounded);
         OnAttackEnded?.Invoke();
     }
 
