@@ -1,4 +1,6 @@
+using UnityEngine;
+
 public static class StageWorldSelectData 
 {
-    public static StageWorld curStageWorld = null;
+    public static StageDataSO curStageWorld = null;
 }

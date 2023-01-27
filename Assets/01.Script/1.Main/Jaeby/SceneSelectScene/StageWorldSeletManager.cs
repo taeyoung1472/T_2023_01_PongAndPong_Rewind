@@ -37,7 +37,7 @@ public class StageWorldSeletManager : MonoBehaviour
         button.onClick.AddListener(() =>
         {
             StageWorldSelectData.curStageWorld = _stageWorldListSO.stageWorlds[worldIndex];
-            SceneManager.LoadScene("SceneSelectTestScene");
+            SceneManager.LoadScene(2);
         });
     }
 }

@@ -21,6 +21,7 @@ public class PlayerSpawner : RecordObject
 
     public override void InitOnPlay()
     {
+        Debug.Log("Spawn");
         if(defaultPlayer == null)
         {
             defaultPlayer = Instantiate(playerPrefab, defaultPlayerSpawnPos.position, Quaternion.identity);

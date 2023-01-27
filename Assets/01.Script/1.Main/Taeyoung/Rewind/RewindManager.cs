@@ -7,7 +7,7 @@ using UnityEngine;
 public class RewindManager : MonoSingleTon<RewindManager>
 {
     // 플레이 시간
-    [SerializeField] private int playTime;
+    public static int playTime;
 
     // 기록 감도
     private readonly float recordeTurm = 0.1f;
@@ -15,7 +15,7 @@ public class RewindManager : MonoSingleTon<RewindManager>
     public float RecordeTurm { get { return recordeTurm; } }
 
     // 시간 체크용
-    public float timer = 0.0f;
+    private float timer = 0.0f;
 
     // Volume
     [Header("[Volume]")]
@@ -76,7 +76,7 @@ public class RewindManager : MonoSingleTon<RewindManager>
     }
 
     private int totalRecordCount;
-    public int TotalRecordCount { get { return totalRecordCount; } }
+    public int TotalRecordCount { get { if (totalRecordCount == 0) { totalRecordCount = Mathf.RoundToInt(playTime / recordeTurm); } return totalRecordCount; } }
     private float lastChangeTime;
     public float CurRecordingPercent { get { return Mathf.Clamp((Time.time - lastChangeTime) / recordeTurm, 0, 1); } }
 
@@ -87,6 +87,7 @@ public class RewindManager : MonoSingleTon<RewindManager>
         get { return isRewinding; }
         set 
         {
+            Debug.Log($"안녕 {recordObjectList.Count}");
             isRewinding = value;
             RecordObjectInit(RecordType.Default);
             RecordObjectInit(RecordType.Rewind);
@@ -102,22 +103,11 @@ public class RewindManager : MonoSingleTon<RewindManager>
     private List<RecordObject> recordObjectList = new();
     private List<RecordObject> rewindObjectList = new();
 
-    // Logic
-    [SerializeField] private bool isReadyToStart;
-
-    public void Awake()
-    {
-        totalRecordCount = Mathf.RoundToInt(playTime / recordeTurm);
-    }
-
-    private IEnumerator Start()
+    public void Init()
     {
         timer = Time.time + recordeTurm;
 
-        Time.timeScale = 0;
-        yield return new WaitUntil(() => isReadyToStart);
-        Time.timeScale = 1;
-
+        Debug.Log("잉");
         IsRewinding = false;
     }
 
@@ -126,10 +116,6 @@ public class RewindManager : MonoSingleTon<RewindManager>
         ExcuteUpdate();
         LifeCycle();
 
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            isReadyToStart = true;
-        }
         if (Input.GetKeyDown(KeyCode.V))
         {
             Time.timeScale = 5f;
