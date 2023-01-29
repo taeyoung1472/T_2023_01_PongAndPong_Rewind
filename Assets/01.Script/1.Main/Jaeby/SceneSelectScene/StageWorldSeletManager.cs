@@ -23,11 +23,28 @@ public class StageWorldSeletManager : MonoBehaviour
     {
         StageWorldSelectData.curStageWorld = null;
 
+        bool isLock = false;
+
         for (int i = 0; i < _stageWorldListSO.stageWorlds.Count; i++)
         {
             Button obj = Instantiate(_stageWorldSelectButtonPrefab, _parentTrm);
             TextMeshProUGUI text = obj.GetComponentInChildren<TextMeshProUGUI>();
-            text.SetText($"Stage{i}");
+
+            if (isLock)
+            {
+                obj.interactable = false;
+                text.SetText($"L O C K");
+            }
+            else
+            {
+                text.SetText($"Stage {i + 1}");
+            }
+
+            if (!_stageWorldListSO.stageWorlds[i].isClear)
+            {
+                isLock = true;
+            }
+
             ButtonSet(obj, i);
         }
     }
@@ -37,7 +54,7 @@ public class StageWorldSeletManager : MonoBehaviour
         button.onClick.AddListener(() =>
         {
             StageWorldSelectData.curStageWorld = _stageWorldListSO.stageWorlds[worldIndex];
-            SceneManager.LoadScene(2);
+            LoadingSceneManager.LoadScene(2);
         });
     }
 }

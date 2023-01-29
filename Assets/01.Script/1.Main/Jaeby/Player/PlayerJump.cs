@@ -100,7 +100,6 @@ public class PlayerJump : MonoBehaviour
     {
         bool prevCheck = _isGrounded;
         _isGrounded = Physics.BoxCast(_rayStartTrm.position - Vector3.down * _raySize, _rayStartTrm.lossyScale * 0.5f, Vector3.down, transform.rotation, _raySize, _mask);
-        Debug.Log(_isGrounded);
         if (prevCheck == _isGrounded)
             return;
         if (_isGrounded)
@@ -109,12 +108,6 @@ public class PlayerJump : MonoBehaviour
             _curJumpCount = 0;
         }
         OnGroundCheck?.Invoke(_isGrounded);
-    }
-
-    private void OnDrawGizmos()
-    {
-        Handles.color = Color.red;
-        Handles.DrawWireCube(_rayStartTrm.position, _rayStartTrm.lossyScale);
     }
 
     private void Update()

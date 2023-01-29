@@ -38,7 +38,7 @@ public class StartSceneManager : MonoBehaviour
 
     public void GoStageSelectScene()
     {
-        SceneManager.LoadScene(1);
+        LoadingSceneManager.LoadScene(1);
     }
 
     public void GoOption()

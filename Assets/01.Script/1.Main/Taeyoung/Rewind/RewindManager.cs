@@ -87,14 +87,13 @@ public class RewindManager : MonoSingleTon<RewindManager>
         get { return isRewinding; }
         set 
         {
-            Debug.Log($"¾È³ç {recordObjectList.Count}");
             isRewinding = value;
             RecordObjectInit(RecordType.Default);
             RecordObjectInit(RecordType.Rewind);
         }
     }
     private bool isEnd = false;
-    public bool IsEnd { get { return isEnd; } set { isEnd = value; EndManager.Instance.ActivePanel(); } }
+    public bool IsEnd { get { return isEnd; } set { isEnd = value; EndManager.Instance.ActivePanel(); Time.timeScale = 1; } }
 
     // Event
     public Action<int> OnTimeChanging;
@@ -107,7 +106,6 @@ public class RewindManager : MonoSingleTon<RewindManager>
     {
         timer = Time.time + recordeTurm;
 
-        Debug.Log("À×");
         IsRewinding = false;
     }
 
