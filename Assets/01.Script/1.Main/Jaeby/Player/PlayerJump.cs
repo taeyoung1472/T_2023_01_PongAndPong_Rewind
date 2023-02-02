@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -98,16 +99,22 @@ public class PlayerJump : MonoBehaviour
     private void GroundCheck()
     {
         bool prevCheck = _isGrounded;
-        _isGrounded = Physics.BoxCast(_rayStartTrm.position, _rayStartTrm.lossyScale * 0.5f, _rayStartTrm.up * -1f, transform.rotation, _raySize, _mask);
+        _isGrounded = Physics.BoxCast(_rayStartTrm.position - Vector3.down * _raySize, _rayStartTrm.lossyScale * 0.5f, Vector3.down, transform.rotation, _raySize, _mask);
+        Debug.Log(_isGrounded);
         if (prevCheck == _isGrounded)
             return;
-
         if (_isGrounded)
         {
             _player.GravityModule.GravityScale = _player.GravityModule.OriginGravityScale;
             _curJumpCount = 0;
         }
         OnGroundCheck?.Invoke(_isGrounded);
+    }
+
+    private void OnDrawGizmos()
+    {
+        Handles.color = Color.red;
+        Handles.DrawWireCube(_rayStartTrm.position, _rayStartTrm.lossyScale);
     }
 
     private void Update()

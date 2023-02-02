@@ -5,9 +5,11 @@ using UnityEngine.Events;
 
 public class PlayerAnimation : MonoBehaviour
 {
+    [SerializeField]
+    private PlayerAttackSO _playerAttackSO = null;
+
     private Animator _animator = null;
     private Rigidbody _rigid = null;
-    private bool _isGrounded = false;
 
     private Coroutine _attackAniCorou = null;
 
@@ -65,8 +67,7 @@ public class PlayerAnimation : MonoBehaviour
 
     public void FallOrIdleAnimation(bool isGround)
     {
-        _isGrounded = isGround;
-        if (_isGrounded)
+        if (isGround)
         {
             IdleAnimation();
         }
@@ -89,7 +90,7 @@ public class PlayerAnimation : MonoBehaviour
         _animator.Update(0);
         if (_attackAniCorou != null)
             StopCoroutine(_attackAniCorou);
-        _attackAniCorou = StartCoroutine(AttackAnimationEndWaitCoroutine(name));
+        _attackAniCorou = StartCoroutine(AttackAnimationEndWaitCoroutine(name, AttackState.Melee));
     }
 
     public void RangeAttackAnimation()
@@ -98,17 +99,21 @@ public class PlayerAnimation : MonoBehaviour
         _animator.Update(0);
         if (_attackAniCorou != null)
             StopCoroutine(_attackAniCorou);
-        _attackAniCorou = StartCoroutine(AttackAnimationEndWaitCoroutine("PlayerRangeAttack"));
+        _attackAniCorou = StartCoroutine(AttackAnimationEndWaitCoroutine("PlayerRangeAttack", AttackState.Range));
     }
 
-    private IEnumerator AttackAnimationEndWaitCoroutine(string aniName)
+    private IEnumerator AttackAnimationEndWaitCoroutine(string aniName, AttackState attackState)
     {
         OnAttackStarted?.Invoke();
         //yield return new WaitUntil(() => _animator.GetCurrentAnimatorStateInfo(1).IsName(aniName) == false);
-        yield return new WaitUntil(() => (_animator.GetCurrentAnimatorStateInfo(1).normalizedTime >= 0.5f) || (_animator.GetCurrentAnimatorStateInfo(1).IsName(aniName) == false));
+        yield return new WaitUntil(() => 
+        (
+        _animator.GetCurrentAnimatorStateInfo(1).normalizedTime >= (attackState == AttackState.Melee ? _playerAttackSO.meleeAttackDelay : _playerAttackSO.rangeAttackDelay)) || 
+        (_animator.GetCurrentAnimatorStateInfo(1).IsName(aniName) == false)
+        );
 
         if (_player.PlayerWallGrab.WallGrabed == false)
-            FallOrIdleAnimation(_isGrounded);
+            FallOrIdleAnimation(_player.PlayerJump.IsGrounded);
         OnAttackEnded?.Invoke();
     }
 
