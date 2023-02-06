@@ -89,8 +89,6 @@ public class PlayerAttack : MonoBehaviour
     private IEnumerator DelayCoroutine()
     {
         _attackable = false;
-        _player.PlayerMove.Moveable = false;
-        _player.PlayerJump.Jumpable = false;
         float time = 0f;
 
         if (_attackState == AttackState.Melee)
@@ -99,9 +97,6 @@ public class PlayerAttack : MonoBehaviour
             time = _playerAttackSO.rangeAttackDelay;
         yield return new WaitForSeconds(time);
 
-        _attackable = !_player.PlayerWallGrab.WallGrabed;
-        _player.PlayerMove.Moveable = !_player.PlayerWallGrab.WallGrabed;
-        _player.PlayerJump.Jumpable = !_player.PlayerWallGrab.WallGrabed;
     }
 
     public void AttackStart()
@@ -112,7 +107,6 @@ public class PlayerAttack : MonoBehaviour
 
     public void AttackEnd()
     {
-        _attackable = !_player.PlayerWallGrab.WallGrabed;
         _attacking = false;
     }
 }

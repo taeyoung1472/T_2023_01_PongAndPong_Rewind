@@ -39,7 +39,6 @@ public class PlayerWallGrab : MonoBehaviour
     {
         _wallGrabed = false;
         _player.GravityModule.GravityScale = _player.GravityModule.OriginGravityScale;
-        _player.PlayerAllActionSet(true);
 
         if (_moveCo != null)
             StopCoroutine(_moveCo);
@@ -48,9 +47,7 @@ public class PlayerWallGrab : MonoBehaviour
 
     private IEnumerator MoveCoroutine()
     {
-        _player.PlayerMove.Moveable = false;
         yield return new WaitForSeconds(_playerMovementSO.wallGrabJumpContinueTime);
-        _player.PlayerMove.Moveable = true;
     }
 
     private void WallCheck()
@@ -71,9 +68,7 @@ public class PlayerWallGrab : MonoBehaviour
     private void WallGrabExit()
     {
         _player.GravityModule.GravityScale = _player.GravityModule.OriginGravityScale;
-        _player.PlayerAllActionSet(true);
-        if(_player.PlayerJump.IsJumped == false)
-         _player.PlayerAnimation.FallOrIdleAnimation(_player.PlayerJump.IsGrounded);
+         _player.PlayerAnimation.FallOrIdleAnimation(_player.IsGrounded);
     }
 
     private void WallGrabEnter()
@@ -81,7 +76,5 @@ public class PlayerWallGrab : MonoBehaviour
         _player.GravityModule.UseGravity = true;
         _rigid.velocity = Vector3.zero;
         _player.GravityModule.GravityScale = _playerMovementSO.wallSlideGravityScale;
-        _player.PlayerAllActionSet(false);
-        _player.PlayerJump.Jumpable = true;
     }
 }

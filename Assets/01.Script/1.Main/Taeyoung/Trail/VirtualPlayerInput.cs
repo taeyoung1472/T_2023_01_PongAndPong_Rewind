@@ -29,7 +29,7 @@ public class VirtualPlayerInput : MonoBehaviour
 
     private void Update()
     {
-        if (_player.PlayerMove.Moveable)
+        //if (_player.PlayerMove.Moveable)
             OnMoveInput?.Invoke(virtualInput);
     }
 

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GravityModule : MonoBehaviour
 {
-    private Rigidbody _rigid = null;
+    private CharacterController _characterController = null;
 
     private float _originGravity = 1f;
     public float OriginGravityScale { get => _originGravity; set => _originGravity = value; }
@@ -13,25 +13,25 @@ public class GravityModule : MonoBehaviour
     private float _gravityScale = 1f;
     public float GravityScale { get => _gravityScale; set => _gravityScale = value; }
 
+    [SerializeField]
     private bool _useGravity = true;
     public bool UseGravity { get => _useGravity; set => _useGravity = value; }
 
     private void Start()
     {
-        _rigid = GetComponent<Rigidbody>();
-        _rigid.useGravity = false;
+        _characterController = GetComponent<CharacterController>();
         _originGravity = _gravityScale;
     }
 
-    private void FixedUpdate()
+    public Vector3 GetGravity()
     {
-        AddGravity();
-    }
-
-    private void AddGravity()
-    {
-        if (_useGravity == false)
-            return;
-        _rigid.AddForce(Physics.gravity * _gravityScale, ForceMode.Acceleration);
+        if (_characterController.isGrounded == false && _useGravity)
+        {
+            return Physics.gravity * _gravityScale;
+        }
+        else
+        {
+            return Vector3.zero;
+        }
     }
 }

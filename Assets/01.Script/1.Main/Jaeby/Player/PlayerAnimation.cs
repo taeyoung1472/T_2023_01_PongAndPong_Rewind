@@ -112,13 +112,12 @@ public class PlayerAnimation : MonoBehaviour
         (_animator.GetCurrentAnimatorStateInfo(1).IsName(aniName) == false)
         );
 
-        if (_player.PlayerWallGrab.WallGrabed == false)
-            FallOrIdleAnimation(_player.PlayerJump.IsGrounded);
+            FallOrIdleAnimation(_player.IsGrounded);
         OnAttackEnded?.Invoke();
     }
 
     private void Update()
     {
-        _animator.SetFloat("VelocityY", _rigid.velocity.y);
+        _animator.SetFloat("VelocityY", _player.characterController.velocity.y);
     }
 }

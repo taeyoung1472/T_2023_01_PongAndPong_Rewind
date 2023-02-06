@@ -5,130 +5,88 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class PlayerJump : MonoBehaviour
+public class PlayerJump : PlayerAction
 {
-    private bool _jumpable = true;
-    public bool Jumpable { get => _jumpable; set => _jumpable = value; }
+    private int _curJumpCount = 0; // 현재 점프 횟수
+    private bool _jumpEndCheck = false; // 점프를 한 뒤 시간이 지난 것과 바닥에 닿았을 때 둘 중 체크되면 하나가 안 되게
 
-    [SerializeField]
-    private PlayerMovementSO _playerMovementSO = null;
-    private int _curJumpCount = 0;
-    [SerializeField]
-    private Transform _rayStartTrm = null;
-    [SerializeField]
-    private float _raySize = 0.1f;
-    [SerializeField]
-    private LayerMask _mask = 0;
-    [SerializeField]
-    private UnityEvent<bool> OnGroundCheck = null;
     [SerializeField]
     private UnityEvent OnJump = null;
     [SerializeField]
     private UnityEvent OnWallGrabJump = null;
-    private Rigidbody _rigid = null;
-    private Player _player = null;
+    private Coroutine _jumpCoroutine = null;
 
-    private bool _isGrounded = false;
-    public bool IsGrounded => _isGrounded;
-    private bool _isJumped = false;
-    public bool IsJumped => _isJumped;
-    private float _jumpTimer = 0f;
-    private bool _jumpEndCheck = false;
 
-    private void Start()
+    public void OnGrounded(bool val)
     {
-        _player = GetComponent<Player>();
-        _rigid = GetComponent<Rigidbody>();
+        if (val == false)
+            return;
+        _curJumpCount = 0;
     }
 
     public void JumpStart()
     {
-        if (_jumpable == false || _player.PlayerAttack.Attacking)
-            return;
-        if (_player.PlayerWallGrab.WallGrabed)
-        {
-            ForceJump(_player.PlayerRenderer.Fliped ? new Vector2(1, 1) : new Vector2(-1, 1));
-            _player.PlayerRenderer.ForceFlip();
-            OnWallGrabJump?.Invoke();
-            return;
-        }
-        if (_curJumpCount >= _playerMovementSO.jumpCount)
+        if (_locked || _curJumpCount >= _player.playerMovementSO.jumpCount)
             return;
 
-        _curJumpCount++;
+        _player.GravityModule.UseGravity = false;
+        _player.VelocitySet(y: 0f);
         _jumpEndCheck = false;
-        _isJumped = true;
-        _jumpTimer = 0f;
-        _rigid.velocity = new Vector2(_rigid.velocity.x, 0f);
-        _rigid.AddForce(Vector3.up * _playerMovementSO.jumpPower, ForceMode.Impulse);
-        OnJump?.Invoke();
+        _excuting = true;
+        _curJumpCount++;
+        if (_jumpCoroutine != null)
+            StopCoroutine(_jumpCoroutine);
+        _jumpCoroutine = StartCoroutine(JumpCoroutine());
     }
 
+    private IEnumerator JumpCoroutine()
+    {
+        float time = 1f;
+        while(time > 0.5f)
+        {
+            _player.VelocitySet(y: _player.playerMovementSO.jumpPower * time);
+            time -= Time.deltaTime * (1f / _player.playerMovementSO.jumpHoldTime);
+            yield return null;
+        }
+        JumpEnd();
+    }
 
     public void JumpEnd()
     {
         if (_jumpEndCheck)
             return;
 
+        _player.GravityModule.UseGravity = true;
         _jumpEndCheck = true;
-        _isJumped = false;
-        _jumpTimer = 0f;
+        _excuting = false;
+        if (_jumpCoroutine != null)
+            StopCoroutine(_jumpCoroutine);
+        _player.VelocitySet(y: 0f);
     }
 
     public void MoreJump()
     {
         JumpEnd();
         _curJumpCount--;
-        _curJumpCount = Mathf.Clamp(_curJumpCount, 0, _playerMovementSO.jumpCount);
+        _curJumpCount = Mathf.Clamp(_curJumpCount, 0, _player.playerMovementSO.jumpCount);
     }
 
     public void ForceJump(Vector2 dir)
     {
         dir.Normalize();
-        _rigid.AddForce(dir * _playerMovementSO.wallGrabJumpPower, ForceMode.Impulse);
         OnJump?.Invoke();
     }
 
     public void TryGravityUp(Vector2 input)
     {
-        if (_isGrounded || _player.PlayerWallGrab.WallGrabed || input.y > -0.1f)
+        if (_player.IsGrounded || input.y > -0.1f)
             return;
-        _player.GravityModule.GravityScale = _playerMovementSO.downGravityScale;
+        _player.GravityModule.GravityScale = _player.playerMovementSO.downGravityScale;
     }
 
-    private void GroundCheck()
+    public override void ActionExit()
     {
-        bool prevCheck = _isGrounded;
-        _isGrounded = Physics.BoxCast(_rayStartTrm.position - Vector3.down * _raySize, _rayStartTrm.lossyScale * 0.5f, Vector3.down, transform.rotation, _raySize, _mask);
-        if (prevCheck == _isGrounded)
-            return;
-        if (_isGrounded)
-        {
-            _player.GravityModule.GravityScale = _player.GravityModule.OriginGravityScale;
-            _curJumpCount = 0;
-        }
-        OnGroundCheck?.Invoke(_isGrounded);
-    }
-
-    private void Update()
-    {
-        if (_isJumped)
-        {
-            _jumpTimer += Time.deltaTime;
-            if (_jumpTimer >= _playerMovementSO.jumpContinueTime)
-            {
-                JumpEnd();
-            }
-        }
-    }
-
-    private void FixedUpdate()
-    {
-        GroundCheck();
-        if (_isJumped)
-        {
-            if(_player.PlayerWallGrab.WallGrabed == false)
-                _rigid.AddForce(Vector3.up * _playerMovementSO.jumpHoldPower, ForceMode.Acceleration);
-        }
+        _jumpEndCheck = false;
+        JumpEnd();
     }
 }

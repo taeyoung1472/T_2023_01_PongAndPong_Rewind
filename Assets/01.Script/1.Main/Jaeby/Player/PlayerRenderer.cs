@@ -18,7 +18,7 @@ public class PlayerRenderer : MonoBehaviour
         {
             if(input.x > 0f)
             {
-                local.x *= -1f;
+                local.z *= -1f;
                 _fliped = false;
             }
         }
@@ -26,7 +26,7 @@ public class PlayerRenderer : MonoBehaviour
         {
             if(input.x < 0f)
             {
-                local.x *= -1f;
+                local.z *= -1f;
                 _fliped = true;
             }
         }
