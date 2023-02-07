@@ -8,12 +8,18 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject infoUi;
     [SerializeField] private GameObject pauseUi;
 
+    [SerializeField] private StageDataSO testStage;
+
     private void Awake()
     {
         Time.timeScale = 0;
 
-        RewindManager.playTime = StageWorldSelectData.curStageWorld.stagePlayTime;
-        Instantiate(StageWorldSelectData.curStageWorld.StagePrefab);
+        StageDataSO data = StageWorldSelectData.curStageWorld;
+        if (data == null)
+            data = testStage;
+
+        RewindManager.playTime = data.stagePlayTime;
+        Instantiate(data.StagePrefab);
     }
 
     public void Update()

@@ -10,7 +10,7 @@ public class Door : TransformRecord, IFunctionalObject
     Vector3 openPos;
     bool isOpen = false;
 
-    private void Awake()
+    public override void Awake()
     {
         base.Awake();
         originPos = transform.localPosition;

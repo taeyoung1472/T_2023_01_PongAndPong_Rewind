@@ -35,7 +35,7 @@ public class PressButton : TransformRecord
         }
     }
 
-    private void Awake()
+    public override void Awake()
     {
         base.Awake();
         for (int i = 0; i < targetObject.Count; ++i)
@@ -67,8 +67,6 @@ public class PressButton : TransformRecord
             }
         }
     }
-
-
 
     public void OnTriggerExit(Collider other)
     {
