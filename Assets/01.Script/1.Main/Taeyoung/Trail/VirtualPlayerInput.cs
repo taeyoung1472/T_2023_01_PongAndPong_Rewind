@@ -10,13 +10,9 @@ public class VirtualPlayerInput : MonoBehaviour
     [SerializeField]
     private UnityEvent OnJumpStart = null;
     [SerializeField]
-    private UnityEvent OnJumpEnd = null;
-    [SerializeField]
     private UnityEvent OnDash = null;
     [SerializeField]
     private UnityEvent OnAttack = null;
-    [SerializeField]
-    private UnityEvent OnWeaponChange = null;
 
     private Player _player = null;
 
