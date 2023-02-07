@@ -46,7 +46,7 @@ public class PlayerInput : MonoBehaviour
         if (Input.GetKey(KeyManager.keys[InputType.Down]))
             y--;
         _inputVector = new Vector2(x, y);
-        //OnMoveInput?.Invoke(new Vector2(x, y));
+        OnMoveInput?.Invoke(new Vector2(x, y));
 
         if (Input.GetKeyDown(KeyManager.keys[InputType.Jump]))
             OnJumpStart?.Invoke();

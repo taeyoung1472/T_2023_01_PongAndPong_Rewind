@@ -30,21 +30,35 @@ public class PlayerJump : PlayerAction
             return;
 
         _player.GravityModule.UseGravity = false;
-        _player.VelocitySet(y: 0f);
         _jumpEndCheck = false;
         _excuting = true;
         _curJumpCount++;
+
         if (_jumpCoroutine != null)
             StopCoroutine(_jumpCoroutine);
-        _jumpCoroutine = StartCoroutine(JumpCoroutine());
+
+        if (_player.PlayeActionCheck(PlayerActionType.WallGrab)) // 월점프!!
+        {
+            Debug.Log("월점프");
+            _player.VeloCityResetImm(x: true, y: true);
+            _player.PlayerActionExit(PlayerActionType.WallGrab);
+            //_player.PlayerRenderer.ForceFlip();
+            _jumpCoroutine = StartCoroutine(JumpCoroutine(Vector2.up));
+        }
+        else
+        {
+            _player.VeloCityResetImm(y: true);
+            _jumpCoroutine = StartCoroutine(JumpCoroutine(Vector2.up));
+        }
+        OnJump?.Invoke();
     }
 
-    private IEnumerator JumpCoroutine()
+    private IEnumerator JumpCoroutine(Vector2 dir)
     {
         float time = 1f;
-        while(time > 0.5f)
+        while (time > 0f)
         {
-            _player.VelocitySet(y: _player.playerMovementSO.jumpPower * time);
+            _player.VelocitySetExtra(dir.x * _player.playerMovementSO.jumpPower * time, dir.y * _player.playerMovementSO.jumpPower * time);
             time -= Time.deltaTime * (1f / _player.playerMovementSO.jumpHoldTime);
             yield return null;
         }
@@ -61,20 +75,18 @@ public class PlayerJump : PlayerAction
         _excuting = false;
         if (_jumpCoroutine != null)
             StopCoroutine(_jumpCoroutine);
-        _player.VelocitySet(y: 0f);
+        _player.VelocitySetExtra(y: 0f);
     }
 
     public void MoreJump()
     {
         JumpEnd();
-        _curJumpCount--;
-        _curJumpCount = Mathf.Clamp(_curJumpCount, 0, _player.playerMovementSO.jumpCount);
     }
 
-    public void ForceJump(Vector2 dir)
+    private void JumpCountUp()
     {
-        dir.Normalize();
-        OnJump?.Invoke();
+        _curJumpCount--;
+        _curJumpCount = Mathf.Clamp(_curJumpCount, 0, _player.playerMovementSO.jumpCount);
     }
 
     public void TryGravityUp(Vector2 input)
@@ -88,5 +100,7 @@ public class PlayerJump : PlayerAction
     {
         _jumpEndCheck = false;
         JumpEnd();
+        if (_player.PlayeActionCheck(PlayerActionType.WallGrab))
+            JumpCountUp();
     }
 }

@@ -6,7 +6,7 @@ public enum PlayerActionType
     Move,
     Jump,
     Dash,
-    Attack,
     WallGrab,
+    Attack,
     Size
 }

@@ -14,13 +14,11 @@ public class Player : MonoBehaviour
     [SerializeField]
     private UnityEvent<bool> OnIsGrounded = null;
 
-    private PlayerRenderer _playerRenderer = null;
     private PlayerAnimation _playerAnimation = null;
     private GravityModule _gravityModule = null;
     private PlayerInput _playerInput = null;
 
     #region 프로퍼티
-    public PlayerRenderer PlayerRenderer => _playerRenderer;
     public PlayerAnimation PlayerAnimation => _playerAnimation;
     public GravityModule GravityModule => _gravityModule;
     public PlayerInput PlayerInput => _playerInput;
@@ -30,6 +28,7 @@ public class Player : MonoBehaviour
     private CharacterController _characterController = null;
     public CharacterController characterController => _characterController;
     private Vector3 _moveAmount = Vector3.zero;
+    private Vector3 _extraMoveAmount = Vector3.zero;
     public bool IsGrounded => _characterController.isGrounded;
     private bool _lastGrounded = false;
 
@@ -37,15 +36,9 @@ public class Player : MonoBehaviour
     {
         List<PlayerAction> tempActions = new List<PlayerAction>(GetComponents<PlayerAction>());
         _playerActions = (from action in tempActions orderby action.ActionType ascending select action).ToList();
-        /*foreach(var a in _playerActions)
-        {
-            Debug.Log(a.playerActionType.ToString());
-        }*/
-
         _characterController = GetComponent<CharacterController>();
-        _playerRenderer = transform.Find("AgentRenderer").GetComponent<PlayerRenderer>();
         _playerInput = GetComponent<PlayerInput>();
-        _playerAnimation = _playerRenderer.GetComponent<PlayerAnimation>();
+        _playerAnimation = transform.Find("AgentRenderer").GetComponent<PlayerAnimation>();
         _gravityModule = GetComponent<GravityModule>();
     }
 
@@ -55,13 +48,34 @@ public class Player : MonoBehaviour
         GroundCheck();
     }
 
-    public void VelocitySet(float? x = null, float? y = null)
+    public void VelocitySetMove(float? x = null, float? y = null)
     {
         if (x == null)
             x = _moveAmount.x;
         if (y == null)
             y = _moveAmount.y;
         _moveAmount = new Vector3(x.Value, y.Value, 0f);
+    }
+
+    public void VelocitySetExtra(float? x = null, float? y = null)
+    {
+        if (x == null)
+            x = _extraMoveAmount.x;
+        if (y == null)
+            y = _extraMoveAmount.y;
+        _extraMoveAmount = new Vector3(x.Value, y.Value, 0f);
+    }
+
+    public void VeloCityResetImm(bool x = false, bool y = false)
+    {
+        if (x)
+        {
+            _moveAmount.x = _extraMoveAmount.x = 0f;
+        }
+        if (y)
+        {
+            _moveAmount.y = _extraMoveAmount.y = 0f;
+        }
     }
 
     /// <summary>
@@ -120,7 +134,7 @@ public class Player : MonoBehaviour
 
     private void Move()
     {
-        _characterController.Move(_moveAmount * Time.deltaTime);
+        _characterController.Move((_moveAmount + _extraMoveAmount) * Time.deltaTime);
         _characterController.Move(_gravityModule.GetGravity() * Time.deltaTime);
     }
 }

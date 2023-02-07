@@ -831,8 +831,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7720938866869899739}
-  m_LocalRotation: {x: 0.47294456, y: -0.52566475, z: -0.47294456, w: 0.52566475}
-  m_LocalPosition: {x: -2.1878564e-33, y: 1.0628308, z: 0.035129853}
+  m_LocalRotation: {x: 0, y: 0, z: -0.6665324, w: 0.74547607}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -840,7 +840,7 @@ Transform:
   - {fileID: 5859166551207778163}
   m_Father: {fileID: 2437060625073183350}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -83.6}
 --- !u!1 &660366084488576609
 GameObject:
   m_ObjectHideFlags: 0
@@ -1423,7 +1423,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1696014695078750309}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1432,7 +1432,7 @@ Transform:
   - {fileID: 585007122288844566}
   m_Father: {fileID: 9057185982927891138}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!1 &2477716471776504700
 GameObject:
   m_ObjectHideFlags: 0
@@ -2520,34 +2520,10 @@ MonoBehaviour:
   _actionType: 3
   OnDashStarted:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 9057185982927891166}
-        m_TargetAssemblyTypeName: PlayerAnimation, Assembly-CSharp
-        m_MethodName: DashAnimation
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   OnDashEnded:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 9057185982927891166}
-        m_TargetAssemblyTypeName: PlayerAnimation, Assembly-CSharp
-        m_MethodName: FallOrIdleAnimation
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &9057185982517867793
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2563,34 +2539,10 @@ MonoBehaviour:
   _playerAttackSO: {fileID: 11400000, guid: 9c0314343253bb54a9880059056c3f23, type: 2}
   OnMeleeAttack:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 9057185982927891166}
-        m_TargetAssemblyTypeName: PlayerAnimation, Assembly-CSharp
-        m_MethodName: MeleeAttackAnimation
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   OnRangeAttack:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 9057185982927891166}
-        m_TargetAssemblyTypeName: PlayerAnimation, Assembly-CSharp
-        m_MethodName: RangeAttackAnimation
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &9057185982517867794
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2617,27 +2569,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 678e5e6fb83ad9b4d9768e39f530fd12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _actionType: 4
   _wallMask:
     serializedVersion: 2
     m_Bits: 64
-  _rayStartTrm: {fileID: 9057185982517867802}
   _rayLength: 0.1
-  _playerMovementSO: {fileID: 11400000, guid: 7b340fc37eed2244bb3a508fc629a727, type: 2}
   OnWallGrabed:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 9057185982927891166}
-        m_TargetAssemblyTypeName: PlayerAnimation, Assembly-CSharp
-        m_MethodName: WallGrabAnimation
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &9057185982517867796
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2653,30 +2592,6 @@ MonoBehaviour:
   OnMoveInput:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 9057185982927891164}
-        m_TargetAssemblyTypeName: PlayerRenderer, Assembly-CSharp
-        m_MethodName: Flip
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 9057185982927891166}
-        m_TargetAssemblyTypeName: PlayerAnimation, Assembly-CSharp
-        m_MethodName: MoveAnimation
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 9057185982517867799}
         m_TargetAssemblyTypeName: PlayerJump, Assembly-CSharp
         m_MethodName: TryGravityUp
@@ -2737,18 +2652,6 @@ MonoBehaviour:
   OnAttack:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7459892379164723569}
-        m_TargetAssemblyTypeName: PlayerAudio, Assembly-CSharp
-        m_MethodName: PlayAttackAudio
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 9057185982517867793}
         m_TargetAssemblyTypeName: PlayerAttack, Assembly-CSharp
         m_MethodName: Attack
@@ -2816,18 +2719,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 9057185982927891166}
-        m_TargetAssemblyTypeName: PlayerAnimation, Assembly-CSharp
-        m_MethodName: AnimationGroundCheck
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
 --- !u!114 &9057185982517867799
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2843,34 +2734,10 @@ MonoBehaviour:
   _actionType: 2
   OnJump:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 9057185982927891166}
-        m_TargetAssemblyTypeName: PlayerAnimation, Assembly-CSharp
-        m_MethodName: JumpAnimation
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   OnWallGrabJump:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 9057185982517867795}
-        m_TargetAssemblyTypeName: PlayerWallGrab, Assembly-CSharp
-        m_MethodName: WallExit
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!1 &9057185982517867801
 GameObject:
   m_ObjectHideFlags: 0
@@ -2928,6 +2795,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _actionType: 1
+  _rotationSpeed: 10
+  OnFliped:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!143 &9057185982517867804
 CharacterController:
   m_ObjectHideFlags: 0
@@ -2945,7 +2816,7 @@ CharacterController:
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 1, z: 0}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &9057185982927891137
 GameObject:
   m_ObjectHideFlags: 0
@@ -2955,7 +2826,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9057185982927891138}
-  - component: {fileID: 9057185982927891164}
   - component: {fileID: 9057185982927891166}
   - component: {fileID: 9057185982927891167}
   m_Layer: 0
@@ -2981,21 +2851,6 @@ Transform:
   m_Father: {fileID: 9057185982517867802}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
---- !u!114 &9057185982927891164
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9057185982927891137}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 84d4c1d9e89382d489f9671c55fd2b24, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OnFliped:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &9057185982927891166
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3052,7 +2907,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: dcf2378874b32c24185b0e0f211e648e, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_WarningMessage: 

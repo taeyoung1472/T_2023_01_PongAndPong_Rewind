@@ -33,7 +33,7 @@ public class PlayerDash : PlayerAction
         _player.PlayerActionExit(PlayerActionType.Jump);
         _player.GravityModule.UseGravity = false;
         Vector2 dashVector = _player.PlayerInput.InputVectorNorm * _player.playerMovementSO.dashPower;
-        _player.VelocitySet(dashVector.x, dashVector.y);
+        _player.VelocitySetExtra(dashVector.x, dashVector.y);
         yield return new WaitForSeconds(_player.playerMovementSO.dashContinueTime);
         DashExit();
     }
@@ -48,7 +48,7 @@ public class PlayerDash : PlayerAction
     {
         _player.PlayerActionLock(false, PlayerActionType.Jump, PlayerActionType.Move);
         _player.GravityModule.UseGravity = true;
-        _player.VelocitySet(0f, 0f);
+        _player.VelocitySetExtra(0f, 0f);
         OnDashEnded?.Invoke(_player.IsGrounded);
         OnGrounded(_player.IsGrounded);
     }
