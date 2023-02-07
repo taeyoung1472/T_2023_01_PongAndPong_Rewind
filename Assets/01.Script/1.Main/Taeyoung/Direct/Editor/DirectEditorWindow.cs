@@ -20,6 +20,7 @@ public class DirectEditorWindow : EditorWindow
 
         if (directManager == null)
         {
+            directManager = FindObjectOfType<DirectManager>();
             EditorGUILayout.LabelField("DirectManager 에 값을 할당해 주세요");
             return;
         }

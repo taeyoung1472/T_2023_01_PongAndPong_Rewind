@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.Tilemaps;
 using UnityEngine;
 
 public class StageCam : MonoBehaviour
@@ -18,10 +19,21 @@ public class StageCam : MonoBehaviour
     void Start()
     {
         cam = Camera.main;
-        float frustumHeight = Mathf.Abs(top.position.y - bottom.position.y) + edge;
-        float frustumWidth = frustumHeight * ((float)Screen.width / (float)Screen.height);
 
-        Debug.Log($"X : {frustumWidth} Y : {frustumHeight}");
+        float x, y;
+        x = right.position.x - left.position.x;
+        y = top.position.y - bottom.position.y;
+
+        float frustumHeight, frustumWidth;
+        if (y > x)
+        {
+            frustumHeight = y + edge;
+        }
+        else
+        {
+            frustumWidth = x + edge;
+            frustumHeight = frustumWidth * ((float)Screen.height / (float)Screen.width);
+        }
 
         mid = new Vector3((right.position.x + left.position.x) / 2, (top.position.y + bottom.position.y) / 2, cam.transform.position.z);
 
