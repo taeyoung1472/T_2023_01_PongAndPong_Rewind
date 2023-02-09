@@ -1,41 +1,49 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class GimmickObjBtn : MonoBehaviour
+public class GimmickObjBtn : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     private Button myButton;
     [SerializeField] private Image contentImage;
 
     public GimmickInfoSO gimmickInfo;
-    private int index;
 
-    public void Init(int idx)
+
+    private string myObjNameStr;
+    public void Init()
     {
-        index = idx;
 
         myButton = GetComponent<Button>();
         contentImage.sprite = gimmickInfo.sprite;
+        myObjNameStr = gimmickInfo.nameStr;
 
         myButton.onClick.AddListener(() =>
         {
             MapDrawManager.Instance.OnMapObj = gimmickInfo.prefab;
 
             MapDrawManager.Instance.SetGhostObject(gimmickInfo.prefab);
-            MapDrawManager.Instance.isSelected = true;
         });
     }
 
-    private void Select()
+    public void OnPointerEnter(PointerEventData eventData)
     {
-      //  GameObject clickObj = EventSystem.current.currentSelectedGameObject;
+        MapDrawManager.Instance.explainTab.transform.position =  transform.position;
 
-      //  MapDrawManager.Instance.CurrentSelectSprite = clickObj.GetComponent<Image>().sprite;
 
-        //Debug.Log("현재 그려지는 스프라이트는" + MapDrawManager.Instance.CurrentSelectSprite);
+        MapDrawManager.Instance.explainTab.SetActive(true);
+        MapDrawManager.Instance.explainTab.GetComponentInChildren<TextMeshProUGUI>().text = myObjNameStr;
+
+
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        MapDrawManager.Instance.explainTab.SetActive(false);
     }
 }
 
