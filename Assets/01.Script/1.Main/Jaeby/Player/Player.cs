@@ -12,6 +12,8 @@ public class Player : MonoBehaviour
     [SerializeField]
     private PlayerMovementSO _playerMovementSO = null;
     [SerializeField]
+    private PlayerAttackSO _playerAttackSO = null;
+    [SerializeField]
     private UnityEvent<bool> OnIsGrounded = null;
 
     private PlayerAnimation _playerAnimation = null;
@@ -23,6 +25,7 @@ public class Player : MonoBehaviour
     public GravityModule GravityModule => _gravityModule;
     public PlayerInput PlayerInput => _playerInput;
     public PlayerMovementSO playerMovementSO => _playerMovementSO;
+    public PlayerAttackSO playerAttackSO => _playerAttackSO;
     #endregion
 
     private CharacterController _characterController = null;

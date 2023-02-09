@@ -42,6 +42,7 @@ public class PlayerWallGrab : PlayerAction
             WallGrabEnter();
         else
             WallGrabExit();
+        OnWallGrabed?.Invoke(_excuting);
     }
 
     private void WallGrabExit() // 벽에서 나가!
