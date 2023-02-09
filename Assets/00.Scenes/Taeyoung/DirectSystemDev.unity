@@ -757,70 +757,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_NoiseProfile: {fileID: 11400000, guid: 69ce8388f6785dd4c8c39915efece2f4, type: 2}
   m_PivotOffset: {x: 0, y: 0, z: 0}
-  m_AmplitudeGain: 1
-  m_FrequencyGain: 1
+  m_AmplitudeGain: 0
+  m_FrequencyGain: 0
   mNoiseOffsets: {x: 0, y: 0, z: 0}
---- !u!1 &930469964
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 930469966}
-  - component: {fileID: 930469965}
-  m_Layer: 0
-  m_Name: Direct Unit
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &930469965
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 930469964}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 12eb12d7c8ea2ba498548db06a5af644, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sequenceType: 0
-  unityEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2042118317}
-        m_TargetAssemblyTypeName: DirectCamera, Assembly-CSharp
-        m_MethodName: AddFocusObject
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 1089893460}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Transform, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  time: 2
---- !u!4 &930469966
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 930469964}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1510810972}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &984403275
 GameObject:
   m_ObjectHideFlags: 0
@@ -1086,55 +1025,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1183887567
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1183887569}
-  - component: {fileID: 1183887568}
-  m_Layer: 0
-  m_Name: Direct Unit
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1183887568
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1183887567}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 12eb12d7c8ea2ba498548db06a5af644, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sequenceType: 1
-  unityEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  time: 0
---- !u!4 &1183887569
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1183887567}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1510810972}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1510810970
 GameObject:
   m_ObjectHideFlags: 0
@@ -1169,9 +1059,7 @@ MonoBehaviour:
   directList:
   - {fileID: 225969181}
   - {fileID: 2146164317}
-  - {fileID: 930469965}
-  - {fileID: 1629151431}
-  - {fileID: 1183887568}
+  - {fileID: 1585985151}
 --- !u!4 &1510810972
 Transform:
   m_ObjectHideFlags: 0
@@ -1186,13 +1074,11 @@ Transform:
   m_Children:
   - {fileID: 225969182}
   - {fileID: 2146164318}
-  - {fileID: 930469966}
-  - {fileID: 1629151432}
-  - {fileID: 1183887569}
+  - {fileID: 1585985152}
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1629151430
+--- !u!1 &1585985150
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1200,8 +1086,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1629151432}
-  - component: {fileID: 1629151431}
+  - component: {fileID: 1585985152}
+  - component: {fileID: 1585985151}
   m_Layer: 0
   m_Name: Direct Unit
   m_TagString: Untagged
@@ -1209,49 +1095,49 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1629151431
+--- !u!114 &1585985151
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1629151430}
+  m_GameObject: {fileID: 1585985150}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 12eb12d7c8ea2ba498548db06a5af644, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sequenceType: 0
+  sequenceType: 1
   unityEvent:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2042118317}
         m_TargetAssemblyTypeName: DirectCamera, Assembly-CSharp
-        m_MethodName: SetCameraEdge
-        m_Mode: 4
+        m_MethodName: AddCameraDirect
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 11400000, guid: 3bab5971047e1e34b962ba3d179f42da, type: 2}
+          m_ObjectArgumentAssemblyTypeName: CameraDirectData, Assembly-CSharp
           m_IntArgument: 0
-          m_FloatArgument: 15
+          m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
   time: 0
---- !u!4 &1629151432
+--- !u!4 &1585985152
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1629151430}
+  m_GameObject: {fileID: 1585985150}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1510810972}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2042118315
 GameObject:
@@ -1452,6 +1338,18 @@ MonoBehaviour:
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 984403279}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Transform, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 2042118317}
+        m_TargetAssemblyTypeName: DirectCamera, Assembly-CSharp
+        m_MethodName: AddFocusObject
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 1089893460}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Transform, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0

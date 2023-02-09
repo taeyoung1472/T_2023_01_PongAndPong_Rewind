@@ -21,6 +21,8 @@ public class CameraDirectDataInspector : Editor
 
         EditorGUILayout.PropertyField(serObj.FindProperty("typeList"), true);
 
+        data.directTime = EditorGUILayout.FloatField("연출 지속시간", data.directTime);
+
         if (data.typeList.Contains(CameraDirectType.Shake))
         {
             GUILayout.Label("[Shake]", EditorStyles.boldLabel);
