@@ -1,9 +1,14 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DirectManager : MonoBehaviour
 {
+    [SerializeField] private RectTransform topBar;
+    [SerializeField] private RectTransform bottomBar;
+
     [SerializeField] private List<DirectUnit> directList = new();
     public List<DirectUnit> DirectList { get { return directList; } set { directList = value; } }
 
@@ -19,6 +24,9 @@ public class DirectManager : MonoBehaviour
 
     IEnumerator SequenceCor()
     {
+        topBar.DOSizeDelta(new Vector2(topBar.sizeDelta.x, Screen.height / 10), 1);
+        bottomBar.DOSizeDelta(new Vector2(bottomBar.sizeDelta.x, Screen.height / 10), 1);
+
         bool isAppend = false;
         float appendTime = 0.0f;
 
