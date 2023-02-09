@@ -1,3 +1,5 @@
+using CommandPatterns;
+using CommandPatterns.RebindKey;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -23,12 +25,16 @@ public class MapDrawManager : MonoSingleTon<MapDrawManager>
     [SerializeField] private TextMeshProUGUI modeTxt;
 
     private GameObject ghostObj;
-    public bool isSelected = false;
 
     public Camera cam;
 
-    LayerMask rayWallLayer;
-    LayerMask platformLayer;
+    private LayerMask rayWallLayer;
+    private LayerMask platformLayer;
+
+    public GameObject explainTab;
+
+
+    public CommandManager commandManager;
 
     void Awake()
     {
@@ -75,12 +81,12 @@ public class MapDrawManager : MonoSingleTon<MapDrawManager>
             GimmickObjBtn obj = Instantiate(gimmickImgPrefab, transform.position, Quaternion.identity);
             obj.transform.SetParent(gimmickImgParentTrm);
             obj.gimmickInfo = totalGimmickSO.gimmickInfo[i];
-            obj.Init(i);
+            obj.Init();
             gimmickBtns.Add(obj);
             //나중에 텍스토도 있어야 할것같긴한데 일단은
         }
     }
-
+    Command a;
     private void SpawnBlock()
     {
         RaycastHit hit;
@@ -92,8 +98,9 @@ public class MapDrawManager : MonoSingleTon<MapDrawManager>
                 return;
             }
             Vector3 pos = Input.mousePosition;
-            GameObject obj = Instantiate(onMapObj, VirtualPos(), Quaternion.identity);
-            isSelected = false;
+           TransformInfo obj = Instantiate(onMapObj, VirtualPos(), Quaternion.identity).GetComponent<TransformInfo>();
+             a=   new CreateObjCommanad(obj); //트랜스폼인포
+            commandManager.ExcuteCommand(a);
         }
 
         if (Input.GetMouseButtonDown(1) && !EventSystem.current.IsPointerOverGameObject() && canDeleteObj == true)
@@ -110,7 +117,7 @@ public class MapDrawManager : MonoSingleTon<MapDrawManager>
 
     private void DrawGhostObject()
     {
-        if(ghostObj != null)
+        if (ghostObj != null)
         {
             ghostObj.transform.position = VirtualPos();
         }
@@ -123,6 +130,7 @@ public class MapDrawManager : MonoSingleTon<MapDrawManager>
         }
 
         ghostObj = Instantiate(obj, Vector3.zero, Quaternion.identity);
+        ghostObj.GetComponent<TransformInfo>().enabled = false;
         ghostObj.transform.parent = transform;
         ghostObj.name = "GhostObject";
 

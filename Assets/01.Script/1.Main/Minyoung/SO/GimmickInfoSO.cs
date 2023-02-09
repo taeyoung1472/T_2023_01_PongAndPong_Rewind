@@ -9,5 +9,5 @@ public class GimmickInfoSO : ScriptableObject
 
     public GameObject prefab;
     public Sprite sprite;
-   
+    public string nameStr;
 }
