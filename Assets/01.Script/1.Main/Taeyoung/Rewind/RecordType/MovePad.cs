@@ -21,6 +21,16 @@ public class MovePad : TransformRecord
 
     float value;
 
+    [SerializeField] private AudioClip clip;
+
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Escape)) 
+        {
+            AudioRecord.Instance.PlayAudio(clip);
+        }
+    }
+
     public override void OnUpdate()
     {
         base.OnUpdate();
@@ -39,13 +49,9 @@ public class MovePad : TransformRecord
 
         meshRenderer = GetComponent<MeshRenderer>();
 
-        colorList.Capacity = TotalRecordCount;
-        colorList.AddRange(new Color[TotalRecordCount]);
-        colorList[0] = meshRenderer.material.color;
+        GenerateList<Color>(ref colorList, meshRenderer.material.color);
 
-        valueList.Capacity = TotalRecordCount;
-        valueList.AddRange(new float[TotalRecordCount]);
-        valueList[0] = 0;
+        GenerateList<float>(ref valueList, 0);
     }
 
     public override void Recorde(int index)

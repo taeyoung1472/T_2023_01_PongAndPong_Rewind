@@ -20,6 +20,7 @@ namespace CommandPatterns.RebindKey
 
         public override void Undo()
         {
+            Debug.Log("이태영병신 ㅈ ㅜㄱ어라 신예린하고헤어져라");
             ObjManager.Destroy(trmInfoObj.gameObject);
         }
     }

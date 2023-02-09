@@ -1,4 +1,5 @@
 using CommandPatterns;
+using CommandPatterns.RebindKey;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -33,7 +34,7 @@ public class MapDrawManager : MonoSingleTon<MapDrawManager>
     public GameObject explainTab;
 
 
-
+    public CommandManager commandManager;
 
     void Awake()
     {
@@ -85,7 +86,7 @@ public class MapDrawManager : MonoSingleTon<MapDrawManager>
             //나중에 텍스토도 있어야 할것같긴한데 일단은
         }
     }
-
+    Command a;
     private void SpawnBlock()
     {
         RaycastHit hit;
@@ -97,8 +98,9 @@ public class MapDrawManager : MonoSingleTon<MapDrawManager>
                 return;
             }
             Vector3 pos = Input.mousePosition;
-            GameObject obj = Instantiate(onMapObj, VirtualPos(), Quaternion.identity);
-
+           TransformInfo obj = Instantiate(onMapObj, VirtualPos(), Quaternion.identity).GetComponent<TransformInfo>();
+             a=   new CreateObjCommanad(obj); //트랜스폼인포
+            commandManager.ExcuteCommand(a);
         }
 
         if (Input.GetMouseButtonDown(1) && !EventSystem.current.IsPointerOverGameObject() && canDeleteObj == true)
