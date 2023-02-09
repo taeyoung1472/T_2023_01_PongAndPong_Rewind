@@ -1,77 +1,47 @@
 ﻿using CommandPatterns;
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
-public class CommandManager : MonoBehaviour
+public class CommandManager : MonoSingleTon<CommandManager>
 {
-    public Stack<Command> totalComandHistory = new Stack<Command>();
-
-    private Stack<Command> commandHistory = new Stack<Command>();
-    private Stack<Command> undoHistory = new Stack<Command>();
+    private Stack<Command> commandStack = new();
+    private Stack<Command> undoStack = new();
 
     private void Update()
     {
-        //if (Input.GetKeyDown(KeyCode.U))
-        //{
-        //    Undo();
-        //}
-        //if (Input.GetKeyDown(KeyCode.R))
-        //{
-        //    Redo();
-        //}
-
-        if (Input.GetKeyDown(KeyCode.UpArrow))
+        if (Utility.ComboKeyCheck(KeyCode.LeftControl, KeyCode.Z))
         {
-           // ExcuteCommand(keyCreate);
+            Undo();
         }
-        if (Input.GetKeyDown(KeyCode.Return))
+        if (Utility.ComboKeyCheck(KeyCode.LeftControl, KeyCode.Y))
         {
-            StartCoroutine(Reverse());
+            Redo();
         }
     }
-    //private static void ExcuteNewCommand(Command commandButton)
-    //{
-    //    commandButton.Execute();
-    //    commandHistory.Push(commandButton);
-    //    //totalComandHistory.Push(commandButton.Execute);
-    //}
-    private IEnumerator Reverse()
+
+    public void ExcuteCommand(Command cmd)
     {
-        while (totalComandHistory.Count > 0)
-        {
-            Debug.Log(totalComandHistory.Count);
-            Debug.Log("ㄴㄷㅌ");
-            Command cmd = totalComandHistory.Pop();
-            cmd.Undo();
-            yield return new WaitForSeconds(2);
-        }
+        cmd.Execute();
+        commandStack.Push(cmd);
     }
-    public  void ExcuteCommand(Command command)
+
+    private void Redo()
     {
-        command.Execute();
-        totalComandHistory.Push(command);
+        if (undoStack.Count == 0)
+            return;
+
+        Command cmd = undoStack.Pop();
+        cmd.Execute();
+        commandStack.Push(cmd);
     }
 
-  
-    //private void Redo()
-    //{
-    //    if (undoHistory.Count == 0) { print("REDO�� ������ ���� : ������"); return; }
-    //    Command cmd = undoHistory.Pop();
-    //    cmd.Execute();
-    //   // totalComandHistory.Push(cmd.Execute);
-    //}
+    private void Undo()
+    {
+        if (commandStack.Count == 0)
+            return;
 
-    //private void Undo()
-    //{
-    //    if (commandHistory.Count == 0) { print("UNDO�� ������ ���� : �ʱⰪ"); return; }
-    //    Command cmd = commandHistory.Pop();
-    //    cmd.Undo();
-    //    undoHistory.Push(cmd);
-    //    //totalComandHistory.Push(cmd.Undo);
-    //}
-
-
+        Command cmd = commandStack.Pop();
+        cmd.Undo();
+        undoStack.Push(cmd);
+    }
 }

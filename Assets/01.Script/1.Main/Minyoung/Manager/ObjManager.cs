@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class ObjManager : MonoBehaviour
 {
-    public static void ObjInstantiate(GameObject obj, Vector3 pos, Quaternion rot = default(Quaternion))
+    public static GameObject ObjInstantiate(GameObject obj, Vector3 pos, Quaternion rot = default(Quaternion))
     {
-        Instantiate(obj, pos, rot);
+        return Instantiate(obj, pos, rot);
     }
     public static void ObjInstantiate(GameObject obj)
     {
