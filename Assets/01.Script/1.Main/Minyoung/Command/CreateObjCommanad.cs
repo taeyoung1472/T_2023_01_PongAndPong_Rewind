@@ -3,25 +3,26 @@ using System.Collections.Generic;
 using UnityEngine;
 using CommandPatterns;
 
-namespace CommandPatterns.RebindKey
+public class CreateObjCommanad : Command
 {
-    public class CreateObjCommanad : Command
+    EditorObjectData data;
+    Vector3 pos;
+    Quaternion rot;
+    GameObject inst = null;
+
+    public CreateObjCommanad(EditorObjectData data, Vector3 pos, Quaternion rot)
     {
-        public TransformInfo trmInfoObj;
+        this.data = data;
+        this.pos = pos;
+        this.rot = rot;
+    }
+    public override void Execute()
+    {
+        inst = ObjManager.ObjInstantiate(data.prefab, pos, rot);
+    }
 
-        public CreateObjCommanad(TransformInfo trmInfoObj)
-        {
-            this.trmInfoObj = trmInfoObj;
-        }
-        public override void Execute()
-        {
-            ObjManager.ObjInstantiate(trmInfoObj.gameObject, trmInfoObj.transform.position, trmInfoObj.transform.rotation);
-        }
-
-        public override void Undo()
-        {
-            Debug.Log("이태영병신 ㅈ ㅜㄱ어라 신예린하고헤어져라");
-            ObjManager.Destroy(trmInfoObj.gameObject);
-        }
+    public override void Undo()
+    {
+        ObjManager.Destroy(inst);
     }
 }
