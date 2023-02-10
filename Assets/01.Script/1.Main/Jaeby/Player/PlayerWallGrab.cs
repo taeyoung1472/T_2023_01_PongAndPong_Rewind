@@ -50,7 +50,6 @@ public class PlayerWallGrab : PlayerAction
         _player.GravityModule.GravityScale = _player.GravityModule.OriginGravityScale;
         _player.PlayerAnimation.FallOrIdleAnimation(_player.IsGrounded);
         _player.PlayerActionLock(false, PlayerActionType.Dash, PlayerActionType.Move, PlayerActionType.WallGrab);
-        Debug.Log("벽에서 나갔구나");
     }
 
     private void WallGrabEnter()

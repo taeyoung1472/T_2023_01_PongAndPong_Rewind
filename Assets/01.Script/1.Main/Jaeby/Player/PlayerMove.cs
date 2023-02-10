@@ -50,6 +50,15 @@ public class PlayerMove : PlayerAction
         OnFliped?.Invoke(_fliped);
     }
 
+    public void ForceFlip()
+    {
+        // left : -90 right : 90
+        Quaternion targetRotation = Quaternion.Euler(0f, _fliped ? 90f : -90f, 0f); // ¹Ý´ë
+        transform.rotation = targetRotation;
+        _fliped = !_fliped;
+        OnFliped?.Invoke(_fliped);
+    }
+
     private Vector2 GetDirToVector(FlipDirection dir)
     {
         switch (dir)

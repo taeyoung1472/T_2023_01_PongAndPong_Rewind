@@ -22,6 +22,7 @@ public class PlayerJump : PlayerAction
         if (val == false)
             return;
         _curJumpCount = 0;
+        _player.GravityModule.GravityScale = _player.GravityModule.OriginGravityScale;
     }
 
     public void JumpStart()
@@ -39,11 +40,12 @@ public class PlayerJump : PlayerAction
 
         if (_player.PlayeActionCheck(PlayerActionType.WallGrab)) // 월점프!!
         {
-            Debug.Log("월점프");
             _player.VeloCityResetImm(x: true, y: true);
             _player.PlayerActionExit(PlayerActionType.WallGrab);
-            //_player.PlayerRenderer.ForceFlip();
-            _jumpCoroutine = StartCoroutine(JumpCoroutine(Vector2.up));
+            PlayerMove move = _player.GetPlayerAction(PlayerActionType.Move) as PlayerMove;
+            move.ForceFlip();
+            Vector3 dir = _player.transform.forward + Vector3.up;
+            _jumpCoroutine = StartCoroutine(JumpCoroutine(dir.normalized));
         }
         else
         {
@@ -75,7 +77,7 @@ public class PlayerJump : PlayerAction
         _excuting = false;
         if (_jumpCoroutine != null)
             StopCoroutine(_jumpCoroutine);
-        _player.VelocitySetExtra(y: 0f);
+        _player.VelocitySetExtra(0f, 0f);
     }
 
     public void MoreJump()
@@ -91,7 +93,7 @@ public class PlayerJump : PlayerAction
 
     public void TryGravityUp(Vector2 input)
     {
-        if (_player.IsGrounded || input.y > -0.1f)
+        if (_player.IsGrounded || input.y > -0.1f || _player.PlayeActionCheck(PlayerActionType.WallGrab))
             return;
         _player.GravityModule.GravityScale = _player.playerMovementSO.downGravityScale;
     }

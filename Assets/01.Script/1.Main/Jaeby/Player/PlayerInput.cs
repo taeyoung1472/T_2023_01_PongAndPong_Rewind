@@ -18,7 +18,6 @@ public class PlayerInput : MonoBehaviour
     [SerializeField]
     private UnityEvent OnWeaponChange = null;
 
-    private Player _player = null;
     private Vector2 _inputVector = Vector2.zero;
     public Vector2 InputVectorNorm => _inputVector.normalized;
     public Vector2 InputVector => _inputVector;
@@ -26,12 +25,6 @@ public class PlayerInput : MonoBehaviour
     private void Awake()
     {
         KeyManager.LoadKey();
-    }
-
-    private void Start()
-    {
-        _player = GetComponent<Player>();
-        Debug.Log(KeyManager.keys[InputType.Dash]);
     }
 
     private void Update()
