@@ -135,6 +135,7 @@ GameObject:
   - component: {fileID: 66543762}
   - component: {fileID: 66543761}
   - component: {fileID: 66543760}
+  - component: {fileID: 66543763}
   m_Layer: 5
   m_Name: StartButton
   m_TagString: Untagged
@@ -256,6 +257,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 66543758}
   m_CullTransparentMesh: 1
+--- !u!114 &66543763
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 66543758}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7df401cdbaeaf5341803b4e2a23c31fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  originColor: {r: 1, g: 1, b: 1, a: 1}
+  activeColor: {r: 1, g: 1, b: 1, a: 1}
+  activeMoveValue: 0
+  activeSizeValue: 1.1
+  hoverClip: {fileID: 8300000, guid: 13b748dec1a4e284090e9c9c6be0e4a8, type: 3}
+  clickClip: {fileID: 8300000, guid: 8acfa21e5ee13fe469f0b88f836f98b0, type: 3}
+  isMove: 0
+  textList: []
+  imageList: []
 --- !u!1 &89897281
 GameObject:
   m_ObjectHideFlags: 0
@@ -6048,7 +6070,7 @@ AudioSource:
   m_GameObject: {fileID: 1099487696}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -8217346690390595560, guid: 9106f3a8d2ab94d4c98ce7410af926f8, type: 2}
   m_audioClip: {fileID: 8300000, guid: be68ab0ce06e3894b8e92e54fafaae0e, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1

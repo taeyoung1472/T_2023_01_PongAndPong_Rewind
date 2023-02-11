@@ -35,7 +35,7 @@ public class PressButton : TransformRecord
         }
     }
 
-    private void Awake()
+    public override void Awake()
     {
         base.Awake();
         for (int i = 0; i < targetObject.Count; ++i)
@@ -56,10 +56,10 @@ public class PressButton : TransformRecord
         isActive = false;
     }
 
-    public void OnCollisionEnter(Collision collision)
+    public void OnTriggerEnter(Collider other)
     {
         if (!isActive) return;
-        if (collision.transform.CompareTag("Player"))
+        if (other.gameObject.CompareTag("Player"))
         {
             for (int i = 0; i < function.Count; ++i)
             {
@@ -68,10 +68,10 @@ public class PressButton : TransformRecord
         }
     }
 
-    public void OnCollisionExit(Collision collision)
+    public void OnTriggerExit(Collider other)
     {
         if (!isActive) return;
-        if (collision.transform.CompareTag("Player"))
+        if (other.gameObject.CompareTag("Player"))
         {
             for (int i = 0; i < function.Count; ++i)
             {

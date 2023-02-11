@@ -26,7 +26,7 @@ public class TransformRecord : RecordObject
 
     RigidbodyConstraints rbConstraints;
 
-    public void Awake()
+    public virtual void Awake()
     {
         SaveRigidbodyData();
     }

@@ -83,11 +83,4 @@ public class TrailManager : MonoSingleTon<TrailManager>
         public UnityEvent callEvent;
         public float time;
     }
-
-    public enum SequenceType
-    {
-        Append,
-        Join,
-        AppendInterval,
-    }
 }
