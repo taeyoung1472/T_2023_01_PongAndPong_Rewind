@@ -20,7 +20,7 @@ public class PlayerWallGrab : PlayerAction
 
     private void Update()
     {
-        Ray ray = new Ray(_player.transform.position + _player.characterController.center, _player.transform.forward);
+        Ray ray = new Ray(_player.transform.position + _player.characterController.center, _player.PlayerRenderer.Forward);
         Debug.DrawRay(ray.origin, ray.direction * ((_player.characterController.radius) + _rayLength + _player.characterController.contactOffset), Color.red);
     }
 
@@ -34,7 +34,7 @@ public class PlayerWallGrab : PlayerAction
         }
 
         bool lastCheck = _excuting;
-        Ray ray = new Ray(_player.transform.position + _player.characterController.center, _player.transform.forward);
+        Ray ray = new Ray(_player.transform.position + _player.characterController.center, _player.PlayerRenderer.Forward);
         _excuting = Physics.Raycast(ray, _player.characterController.radius + _rayLength + _player.characterController.contactOffset, _wallMask);
         if (lastCheck == _excuting) return;
 

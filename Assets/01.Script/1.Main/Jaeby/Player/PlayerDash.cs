@@ -21,7 +21,10 @@ public class PlayerDash : PlayerAction
         if (_dashChargeCoroutine != null)
             StopCoroutine(_dashChargeCoroutine);
         if (_dashCoroutine != null)
+        {
+            DashExit();
             StopCoroutine(_dashCoroutine);
+        }
         _dashCoroutine = StartCoroutine(DashCoroutine());
         OnDashStarted?.Invoke(_player.PlayerInput.InputVectorNorm);
     }
@@ -30,8 +33,10 @@ public class PlayerDash : PlayerAction
     {
         _curDashCount++;
         _player.PlayerActionLock(true, PlayerActionType.Jump, PlayerActionType.Move);
-        _player.PlayerActionExit(PlayerActionType.Jump);
-        _player.GravityModule.UseGravity = false;
+        _player.PlayerActionExit(PlayerActionType.Jump, PlayerActionType.Move);
+        _player.VelocitySetMove(0f, 0f);
+        if (_player.IsGrounded == false)
+            _player.GravityModule.UseGravity = false;
         Vector2 dashVector = _player.PlayerInput.InputVectorNorm * _player.playerMovementSO.dashPower;
         _player.VelocitySetExtra(dashVector.x, dashVector.y);
         yield return new WaitForSeconds(_player.playerMovementSO.dashContinueTime);
@@ -41,7 +46,8 @@ public class PlayerDash : PlayerAction
     private IEnumerator DashChargeCoroutine()
     {
         yield return new WaitForSeconds(_player.playerMovementSO.dashChargeTime);
-        OnGrounded(_player.IsGrounded);
+        _curDashCount = 0;
+        Debug.Log("¾¾¹ßÁøÂ¥");
     }
 
     public void DashExit()
@@ -50,15 +56,20 @@ public class PlayerDash : PlayerAction
         _player.GravityModule.UseGravity = true;
         _player.VelocitySetExtra(0f, 0f);
         OnDashEnded?.Invoke(_player.IsGrounded);
-        OnGrounded(_player.IsGrounded);
+        if (_player.IsGrounded)
+            DashCharge();
     }
 
     public void OnGrounded(bool value)
     {
         if (value == false)
             return;
-
         _curDashCount = 0;
+        DashCharge();
+    }
+
+    private void DashCharge()
+    {
         if (_dashChargeCoroutine != null)
             StopCoroutine(_dashChargeCoroutine);
         _dashChargeCoroutine = StartCoroutine(DashChargeCoroutine());

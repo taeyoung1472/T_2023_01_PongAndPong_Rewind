@@ -17,10 +17,12 @@ public class Player : MonoBehaviour
     private UnityEvent<bool> OnIsGrounded = null;
 
     private PlayerAnimation _playerAnimation = null;
+    private PlayerRenderer _playerRenderer = null;
     private GravityModule _gravityModule = null;
     private PlayerInput _playerInput = null;
 
     #region 프로퍼티
+    public PlayerRenderer PlayerRenderer => _playerRenderer;
     public PlayerAnimation PlayerAnimation => _playerAnimation;
     public GravityModule GravityModule => _gravityModule;
     public PlayerInput PlayerInput => _playerInput;
@@ -42,6 +44,7 @@ public class Player : MonoBehaviour
         _characterController = GetComponent<CharacterController>();
         _playerInput = GetComponent<PlayerInput>();
         _playerAnimation = transform.Find("AgentRenderer").GetComponent<PlayerAnimation>();
+        _playerRenderer = _playerAnimation.GetComponent<PlayerRenderer>();
         _gravityModule = GetComponent<GravityModule>();
     }
 
@@ -103,6 +106,19 @@ public class Player : MonoBehaviour
     }
 
     /// <summary>
+    /// 인자로 넘긴 액션이 잠겨있다면 true 반환
+    /// </summary>
+    /// <param name="types"></param>
+    /// <returns></returns>
+    public bool PlayerActionLockCheck(params PlayerActionType[] types)
+    {
+        for (int i = 0; i < types.Length; i++)
+            if (GetPlayerAction(types[i]).Locked)
+                return true;
+        return false;
+    }
+
+    /// <summary>
     /// 인자로 넘긴 액션을 하고있는 중이라면 true 반환
     /// </summary>
     /// <param name="types"></param>
@@ -129,15 +145,15 @@ public class Player : MonoBehaviour
     {
         if (_lastGrounded == IsGrounded)
             return;
-        else
-            _lastGrounded = IsGrounded;
-
+        _lastGrounded = IsGrounded;
+        Debug.Log(IsGrounded);
         OnIsGrounded?.Invoke(IsGrounded);
     }
 
     private void Move()
     {
         _characterController.Move((_moveAmount + _extraMoveAmount) * Time.deltaTime);
-        _characterController.Move(_gravityModule.GetGravity() * Time.deltaTime);
+        if(IsGrounded == false && _gravityModule.UseGravity)
+            _characterController.Move(_gravityModule.GetGravity() * Time.deltaTime);
     }
 }

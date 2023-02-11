@@ -18,5 +18,4 @@ public class PlayerMovementSO : ScriptableObject
     [Header("º® Â¤±â °ü·Ã")]
     public float wallGrabJumpPower = 3f;
     public float wallSlideGravityScale = 0.5f;
-    public float wallGrabJumpContinueTime = 0.12f;
 }
