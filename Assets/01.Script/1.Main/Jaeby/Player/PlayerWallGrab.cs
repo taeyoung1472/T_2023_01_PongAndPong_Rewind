@@ -4,84 +4,67 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class PlayerWallGrab : MonoBehaviour
+public class PlayerWallGrab : PlayerAction
 {
-    private bool _wallGrabed = false;
-    public bool WallGrabed => _wallGrabed;
-
     [SerializeField]
     private LayerMask _wallMask = 0;
     [SerializeField]
-    private Transform _rayStartTrm = null;
-    [SerializeField]
-    private float _rayLength = 0.05f;
-    [SerializeField]
-    private PlayerMovementSO _playerMovementSO = null;
+    private float _rayLength = 0.1f;
     [SerializeField]
     private UnityEvent<bool> OnWallGrabed = null;
-
-    private Player _player = null;
-    private Rigidbody _rigid = null;
-    private Coroutine _moveCo = null;
-
-    private void Start()
-    {
-        _rigid = GetComponent<Rigidbody>();
-        _player = GetComponent<Player>();
-    }
 
     private void FixedUpdate()
     {
         WallCheck();
     }
 
-    public void WallExit()
+    private void Update()
     {
-        _wallGrabed = false;
-        _player.GravityModule.GravityScale = _player.GravityModule.OriginGravityScale;
-        _player.PlayerAllActionSet(true);
-
-        if (_moveCo != null)
-            StopCoroutine(_moveCo);
-        _moveCo = StartCoroutine(MoveCoroutine());
-    }
-
-    private IEnumerator MoveCoroutine()
-    {
-        _player.PlayerMove.Moveable = false;
-        yield return new WaitForSeconds(_playerMovementSO.wallGrabJumpContinueTime);
-        _player.PlayerMove.Moveable = true;
+        Ray ray = new Ray(_player.transform.position + _player.characterController.center, _player.PlayerRenderer.Forward);
+        Debug.DrawRay(ray.origin, ray.direction * ((_player.characterController.radius) + _rayLength + _player.characterController.contactOffset), Color.red);
     }
 
     private void WallCheck()
     {
-        bool oldCheck = _wallGrabed;
-        _wallGrabed = Physics.BoxCast(_rayStartTrm.position, _rayStartTrm.lossyScale * 0.5f, _player.PlayerRenderer.Fliped ? _rayStartTrm.right * -1f : _rayStartTrm.right, transform.rotation, _rayLength, _wallMask);
-        if (oldCheck == _wallGrabed)
+        if (_player.IsGrounded)
+        {
+            if (_excuting)
+                ActionExit();
             return;
+        }
 
-        if(_wallGrabed)
+        bool lastCheck = _excuting;
+        Ray ray = new Ray(_player.transform.position + _player.characterController.center, _player.PlayerRenderer.Forward);
+        _excuting = Physics.Raycast(ray, _player.characterController.radius + _rayLength + _player.characterController.contactOffset, _wallMask);
+        if (lastCheck == _excuting) return;
+
+        if (_excuting)
             WallGrabEnter();
         else
             WallGrabExit();
-
-        OnWallGrabed?.Invoke(_wallGrabed);
+        OnWallGrabed?.Invoke(_excuting);
     }
 
-    private void WallGrabExit()
+    private void WallGrabExit() // 벽에서 나가!
     {
         _player.GravityModule.GravityScale = _player.GravityModule.OriginGravityScale;
-        _player.PlayerAllActionSet(true);
-        if(_player.PlayerJump.IsJumped == false)
-         _player.PlayerAnimation.FallOrIdleAnimation(_player.PlayerJump.IsGrounded);
+        _player.PlayerAnimation.FallOrIdleAnimation(_player.IsGrounded);
+        _player.PlayerActionLock(false, PlayerActionType.Dash, PlayerActionType.Move, PlayerActionType.WallGrab);
     }
 
     private void WallGrabEnter()
     {
+        if (_locked) return;
+        _player.PlayerActionExit(PlayerActionType.Jump);
         _player.GravityModule.UseGravity = true;
-        _rigid.velocity = Vector3.zero;
-        _player.GravityModule.GravityScale = _playerMovementSO.wallSlideGravityScale;
-        _player.PlayerAllActionSet(false);
-        _player.PlayerJump.Jumpable = true;
+        _player.GravityModule.GravityScale = _player.playerMovementSO.wallSlideGravityScale;
+        _player.VeloCityResetImm(true, true);
+        _player.PlayerActionLock(true, PlayerActionType.Dash, PlayerActionType.Move, PlayerActionType.WallGrab);
+    }
+
+    public override void ActionExit()
+    {
+        WallGrabExit();
+        _excuting = false;
     }
 }

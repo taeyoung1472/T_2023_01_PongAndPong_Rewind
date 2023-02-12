@@ -1,40 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
+using UnityEngine.Events;
 
-public class PlayerMove : MonoBehaviour
+public class PlayerMove : PlayerAction
 {
-    private bool _moveable = true;
-    public bool Moveable { get => _moveable; set => _moveable = value; }
-
-    private Rigidbody _rigid = null;
-    private Vector2 _moveVelocity = Vector2.zero;
-
-    [SerializeField]
-    private PlayerMovementSO _playerMovementSO = null;
-
-    private Player _player = null;
-
-    private void Start()
+    private void Update()
     {
-        _player = GetComponent<Player>();
-        _rigid = GetComponent<Rigidbody>();
+        if (_locked)
+            return;
+        Move(_player.PlayerInput.InputVectorNorm);
     }
 
     public void Move(Vector2 dir)
     {
-        if (_moveable == false || _player.PlayerAttack.Attacking)
-            return;
-        dir.y = 0f;
-        _moveVelocity = dir.normalized * _playerMovementSO.speed;
+        _player.VelocitySetMove(x: dir.x * _player.playerMovementSO.speed);
+        _excuting = Mathf.Abs(dir.x) > 0f;
     }
 
-    private void FixedUpdate()
+    public override void ActionExit()
     {
-        if (_moveable == false || _player.PlayerAttack.Attacking)
-            return;
-        _moveVelocity.y = _rigid.velocity.y;
-        _rigid.velocity = _moveVelocity;
+        _excuting = false;
+        _player.VelocitySetMove(x: 0f);
     }
+
 }
