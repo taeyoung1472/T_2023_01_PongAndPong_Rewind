@@ -13,6 +13,11 @@ public class PlayerRecord : TransformRecord
     [SerializeField] private List<MonoBehaviour> enableList;
     [SerializeField] private CharacterController characterController;
 
+    public override void Init()
+    {
+        Register();
+    }
+
     public override void InitOnPlay()
     {
         base.InitOnPlay();
@@ -46,6 +51,8 @@ public class PlayerRecord : TransformRecord
         GenerateList<Sprite>(ref spriteList, spriteRenderer.sprite);
 
         GenerateList<bool>(ref flipList, spriteRenderer.transform.localScale.x > 0 ? true : false);
+
+        RewindManager.Instance.Register(this);
     }
 
     public override void Recorde(int index)

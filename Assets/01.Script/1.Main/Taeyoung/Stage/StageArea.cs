@@ -4,33 +4,53 @@ using UnityEngine;
 
 public class StageArea : MonoBehaviour
 {
-    //[SerializeField] private Transform defaultPlayerSpawn;
-    //[SerializeField] private Transform rewindPlayerSpawn;
+    [SerializeField] private Transform defaultPlayerSpawn;
+    [SerializeField] private Transform rewindPlayerSpawn;
 
-    //[SerializeField] private Transform rightTop, leftBottom;
+    [SerializeField] private Transform rightTop, leftBottom;
 
-    //[SerializeField] private int playTime;
+    [SerializeField] private int playTime;
 
-    //private bool isClear;
-    //public bool IsClear { get { return isClear; } set { isClear = value; } }
+    [SerializeField] private PlayerRecord playerPrefab;
 
-    //public int PlayTime { get { return playTime; } }
+    private bool isClear;
+    public bool IsClear { get { return isClear; } set { isClear = value; } }
 
-    //private RewindManager rewindManager;
+    public int PlayTime { get { return playTime; } }
 
-    //public void Awake()
-    //{
-    //    rewindManager = FindObjectOfType<RewindManager>();
-    //}
+    private RewindManager rewindManager;
 
-    //public void EntryArea()
-    //{
-    //    StageCamera.Instance.SetCameraFov(rightTop, leftBottom);
-    //    RewindManager.Instance.SetArea(this);
-    //}
+    private GameObject player;
+    private GameObject replayer;
 
-    //public void ExitArea()
-    //{
+    public void Awake()
+    {
+        rewindManager = FindObjectOfType<RewindManager>();
+    }
 
-    //}
+    public void EntryArea(bool isNew = false)
+    {
+        StageCamera.Instance.SetCameraFov(rightTop, leftBottom);
+        if (!isNew)
+        {
+            RewindManager.Instance.SetArea(this);
+        }
+        player = Instantiate(playerPrefab, defaultPlayerSpawn.position, Quaternion.identity).gameObject;
+        player.GetComponent<PlayerRecord>().Init();
+    }
+
+    public void Rewind()
+    {
+        replayer = Instantiate(playerPrefab, rewindPlayerSpawn.position, Quaternion.identity).gameObject;
+        replayer.GetComponent<PlayerRecord>().Init();
+    }
+
+    public void ExitArea()
+    {
+        player.gameObject.SetActive(false);
+        if (replayer)
+        {
+            replayer.gameObject.SetActive(false);
+        }
+    }
 }

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Xml.Serialization;
 using UnityEngine;
 
 public abstract class RecordObject : MonoBehaviour
@@ -19,6 +20,8 @@ public abstract class RecordObject : MonoBehaviour
     private int totalRecord = -1;
     [SerializeField] private bool isRewind = false;
     public bool IsRewind { get { return isRewind; } }
+
+    public virtual void Init() { }
 
     // 본인 흐름의 실행되는 업데이트
     public virtual void OnUpdate() { }
