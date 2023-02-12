@@ -146,7 +146,6 @@ public class Player : MonoBehaviour
         if (_lastGrounded == IsGrounded)
             return;
         _lastGrounded = IsGrounded;
-        Debug.Log(IsGrounded);
         OnIsGrounded?.Invoke(IsGrounded);
     }
 

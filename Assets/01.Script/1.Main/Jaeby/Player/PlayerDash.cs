@@ -47,7 +47,6 @@ public class PlayerDash : PlayerAction
     {
         yield return new WaitForSeconds(_player.playerMovementSO.dashChargeTime);
         _curDashCount = 0;
-        Debug.Log("¾¾¹ßÁøÂ¥");
     }
 
     public void DashExit()
