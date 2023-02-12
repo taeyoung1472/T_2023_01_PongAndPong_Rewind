@@ -8,4 +8,14 @@ public abstract class Interact : MonoBehaviour
     public bool Interactable { get => _interactable; set => _interactable = value; }
     public abstract void InteractStart(Player player);
     public abstract void InteractEnd(Player player);
+
+    public virtual void InteractEnter()
+    {
+
+    }
+
+    public virtual void InteractExit()
+    {
+
+    }
 }

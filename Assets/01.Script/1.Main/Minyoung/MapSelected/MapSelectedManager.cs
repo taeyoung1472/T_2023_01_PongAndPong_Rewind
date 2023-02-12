@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class MapSelectedManager : MonoBehaviour
 {
-    // 12 편ㅇㅢㅈㅓㅁ가고 라며ㄴ 삼ㄱㅏㄱㄱㅂㅏㅂ 핫ㅂㅏ 
-    //1ㅅ시   에디터 wasd 끝 
-
     [SerializeField] private GameObject stageSelectPanel;
 
     [SerializeField] private Button preStageBtn;
@@ -25,24 +23,6 @@ public class MapSelectedManager : MonoBehaviour
 
         BtnSet(preStageBtn, false);
         BtnSet(nextStageBtn, true);
-
-        //preStageBtn.onClick.AddListener(() =>
-        //{
-        //    stageIndex -= 1;
-        //    StageWorldSelectData.curStageWorld = mapSO.map[stageIndex];
-        //    Debug.Log(mapSO.map[stageIndex]);
-        //});
-        //nextStageBtn.onClick.AddListener(() =>
-        //{
-        //    if (stageSelected)
-        //    {
-        //        stageIndex += 1;
-        //        stageExplain.text = mapSO.map[stageIndex].stageInfo;
-        //        StageWorldSelectData.curStageWorld = mapSO.map[stageIndex];
-        //        Debug.Log(mapSO.map[stageIndex]);
-        //    }
-        //    stageSelected = !stageSelected;
-        //});
     }
 
     public void BtnSet(Button btn, bool next)
@@ -59,25 +39,23 @@ public class MapSelectedManager : MonoBehaviour
                 {
                     stageIndex -= 1;
                 }
+                stageIndex = Mathf.Clamp(stageIndex, 0, mapSO.map.Count - 1);
 
                 stageExplain.text = mapSO.map[stageIndex].stageInfo;
                 StageWorldSelectData.curStageWorld = mapSO.map[stageIndex];
-                Debug.Log(mapSO.map[stageIndex]);
             }
-
             stageSelected = !stageSelected;
-
-         
         });
-      
     }
 
-    void Update()
+    public void PanelDown()
     {
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            stageSelectPanel.SetActive(true);
-        }
+        stageSelectPanel.SetActive(false);
+        stageIndex = 0;
     }
 
+    public void SceneChange()
+    {
+        SceneManager.LoadScene(2);
+    }
 }

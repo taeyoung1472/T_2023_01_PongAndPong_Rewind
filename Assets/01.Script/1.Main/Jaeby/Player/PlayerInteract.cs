@@ -12,12 +12,14 @@ public class PlayerInteract : PlayerAction
         {
             Debug.Log("닿았어");
             _curInteract = other.GetComponent<Interact>();
+            _curInteract.InteractEnter();
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
         Debug.Log("빠졌어");
+        _curInteract?.InteractExit();
         _curInteract = null;
     }
 
@@ -29,10 +31,12 @@ public class PlayerInteract : PlayerAction
         _player.PlayerInput.enabled = false;
         _player.PlayerAnimation.FallOrIdleAnimation(_player.IsGrounded);
         _curInteract.InteractStart(_player);
+        _excuting = true;
     }
 
     public override void ActionExit()
     {
         _player.PlayerInput.enabled = true;
+        _excuting = false;
     }
 }
