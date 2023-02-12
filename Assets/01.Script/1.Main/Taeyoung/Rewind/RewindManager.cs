@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class RewindManager : MonoSingleTon<RewindManager>
 {
     // 플레이 시간
-    private int playTime;
+    private int maxPlayTime;
+    private int curStagePlayTime;
 
     // 기록 감도
     private readonly float recordeTurm = 0.1f;
@@ -73,19 +73,21 @@ public class RewindManager : MonoSingleTon<RewindManager>
             }
         }
     }
+    private int curStageRecordCount;
+    public int CurStageRecordCount { get { if (curStageRecordCount == 0) { curStageRecordCount = Mathf.RoundToInt(curStagePlayTime / recordeTurm); } return curStageRecordCount; } }
 
     private int totalRecordCount;
-    public int TotalRecordCount 
-    { 
-        get 
+    public int TotalRecordCount
+    {
+        get
         {
-            if (totalRecordCount == 0) 
-            { 
-                totalRecordCount = Mathf.RoundToInt(playTime / recordeTurm); 
-            } 
-            return totalRecordCount; 
-        } 
+            if (totalRecordCount == 0)
+                totalRecordCount = Mathf.RoundToInt(maxPlayTime / recordeTurm);
+
+            return totalRecordCount;
+        }
     }
+
     private float lastChangeTime;
     public float CurRecordingPercent { get { return Mathf.Clamp((Time.time - lastChangeTime) / recordeTurm, 0, 1); } }
 
@@ -102,9 +104,8 @@ public class RewindManager : MonoSingleTon<RewindManager>
         }
     }
     private bool isEnd = false;
-    //public bool IsEnd { get { return isEnd; } set { isEnd = value; EndManager.Instance.ActivePanel(); Time.timeScale = 1; } }
-    public bool IsEnd { get { return isEnd; } set { isEnd = value; } }
-    private bool isInit = false;
+    public bool IsEnd { get { return curStageArea ? curStageArea.IsClear : false; } } //EndManager.Instance.ActivePanel(); Time.timeScale = 1; } }
+    private bool isInit;
 
     // Event
     public Action<int> OnTimeChanging;
@@ -113,8 +114,8 @@ public class RewindManager : MonoSingleTon<RewindManager>
     private List<RecordObject> recordObjectList = new();
     private List<RecordObject> rewindObjectList = new();
 
-    // Stage
     private StageArea curStageArea;
+    private StageController stageController;
 
     [ContextMenu("Init")]
     public void Init()
@@ -122,12 +123,13 @@ public class RewindManager : MonoSingleTon<RewindManager>
         isInit = true;
         StageArea[] areas = FindObjectsOfType<StageArea>();
         RecordObject[] recordObjects = FindObjectsOfType<RecordObject>();
+        stageController = FindObjectOfType<StageController>();
 
         foreach (var area in areas)
         {
-            if(area.StageTime > playTime)
+            if (area.PlayTime > maxPlayTime)
             {
-                playTime = area.StageTime;
+                maxPlayTime = area.PlayTime;
             }
         }
 
@@ -151,6 +153,20 @@ public class RewindManager : MonoSingleTon<RewindManager>
         IsRewinding = false;
     }
 
+    public void SetArea(StageArea area)
+    {
+        if (curStageArea != null)
+            curStageArea.ExitArea();
+        if (curStageArea == area)
+        {
+            area.EntryArea(true);
+        }
+
+        IsRewinding = false;
+        curStageArea = area;
+        curStagePlayTime = curStageArea.PlayTime;
+    }
+
     public void Update()
     {
         if (!isInit)
@@ -162,7 +178,12 @@ public class RewindManager : MonoSingleTon<RewindManager>
 
     private void LifeCycle()
     {
-        if (IsEnd) return;
+        if (IsEnd)
+        {
+            stageController.IsClearNext = true;
+            CurRecordingIndex = 0;
+            return;
+        }
         if (Time.time > timer)
         {
             timer = Time.time + recordeTurm;
@@ -173,13 +194,19 @@ public class RewindManager : MonoSingleTon<RewindManager>
 
             if (IsRewinding && CurRecordingIndex == 0)
             {
-                IsEnd = true;
                 RecordObjectInit(RecordType.Default);
                 RecordObjectInit(RecordType.Rewind);
+                if (!isEnd)
+                {
+                    IsRewinding = false;
+                    CurRecordingIndex = 0;
+                    SetArea(curStageArea);
+                }
             }
-            if (!IsRewinding && CurRecordingIndex == totalRecordCount - 1)
+            if (!IsRewinding && CurRecordingIndex == curStageRecordCount - 1)
             {
                 IsRewinding = true;
+                curStageArea.Rewind();
             }
         }
     }
@@ -291,6 +318,18 @@ public class RewindManager : MonoSingleTon<RewindManager>
         }
 
         return returnList;
+    }
+
+    public void Register(RecordObject recordObject)
+    {
+        if (isRewinding)
+        {
+            rewindObjectList.Add(recordObject);
+        }
+        else
+        {
+            recordObjectList.Add(recordObject);
+        }
     }
 }
 
