@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIManager : MonoBehaviour
+public class UIManager : MonoSingleTon<UIManager>
 {
     [Header("[Clock]")]
     [SerializeField] private Image clockFill;
@@ -13,9 +13,14 @@ public class UIManager : MonoBehaviour
 
     private int totalTIme;
 
-    public void Start()
+    public void Init()
     {
         RewindManager.Instance.OnTimeChanging += OnTimeChange;
+        Set();
+    }
+
+    public void Set()
+    {
         totalTIme = RewindManager.Instance.TotalRecordCount;
     }
 

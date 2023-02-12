@@ -8,7 +8,7 @@ public class EndPoint : MonoBehaviour
         if (other.CompareTag("Player") && !isActive)
         {
             Time.timeScale = 5;
-            EndManager.Instance.IsClear = true;
+            //EndManager.Instance.IsClear = true;
             isActive = true;
         }
     }

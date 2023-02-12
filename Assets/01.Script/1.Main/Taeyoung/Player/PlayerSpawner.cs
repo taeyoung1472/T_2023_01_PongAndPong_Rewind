@@ -37,7 +37,7 @@ public class PlayerSpawner : RecordObject
     
     public override void Register()
     {
-        RewindManager.Instance.RegistRecorder(this);
+
     }
     #region Dummy
     public override void Recorde(int index)
