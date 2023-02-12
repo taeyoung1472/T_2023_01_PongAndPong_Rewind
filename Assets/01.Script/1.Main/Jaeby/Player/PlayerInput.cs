@@ -17,6 +17,8 @@ public class PlayerInput : MonoBehaviour
     private UnityEvent OnAttack = null;
     [SerializeField]
     private UnityEvent OnWeaponChange = null;
+    [SerializeField]
+    private UnityEvent OnInteract = null;
 
     private Vector2 _inputVector = Vector2.zero;
     public Vector2 InputVectorNorm => _inputVector.normalized;
@@ -41,6 +43,8 @@ public class PlayerInput : MonoBehaviour
         _inputVector = new Vector2(x, y);
         OnMoveInput?.Invoke(new Vector2(x, y));
 
+        if (Input.GetKeyDown(KeyManager.keys[InputType.Attack]))
+            OnInteract?.Invoke();
         if (Input.GetKeyDown(KeyManager.keys[InputType.Jump]))
             OnJumpStart?.Invoke();
         if (Input.GetKeyUp(KeyManager.keys[InputType.Jump]))
@@ -51,5 +55,11 @@ public class PlayerInput : MonoBehaviour
             OnAttack?.Invoke();
         if (Input.GetKeyDown(KeyManager.keys[InputType.WeaponChange]))
             OnWeaponChange?.Invoke();
+    }
+
+    public void InputVectorReset()
+    {
+        _inputVector = Vector2.zero;
+        OnMoveInput?.Invoke(_inputVector);
     }
 }

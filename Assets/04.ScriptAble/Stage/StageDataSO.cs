@@ -8,4 +8,5 @@ public class StageDataSO : ScriptableObject
     public int stagePlayTime;
     public GameObject StagePrefab;
     public bool isClear = false;
+    public string stageInfo;
 }
