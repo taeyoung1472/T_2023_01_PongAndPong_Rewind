@@ -5,13 +5,9 @@ using UnityEngine.Events;
 
 public class PlayerAnimation : MonoBehaviour
 {
-    [SerializeField]
-    private PlayerAttackSO _playerAttackSO = null;
-
     private Animator _animator = null;
-    private Rigidbody _rigid = null;
 
-    private Coroutine _attackAniCorou = null;
+    private Coroutine _attackAniCo = null;
 
     [SerializeField]
     private UnityEvent OnAttackStarted = null;
@@ -23,7 +19,6 @@ public class PlayerAnimation : MonoBehaviour
     private void Start()
     {
         _player = GetComponentInParent<Player>();
-        _rigid = GetComponentInParent<Rigidbody>();
         _animator = GetComponent<Animator>();
     }
 
@@ -53,8 +48,11 @@ public class PlayerAnimation : MonoBehaviour
     {
         if (val == false)
             return;
-        _animator.SetTrigger("AttackForceExit");
-        _animator.Update(0);
+        if (_player.PlayeActionCheck(PlayerActionType.Attack))
+        {
+            _player.PlayerActionExit(PlayerActionType.Attack);
+            _animator.SetTrigger("AttackForceExit");
+        }
         _animator.Play("PlayerWallGrab");
         _animator.Update(0);
     }
@@ -88,37 +86,36 @@ public class PlayerAnimation : MonoBehaviour
         string name = $"PlayerMeleeAttack{index}";
         _animator.Play(name);
         _animator.Update(0);
-        if (_attackAniCorou != null)
-            StopCoroutine(_attackAniCorou);
-        _attackAniCorou = StartCoroutine(AttackAnimationEndWaitCoroutine(name, AttackState.Melee));
+        if (_attackAniCo != null)
+            StopCoroutine(_attackAniCo);
+        _attackAniCo = StartCoroutine(AttackAnimationEndWaitCoroutine(name, AttackState.Melee));
     }
 
     public void RangeAttackAnimation()
     {
         _animator.Play("PlayerRangeAttack");
         _animator.Update(0);
-        if (_attackAniCorou != null)
-            StopCoroutine(_attackAniCorou);
-        _attackAniCorou = StartCoroutine(AttackAnimationEndWaitCoroutine("PlayerRangeAttack", AttackState.Range));
+        if (_attackAniCo != null)
+            StopCoroutine(_attackAniCo);
+        _attackAniCo = StartCoroutine(AttackAnimationEndWaitCoroutine("PlayerRangeAttack", AttackState.Range));
     }
 
     private IEnumerator AttackAnimationEndWaitCoroutine(string aniName, AttackState attackState)
     {
         OnAttackStarted?.Invoke();
         //yield return new WaitUntil(() => _animator.GetCurrentAnimatorStateInfo(1).IsName(aniName) == false);
-        yield return new WaitUntil(() => 
+        yield return new WaitUntil(() =>
         (
-        _animator.GetCurrentAnimatorStateInfo(1).normalizedTime >= (attackState == AttackState.Melee ? _playerAttackSO.meleeAttackDelay : _playerAttackSO.rangeAttackDelay)) || 
+        _animator.GetCurrentAnimatorStateInfo(1).normalizedTime >= (attackState == AttackState.Melee ? _player.playerAttackSO.meleeAttackDelay : _player.playerAttackSO.rangeAttackDelay)) ||
         (_animator.GetCurrentAnimatorStateInfo(1).IsName(aniName) == false)
         );
 
-        if (_player.PlayerWallGrab.WallGrabed == false)
-            FallOrIdleAnimation(_player.PlayerJump.IsGrounded);
+        FallOrIdleAnimation(_player.IsGrounded);
         OnAttackEnded?.Invoke();
     }
 
     private void Update()
     {
-        _animator.SetFloat("VelocityY", _rigid.velocity.y);
+        _animator.SetFloat("VelocityY", _player.characterController.velocity.y);
     }
 }

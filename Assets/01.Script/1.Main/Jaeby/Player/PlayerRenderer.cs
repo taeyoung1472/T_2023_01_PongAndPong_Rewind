@@ -7,38 +7,94 @@ public class PlayerRenderer : MonoBehaviour
 {
     private bool _fliped = false;
     public bool Fliped => _fliped;
-
+    [SerializeField]
+    private float _rotationSpeed = 1000f;
     [SerializeField]
     private UnityEvent<bool> OnFliped = null;
 
-    public void Flip(Vector2 input)
+    private Player _player = null;
+
+    public Vector3 Forward => _fliped ? transform.right * -1f : transform.right;
+
+    private void Start()
     {
-        Vector3 local = transform.localScale;
-        if (_fliped) // ¿ÞÂÊ
+        _player = GetComponentInParent<Player>();
+    }
+
+    private void Update()
+    {
+        if(_player.PlayerActionLockCheck(PlayerActionType.Move) == false)
         {
-            if(input.x > 0f)
-            {
-                local.x *= -1f;
-                _fliped = false;
-            }
+            Flip(_player.PlayerInput.InputVectorNorm);
         }
-        else
+    }
+
+    public void Flip(Vector2 dir)
+    {
+        if (dir.x == 0f)
+            return;
+
+        FlipDirection flipDir = FlipDirection.None;
+        if (dir.x > 0f)
+            flipDir = FlipDirection.Right;
+        else if (dir.x < 0f)
+            flipDir = FlipDirection.Left;
+
+        /*Quaternion targetRotation = Quaternion.Euler(0f, (flipDir == FlipDirection.Left) ? -90f : 90f, 0f);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, _rotationSpeed * Time.deltaTime);*/
+        Vector3 sc = transform.localScale;
+        sc.x = Mathf.Abs(sc.x);
+        if (flipDir == FlipDirection.Left)
         {
-            if(input.x < 0f)
-            {
-                local.x *= -1f;
-                _fliped = true;
-            }
+            sc.x *= -1f;
         }
-        transform.localScale = local;
+        transform.localScale = sc;
+        _fliped = flipDir == FlipDirection.Left;
         OnFliped?.Invoke(_fliped);
     }
 
     public void ForceFlip()
     {
-        if (_fliped)
-            Flip(Vector2.right);
-        else
-            Flip(Vector2.left);
+        // left : -90 right : 90
+        //Quaternion targetRotation = Quaternion.Euler(0f, _fliped ? 90f : -90f, 0f); // ¹Ý´ë
+        //transform.rotation = targetRotation;
+        Vector3 sc = transform.localScale;
+        sc.x = Mathf.Abs(sc.x);
+        if (_fliped == false)
+        {
+            sc.x *= -1f;
+        }
+        transform.localScale = sc;
+        _fliped = !_fliped;
+        OnFliped?.Invoke(_fliped);
+    }
+
+    private Vector2 GetDirToVector(FlipDirection dir)
+    {
+        switch (dir)
+        {
+            case FlipDirection.None:
+                break;
+            case FlipDirection.Left:
+                return Vector2.left;
+            case FlipDirection.Right:
+                return Vector2.right;
+            case FlipDirection.Up:
+                return Vector2.up;
+            case FlipDirection.Down:
+                return Vector2.down;
+            default:
+                break;
+        }
+        return Vector2.zero;
+    }
+
+    enum FlipDirection
+    {
+        None,
+        Left,
+        Right,
+        Up,
+        Down
     }
 }
