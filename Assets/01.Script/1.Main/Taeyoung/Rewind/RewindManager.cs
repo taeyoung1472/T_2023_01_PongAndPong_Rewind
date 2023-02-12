@@ -6,7 +6,8 @@ using UnityEngine;
 public class RewindManager : MonoSingleTon<RewindManager>
 {
     // 플레이 시간
-    private int playTime;
+    private int maxPlayTime;
+    private int curStagePlayTime;
 
     // 기록 감도
     private readonly float recordeTurm = 0.1f;
@@ -80,12 +81,12 @@ public class RewindManager : MonoSingleTon<RewindManager>
         get 
         {
             if (totalRecordCount == 0) 
-            { 
-                totalRecordCount = Mathf.RoundToInt(playTime / recordeTurm); 
-            } 
+                totalRecordCount = Mathf.RoundToInt(maxPlayTime / recordeTurm); 
+            
             return totalRecordCount; 
         } 
     }
+
     private float lastChangeTime;
     public float CurRecordingPercent { get { return Mathf.Clamp((Time.time - lastChangeTime) / recordeTurm, 0, 1); } }
 
@@ -102,9 +103,7 @@ public class RewindManager : MonoSingleTon<RewindManager>
         }
     }
     private bool isEnd = false;
-    //public bool IsEnd { get { return isEnd; } set { isEnd = value; EndManager.Instance.ActivePanel(); Time.timeScale = 1; } }
-    public bool IsEnd { get { return isEnd; } set { isEnd = value; } }
-    private bool isInit = false;
+    public bool IsEnd { get { return isEnd; } set { isEnd = value; EndManager.Instance.ActivePanel(); Time.timeScale = 1; } }
 
     // Event
     public Action<int> OnTimeChanging;
@@ -112,9 +111,6 @@ public class RewindManager : MonoSingleTon<RewindManager>
     // RecordObjectList
     private List<RecordObject> recordObjectList = new();
     private List<RecordObject> rewindObjectList = new();
-
-    // Stage
-    private StageArea curStageArea;
 
     [ContextMenu("Init")]
     public void Init()
@@ -125,9 +121,9 @@ public class RewindManager : MonoSingleTon<RewindManager>
 
         foreach (var area in areas)
         {
-            if(area.StageTime > playTime)
+            if(area.PlayTime > maxPlayTime)
             {
-                playTime = area.StageTime;
+                maxPlayTime = area.PlayTime;
             }
         }
 
@@ -149,6 +145,12 @@ public class RewindManager : MonoSingleTon<RewindManager>
         timer = Time.time + recordeTurm;
 
         IsRewinding = false;
+    }
+
+    public void SetArea(StageArea area)
+    {
+        curStageArea = area;
+        curStagePlayTime = curStageArea.PlayTime;
     }
 
     public void Update()

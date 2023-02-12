@@ -4,26 +4,33 @@ using UnityEngine;
 
 public class StageArea : MonoBehaviour
 {
-    [SerializeField] private Transform defaultPlayerSpawn;
-    [SerializeField] private Transform rewindPlayerSpawn;
-    [SerializeField] private int stageTime;
+    //[SerializeField] private Transform defaultPlayerSpawn;
+    //[SerializeField] private Transform rewindPlayerSpawn;
 
-    public int StageTime { get { return stageTime; } }
+    //[SerializeField] private Transform rightTop, leftBottom;
 
-    private RewindManager rewindManager;
+    //[SerializeField] private int playTime;
 
-    public void Awake()
-    {
-        rewindManager = FindObjectOfType<RewindManager>();
-    }
+    //private bool isClear;
+    //public bool IsClear { get { return isClear; } set { isClear = value; } }
 
-    public void EntryArea()
-    {
-        //rewindManager.Init(this);
-    }
+    //public int PlayTime { get { return playTime; } }
 
-    public void ExitArea()
-    {
+    //private RewindManager rewindManager;
 
-    }
+    //public void Awake()
+    //{
+    //    rewindManager = FindObjectOfType<RewindManager>();
+    //}
+
+    //public void EntryArea()
+    //{
+    //    StageCamera.Instance.SetCameraFov(rightTop, leftBottom);
+    //    RewindManager.Instance.SetArea(this);
+    //}
+
+    //public void ExitArea()
+    //{
+
+    //}
 }

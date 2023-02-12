@@ -11,17 +11,11 @@ public class UIManager : MonoSingleTon<UIManager>
     [SerializeField] private TextMeshProUGUI clockTimeText;
     [SerializeField] private Color[] clockColorArray;
 
-    private int totalTIme;
+    private int totalTIme { get { return RewindManager.Instance.CurStageRecordCount; } }
 
     public void Init()
     {
         RewindManager.Instance.OnTimeChanging += OnTimeChange;
-        Set();
-    }
-
-    public void Set()
-    {
-        totalTIme = RewindManager.Instance.TotalRecordCount;
     }
 
     private void OnTimeChange(int time)
