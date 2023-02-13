@@ -3853,11 +3853,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stageSelectPanel: {fileID: 482438143}
-  preStageBtn: {fileID: 1115175248}
-  nextStageBtn: {fileID: 2003356649}
   mapSO: {fileID: 11400000, guid: ffc69cb01e4d72d4f8e7f712cbea5cfd, type: 2}
   stageExplain: {fileID: 135582579}
-  stageIndex: 1
+  stageIndex: 0
   stageSelected: 0
 --- !u!4 &298930043
 Transform:
@@ -11279,6 +11277,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 753234593}
+        m_TargetAssemblyTypeName: StageSelectPanelActiveChainInteract, Assembly-CSharp
+        m_MethodName: InteractEnd
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &736261643
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11514,6 +11524,7 @@ GameObject:
   - component: {fileID: 753234590}
   - component: {fileID: 753234592}
   - component: {fileID: 753234591}
+  - component: {fileID: 753234593}
   m_Layer: 0
   m_Name: Interact
   m_TagString: Interact
@@ -11548,11 +11559,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dc97b6881106e0439fe6074b28c3b9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _chainInteract: {fileID: 753234593}
   _canvas: {fileID: 1666992847}
   _text: {fileID: 1946750244}
   _doInteractText: {fileID: 466853663}
   _curDialogData: {fileID: 11400000, guid: e8082753bc6b3114c94da69e9fa5b516, type: 2}
-  _callbackObj: {fileID: 482438143}
 --- !u!65 &753234592
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -11566,6 +11577,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 4.45, z: 4.25}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &753234593
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 753234589}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9609a138eabe15e409cf9d16c2b389ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _panelObj: {fileID: 482438143}
 --- !u!1001 &753941943
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17613,7 +17637,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1115175246}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 298930042}
+        m_TargetAssemblyTypeName: MapSelectedManager, Assembly-CSharp
+        m_MethodName: PrevStage
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1001 &1122255811
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18573,11 +18609,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dc97b6881106e0439fe6074b28c3b9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _chainInteract: {fileID: 0}
   _canvas: {fileID: 1877687682}
   _text: {fileID: 1408898501}
   _doInteractText: {fileID: 2011653237}
   _curDialogData: {fileID: 11400000, guid: f4672696a7bc6a147aba174c874ccbb1, type: 2}
-  _callbackObj: {fileID: 0}
 --- !u!1001 &1213750960
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -29349,7 +29385,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2003356647}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 298930042}
+        m_TargetAssemblyTypeName: MapSelectedManager, Assembly-CSharp
+        m_MethodName: NextStage
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &2005323503
 GameObject:
   m_ObjectHideFlags: 0

@@ -15,9 +15,6 @@ public class DialogInteract : Interact
     [SerializeField]
     private DialogDataSO _curDialogData = null;
 
-    [SerializeField]
-    private GameObject _callbackObj = null;
-
     private void Start()
     {
         _canvas.SetActive(false);
@@ -25,10 +22,11 @@ public class DialogInteract : Interact
 
     public override void InteractEnd(Player player)
     {
-        InteractEnter();
         _canvas.SetActive(false);
         _curDialogData = _curDialogData.nextData;
-        player.PlayerActionExit(PlayerActionType.Interact);
+
+        if(_chainInteract == null)
+            player.PlayerActionExit(PlayerActionType.Interact);
     }
 
     public override void InteractStart(Player player)
@@ -38,7 +36,17 @@ public class DialogInteract : Interact
         InteractExit();
         player.VeloCityResetImm(true, true);
         _canvas.SetActive(true);
-        DialogManager.Instance.DialogStart(_text, _curDialogData, () => { InteractEnd(player); if(_callbackObj != null) _callbackObj.SetActive(true); });
+        DialogManager.Instance.DialogStart(_text, _curDialogData,
+            () =>
+            {
+                InteractEnd(player);
+                if (_chainInteract != null)
+                {
+                    _chainInteract.Init(player);
+                    _chainInteract.InteractStart();
+                }
+            }
+            );
     }
 
     public void DialogChange(DialogDataSO data)

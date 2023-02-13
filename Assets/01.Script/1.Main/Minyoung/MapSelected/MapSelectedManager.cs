@@ -4,13 +4,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
+using DG.Tweening;
 
 public class MapSelectedManager : MonoBehaviour
 {
     [SerializeField] private GameObject stageSelectPanel;
 
-    [SerializeField] private Button preStageBtn;
-    [SerializeField] private Button nextStageBtn;
     [SerializeField] private MapPrefabSO mapSO;
     [SerializeField] private TextMeshProUGUI stageExplain;
 
@@ -19,43 +18,35 @@ public class MapSelectedManager : MonoBehaviour
     public bool stageSelected = false;
     void Start()
     {
-        stageIndex = 0;
-
-        BtnSet(preStageBtn, false);
-        BtnSet(nextStageBtn, true);
-    }
-
-    public void BtnSet(Button btn, bool next)
-    {
-        btn.onClick.AddListener(() =>
-        {
-            if (stageSelected)
-            {
-                if (next)
-                {
-                    stageIndex += 1;
-                }
-                else
-                {
-                    stageIndex -= 1;
-                }
-                stageIndex = Mathf.Clamp(stageIndex, 0, mapSO.map.Count - 1);
-
-                stageExplain.text = mapSO.map[stageIndex].stageInfo;
-                StageWorldSelectData.curStageWorld = mapSO.map[stageIndex];
-            }
-            stageSelected = !stageSelected;
-        });
+        StageChange(0);
     }
 
     public void PanelDown()
     {
         stageSelectPanel.SetActive(false);
-        stageIndex = 0;
+        StageChange(0);
+    }
+
+    public void NextStage()
+    {
+        StageChange(stageIndex + 1);
+    }
+
+    public void PrevStage()
+    {
+        StageChange(stageIndex - 1);
+    }
+
+    private void StageChange(int index)
+    {
+        stageIndex =Mathf.Clamp(index, 0, mapSO.map.Count - 1);
+        stageExplain.SetText(mapSO.map[stageIndex].stageInfo);
+        StageWorldSelectData.curStageWorld = mapSO.map[stageIndex];
     }
 
     public void SceneChange()
     {
+        DOTween.KillAll();
         LoadingSceneManager.LoadScene(2);
     }
 }
