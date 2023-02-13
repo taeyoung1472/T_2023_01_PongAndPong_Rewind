@@ -29,7 +29,6 @@ public class GameManager : MonoBehaviour
 
     public void GameClear()
     {
-        //StageWorldSelectData.curStageWorld.isClear = true;
         LoadingSceneManager.LoadScene(1);
     }
 
