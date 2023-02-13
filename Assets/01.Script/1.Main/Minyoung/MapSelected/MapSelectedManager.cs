@@ -56,6 +56,6 @@ public class MapSelectedManager : MonoBehaviour
 
     public void SceneChange()
     {
-        SceneManager.LoadScene(2);
+        LoadingSceneManager.LoadScene(2);
     }
 }
