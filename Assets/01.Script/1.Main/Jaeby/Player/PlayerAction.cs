@@ -16,7 +16,7 @@ public abstract class PlayerAction : MonoBehaviour
     protected bool _excuting = false; // 액션 실행중?
     public bool Excuting => _excuting;
 
-    protected virtual void Start()
+    protected virtual void Awake()
     {
         _player = GetComponent<Player>();
     }

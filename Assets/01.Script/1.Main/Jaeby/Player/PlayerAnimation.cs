@@ -16,7 +16,7 @@ public class PlayerAnimation : MonoBehaviour
 
     private Player _player = null;
 
-    private void Start()
+    private void Awake()
     {
         _player = GetComponentInParent<Player>();
         _animator = GetComponent<Animator>();
