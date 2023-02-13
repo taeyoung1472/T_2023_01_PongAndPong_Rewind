@@ -39,7 +39,9 @@ public class MapSelectedManager : MonoBehaviour
 
     private void StageChange(int index)
     {
-        stageIndex =Mathf.Clamp(index, 0, mapSO.map.Count - 1);
+        if (index < 0)
+            index = mapSO.map.Count - 1;
+        stageIndex = index % mapSO.map.Count;
         stageExplain.SetText(mapSO.map[stageIndex].stageInfo);
         StageWorldSelectData.curStageWorld = mapSO.map[stageIndex];
     }

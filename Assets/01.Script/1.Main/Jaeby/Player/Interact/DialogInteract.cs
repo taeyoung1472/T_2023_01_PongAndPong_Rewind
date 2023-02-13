@@ -24,6 +24,8 @@ public class DialogInteract : Interact
     {
         _canvas.SetActive(false);
         _curDialogData = _curDialogData.nextData;
+        if (_curDialogData != null)
+            InteractEnter();
 
         if(_chainInteract == null)
             player.PlayerActionExit(PlayerActionType.Interact);
