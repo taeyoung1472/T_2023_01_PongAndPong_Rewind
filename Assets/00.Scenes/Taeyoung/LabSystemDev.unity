@@ -3036,51 +3036,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 788777492193291268, guid: a63115bab7571654fa379a10df88d2c6, type: 3}
   m_PrefabInstance: {fileID: 235349860}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &251378859
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 251378860}
-  - component: {fileID: 251378861}
-  m_Layer: 0
-  m_Name: InteractCollider
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &251378860
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 251378859}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 881636281}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &251378861
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 251378859}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 2.1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &257666802
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12812,22 +12767,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 372708789008270314, guid: ac2bdcc6135d4494089f161b9a845444, type: 3}
   m_PrefabInstance: {fileID: 873101600}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &881636279 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6036129167968237303, guid: 18f205ab32cd84a4898ba28bf639789b, type: 3}
-  m_PrefabInstance: {fileID: 1372441655}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b659a485d7d49a74b86fa1768ea650b0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &881636281 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6691628707489746809, guid: 18f205ab32cd84a4898ba28bf639789b, type: 3}
-  m_PrefabInstance: {fileID: 1372441655}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &881854578
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20712,38 +20651,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 6036129167968237303, guid: 18f205ab32cd84a4898ba28bf639789b, type: 3}
-      propertyPath: _actionType
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 6691628707489746807, guid: 18f205ab32cd84a4898ba28bf639789b, type: 3}
-      propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6691628707489746807, guid: 18f205ab32cd84a4898ba28bf639789b, type: 3}
-      propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6691628707489746807, guid: 18f205ab32cd84a4898ba28bf639789b, type: 3}
-      propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 881636279}
-    - target: {fileID: 6691628707489746807, guid: 18f205ab32cd84a4898ba28bf639789b, type: 3}
-      propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6691628707489746807, guid: 18f205ab32cd84a4898ba28bf639789b, type: 3}
-      propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: TryInteract
-      objectReference: {fileID: 0}
-    - target: {fileID: 6691628707489746807, guid: 18f205ab32cd84a4898ba28bf639789b, type: 3}
-      propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: PlayerInteract, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 6691628707489746807, guid: 18f205ab32cd84a4898ba28bf639789b, type: 3}
-      propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
     - target: {fileID: 6691628707489746809, guid: 18f205ab32cd84a4898ba28bf639789b, type: 3}
       propertyPath: m_RootOrder
       value: 1

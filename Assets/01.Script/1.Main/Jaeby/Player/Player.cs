@@ -152,9 +152,6 @@ public class Player : MonoBehaviour
 
     private void Move()
     {
-        /*_collisionFlag = _characterController.Move((_moveAmount + _extraMoveAmount) * Time.deltaTime);
-        if (IsGrounded == false && _gravityModule.UseGravity)
-            _collisionFlag = _characterController.Move(_gravityModule.GetGravity() * Time.deltaTime);*/
         _collisionFlag = _characterController.Move((_moveAmount + _extraMoveAmount + 
             ((IsGrounded == false && _gravityModule.UseGravity) ? _gravityModule.GetGravity() : Vector3.zero))
             * Time.deltaTime);
