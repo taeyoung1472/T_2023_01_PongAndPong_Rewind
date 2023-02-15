@@ -12,12 +12,15 @@ public class DialogManager : MonoSingleTon<DialogManager>
     private bool _input = false;
     private StringBuilder _sb = null;
 
+    [SerializeField]
+    private TextMeshProUGUI _text = null;
+
     private void Start()
     {
         _sb = new StringBuilder();
     }
 
-    public void DialogStart(TextMeshProUGUI text, DialogDataSO data, Action Callback = null)
+    public void DialogStart(DialogDataSO data, Action Callback = null)
     {
         if (_excuting)
         {
@@ -26,10 +29,10 @@ public class DialogManager : MonoSingleTon<DialogManager>
             _input = false;
         }
 
-        _dialogCoroutine = StartCoroutine(DialogCoroutine(text, data, Callback));
+        _dialogCoroutine = StartCoroutine(DialogCoroutine(data, Callback));
     }
 
-    private IEnumerator DialogCoroutine(TextMeshProUGUI text, DialogDataSO data, Action Callback = null)
+    private IEnumerator DialogCoroutine(DialogDataSO data, Action Callback = null)
     {
         _excuting = true;
         _sb.Clear();
@@ -41,18 +44,18 @@ public class DialogManager : MonoSingleTon<DialogManager>
                 if(_input)
                 {
                     _input = false;
-                    text.SetText(targetText);
+                    _text.SetText(targetText);
                     break;
                 }
                 _sb.Append(targetText[j]);
-                text.SetText(_sb.ToString());
+                _text.SetText(_sb.ToString());
                 yield return new WaitForSeconds(data.nextCharDelay);
             }
             yield return new WaitUntil(() => _input);
             _input = false;
             _sb.Clear();
         }
-        text.SetText("");
+        _text.SetText("");
         _excuting = false;
         Callback?.Invoke();
     }
