@@ -34,7 +34,8 @@ public class Player : MonoBehaviour
     public CharacterController characterController => _characterController;
     private Vector3 _moveAmount = Vector3.zero;
     private Vector3 _extraMoveAmount = Vector3.zero;
-    public bool IsGrounded => _characterController.isGrounded;
+    public bool IsGrounded => _collisionFlag == CollisionFlags.Below;
+    private CollisionFlags _collisionFlag = CollisionFlags.None;
     private bool _lastGrounded = false;
 
     private void Awake()
@@ -151,8 +152,11 @@ public class Player : MonoBehaviour
 
     private void Move()
     {
-        _characterController.Move((_moveAmount + _extraMoveAmount) * Time.deltaTime);
-        if(IsGrounded == false && _gravityModule.UseGravity)
-            _characterController.Move(_gravityModule.GetGravity() * Time.deltaTime);
+        /*_collisionFlag = _characterController.Move((_moveAmount + _extraMoveAmount) * Time.deltaTime);
+        if (IsGrounded == false && _gravityModule.UseGravity)
+            _collisionFlag = _characterController.Move(_gravityModule.GetGravity() * Time.deltaTime);*/
+        _collisionFlag = _characterController.Move((_moveAmount + _extraMoveAmount + 
+            ((IsGrounded == false && _gravityModule.UseGravity) ? _gravityModule.GetGravity() : Vector3.zero))
+            * Time.deltaTime);
     }
 }
