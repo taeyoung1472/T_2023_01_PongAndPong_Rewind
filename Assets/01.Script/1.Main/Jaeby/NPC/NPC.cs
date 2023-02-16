@@ -21,12 +21,19 @@ public class NPC : MonoBehaviour
     private TextMeshProUGUI _titleText = null;
     [SerializeField]
     private Image _iconImage = null;
+    [SerializeField]
+    private DesignDataSO _designDataSO = null;
 
     private void OnValidate()
     {
         if (_nameText != null)
             _nameText.SetText(_name);
         if (_titleText != null)
+        {
+            _titleText.color = _designDataSO.GetColor(_npcType);
             _titleText.SetText("< " + _title + " >");
+        }
+        if (_iconImage != null)
+            _iconImage.sprite = _designDataSO.GetIcon(_iconType);
     }
 }

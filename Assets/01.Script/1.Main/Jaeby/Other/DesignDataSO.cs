@@ -6,11 +6,47 @@ using UnityEngine;
 public class DesignDataSO : ScriptableObject
 {
     [Header("¾ÆÀÌÄÜ")]
-    public Sprite _nomalIcon = null;
-    public Sprite _traderIcon = null;
-    public Sprite _specialIcon = null;
+    public Sprite researcherIcon = null;
+    public Sprite potalIcon = null;
+    public Sprite traderIcon = null;
     [Header("»ö±ò")]
-    public Color _nomalColor = Color.white;
-    public Color _traderColor = Color.white;
-    public Color _specialColor = Color.white;
+    public Color nomalColor = Color.white;
+    public Color potalColor = Color.white;
+    public Color specialColor = Color.white;
+
+    public Sprite GetIcon(IconType type)
+    {
+        switch (type)
+        {
+            case IconType.None:
+                return null;
+            case IconType.Researcher:
+                return researcherIcon;
+            case IconType.Potal:
+                return potalIcon;
+            case IconType.Trader:
+                return traderIcon;
+            default:
+                break;
+        }
+        return null;
+    }
+
+    public Color GetColor(NPCType type)
+    {
+        switch (type)
+        {
+            case NPCType.None:
+                break;
+            case NPCType.Nomal:
+                return nomalColor;
+            case NPCType.Potal:
+                return potalColor;
+            case NPCType.Special:
+                return specialColor;
+            default:
+                break;
+        }
+        return Color.white;
+    }
 }
