@@ -4,19 +4,18 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIManager : MonoBehaviour
+public class UIManager : MonoSingleTon<UIManager>
 {
     [Header("[Clock]")]
     [SerializeField] private Image clockFill;
     [SerializeField] private TextMeshProUGUI clockTimeText;
     [SerializeField] private Color[] clockColorArray;
 
-    private int totalTIme;
+    private int totalTIme { get { return RewindManager.Instance.CurStageRecordCount; } }
 
-    public void Start()
+    public void Init()
     {
         RewindManager.Instance.OnTimeChanging += OnTimeChange;
-        totalTIme = RewindManager.Instance.TotalRecordCount;
     }
 
     private void OnTimeChange(int time)

@@ -18,7 +18,7 @@ public class AudioRecord : RecordObject
         Instance = this;
     }
 
-    public void Start()
+    public override void Init()
     {
         Register();
     }
@@ -83,8 +83,6 @@ public class AudioRecord : RecordObject
         {
             audioDataList[i] = new();
         }
-
-        RewindManager.Instance.RegistRecorder(this);
     }
 
     [Serializable]

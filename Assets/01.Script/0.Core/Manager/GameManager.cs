@@ -5,51 +5,30 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private GameObject infoUi;
-    [SerializeField] private GameObject pauseUi;
+    //[SerializeField] private GameObject pauseUi;
 
-    [SerializeField] private StageDataSO testStage;
-
-    private void Awake()
-    {
-        Time.timeScale = 0;
-
-        StageDataSO data = StageWorldSelectData.curStageWorld;
-        if (data == null)
-            data = testStage;
-
-        RewindManager.playTime = data.stagePlayTime;
-        Instantiate(data.StagePrefab);
-    }
+    [SerializeField] private StageData testStage;//StageDataSO testStage;
 
     public void Update()
     {
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            Time.timeScale = 1;
-            RewindManager.Instance.Init();
-            infoUi.gameObject.SetActive(false);
-        }
-
-        if (Input.GetKeyDown(KeyCode.Escape) && !infoUi.activeSelf)
-        {
-            pauseUi.SetActive(!pauseUi.activeSelf);
-            if (pauseUi.activeSelf)
-                Time.timeScale = 0;
-            else
-                Time.timeScale = 1;
-        }
+        //if (Input.GetKeyDown(KeyCode.Escape))
+        //{
+        //    pauseUi.SetActive(!pauseUi.activeSelf);
+        //    if (pauseUi.activeSelf)
+        //        Time.timeScale = 0;
+        //    else
+        //        Time.timeScale = 1;
+        //}
     }
 
     public void ClosePausePanel()
     {
-        pauseUi.SetActive(false);
-        Time.timeScale = 1;
+        //pauseUi.SetActive(false);
+        //Time.timeScale = 1;
     }
 
     public void GameClear()
     {
-        StageWorldSelectData.curStageWorld.isClear = true;
         LoadingSceneManager.LoadScene(1);
     }
 

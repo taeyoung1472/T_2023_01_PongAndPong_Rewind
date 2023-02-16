@@ -31,9 +31,10 @@ public class TransformRecord : RecordObject
         SaveRigidbodyData();
     }
 
-    public void Start()
+    public override void Init()
     {
         Register();
+        rb.constraints = rbConstraints;
     }
 
     private void SaveRigidbodyData()
@@ -41,6 +42,7 @@ public class TransformRecord : RecordObject
         rb = GetComponent<Rigidbody>();
 
         rbConstraints = rb.constraints;
+        rb.constraints = RigidbodyConstraints.FreezeAll;
     }
 
     public override void OnRewindUpdate()
@@ -73,8 +75,6 @@ public class TransformRecord : RecordObject
 
         if (isRecordScale)
             GenerateList<Vector3>(ref scaleList, transform.localScale);
-
-        RewindManager.Instance.RegistRecorder(this);
     }
 
     public override void DeRegister()

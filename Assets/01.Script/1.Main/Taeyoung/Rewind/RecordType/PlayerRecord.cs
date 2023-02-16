@@ -10,15 +10,24 @@ public class PlayerRecord : TransformRecord
     private List<Sprite> spriteList;
     private List<bool> flipList;
 
-    PlayerInput playerInput;
+    [SerializeField] private List<MonoBehaviour> enableList;
+    [SerializeField] private CharacterController characterController;
+
+    public override void Init()
+    {
+        Register();
+    }
 
     public override void InitOnPlay()
     {
         base.InitOnPlay();
 
-        if(playerInput== null)
-            playerInput = GetComponent<PlayerInput>();
-        playerInput.enabled = true;
+        foreach (var item in enableList)
+        {
+            item.enabled = true;
+        }
+
+        characterController.enabled = true;
         animator.enabled = true;
     }
 
@@ -26,9 +35,12 @@ public class PlayerRecord : TransformRecord
     {
         base.InitOnRewind();
 
-        if (playerInput == null)
-            playerInput = GetComponent<PlayerInput>();
-        playerInput.enabled = false;
+        foreach (var item in enableList)
+        {
+            item.enabled = false;
+        }
+
+        characterController.enabled = false;
         animator.enabled = false;
     }
 
@@ -39,6 +51,8 @@ public class PlayerRecord : TransformRecord
         GenerateList<Sprite>(ref spriteList, spriteRenderer.sprite);
 
         GenerateList<bool>(ref flipList, spriteRenderer.transform.localScale.x > 0 ? true : false);
+
+        RewindManager.Instance.Register(this);
     }
 
     public override void Recorde(int index)
@@ -54,6 +68,6 @@ public class PlayerRecord : TransformRecord
         base.ApplyData(index, nextIndexDiff);
 
         spriteRenderer.sprite = spriteList[index];
-        spriteRenderer.transform.localScale = flipList[index] ? Vector3.one : new Vector3(-1, 1, 1);
+        spriteRenderer.transform.localScale = flipList[index] ? Vector3.one * 0.5f : new Vector3(-1, 1, 1) * 0.5f;
     }
 }
