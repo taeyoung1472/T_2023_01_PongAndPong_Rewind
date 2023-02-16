@@ -3,7 +3,7 @@ public enum IconType
 {
     None,
     Researcher,
-    Potal,
+    Portal,
     Trader,
 
 }

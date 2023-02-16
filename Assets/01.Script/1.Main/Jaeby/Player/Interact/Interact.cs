@@ -19,12 +19,17 @@ public abstract class Interact : MonoBehaviour
         _player = player;
         ChildInteractStart();
     }
-    public void InteractEnd()
+
+    public void InteractEnd(bool interactExit)
     {
         ChildInteractEnd();
-
-        if (_chainInteract == null)
+        if(interactExit)
             _player.PlayerActionExit(PlayerActionType.Interact);
+    }
+
+    public void PlayerInteractActionExit()
+    {
+        _player.PlayerActionExit(PlayerActionType.Interact);
     }
 
     protected abstract void ChildInteractEnd();

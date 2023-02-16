@@ -8,7 +8,7 @@ public class DialogInteract : Interact
     [SerializeField]
     private DialogDataSO _curDialogData = null;
     [SerializeField]
-    private List<DialogOption> _dialogOptions = new List<DialogOption>();
+    private List<DialogOptionDataSO> _dialogOptions = new List<DialogOptionDataSO>();
     [SerializeField]
     private GameObject _doInteractIcon = null;
     private NPC _myNPC = null;
@@ -32,7 +32,7 @@ public class DialogInteract : Interact
         if (_curDialogData == null)
             return;
         InteractExit();
-        DialogManager.Instance.DialogStart(_myNPC.npcData, this, _curDialogData, _dialogOptions,
+        bool result = DialogManager.Instance.DialogStart(_myNPC.npcData, this, _curDialogData, _dialogOptions,
             () =>
             {
                 if (_dialogOptions.Count == 0)
@@ -45,6 +45,10 @@ public class DialogInteract : Interact
                 }
             }
             );
+        if (result == false)
+        {
+            InteractEnd(true);
+        }
     }
 
     public void DialogChange(DialogDataSO data)

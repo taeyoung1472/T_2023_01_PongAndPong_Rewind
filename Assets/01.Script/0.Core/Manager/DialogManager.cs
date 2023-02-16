@@ -14,6 +14,13 @@ public class DialogManager : MonoSingleTon<DialogManager>
     private StringBuilder _sb = null;
 
     [SerializeField]
+    private DialogOptionManager _dialogOptionEventManager = null;
+
+    [SerializeField]
+    private float _dialogCooltime = 0.6f;
+    private bool _dialogLock = false;
+
+    [SerializeField]
     private GameObject _dialogCanvas = null;
     [SerializeField]
     private TextMeshProUGUI _nameText = null;
@@ -22,13 +29,15 @@ public class DialogManager : MonoSingleTon<DialogManager>
     [SerializeField]
     private TextMeshProUGUI _dialogText = null;
     [SerializeField]
-    private GameObject _optionPrefab = null;
+    private DialogOptionUI _optionPrefab = null;
     [SerializeField]
     private Transform _optionParentTrm = null;
     [SerializeField]
     private DesignDataSO _designDataSO = null;
 
     private List<GameObject> _curOptions = new List<GameObject>();
+    private NPCData _curNPCData = null;
+    private DialogInteract _curDialogInteract = null;
 
     private void Start()
     {
@@ -36,19 +45,28 @@ public class DialogManager : MonoSingleTon<DialogManager>
         _dialogCanvas.SetActive(false);
     }
 
-    public void DialogStart(NPCData npcData, DialogInteract dialogInteract, DialogDataSO data, List<DialogOption> dialogOptions, Action Callback = null)
+    public void DialogForceExit()
     {
-        if (_excuting)
-        {
-            StopCoroutine(_dialogCoroutine);
-            _excuting = false;
-            _input = false;
-        }
+        StopCoroutine(_dialogCoroutine);
+        if (_curDialogInteract != null)
+            _curDialogInteract.InteractEnd(true);
+        for (int i = 0; i < _curOptions.Count; i++)
+            Destroy(_curOptions[i]);
+        _curOptions.Clear();
+        DialogEnd();
+    }
+
+    public bool DialogStart(NPCData npcData, DialogInteract dialogInteract, DialogDataSO data, List<DialogOptionDataSO> dialogOptions, Action Callback = null)
+    {
+        if (_dialogLock)
+            return false;
+
         if (npcData != null)
         {
             _nameText.SetText(npcData.npcName);
             _titleText.SetText("< " + _designDataSO.GetTitle(npcData.iconType) + " >");
             _titleText.color = _designDataSO.GetColor(npcData.npcType);
+            _curNPCData = npcData;
         }
         else
         {
@@ -57,17 +75,31 @@ public class DialogManager : MonoSingleTon<DialogManager>
         }
 
         _dialogCanvas.SetActive(true);
+        _curDialogInteract = dialogInteract;
         _dialogCoroutine = StartCoroutine(DialogCoroutine(dialogInteract, data, dialogOptions, Callback));
+        return true;
     }
 
     private void DialogEnd()
     {
         _dialogText.SetText("");
         _excuting = false;
+        _input = false;
+        _curNPCData = null;
+        _curDialogInteract = null;
         _dialogCanvas.SetActive(false);
+        if(_dialogLock == false)
+            StartCoroutine(DialogCooltimeCoroutine());
     }
 
-    private IEnumerator DialogCoroutine(DialogInteract dialogInteract, DialogDataSO data, List<DialogOption> dialogOptions, Action Callback = null)
+    private IEnumerator DialogCooltimeCoroutine()
+    {
+        _dialogLock = true;
+        yield return new WaitForSeconds(_dialogCooltime);
+        _dialogLock = false;
+    }
+
+    private IEnumerator DialogCoroutine(DialogInteract dialogInteract, DialogDataSO data, List<DialogOptionDataSO> dialogOptions, Action Callback = null)
     {
         _excuting = true;
         _sb.Clear();
@@ -95,27 +127,42 @@ public class DialogManager : MonoSingleTon<DialogManager>
         {
             for (int i = 0; i < dialogOptions.Count; i++)
             {
-                Button button = Instantiate(_optionPrefab, _optionParentTrm).GetComponent<Button>();
-                _curOptions.Add(button.gameObject);
-                button.onClick.AddListener(
-                    () =>
-                    {
-                        dialogOptions[i].ExcuteAction?.Invoke();
-                        for (int i = 0; i < _curOptions.Count; i++)
-                            Destroy(_curOptions[i]);
-                        _curOptions.Clear();
-                        dialogInteract.InteractEnd();
-                        DialogEnd();
-                    });
+                ButtonSet(i, dialogInteract, dialogOptions);
             }
         }
         else
         {
-            dialogInteract.InteractEnd();
+            dialogInteract.InteractEnd(true);
             DialogEnd();
         }
 
         Callback?.Invoke();
+    }
+
+    private void ButtonSet(int index, DialogInteract dialogInteract, List<DialogOptionDataSO> dialogOptions)
+    {
+        DialogOptionUI optionUI = Instantiate(_optionPrefab, _optionParentTrm);
+        Sprite icon = dialogOptions[index].icon;
+        if (icon == null)
+            icon = _dialogOptionEventManager.DefaultIcon;
+        optionUI.Init(icon, dialogOptions[index].explainText, () =>
+        {
+            for (int i = 0; i < _curOptions.Count; i++)
+                Destroy(_curOptions[i]);
+            _curOptions.Clear();
+            if (dialogOptions[index]._nextDialogData != null)
+            {
+                DialogDataSO dataSO = dialogOptions[index]._nextDialogData;
+                DialogStart(_curNPCData, dialogInteract, dataSO, dialogOptions[index].dialogOptions, null);
+            }
+            else
+            {
+                dialogInteract.InteractEnd(dialogOptions[index].actionExit);
+                DialogEnd();
+            }
+            _dialogOptionEventManager.GetEvent(dialogOptions[index].eventKey)?.Invoke();
+        });
+        _curOptions.Add(optionUI.gameObject);
     }
 
     private void Update()

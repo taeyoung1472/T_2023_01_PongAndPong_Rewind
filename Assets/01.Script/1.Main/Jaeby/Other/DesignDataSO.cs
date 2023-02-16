@@ -7,11 +7,11 @@ public class DesignDataSO : ScriptableObject
 {
     [Header("아이콘")]
     public Sprite researcherIcon = null;
-    public Sprite potalIcon = null;
+    public Sprite portalIcon = null;
     public Sprite traderIcon = null;
     [Header("색깔")]
     public Color nomalColor = Color.white;
-    public Color potalColor = Color.white;
+    public Color portalColor = Color.white;
     public Color specialColor = Color.white;
 
     public Sprite GetIcon(IconType type)
@@ -22,8 +22,8 @@ public class DesignDataSO : ScriptableObject
                 return null;
             case IconType.Researcher:
                 return researcherIcon;
-            case IconType.Potal:
-                return potalIcon;
+            case IconType.Portal:
+                return portalIcon;
             case IconType.Trader:
                 return traderIcon;
             default:
@@ -40,7 +40,7 @@ public class DesignDataSO : ScriptableObject
                 return null;
             case IconType.Researcher:
                 return "연구원";
-            case IconType.Potal:
+            case IconType.Portal:
                 return "포탈 관리인";
             case IconType.Trader:
                 return "상인";
@@ -58,8 +58,8 @@ public class DesignDataSO : ScriptableObject
                 break;
             case NPCType.Nomal:
                 return nomalColor;
-            case NPCType.Potal:
-                return potalColor;
+            case NPCType.Portal:
+                return portalColor;
             case NPCType.Special:
                 return specialColor;
             default:

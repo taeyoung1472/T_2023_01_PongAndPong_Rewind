@@ -3,6 +3,6 @@ public enum NPCType
 {
     None,
     Nomal,
-    Potal,
+    Portal,
     Special
 }
