@@ -10,8 +10,26 @@ public abstract class Interact : MonoBehaviour
     [SerializeField]
     protected ChainInteract _chainInteract = null;
 
-    public abstract void InteractStart(Player player);
-    public abstract void InteractEnd(Player player);
+    protected Player _player = null;
+
+    public void InteractStart(Player player)
+    {
+        if (_interactable == false)
+            return;
+        _player = player;
+        ChildInteractStart();
+    }
+    public void InteractEnd()
+    {
+        ChildInteractEnd();
+
+        if (_chainInteract == null)
+            _player.PlayerActionExit(PlayerActionType.Interact);
+    }
+
+    protected abstract void ChildInteractEnd();
+
+    protected abstract void ChildInteractStart();
 
     public virtual void InteractEnter()
     {

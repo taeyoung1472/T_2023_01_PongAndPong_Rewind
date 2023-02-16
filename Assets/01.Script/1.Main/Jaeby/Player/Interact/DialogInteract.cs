@@ -8,38 +8,40 @@ public class DialogInteract : Interact
     [SerializeField]
     private DialogDataSO _curDialogData = null;
     [SerializeField]
+    private List<DialogOption> _dialogOptions = new List<DialogOption>();
+    [SerializeField]
     private GameObject _doInteractIcon = null;
+    private NPC _myNPC = null;
 
     private void Start()
     {
         if (_doInteractIcon != null)
             _doInteractIcon.SetActive(false);
+        _myNPC ??= GetComponentInParent<NPC>();
     }
 
-    public override void InteractEnd(Player player)
+    protected override void ChildInteractEnd()
     {
         _curDialogData = _curDialogData.nextData;
         if (_curDialogData != null)
             InteractEnter();
-
-        if(_chainInteract == null)
-            player.PlayerActionExit(PlayerActionType.Interact);
     }
 
-    public override void InteractStart(Player player)
+    protected override void ChildInteractStart()
     {
-        if (_interactable == false || _curDialogData == null)
+        if (_curDialogData == null)
             return;
         InteractExit();
-        player.VeloCityResetImm(true, true);
-        DialogManager.Instance.DialogStart(_curDialogData,
+        DialogManager.Instance.DialogStart(_myNPC.npcData, this, _curDialogData, _dialogOptions,
             () =>
             {
-                InteractEnd(player);
-                if (_chainInteract != null)
+                if (_dialogOptions.Count == 0)
                 {
-                    _chainInteract.Init(player);
-                    _chainInteract.InteractStart();
+                    if (_chainInteract != null)
+                    {
+                        _chainInteract.Init(_player);
+                        _chainInteract.InteractStart();
+                    }
                 }
             }
             );

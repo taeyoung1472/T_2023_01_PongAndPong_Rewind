@@ -32,6 +32,24 @@ public class DesignDataSO : ScriptableObject
         return null;
     }
 
+    public string GetTitle(IconType type)
+    {
+        switch (type)
+        {
+            case IconType.None:
+                return null;
+            case IconType.Researcher:
+                return "연구원";
+            case IconType.Potal:
+                return "포탈 관리인";
+            case IconType.Trader:
+                return "상인";
+            default:
+                break;
+        }
+        return null;
+    }
+
     public Color GetColor(NPCType type)
     {
         switch (type)

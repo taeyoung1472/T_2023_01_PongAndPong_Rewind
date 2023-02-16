@@ -7,13 +7,8 @@ using UnityEngine.UI;
 public class NPC : MonoBehaviour
 {
     [SerializeField]
-    private NPCType _npcType = NPCType.None;
-    [SerializeField]
-    private IconType _iconType = IconType.None;
-    [SerializeField]
-    private string _name = "";
-    [SerializeField]
-    private string _title = "";
+    private NPCData _npcData = null;
+    public NPCData npcData => _npcData;
 
     [SerializeField]
     private TextMeshProUGUI _nameText = null;
@@ -26,14 +21,17 @@ public class NPC : MonoBehaviour
 
     private void OnValidate()
     {
+        if (_npcData == null || _designDataSO == null)
+            return;
+
         if (_nameText != null)
-            _nameText.SetText(_name);
+            _nameText.SetText(_npcData.npcName);
         if (_titleText != null)
         {
-            _titleText.color = _designDataSO.GetColor(_npcType);
-            _titleText.SetText("< " + _title + " >");
+            _titleText.color = _designDataSO.GetColor(_npcData.npcType);
+            _titleText.SetText("< " + _designDataSO.GetTitle(_npcData.iconType) + " >");
         }
         if (_iconImage != null)
-            _iconImage.sprite = _designDataSO.GetIcon(_iconType);
+            _iconImage.sprite = _designDataSO.GetIcon(_npcData.iconType);
     }
 }

@@ -66,7 +66,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: "\uBA38\uB3C5"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a640ec24d81d85546b8e0fa2878e98d0, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: 4c3bf98fc5bff84429d45efcebdf00c0, type: 2}
@@ -201,7 +201,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: <  >
+  m_text: "< \uC5F0\uAD6C\uC6D0 >"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a640ec24d81d85546b8e0fa2878e98d0, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: 4c3bf98fc5bff84429d45efcebdf00c0, type: 2}
@@ -211,7 +211,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4286054229
-  m_fontColor: {r: 0.33490568, g: 1, b: 0.46526742, a: 1}
+  m_fontColor: {r: 0.33333334, g: 1, b: 0.46666667, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -305,7 +305,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -6.3, y: 2.1}
+  m_AnchoredPosition: {x: -8, y: 2.1}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 1, y: 0}
 --- !u!222 &778640080
@@ -336,7 +336,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: E
+  m_text: F
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a640ec24d81d85546b8e0fa2878e98d0, type: 2}
   m_sharedMaterial: {fileID: 5639167103287336066, guid: a640ec24d81d85546b8e0fa2878e98d0, type: 2}
@@ -749,7 +749,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1953735748650869836}
   - component: {fileID: 1953735748650869843}
-  - component: {fileID: 1953735748650869842}
   m_Layer: 0
   m_Name: InteractCollider
   m_TagString: Interact
@@ -785,21 +784,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.5, y: 4.45, z: 4.25}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1953735748650869842
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1953735748650869837}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4dc97b6881106e0439fe6074b28c3b9d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _chainInteract: {fileID: 0}
-  _curDialogData: {fileID: 11400000, guid: f4672696a7bc6a147aba174c874ccbb1, type: 2}
-  _doInteractIcon: {fileID: 1888761825}
 --- !u!1 &1953735749126373200
 GameObject:
   m_ObjectHideFlags: 0
@@ -842,6 +826,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1953735749130634691}
   - component: {fileID: 2010300320882635426}
+  - component: {fileID: 4007527252611428768}
   m_Layer: 0
   m_Name: DialogNPC_Base
   m_TagString: Untagged
@@ -879,14 +864,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 778eca16ddbeaba4ab289ab0ec6b6d5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _npcType: 0
-  _iconType: 0
-  _name: 
-  _title: 
+  _npcData: {fileID: 11400000, guid: 133bc080ad8e20d4aa265ff789972eb1, type: 2}
   _nameText: {fileID: 30457038}
   _titleText: {fileID: 290040336}
   _iconImage: {fileID: 4352843993641174406}
   _designDataSO: {fileID: 11400000, guid: 90372e644acc51b4492cdf9231afd961, type: 2}
+--- !u!114 &4007527252611428768
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1953735749130634556}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4dc97b6881106e0439fe6074b28c3b9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _chainInteract: {fileID: 0}
+  _curDialogData: {fileID: 11400000, guid: f4672696a7bc6a147aba174c874ccbb1, type: 2}
+  _dialogOptions: []
+  _doInteractIcon: {fileID: 1888761825}
 --- !u!1 &5693677516637467425
 GameObject:
   m_ObjectHideFlags: 0
