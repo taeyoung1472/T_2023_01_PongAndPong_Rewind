@@ -12,12 +12,14 @@ public class DialogInteract : Interact
     [SerializeField]
     private GameObject _doInteractIcon = null;
     private NPC _myNPC = null;
+    protected Animator _animator = null;
 
     private void Start()
     {
         if (_doInteractIcon != null)
             _doInteractIcon.SetActive(false);
         _myNPC ??= GetComponentInParent<NPC>();
+        _animator ??= GetComponentInParent<Animator>();
     }
 
     protected override void ChildInteractEnd()
@@ -48,6 +50,14 @@ public class DialogInteract : Interact
         if (result == false)
         {
             InteractEnd(true);
+        }
+        else
+        {
+            if(_animator != null)
+            {
+                _animator.Play("DialogStart");
+                _animator.Update(0);
+            }
         }
     }
 
