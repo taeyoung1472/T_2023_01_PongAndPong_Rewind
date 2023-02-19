@@ -1,9 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public abstract class Interact : MonoBehaviour
 {
+    [SerializeField]
+    private UnityEvent OnInteractStart = null;
+    [SerializeField]
+    private UnityEvent OnInteractEnd = null;
+
     protected bool _interactable = true;
     public bool Interactable { get => _interactable; set => _interactable = value; }
 
@@ -18,6 +24,7 @@ public abstract class Interact : MonoBehaviour
             return;
         _player = player;
         ChildInteractStart();
+        OnInteractStart?.Invoke();
     }
 
     public void InteractEnd(bool interactExit)
@@ -25,11 +32,7 @@ public abstract class Interact : MonoBehaviour
         ChildInteractEnd();
         if(interactExit)
             _player.PlayerActionExit(PlayerActionType.Interact);
-    }
-
-    public void PlayerInteractActionExit()
-    {
-        _player.PlayerActionExit(PlayerActionType.Interact);
+        OnInteractEnd?.Invoke();
     }
 
     protected abstract void ChildInteractEnd();

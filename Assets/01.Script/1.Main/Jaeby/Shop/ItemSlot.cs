@@ -3,11 +3,16 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static Define;
 
 public class ItemSlot : MonoBehaviour
 {
-    public Image _iconImage = null;
-    public TextMeshProUGUI _itemNameText = null;
+    [SerializeField]
+    private Image _iconImage = null;
+    [SerializeField]
+    private TextMeshProUGUI _itemNameText = null;
+    [SerializeField]
+    private TextMeshProUGUI _itemPriceText = null;
     private ItemData _data = null;
     public ItemData Data => _data;
 
@@ -15,6 +20,17 @@ public class ItemSlot : MonoBehaviour
     {
         _data = data;
         _iconImage.sprite = data.icon;
-        _itemNameText.SetText(_data.itemName);
+        _itemNameText.SetText(data.itemName);
+        _itemPriceText.SetText(data.price.ToString());
+    }
+
+    public void TryBuy()
+    {
+        if(_data.price <= player.playerJsonData.money)
+        {
+            player.playerJsonData.money -= _data.price;
+            player.playerInventory.AddItem(_data);
+            player.SaveJsonData();
+        }
     }
 }

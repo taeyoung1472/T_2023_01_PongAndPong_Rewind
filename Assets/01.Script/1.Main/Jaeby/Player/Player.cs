@@ -32,6 +32,7 @@ public class Player : MonoBehaviour
     #endregion
 
     private PlayerJsonData _playerJsonData = null;
+    public PlayerJsonData playerJsonData => _playerJsonData;
     private PlayerInventory _playerInventory = null;
     public PlayerInventory playerInventory => _playerInventory;
 
@@ -60,6 +61,8 @@ public class Player : MonoBehaviour
         string path = Application.dataPath + "/Save/JsonData.json";
         string json = File.ReadAllText(path);
         _playerJsonData = JsonUtility.FromJson<PlayerJsonData>(json);
+        if (_playerJsonData == null)
+            _playerJsonData = new PlayerJsonData();
         _playerInventory = GetComponent<PlayerInventory>();
         _playerInventory.LoadInventory();
     }
@@ -179,5 +182,10 @@ public class Player : MonoBehaviour
         _collisionFlag = _characterController.Move((_moveAmount + _extraMoveAmount + 
             ((IsGrounded == false && _gravityModule.UseGravity) ? _gravityModule.GetGravity() : Vector3.zero))
             * Time.deltaTime);
+    }
+
+    public void PlayerInteractActionExit()
+    {
+        PlayerActionExit(PlayerActionType.Interact);
     }
 }
