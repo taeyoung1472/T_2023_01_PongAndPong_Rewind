@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using System.Linq;
+using System.IO;
 
 public class Player : MonoBehaviour
 {
@@ -30,6 +31,10 @@ public class Player : MonoBehaviour
     public PlayerAttackSO playerAttackSO => _playerAttackSO;
     #endregion
 
+    private PlayerJsonData _playerJsonData = null;
+    private PlayerInventory _playerInventory = null;
+    public PlayerInventory playerInventory => _playerInventory;
+
     private CharacterController _characterController = null;
     public CharacterController characterController => _characterController;
     private Vector3 _moveAmount = Vector3.zero;
@@ -40,6 +45,7 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
+        LoadJson();
         List<PlayerAction> tempActions = new List<PlayerAction>(GetComponents<PlayerAction>());
         _playerActions = (from action in tempActions orderby action.ActionType ascending select action).ToList();
         _characterController = GetComponent<CharacterController>();
@@ -47,6 +53,24 @@ public class Player : MonoBehaviour
         _playerAnimation = transform.Find("AgentRenderer").GetComponent<PlayerAnimation>();
         _playerRenderer = _playerAnimation.GetComponent<PlayerRenderer>();
         _gravityModule = GetComponent<GravityModule>();
+    }
+
+    private void LoadJson()
+    {
+        string path = Application.dataPath + "/Save/JsonData.json";
+        string json = File.ReadAllText(path);
+        _playerJsonData = JsonUtility.FromJson<PlayerJsonData>(json);
+        _playerInventory = GetComponent<PlayerInventory>();
+        _playerInventory.LoadInventory();
+    }
+
+    [ContextMenu("데이터 세이브")]
+    public void SaveJsonData()
+    {
+        string path = Application.dataPath + "/Save/JsonData.json";
+        string json = JsonUtility.ToJson(_playerJsonData);
+        File.WriteAllText(path, json);
+        _playerInventory.SaveInventory();
     }
 
     private void Update()
