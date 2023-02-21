@@ -30,7 +30,6 @@ public class PlayerJump : PlayerAction
         if (_locked || _curJumpCount >= _player.playerMovementSO.jumpCount)
             return;
 
-        _player.GravityModule.UseGravity = false;
         _jumpEndCheck = false;
         _excuting = true;
         _curJumpCount++;
@@ -59,6 +58,7 @@ public class PlayerJump : PlayerAction
         float time = 1f;
         while (time > 0f)
         {
+            //_player.GravityModule.GravityScale = _player.GravityModule.OriginGravityScale;
             //sqrt(1 - Math.pow(x - 1, 2));
             Vector2 final = new Vector2(Mathf.Sqrt(1 - (float)Math.Pow(time - 1, 2)) * dir.x * jumpPower, Mathf.Sqrt(1 - (float)Math.Pow(time - 1, 2)) * dir.y * jumpPower);
             //Vector2 final = new Vector2(dir.x * jumpPower * (time * Mathf.PI) * 0.5f, dir.y * jumpPower * (time * Mathf.PI) * 0.5f);
@@ -74,7 +74,6 @@ public class PlayerJump : PlayerAction
         if (_jumpEndCheck)
             return;
 
-        _player.GravityModule.UseGravity = true;
         _jumpEndCheck = true;
         _excuting = false;
         if (_jumpCoroutine != null)

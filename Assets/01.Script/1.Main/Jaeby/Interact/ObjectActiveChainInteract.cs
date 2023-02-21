@@ -2,14 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StageSelectPanelActiveChainInteract : ChainInteract
+public class ObjectActiveChainInteract : ChainInteract
 {
     [SerializeField]
     private GameObject _panelObj = null;
 
-    public override void InteractEnd()
+    public override void ChildInteractEnd()
     {
-        _player.PlayerActionExit(PlayerActionType.Interact);
+        _panelObj.SetActive(false);
     }
 
     public override void InteractStart()

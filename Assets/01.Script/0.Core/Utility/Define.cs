@@ -4,6 +4,8 @@ using Object = UnityEngine.Object;
 
 public static class Define
 {
+    private static Player _player = null;
+    public static Player player { get { return SearchByClass<Player>(ref _player); } }
     private static Transform playerTrm;
     private static Camera mainCam;
     public static Transform PlayerTrm { get { return SearchByName<Transform>(ref playerTrm, "Player"); } }
