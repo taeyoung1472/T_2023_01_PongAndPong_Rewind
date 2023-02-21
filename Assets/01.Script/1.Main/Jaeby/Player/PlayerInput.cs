@@ -24,13 +24,25 @@ public class PlayerInput : MonoBehaviour
     public Vector2 InputVectorNorm => _inputVector.normalized;
     public Vector2 InputVector => _inputVector;
 
+    private Player _player = null;
+
     private void Awake()
     {
+        _player = GetComponent<Player>();
         KeyManager.LoadKey();
     }
 
     private void Update()
     {
+        if (_player == null)
+            return;
+        if(Input.GetKeyDown(KeyCode.F))
+        {
+            PlayerInteract playerInteract = _player.GetPlayerAction(PlayerActionType.Interact) as PlayerInteract;
+            if (playerInteract.TryInteract())
+                return;
+        }
+
         int x = 0, y = 0;
         if (Input.GetKey(KeyManager.keys[InputType.Right]))
             x++;
@@ -43,8 +55,6 @@ public class PlayerInput : MonoBehaviour
         _inputVector = new Vector2(x, y);
         OnMoveInput?.Invoke(new Vector2(x, y));
 
-        if (Input.GetKeyDown(KeyManager.keys[InputType.Attack]))
-            OnInteract?.Invoke();
         if (Input.GetKeyDown(KeyManager.keys[InputType.Jump]))
             OnJumpStart?.Invoke();
         if (Input.GetKeyUp(KeyManager.keys[InputType.Jump]))

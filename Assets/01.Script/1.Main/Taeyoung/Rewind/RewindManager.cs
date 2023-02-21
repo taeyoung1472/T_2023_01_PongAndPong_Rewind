@@ -116,7 +116,9 @@ public class RewindManager : MonoSingleTon<RewindManager>
 
     private StageArea curStageArea;
     private StageController stageController;
+    
 
+    //매니저 초기화 
     [ContextMenu("Init")]
     public void Init()
     {

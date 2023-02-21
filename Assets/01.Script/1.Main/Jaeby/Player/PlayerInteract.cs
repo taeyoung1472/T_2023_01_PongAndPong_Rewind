@@ -11,7 +11,7 @@ public class PlayerInteract : PlayerAction
         if(other.CompareTag("Interact"))
         {
             Debug.Log("´ê¾Ò¾î");
-            _curInteract = other.GetComponent<Interact>();
+            _curInteract = other.GetComponentInParent<Interact>();
             _curInteract.InteractEnter();
         }
     }
@@ -23,15 +23,17 @@ public class PlayerInteract : PlayerAction
         _curInteract = null;
     }
 
-    public void TryInteract()
+    public bool TryInteract()
     {
         if (_curInteract == null || _locked)
-            return;
+            return false;
+        _excuting = true;
         _player.PlayerInput.InputVectorReset();
+        _player.VeloCityResetImm(true, true);
         _player.PlayerInput.enabled = false;
         _player.PlayerAnimation.FallOrIdleAnimation(_player.IsGrounded);
         _curInteract.InteractStart(_player);
-        _excuting = true;
+        return true;
     }
 
     public override void ActionExit()
