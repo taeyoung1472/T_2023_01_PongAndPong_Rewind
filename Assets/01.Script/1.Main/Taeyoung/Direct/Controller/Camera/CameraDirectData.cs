@@ -15,7 +15,6 @@ public class CameraDirectData : ScriptableObject
     public AnimationCurve shakeCurve = AnimationCurve.Linear(0, 1, 1, 1);
 
     // Zoom
-    public float zoomValue = 1;
     public AnimationCurve zoomCurve = AnimationCurve.Linear(0, 1, 1, 1);
 
     // Rotate
