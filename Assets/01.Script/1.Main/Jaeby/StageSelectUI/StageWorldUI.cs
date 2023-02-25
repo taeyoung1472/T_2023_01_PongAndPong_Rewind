@@ -32,19 +32,34 @@ public class StageWorldUI : MonoBehaviour
         }
     }
 
-    public StageUnitUI MouseUp(Color deAccentColor, float sizeDownAmount, float sizeChangeDuration, Color accentColor, float sizeUpAmount)
+    public StageUnitUI MouseUp(Color deAccentColor, float sizeDownAmount, float sizeChangeDuration, Color accentColor, float sizeUpAmount, StageUnitUI ui = null)
     {
         int minIndex = 0;
-        float minX = Mathf.Abs((Screen.currentResolution.width / 2) - Mathf.Abs(_stages[0].transform.position.x));
-        for (int i = 1; i < _stages.Count; i++)
+        if (ui == null)
         {
-            float curX = Mathf.Abs((Screen.currentResolution.width / 2) - Mathf.Abs(_stages[i].transform.position.x));
-            if (minX > curX)
+            float minX = Mathf.Abs((Screen.currentResolution.width / 2) - Mathf.Abs(_stages[0].transform.position.x));
+            for (int i = 1; i < _stages.Count; i++)
             {
-                minX = curX;
-                minIndex = i;
+                float curX = Mathf.Abs((Screen.currentResolution.width / 2) - Mathf.Abs(_stages[i].transform.position.x));
+                if (minX > curX)
+                {
+                    minX = curX;
+                    minIndex = i;
+                }
             }
         }
+        else
+        {
+            for(int i = 0; i < _stages.Count; i++)
+            {
+                if(ui == _stages[i])
+                {
+                    minIndex = i;
+                    break;
+                }    
+            }
+        }
+
         StageUnitUI targetUI = _stages[minIndex];
         for (int i = 0; i < _stages.Count; i++)
             _stages[i].UIAccent(deAccentColor, sizeDownAmount, sizeChangeDuration);

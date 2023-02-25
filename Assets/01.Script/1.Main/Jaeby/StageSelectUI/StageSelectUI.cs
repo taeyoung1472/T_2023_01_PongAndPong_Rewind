@@ -11,7 +11,8 @@ public class StageSelectUI : MonoBehaviour
 {
     [SerializeField]
     private StageInfoUI _stageInfoUI = null;
-
+    [SerializeField]
+    private GameObject _marker = null;
 
     private ScrollRect _scrollRect = null;
     [SerializeField]
@@ -25,6 +26,7 @@ public class StageSelectUI : MonoBehaviour
     private int _worldIndex = 0;
     private bool _lock = false;
     public bool Lock { get => _lock; set => _lock = value; }
+    private bool _moveLock = false;
 
     private Sequence _worldUIMoveSeq = null;
 
@@ -72,6 +74,7 @@ public class StageSelectUI : MonoBehaviour
     {
         if (_worldUIMoveSeq != null)
             _worldUIMoveSeq.Kill();
+        _moveLock = false;
         _curStageWorld.ResetWorld();
         _curStageWorld.gameObject.SetActive(false);
         _scrollRect.content.anchoredPosition = Vector3.zero;
@@ -111,6 +114,7 @@ public class StageSelectUI : MonoBehaviour
             return;
         }
 
+        if (_moveLock) return;
         if (_curStageWorld != null)
         {
             if (_curStageWorld.gameObject.activeSelf == false)
@@ -128,23 +132,29 @@ public class StageSelectUI : MonoBehaviour
         }
     }
 
-    private void WorldUISet()
+    private void WorldUISet(StageUnitUI ui = null)
     {
+        _moveLock = true;
         _prevStage = _curStage;
-        _curStage = _curStageWorld.MouseUp(_deAccentColor, _sizeDownAmount, _sizeChangeDuration, _accentColor, _sizeUpAmount);
+        _curStage = _curStageWorld.MouseUp(_deAccentColor, _sizeDownAmount, _sizeChangeDuration, _accentColor, _sizeUpAmount, ui);
         if (_worldUIMoveSeq != null)
             _worldUIMoveSeq.Kill();
         _worldUIMoveSeq = DOTween.Sequence();
         float target = _curStage.GetComponent<RectTransform>().anchoredPosition.x * -1f;
         _worldUIMoveSeq.Append(_curStageWorld.GetComponent<RectTransform>().DOAnchorPosX(target, _sizeChangeDuration));
+        _worldUIMoveSeq.AppendCallback(() => { _moveLock = false; });
     }
 
     public void StageSelect(StageUnitUI ui)
     {
-        if(_curStage == ui)
+        if (_curStage == ui)
         {
             _stageInfoUI.gameObject.SetActive(true);
             _stageInfoUI.UISet(ui);
+        }
+        else
+        {
+            WorldUISet(ui);
         }
     }
 }
