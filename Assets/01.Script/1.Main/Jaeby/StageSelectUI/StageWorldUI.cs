@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using System;
+using UnityEngine.UI;
 
 public class StageWorldUI : MonoBehaviour
 {
@@ -11,14 +12,16 @@ public class StageWorldUI : MonoBehaviour
     private string _worldName = "";
     public string WorldName => _worldName;
 
-    private void Awake()
-    {
-        Init();
-    }
-
-    private void Init()
+    public void Init(StageSelectUI ui)
     {
         _stages.AddRange(GetComponentsInChildren<StageUnitUI>());
+        for(int i = 0; i < _stages.Count; i++)
+            Lis(ui, i);
+    }
+
+    private void Lis(StageSelectUI ui, int index)
+    {
+        _stages[index].gameObject.AddComponent<Button>().onClick.AddListener(() => ui.StageSelect(_stages[index]));
     }
 
     public void ResetWorld()
