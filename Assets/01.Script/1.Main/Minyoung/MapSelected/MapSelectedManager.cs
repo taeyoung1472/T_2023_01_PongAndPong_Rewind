@@ -51,4 +51,9 @@ public class MapSelectedManager : MonoBehaviour
         DOTween.KillAll();
         LoadingSceneManager.LoadScene(2);
     }
+
+    public void DDD(Vector2 a)
+    {
+        Debug.Log(a);
+    }
 }
