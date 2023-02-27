@@ -14,7 +14,7 @@ public class PlayerSpawner : RecordObject
     [SerializeField] private Transform rewindPlayerSpawnPos;
     private PlayerRecord rewindPlayer;
 
-    public void Start()
+    public override void Init()
     {
         Register();
     }

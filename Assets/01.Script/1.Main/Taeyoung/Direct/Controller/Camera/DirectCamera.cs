@@ -95,7 +95,7 @@ public class DirectCamera : MonoBehaviour
                         shakeFrequency += direct.data.shakeFrequency * direct.data.shakeCurve.Evaluate(percent);
                         break;
                     case CameraDirectType.Zoom:
-                        zoomValue = zoomValue * direct.data.zoomValue * direct.data.zoomCurve.Evaluate(percent);
+                        zoomValue = zoomValue * direct.data.zoomCurve.Evaluate(percent);
                         break;
                     case CameraDirectType.Rotate:
                         rotateValue += direct.data.rotateValue * direct.data.rotateCurve.Evaluate(percent);
@@ -143,7 +143,7 @@ public class DirectCamera : MonoBehaviour
         x = right - left;
         y = top - bottom;
 
-        float frustumHeight, frustumWidth;
+        float frustumHeight = 0, frustumWidth = 0;
         if (y > x)
         {
             frustumHeight = y + edge;
@@ -164,6 +164,9 @@ public class DirectCamera : MonoBehaviour
 
     public void RemoveFocusObject(Transform trans)
     {
+        if (!focusList.Contains(trans))
+            Debug.LogWarning($"{trans.name} 은 focusList에 없습니다.");
+
         focusList.Remove(trans);
     }
 

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using System.Linq;
+using System.IO;
 
 public class Player : MonoBehaviour
 {
@@ -30,15 +31,22 @@ public class Player : MonoBehaviour
     public PlayerAttackSO playerAttackSO => _playerAttackSO;
     #endregion
 
+    private PlayerJsonData _playerJsonData = null;
+    public PlayerJsonData playerJsonData => _playerJsonData;
+    private PlayerInventory _playerInventory = null;
+    public PlayerInventory playerInventory => _playerInventory;
+
     private CharacterController _characterController = null;
     public CharacterController characterController => _characterController;
     private Vector3 _moveAmount = Vector3.zero;
     private Vector3 _extraMoveAmount = Vector3.zero;
-    public bool IsGrounded => _characterController.isGrounded;
+    public bool IsGrounded => _collisionFlag == CollisionFlags.Below;
+    private CollisionFlags _collisionFlag = CollisionFlags.None;
     private bool _lastGrounded = false;
 
     private void Awake()
     {
+        LoadJson();
         List<PlayerAction> tempActions = new List<PlayerAction>(GetComponents<PlayerAction>());
         _playerActions = (from action in tempActions orderby action.ActionType ascending select action).ToList();
         _characterController = GetComponent<CharacterController>();
@@ -46,6 +54,26 @@ public class Player : MonoBehaviour
         _playerAnimation = transform.Find("AgentRenderer").GetComponent<PlayerAnimation>();
         _playerRenderer = _playerAnimation.GetComponent<PlayerRenderer>();
         _gravityModule = GetComponent<GravityModule>();
+    }
+
+    private void LoadJson()
+    {
+        string path = Application.dataPath + "/Save/JsonData.json";
+        string json = File.ReadAllText(path);
+        _playerJsonData = JsonUtility.FromJson<PlayerJsonData>(json);
+        if (_playerJsonData == null)
+            _playerJsonData = new PlayerJsonData();
+        _playerInventory = GetComponent<PlayerInventory>();
+        _playerInventory.LoadInventory();
+    }
+
+    [ContextMenu("데이터 세이브")]
+    public void SaveJsonData()
+    {
+        string path = Application.dataPath + "/Save/JsonData.json";
+        string json = JsonUtility.ToJson(_playerJsonData);
+        File.WriteAllText(path, json);
+        _playerInventory.SaveInventory();
     }
 
     private void Update()
@@ -151,8 +179,13 @@ public class Player : MonoBehaviour
 
     private void Move()
     {
-        _characterController.Move((_moveAmount + _extraMoveAmount) * Time.deltaTime);
-        if(IsGrounded == false && _gravityModule.UseGravity)
-            _characterController.Move(_gravityModule.GetGravity() * Time.deltaTime);
+        _collisionFlag = _characterController.Move((_moveAmount + _extraMoveAmount + 
+            ((IsGrounded == false && _gravityModule.UseGravity) ? _gravityModule.GetGravity() : Vector3.zero))
+            * Time.deltaTime);
+    }
+
+    public void PlayerInteractActionExit()
+    {
+        PlayerActionExit(PlayerActionType.Interact);
     }
 }

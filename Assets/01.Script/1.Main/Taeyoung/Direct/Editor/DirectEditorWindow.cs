@@ -1,14 +1,15 @@
 using System.Collections.Generic;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 
 public class DirectEditorWindow : EditorWindow
 {
     Vector2 scrollPos;
-    DirectManager directManager;
-    List<DirectUnit> units { get { return directManager.DirectList; } }
+    DirectController directController;
+    List<DirectUnit> units { get { return directController.DirectList; } }
 
-    [MenuItem("Window/Example Editor Window")]
+    [MenuItem("Custom/Direct")]
     public static void ShowWindow()
     {
         GetWindow<DirectEditorWindow>();
@@ -16,12 +17,11 @@ public class DirectEditorWindow : EditorWindow
 
     void OnGUI()
     {
-        directManager = EditorGUILayout.ObjectField("DirectManager", directManager, typeof(DirectManager), true) as DirectManager;
+        directController = EditorGUILayout.ObjectField("DirectController", directController, typeof(DirectController), true) as DirectController;
 
-        if (directManager == null)
+        if (directController == null)
         {
-            directManager = FindObjectOfType<DirectManager>();
-            EditorGUILayout.LabelField("DirectManager 에 값을 할당해 주세요");
+            EditorGUILayout.LabelField("DirectController 에 값을 할당해 주세요");
             return;
         }
         if(units.Count == 0)
@@ -31,9 +31,14 @@ public class DirectEditorWindow : EditorWindow
                 GameObject obj = new GameObject();
                 obj.name = $"Direct Unit";
                 obj.AddComponent<DirectUnit>();
-                obj.transform.SetParent(directManager.transform);
-                directManager.DirectList.Add(obj.GetComponent<DirectUnit>());
+                obj.transform.SetParent(directController.transform);
+                directController.DirectList.Add(obj.GetComponent<DirectUnit>());
             }
+        }
+        if (GUILayout.Button("Save"))
+        {
+            string scenePath = EditorSceneManager.GetActiveScene().path;
+            EditorSceneManager.SaveScene(EditorSceneManager.GetActiveScene(), scenePath);
         }
 
         bool isAppend = false;
@@ -89,8 +94,8 @@ public class DirectEditorWindow : EditorWindow
                     GameObject obj = new GameObject();
                     obj.name = $"Direct Unit";
                     obj.AddComponent<DirectUnit>();
-                    obj.transform.SetParent(directManager.transform);
-                    directManager.DirectList.Insert(i + 1, obj.GetComponent<DirectUnit>());
+                    obj.transform.SetParent(directController.transform);
+                    directController.DirectList.Insert(i + 1, obj.GetComponent<DirectUnit>());
                 }
                 if (GUILayout.Button("Remove Item") && units.Count != 0)
                 {

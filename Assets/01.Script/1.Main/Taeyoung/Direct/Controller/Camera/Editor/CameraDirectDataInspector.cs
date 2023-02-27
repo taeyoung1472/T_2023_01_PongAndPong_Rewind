@@ -34,7 +34,6 @@ public class CameraDirectDataInspector : Editor
         if (data.typeList.Contains(CameraDirectType.Zoom))
         {
             GUILayout.Label("[Zoom]", EditorStyles.boldLabel);
-            data.zoomValue = EditorGUILayout.FloatField("줌 배율", data.zoomValue);
             data.zoomCurve = EditorGUILayout.CurveField("커브", data.zoomCurve);
         }
 

@@ -17,18 +17,32 @@ public class PlayerInput : MonoBehaviour
     private UnityEvent OnAttack = null;
     [SerializeField]
     private UnityEvent OnWeaponChange = null;
+    [SerializeField]
+    private UnityEvent OnInteract = null;
 
     private Vector2 _inputVector = Vector2.zero;
     public Vector2 InputVectorNorm => _inputVector.normalized;
     public Vector2 InputVector => _inputVector;
 
+    private Player _player = null;
+
     private void Awake()
     {
+        _player = GetComponent<Player>();
         KeyManager.LoadKey();
     }
 
     private void Update()
     {
+        if (_player == null)
+            return;
+        if(Input.GetKeyDown(KeyCode.F))
+        {
+            PlayerInteract playerInteract = _player.GetPlayerAction(PlayerActionType.Interact) as PlayerInteract;
+            if (playerInteract.TryInteract())
+                return;
+        }
+
         int x = 0, y = 0;
         if (Input.GetKey(KeyManager.keys[InputType.Right]))
             x++;
@@ -51,5 +65,11 @@ public class PlayerInput : MonoBehaviour
             OnAttack?.Invoke();
         if (Input.GetKeyDown(KeyManager.keys[InputType.WeaponChange]))
             OnWeaponChange?.Invoke();
+    }
+
+    public void InputVectorReset()
+    {
+        _inputVector = Vector2.zero;
+        OnMoveInput?.Invoke(_inputVector);
     }
 }

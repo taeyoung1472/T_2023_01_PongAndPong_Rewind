@@ -8,5 +8,6 @@ public enum PlayerActionType
     Dash,
     WallGrab,
     Attack,
+    Interact,
     Size
 }
