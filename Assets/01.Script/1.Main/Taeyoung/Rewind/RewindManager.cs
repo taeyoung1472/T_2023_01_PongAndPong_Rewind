@@ -4,12 +4,23 @@ using UnityEngine;
 
 public class RewindManager : MonoSingleTon<RewindManager>
 {
-    [SerializeField] private int playTime;
-    [SerializeField] private float recordeTurm = 0.1f;
+    // 플레이 시간
+    private int maxPlayTime;
+    private int curStagePlayTime;
+
+    // 기록 감도
+    private readonly float recordeTurm = 0.1f;
+
     public float RecordeTurm { get { return recordeTurm; } }
 
+    // 시간 체크용
     private float timer = 0.0f;
-    
+
+    // Volume
+    [Header("[Volume]")]
+    [SerializeField] private GameObject defaultVolume;
+    [SerializeField] private GameObject rewindVolume;
+
     // Index
     private int curRecordingIndex;
     public int CurRecordingIndex
@@ -17,20 +28,84 @@ public class RewindManager : MonoSingleTon<RewindManager>
         get { return curRecordingIndex; }
         set
         {
+            lastChangeTime = Time.time;
+
+            value = Mathf.Clamp(value, 0, totalRecordCount - 1);
+
+            int diff = curRecordingIndex - value;
+
+            if (diff < 0)
+            {
+                defaultVolume.SetActive(true);
+                rewindVolume.SetActive(false);
+            }
+            else
+            {
+                defaultVolume.SetActive(false);
+                rewindVolume.SetActive(true);
+            }
+
             curRecordingIndex = value;
             OnTimeChanging?.Invoke(value);
+
+            int defaultIndex = value;
+            int rewindIndex = (totalRecordCount - 1) - value;
+
+            // 분석
+            if (IsEnd)
+            {
+                ApplyData(RecordType.Default, defaultIndex, diff);
+                ApplyData(RecordType.Rewind, rewindIndex, -diff);
+            }
+
+            // 순행
+            else if (!IsRewinding)
+            {
+                RecordData(RecordType.Default, defaultIndex);
+                ApplyData(RecordType.Rewind, rewindIndex, diff);
+            }
+
+            // 역행
+            else
+            {
+                RecordData(RecordType.Rewind, rewindIndex);
+                ApplyData(RecordType.Default, defaultIndex, diff);
+            }
+        }
+    }
+    private int curStageRecordCount;
+    public int CurStageRecordCount { get { if (curStageRecordCount == 0) { curStageRecordCount = Mathf.RoundToInt(curStagePlayTime / recordeTurm); } return curStageRecordCount; } }
+
+    private int totalRecordCount;
+    public int TotalRecordCount
+    {
+        get
+        {
+            if (totalRecordCount == 0)
+                totalRecordCount = Mathf.RoundToInt(maxPlayTime / recordeTurm);
+
+            return totalRecordCount;
         }
     }
 
-    private int totalRecordCount;
-    public int TotalRecordCount { get { return totalRecordCount; } }
-    public float CurRecordingPercent { get { return Mathf.Clamp(timer / recordeTurm, 0, 1); } }
+    private float lastChangeTime;
+    public float CurRecordingPercent { get { return Mathf.Clamp((Time.time - lastChangeTime) / recordeTurm, 0, 1); } }
 
     // Logic
     private bool isRewinding = false;
-    public bool IsRewinding { get { return isRewinding; } set { isRewinding = value; } }
+    public bool IsRewinding
+    {
+        get { return isRewinding; }
+        set
+        {
+            isRewinding = value;
+            RecordObjectInit(RecordType.Default);
+            RecordObjectInit(RecordType.Rewind);
+        }
+    }
     private bool isEnd = false;
-    public bool IsEnd { get { return isEnd; } set { isEnd = value; } }
+    public bool IsEnd { get { return curStageArea ? curStageArea.IsClear : false; } } //EndManager.Instance.ActivePanel(); Time.timeScale = 1; } }
+    private bool isInit;
 
     // Event
     public Action<int> OnTimeChanging;
@@ -39,150 +114,228 @@ public class RewindManager : MonoSingleTon<RewindManager>
     private List<RecordObject> recordObjectList = new();
     private List<RecordObject> rewindObjectList = new();
 
-    public void OnValidate()
+    private StageArea curStageArea;
+    private StageController stageController;
+
+    [ContextMenu("Init")]
+    public void Init()
     {
-        totalRecordCount = Mathf.RoundToInt(playTime / recordeTurm);
+        isInit = true;
+        StageArea[] areas = FindObjectsOfType<StageArea>();
+        RecordObject[] recordObjects = FindObjectsOfType<RecordObject>();
+        stageController = FindObjectOfType<StageController>();
+
+        foreach (var area in areas)
+        {
+            if (area.PlayTime > maxPlayTime)
+            {
+                maxPlayTime = area.PlayTime;
+            }
+        }
+
+        foreach (var obj in recordObjects)
+        {
+            if (obj.IsRewind)
+            {
+                rewindObjectList.Add(obj);
+            }
+            else
+            {
+                recordObjectList.Add(obj);
+            }
+            obj.Init();
+        }
+
+        UIManager.Instance.Init();
+
+        timer = Time.time + recordeTurm;
+
+        IsRewinding = false;
+    }
+
+    public void SetArea(StageArea area)
+    {
+        if (curStageArea != null)
+            curStageArea.ExitArea();
+        if (curStageArea == area)
+        {
+            area.EntryArea(true);
+        }
+
+        IsRewinding = false;
+        curStageArea = area;
+        curStagePlayTime = curStageArea.PlayTime;
     }
 
     public void Update()
     {
-        if (!IsEnd)
-        {
-            Recorde();
-        }
-        else
-        {
-            timer += Time.deltaTime;
-            // 엔딩
-        }
+        if (!isInit)
+            return;
+
         ExcuteUpdate();
+        LifeCycle();
+    }
+
+    private void LifeCycle()
+    {
+        if (IsEnd)
+        {
+            stageController.IsClearNext = true;
+            CurRecordingIndex = 0;
+            return;
+        }
+        if (Time.time > timer)
+        {
+            timer = Time.time + recordeTurm;
+            if (IsRewinding)
+                CurRecordingIndex--;
+            else
+                CurRecordingIndex++;
+
+            if (IsRewinding && CurRecordingIndex == 0)
+            {
+                RecordObjectInit(RecordType.Default);
+                RecordObjectInit(RecordType.Rewind);
+                if (!isEnd)
+                {
+                    IsRewinding = false;
+                    CurRecordingIndex = 0;
+                    SetArea(curStageArea);
+                }
+            }
+            if (!IsRewinding && CurRecordingIndex == curStageRecordCount - 1)
+            {
+                IsRewinding = true;
+                curStageArea.Rewind();
+            }
+        }
     }
 
     private void ExcuteUpdate()
     {
-        // 끝남
-        if (IsEnd)
-        {
-            // 순행 오브젝트
-            for (int i = 0; i < recordObjectList.Count; i++)
-            {
-                recordObjectList[i].OnRewindUpdate();
-            }
-
-            // 역행 오브젝트
-            for (int i = 0; i < rewindObjectList.Count; i++)
-            {
-                rewindObjectList[i].OnRewindUpdate();
-            }
-        }
-
-        // 순행
-        else if (!IsRewinding)
-        {
-            // 순행 오브젝트
-            for (int i = 0; i < recordObjectList.Count; i++)
-            {
-                recordObjectList[i].OnUpdate();
-            }
-
-            // 역행 오브젝트
-            for (int i = 0; i < rewindObjectList.Count; i++)
-            {
-                rewindObjectList[i].OnRewindUpdate();
-            }
-        }
-
-        // 역행
-        else if (IsRewinding)
-        {
-            // 순행 오브젝트
-            for (int i = 0; i < recordObjectList.Count; i++)
-            {
-                recordObjectList[i].OnRewindUpdate();
-            }
-
-            // 역행 오브젝트
-            for (int i = 0; i < rewindObjectList.Count; i++)
-            {
-                rewindObjectList[i].OnUpdate();
-            }
-        }
+        ExcuteUpdate(RecordType.Default);
+        ExcuteUpdate(RecordType.Rewind);
     }
 
-    private void Recorde()
+    public void RecordObjectInit(RecordType type)
     {
-        timer += Time.deltaTime;
+        List<RecordObject> targetList = GetRecordObjectByType(type);
 
-        if (timer > recordeTurm)
+        for (int i = 0; i < targetList.Count; ++i)
         {
-            // 타이머 초기화
-            timer = 0.0f;
-
-            // 역행중
-            if (IsRewinding)
+            if (IsEnd)
             {
-                CurRecordingIndex--;
-
-                // 순행 오브젝트
-                for (int i = 0; i < recordObjectList.Count; i++)
-                {
-                    recordObjectList[i].ApplyData(CurRecordingIndex);
-                }
-
-                // 역행 오브젝트
-                for (int i = 0; i < rewindObjectList.Count; i++)
-                {
-                    rewindObjectList[i].Recorde((totalRecordCount - 1) - CurRecordingIndex);
-                }
-
-                // 게임 끝남
-                if (CurRecordingIndex == 0)
-                {
-                    IsEnd = true;
-                    IsRewinding = false;
-                }
+                targetList[i].InitOnRewind();
+                return;
             }
-
-            // 순행중
             else
             {
-                CurRecordingIndex++;
-
-                // 순행 오브젝트
-                for (int i = 0; i < recordObjectList.Count; i++)
+                switch (type)
                 {
-                    recordObjectList[i].Recorde(CurRecordingIndex);
-                }
-
-                // 순행 끝남
-                if (curRecordingIndex == totalRecordCount - 1)
-                {
-                    // 역행 시작
-                    IsRewinding = true;
-
-                    // 초기화
-                    for (int i = 0; i < recordObjectList.Count; i++)
-                    {
-                        recordObjectList[i].InitOnRewind();
-                    }
-
-                    Debug.Log("역행 시작!");
+                    case RecordType.Default:
+                        if (IsRewinding)
+                            targetList[i].InitOnRewind();
+                        else
+                            targetList[i].InitOnPlay();
+                        break;
+                    case RecordType.Rewind:
+                        if (IsRewinding)
+                            targetList[i].InitOnPlay();
+                        else
+                            targetList[i].InitOnRewind();
+                        break;
                 }
             }
         }
     }
 
-    public void RegistRecorder(RecordObject recordObject)
+    public void RecordData(RecordType type, int index)
     {
-        // 역행중
-        if (IsRewinding)
+        List<RecordObject> targetList = GetRecordObjectByType(type);
+
+        for (int i = 0; i < targetList.Count; ++i)
+        {
+            targetList[i].Recorde(index);
+        }
+    }
+
+    public void ApplyData(RecordType type, int index, int diff)
+    {
+        List<RecordObject> targetList = GetRecordObjectByType(type);
+
+        for (int i = 0; i < targetList.Count; ++i)
+        {
+            targetList[i].ApplyData(index, diff);
+        }
+    }
+
+    public void ExcuteUpdate(RecordType type)
+    {
+        List<RecordObject> targetList = GetRecordObjectByType(type);
+
+        for (int i = 0; i < targetList.Count; ++i)
+        {
+            if (IsEnd)
+                targetList[i].OnRewindUpdate();
+            else
+            {
+                switch (type)
+                {
+                    case RecordType.Default:
+                        if (IsRewinding)
+                            targetList[i].OnRewindUpdate();
+                        else
+                            targetList[i].OnUpdate();
+                        break;
+                    case RecordType.Rewind:
+                        if (IsRewinding)
+                            targetList[i].OnUpdate();
+                        else
+                            targetList[i].OnRewindUpdate();
+                        break;
+                }
+            }
+        }
+    }
+
+    private List<RecordObject> GetRecordObjectByType(RecordType type)
+
+    {
+        List<RecordObject> returnList;
+
+        switch (type)
+        {
+            case RecordType.Default:
+                returnList = recordObjectList;
+                break;
+            case RecordType.Rewind:
+                returnList = rewindObjectList;
+                break;
+            default:
+                Debug.LogWarning("Type 이 이상해");
+                returnList = null;
+                break;
+        }
+
+        return returnList;
+    }
+
+    public void Register(RecordObject recordObject)
+    {
+        if (isRewinding)
         {
             rewindObjectList.Add(recordObject);
         }
-
         else
         {
             recordObjectList.Add(recordObject);
         }
     }
+}
+
+public enum RecordType
+{
+    Default,
+    Rewind,
+    End,
 }

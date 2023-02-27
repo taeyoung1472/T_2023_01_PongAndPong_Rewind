@@ -119,6 +119,13 @@ public static class Utility
     }
     #endregion
 
+    #region Key
+    public static bool ComboKeyCheck(KeyCode pressingKey, KeyCode eventKey)
+    {
+        return Input.GetKey(pressingKey) && Input.GetKeyDown(eventKey);
+    }
+    #endregion
+
     private static void Error(string errorString)
     {
         Debug.LogError($"Utility : {errorString}");
