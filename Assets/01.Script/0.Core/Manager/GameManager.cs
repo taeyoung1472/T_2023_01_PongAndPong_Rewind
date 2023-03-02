@@ -3,23 +3,26 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class GameManager : MonoBehaviour
+public class GameManager : MonoSingleTon<GameManager>
 {
     //[SerializeField] private GameObject pauseUi;
 
-    [SerializeField] private StageData testStage;//StageDataSO testStage;
+    //[SerializeField] private StageData testStage;//StageDataSO testStage;
 
-    public void Update()
-    {
-        //if (Input.GetKeyDown(KeyCode.Escape))
-        //{
-        //    pauseUi.SetActive(!pauseUi.activeSelf);
-        //    if (pauseUi.activeSelf)
-        //        Time.timeScale = 0;
-        //    else
-        //        Time.timeScale = 1;
-        //}
-    }
+    //public void Update()
+    //{
+    //    //if (Input.GetKeyDown(KeyCode.Escape))
+    //    //{
+    //    //    pauseUi.SetActive(!pauseUi.activeSelf);
+    //    //    if (pauseUi.activeSelf)
+    //    //        Time.timeScale = 0;
+    //    //    else
+    //    //        Time.timeScale = 1;
+    //    //}
+    //}
+    
+
+
 
     public void ClosePausePanel()
     {
