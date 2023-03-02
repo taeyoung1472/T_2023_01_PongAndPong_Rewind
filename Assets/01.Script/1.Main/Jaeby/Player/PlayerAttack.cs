@@ -91,11 +91,14 @@ public class PlayerAttack : PlayerAction
     public void AttackStart()
     {
         _excuting = true;
+        _player.VeloCityResetImm(true, true);
+        _player.PlayerActionLock(true, PlayerActionType.Move, PlayerActionType.Jump, PlayerActionType.Dash);
     }
 
     public void AttackEnd()
     {
         _excuting = false;
+        _player.PlayerActionLock(false, PlayerActionType.Move, PlayerActionType.Jump, PlayerActionType.Dash);
     }
 
     public override void ActionExit()

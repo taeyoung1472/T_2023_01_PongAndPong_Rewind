@@ -15,6 +15,7 @@ public class PlayerWallGrab : PlayerAction
 
     private void FixedUpdate()
     {
+        Debug.Log(_player.IsGrounded);
         WallCheck();
     }
 
@@ -30,12 +31,13 @@ public class PlayerWallGrab : PlayerAction
         {
             if (_excuting)
                 ActionExit();
+
             return;
         }
 
         bool lastCheck = _excuting;
         Ray ray = new Ray(_player.transform.position + _player.characterController.center, _player.PlayerRenderer.Forward);
-        _excuting = Physics.Raycast(ray, _player.characterController.radius + _rayLength + _player.characterController.contactOffset, _wallMask);
+        _excuting = (Physics.Raycast(ray, _player.characterController.radius + _rayLength + _player.characterController.contactOffset, _wallMask)) && (_player.IsGrounded == false);
         if (lastCheck == _excuting) return;
 
         if (_excuting)
