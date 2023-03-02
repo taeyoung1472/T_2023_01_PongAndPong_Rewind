@@ -105,24 +105,24 @@ namespace LKHGames
             _gradientTexture = GenerateGradientTexture(gradient);
             byte[] _bytes = _gradientTexture.EncodeToPNG();
 
-            #region Create new folder if it doesn't exist
-			if(AssetDatabase.IsValidFolder("Assets/" + savingPath) == false)
-			{
-				string[] folderNameArray = savingPath.Split('/');
-				string newfolderPath = "";
+   //         #region Create new folder if it doesn't exist
+			//if(AssetDatabase.IsValidFolder("Assets/" + savingPath) == false)
+			//{
+			//	string[] folderNameArray = savingPath.Split('/');
+			//	string newfolderPath = "";
 
-				for(int i = 0; i < folderNameArray.Length-2; i++)
-				{	
-					newfolderPath += folderNameArray[i];
-					if(i != folderNameArray.Length-3)
-					{
-						newfolderPath += "/";
-					}
-				}
-				AssetDatabase.CreateFolder("Assets" + newfolderPath, folderNameArray[folderNameArray.Length-2]);
-				Debug.Log("<color=#FFFF00><b>Path saving location not found, New folder was created</b></color>");
-			}
-			#endregion
+			//	for(int i = 0; i < folderNameArray.Length-2; i++)
+			//	{	
+			//		newfolderPath += folderNameArray[i];
+			//		if(i != folderNameArray.Length-3)
+			//		{
+			//			newfolderPath += "/";
+			//		}
+			//	}
+			//	AssetDatabase.CreateFolder("Assets" + newfolderPath, folderNameArray[folderNameArray.Length-2]);
+			//	Debug.Log("<color=#FFFF00><b>Path saving location not found, New folder was created</b></color>");
+			//}
+			//#endregion
 
             var randomIndex = Random.Range(0, 999999).ToString();
             File.WriteAllBytes(Application.dataPath + savingPath + "GradientTexture_" + randomIndex + saveFormat, _bytes);
