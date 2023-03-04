@@ -15,7 +15,7 @@ public class PlayerJump : PlayerAction
     [SerializeField]
     private UnityEvent OnWallGrabJump = null;
     private Coroutine _jumpCoroutine = null;
-
+    private Coroutine _moveLockCoroutine = null;
 
     public void OnGrounded(bool val)
     {
@@ -36,14 +36,19 @@ public class PlayerJump : PlayerAction
 
         if (_jumpCoroutine != null)
             StopCoroutine(_jumpCoroutine);
+        if (_moveLockCoroutine != null)
+        {
+            StopCoroutine(_moveLockCoroutine);
+            _player.PlayerActionLock(false, PlayerActionType.Move);
+        }
 
         if (_player.PlayeActionCheck(PlayerActionType.WallGrab)) // ¿ùÁ¡ÇÁ!!
         {
             _player.VeloCityResetImm(x: true, y: true);
             _player.PlayerActionExit(PlayerActionType.WallGrab);
             _player.PlayerRenderer.ForceFlip();
-            Vector3 dir = _player.PlayerRenderer.Forward + Vector3.up;
-            _jumpCoroutine = StartCoroutine(JumpCoroutine(dir.normalized, _player.playerMovementSO.wallGrabJumpPower));
+            _jumpCoroutine = StartCoroutine(JumpCoroutine(_player.playerMovementSO.wallJumpPower * _player.PlayerRenderer.Forward.x, _player.playerMovementSO.wallGrabJumpPower));
+            _moveLockCoroutine = StartCoroutine(MoveLockCoroutine());
         }
         else
         {
@@ -51,6 +56,13 @@ public class PlayerJump : PlayerAction
             _jumpCoroutine = StartCoroutine(JumpCoroutine(Vector2.up, _player.playerMovementSO.jumpPower));
         }
         OnJump?.Invoke();
+    }
+
+    private IEnumerator MoveLockCoroutine()
+    {
+        _player.PlayerActionLock(true, PlayerActionType.Move);
+        yield return new WaitForSeconds(_player.playerMovementSO.moveLockTime);
+        _player.PlayerActionLock(false, PlayerActionType.Move);
     }
 
     private IEnumerator JumpCoroutine(Vector2 dir, float jumpPower)
@@ -78,6 +90,11 @@ public class PlayerJump : PlayerAction
         _excuting = false;
         if (_jumpCoroutine != null)
             StopCoroutine(_jumpCoroutine);
+        if (_moveLockCoroutine != null)
+        {
+            StopCoroutine(_moveLockCoroutine);
+            _player.PlayerActionLock(false, PlayerActionType.Move);
+        }
         _player.VelocitySetExtra(0f, 0f);
     }
 

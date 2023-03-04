@@ -22,8 +22,8 @@ public class PlayerDash : PlayerAction
             StopCoroutine(_dashChargeCoroutine);
         if (_dashCoroutine != null)
         {
-            DashExit();
             StopCoroutine(_dashCoroutine);
+            DashExit();
         }
         _dashCoroutine = StartCoroutine(DashCoroutine());
         OnDashStarted?.Invoke(_player.PlayerInput.InputVectorNorm);

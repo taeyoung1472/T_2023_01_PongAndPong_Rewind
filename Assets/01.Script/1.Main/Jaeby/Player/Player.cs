@@ -40,9 +40,15 @@ public class Player : MonoBehaviour
     public CharacterController characterController => _characterController;
     private Vector3 _moveAmount = Vector3.zero;
     private Vector3 _extraMoveAmount = Vector3.zero;
-    public bool IsGrounded => _collisionFlag == CollisionFlags.Below;
     private CollisionFlags _collisionFlag = CollisionFlags.None;
-    private bool _lastGrounded = false;
+
+    [SerializeField]
+    private float _groundCheckRayLength = 0.225f;
+    [SerializeField]
+    private LayerMask _groundMask = 0;
+    private Collider _col = null;
+    private bool _isGrounded = false;
+    public bool IsGrounded => _isGrounded;
 
     private void Awake()
     {
@@ -54,6 +60,7 @@ public class Player : MonoBehaviour
         _playerAnimation = transform.Find("AgentRenderer").GetComponent<PlayerAnimation>();
         _playerRenderer = _playerAnimation.GetComponent<PlayerRenderer>();
         _gravityModule = GetComponent<GravityModule>();
+        _col = GetComponent<Collider>();
     }
 
     private void LoadJson()
@@ -79,6 +86,10 @@ public class Player : MonoBehaviour
     private void Update()
     {
         Move();
+    }
+
+    private void FixedUpdate()
+    {
         GroundCheck();
     }
 
@@ -171,16 +182,21 @@ public class Player : MonoBehaviour
 
     private void GroundCheck()
     {
-        if (_lastGrounded == IsGrounded)
+        bool lastGrounded = _isGrounded;
+        Vector3 boxCenter = _col.bounds.center;
+        Vector3 halfExtents = _col.bounds.extents;
+        halfExtents.y = _groundCheckRayLength;
+        float maxDistance = _col.bounds.extents.y;
+        _isGrounded = Physics.BoxCast(boxCenter, halfExtents, Vector3.down, transform.rotation, maxDistance, _groundMask);
+        if (lastGrounded == _isGrounded)
             return;
-        _lastGrounded = IsGrounded;
-        OnIsGrounded?.Invoke(IsGrounded);
+        OnIsGrounded?.Invoke(_isGrounded);
     }
 
     private void Move()
     {
-        _collisionFlag = _characterController.Move((_moveAmount + _extraMoveAmount + 
-            ((IsGrounded == false && _gravityModule.UseGravity) ? _gravityModule.GetGravity() : Vector3.zero))
+        _collisionFlag = _characterController.Move(((_moveAmount + _extraMoveAmount) + 
+            ((_characterController.isGrounded == false && _gravityModule.UseGravity) ? _gravityModule.GetGravity() : Vector3.zero))
             * Time.deltaTime);
     }
 
