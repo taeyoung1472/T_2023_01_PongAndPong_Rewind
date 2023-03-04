@@ -58,6 +58,7 @@ public class VideoOption : MonoBehaviour
     }
     public void OKBtnClick()
     {
+        Debug.Log("Àßºñ³¦");
         Screen.SetResolution(resolutions[resolutionNum].width, resolutions[resolutionNum].height, screenMode);
     }
 }
