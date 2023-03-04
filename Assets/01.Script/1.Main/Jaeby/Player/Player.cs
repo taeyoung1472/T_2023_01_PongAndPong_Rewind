@@ -40,9 +40,15 @@ public class Player : MonoBehaviour
     public CharacterController characterController => _characterController;
     private Vector3 _moveAmount = Vector3.zero;
     private Vector3 _extraMoveAmount = Vector3.zero;
-    public bool IsGrounded => (_collisionFlag & CollisionFlags.Below) != 0;
     private CollisionFlags _collisionFlag = CollisionFlags.None;
+
+    [SerializeField]
+    private float _groundCheckRayLength = 0.225f;
+    [SerializeField]
+    private LayerMask _groundMask = 0;
+    private Collider _col = null;
     private bool _isGrounded = false;
+    public bool IsGrounded => _isGrounded;
 
     private void Awake()
     {
@@ -54,6 +60,7 @@ public class Player : MonoBehaviour
         _playerAnimation = transform.Find("AgentRenderer").GetComponent<PlayerAnimation>();
         _playerRenderer = _playerAnimation.GetComponent<PlayerRenderer>();
         _gravityModule = GetComponent<GravityModule>();
+        _col = GetComponent<Collider>();
     }
 
     private void LoadJson()
@@ -79,6 +86,10 @@ public class Player : MonoBehaviour
     private void Update()
     {
         Move();
+    }
+
+    private void FixedUpdate()
+    {
         GroundCheck();
     }
 
@@ -171,10 +182,15 @@ public class Player : MonoBehaviour
 
     private void GroundCheck()
     {
-        if (_isGrounded == IsGrounded)
+        bool lastGrounded = _isGrounded;
+        Vector3 boxCenter = _col.bounds.center;
+        Vector3 halfExtents = _col.bounds.extents;
+        halfExtents.y = _groundCheckRayLength;
+        float maxDistance = _col.bounds.extents.y;
+        _isGrounded = Physics.BoxCast(boxCenter, halfExtents, Vector3.down, transform.rotation, maxDistance, _groundMask);
+        if (lastGrounded == _isGrounded)
             return;
-        _isGrounded = IsGrounded;
-        OnIsGrounded?.Invoke(IsGrounded);
+        OnIsGrounded?.Invoke(_isGrounded);
     }
 
     private void Move()

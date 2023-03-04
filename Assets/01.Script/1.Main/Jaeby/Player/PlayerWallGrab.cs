@@ -15,7 +15,6 @@ public class PlayerWallGrab : PlayerAction
 
     private void FixedUpdate()
     {
-        Debug.Log(_player.IsGrounded);
         WallCheck();
     }
 
