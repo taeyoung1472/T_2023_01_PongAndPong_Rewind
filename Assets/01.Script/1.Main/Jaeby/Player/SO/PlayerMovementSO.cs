@@ -16,6 +16,8 @@ public class PlayerMovementSO : ScriptableObject
     public float dashChargeTime = 0.2f;
     public int dashCount = 1;
     [Header("º® Â¤±â °ü·Ã")]
+    public Vector2 wallJumpPower = Vector2.zero;
     public float wallGrabJumpPower = 3f;
     public float wallSlideGravityScale = 0.5f;
+    public float moveLockTime = 0.2f;
 }
