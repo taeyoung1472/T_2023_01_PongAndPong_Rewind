@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class ReTime : MonoBehaviour {
 	//되감기 활성화 또는 비활성화 플래그 지정
-	[HideInInspector]
 	public bool isRewinding = false;
 
 	//이전 위치 및 회전에 액세스하는 성능 향상을 위해 연결 목록 데이터 구조를 사용
@@ -14,29 +13,41 @@ public class ReTime : MonoBehaviour {
 	[Tooltip("되감기를 실행할 키의 문자 또는 이름을 입력")]
 	public string KeyTrigger;
 
-	[HideInInspector]
-	public bool UseInputTrigger;
+	[SerializeField]
+	private bool UseInputTrigger;
 	private bool hasAnimator = false;
 	private bool hasRb = false;
 	public Animator animator;
 
-	[HideInInspector]
-	public float RewindSeconds = 5;
 
-	[HideInInspector]
-	public float RewindSpeed = 1;
+	public float RewindSeconds = 5;
+	//public float curTime = 0;
+	// 시간 체크용
+	public float timer = 0.0f;
+	private readonly float recordeTurm = 0.1f;
+
+	public float RecordeTurm { get { return recordeTurm; } }
+
+	// Volume
+	[Header("[Volume]")]
+	[SerializeField] private GameObject defaultVolume;
+	[SerializeField] private GameObject rewindVolume;
+
+
+	[SerializeField]
+	private float RewindSpeed = 1;
 	private bool isFeeding = true;
 	private ParticleSystem Particles;
 
-	[HideInInspector]
-	public bool PauseEnd;
+	[SerializeField]
+	private bool PauseEnd;
 
-	private void Start()
+	protected virtual void Start()
 	{
 		Init();
 	}
 	// 초기화에 사용
-	public void Init()
+	public virtual void Init()
     {
 		PointsInTime = new LinkedList<PointInTime>();
 
@@ -69,8 +80,11 @@ public class ReTime : MonoBehaviour {
 			child.GetComponent<ReTime>().RewindSpeed = RewindSpeed;
 			child.GetComponent<ReTime>().PauseEnd = PauseEnd;
 		}
+
+
+		timer = Time.time + recordeTurm;
 	}
-	private void Update() 
+	protected virtual void Update() 
 	{
 		//특정 입력이 트리거되면 되감기 시작 그렇지 않으면 중지
 		if (UseInputTrigger) 
@@ -83,25 +97,35 @@ public class ReTime : MonoBehaviour {
 	private void FixedUpdate()
 	{
 		ChangeTimeScale (RewindSpeed);
+		
 		//true이면 되감기를 실행하고, 그렇지 않으면 이벤트를 기록
-		if (isRewinding) {
+		if (isRewinding)
+		{
 			Rewind();
-		}else{
+		}
+		else
+		{
+			if (Time.time > timer) //레코드 할 텀인거임
+			{
+				timer = Time.time + recordeTurm;
+			}
 			Time.timeScale = 1f;
 			if(isFeeding)
+            {
 				Record();
+            }
 		}
 	}
 
 	//되감기 메소드
-	private void Rewind()
+	protected virtual void Rewind()
 	{
-		if (PointsInTime.Count > 0 ) {
+		if (PointsInTime.Count > 0 ) { //아직 리스트가 0이 아니므로 되감을게 남음
 			PointInTime PointInTime = PointsInTime.First.Value;
 			transform.position = PointInTime.position;
 			transform.rotation = PointInTime.rotation;
 			PointsInTime.RemoveFirst();
-		} else {
+		} else { // 더이상 되감을 정보가 없음
 			if(PauseEnd)
 				Time.timeScale = 0;
 			else
@@ -110,8 +134,9 @@ public class ReTime : MonoBehaviour {
 	}
 
 	//생성자를 사용하여 새 데이터 추가
-	private void Record()
+	protected virtual void Record()
 	{
+		//기록 시간 초과해서 맨 처음에 기록한거 지우는 거임
 		if(PointsInTime.Count > Mathf.Round(RewindSeconds / Time.fixedDeltaTime)){
 			PointsInTime.RemoveLast();
 		}
@@ -120,6 +145,7 @@ public class ReTime : MonoBehaviour {
 		if (Particles.isPaused) {
 			Particles.Play();
 		}
+		
 	}
 
 	private void StartRewind()
@@ -219,5 +245,14 @@ public class ReTime : MonoBehaviour {
 			if(child.GetComponent<ParticleSystem>())
 				child.gameObject.AddComponent<ReTimeParticles>();
 		}
+	}
+
+	protected void GenerateList<T>(ref List<T> list, T initValue)
+	{
+		int totalCount = (int)RewindSeconds;
+
+		list = new(totalCount);
+		list.AddRange(new T[totalCount]);
+		list[0] = initValue;
 	}
 }

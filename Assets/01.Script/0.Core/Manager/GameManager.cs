@@ -22,7 +22,14 @@ public class GameManager : MonoSingleTon<GameManager>
     //}
     
 
+    public void StagePlayStart()
+    {
 
+    }
+    public void StagePlayEnd()
+    {
+
+    }
 
     public void ClosePausePanel()
     {

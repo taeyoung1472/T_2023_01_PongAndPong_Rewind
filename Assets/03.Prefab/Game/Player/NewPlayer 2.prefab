@@ -1544,6 +1544,7 @@ GameObject:
   - component: {fileID: 6691628707489746802}
   - component: {fileID: 6691628707489746807}
   - component: {fileID: 6691628707489746815}
+  - component: {fileID: 1130859995}
   m_Layer: 0
   m_Name: NewPlayer 2
   m_TagString: Player
@@ -1985,6 +1986,34 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1130859995
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6691628707489746810}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6f851d411ffb97449c8d0c976069aaf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isRewinding: 0
+  KeyTrigger: 
+  UseInputTrigger: 0
+  animator: {fileID: 6691628707631861948}
+  RewindSeconds: 5
+  timer: 0
+  defaultVolume: {fileID: 0}
+  rewindVolume: {fileID: 0}
+  RewindSpeed: 1
+  PauseEnd: 0
+  spriteRenderer: {fileID: 6691628707631861891}
+  enableList:
+  - {fileID: 6691628707489746807}
+  - {fileID: 6691628707489746805}
+  - {fileID: 6691628707631861890}
+  characterController: {fileID: 6691628707489746815}
 --- !u!1 &6691628707561677047
 GameObject:
   m_ObjectHideFlags: 0

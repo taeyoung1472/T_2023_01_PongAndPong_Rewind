@@ -6,17 +6,21 @@ public class StageManager : MonoBehaviour
 {
     [SerializeField] private List<StageArea> stageList;
 
-    private bool isClearNext = false;
-    public bool IsClearNext { set { isClearNext = value; } }
-
     [SerializeField] 
     private StageDataSO stageData;
 
-    [SerializeField]
-    private List<StageAreaDataSO> stageAreaList;
+    //[SerializeField]
+    //private List<StageAreaDataSO> stageAreaList;
+
+    public StageArea curStage;
+
+
     private void Awake()
     {
-        stageAreaList.AddRange(stageData.StageAreaPrefab);
+        //if (stageAreaList.Count <= 0)
+        //{
+        //    stageAreaList.AddRange(stageData.StageAreaPrefab);
+        //}
         
     }
     public void Start()
@@ -30,8 +34,8 @@ public class StageManager : MonoBehaviour
         for (int i = 0; i < stageList.Count; i++)
         {
             stageList[i].EntryArea();
-            yield return new WaitUntil(() => isClearNext);
-            isClearNext = false;
+            yield return new WaitUntil(() => stageList[i].IsClear);
+            stageList[i].IsClear = false;
         }
         EndManager.Instance.End();
     }
