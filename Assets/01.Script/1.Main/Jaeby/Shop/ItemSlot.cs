@@ -33,4 +33,13 @@ public class ItemSlot : MonoBehaviour
             player.SaveJsonData();
         }
     }
+
+    public void TryDamgi()
+    {
+        if (ShopManager.Instance.TryDamgi(this) == false)
+        {
+            Debug.LogError("쓸 수 없어요 ㅠㅠ");
+            return;
+        }
+    }
 }
