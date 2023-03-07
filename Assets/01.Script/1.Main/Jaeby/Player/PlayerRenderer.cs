@@ -14,7 +14,7 @@ public class PlayerRenderer : MonoBehaviour
 
     private Player _player = null;
 
-    public Vector3 Forward => _fliped ? transform.right * -1f : transform.right;
+    public Vector3 Forward => transform.forward;
 
     private void Start()
     {
@@ -40,15 +40,15 @@ public class PlayerRenderer : MonoBehaviour
         else if (dir.x < 0f)
             flipDir = FlipDirection.Left;
 
-        /*Quaternion targetRotation = Quaternion.Euler(0f, (flipDir == FlipDirection.Left) ? -90f : 90f, 0f);
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, _rotationSpeed * Time.deltaTime);*/
-        Vector3 sc = transform.localScale;
+        Quaternion targetRotation = Quaternion.Euler(0f, (flipDir == FlipDirection.Left) ? -90f : 90f, 0f);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, _rotationSpeed * Time.deltaTime);
+        /*Vector3 sc = transform.localScale;
         sc.x = Mathf.Abs(sc.x);
         if (flipDir == FlipDirection.Left)
         {
             sc.x *= -1f;
         }
-        transform.localScale = sc;
+        transform.localScale = sc;*/
         _fliped = flipDir == FlipDirection.Left;
         OnFliped?.Invoke(_fliped);
     }
@@ -56,15 +56,15 @@ public class PlayerRenderer : MonoBehaviour
     public void ForceFlip()
     {
         // left : -90 right : 90
-        //Quaternion targetRotation = Quaternion.Euler(0f, _fliped ? 90f : -90f, 0f); // 반대
-        //transform.rotation = targetRotation;
-        Vector3 sc = transform.localScale;
+        Quaternion targetRotation = Quaternion.Euler(0f, _fliped ? 90f : -90f, 0f); // 반대
+        transform.rotation = targetRotation;
+        /*Vector3 sc = transform.localScale;
         sc.x = Mathf.Abs(sc.x);
         if (_fliped == false)
         {
             sc.x *= -1f;
         }
-        transform.localScale = sc;
+        transform.localScale = sc;*/
         _fliped = !_fliped;
         OnFliped?.Invoke(_fliped);
     }
