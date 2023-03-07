@@ -20,6 +20,7 @@ public class GravityModule : MonoBehaviour
     public bool UseGravity { get => _useGravity; set => _useGravity = value; }
 
     private float _curGravityAcceleration = 0f;
+    public float CurGravityAcceleration => _curGravityAcceleration;
     private Coroutine _accelCo = null;
 
     private void Start()

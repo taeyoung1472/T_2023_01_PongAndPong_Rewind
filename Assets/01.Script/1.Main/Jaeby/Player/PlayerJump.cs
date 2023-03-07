@@ -24,6 +24,21 @@ public class PlayerJump : PlayerAction
         _curJumpCount = 0;
         _player.GravityModule.GravityScale = _player.GravityModule.OriginGravityScale;
     }
+    public void ForceJump(Vector2 dir, float jumpPower)
+    {
+        _jumpEndCheck = false;
+        _excuting = true;
+        if (_jumpCoroutine != null)
+            StopCoroutine(_jumpCoroutine);
+        if (_moveLockCoroutine != null)
+        {
+            StopCoroutine(_moveLockCoroutine);
+            _player.PlayerActionLock(false, PlayerActionType.Move);
+        }
+        _player.VeloCityResetImm(y: true);
+        _jumpCoroutine = StartCoroutine(JumpCoroutine(dir, jumpPower));
+        OnJump?.Invoke();
+    }
 
     public void JumpStart()
     {
