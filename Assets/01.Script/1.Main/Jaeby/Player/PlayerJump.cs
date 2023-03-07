@@ -112,6 +112,8 @@ public class PlayerJump : PlayerAction
             _player.PlayerActionLock(false, PlayerActionType.Move);
         }
         _player.VelocitySetExtra(0f, 0f);
+        if (_player.IsGrounded)
+            OnGrounded(true);
     }
 
     public void MoreJump()
