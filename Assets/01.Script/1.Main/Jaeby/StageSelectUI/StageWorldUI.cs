@@ -8,6 +8,9 @@ using UnityEngine.UI;
 public class StageWorldUI : MonoBehaviour
 {
     private List<StageUnitUI> _stages = new List<StageUnitUI>();
+    private List<RectTransform> _stageTrms = new List<RectTransform>();
+    private RectTransform _thisTrm = null;
+
     [SerializeField]
     private string _worldName = "";
     public string WorldName => _worldName;
@@ -15,8 +18,19 @@ public class StageWorldUI : MonoBehaviour
     public void Init(StageSelectUI ui)
     {
         _stages.AddRange(GetComponentsInChildren<StageUnitUI>());
-        for(int i = 0; i < _stages.Count; i++)
+        for (int i = 0; i < _stages.Count; i++)
             Lis(ui, i);
+        TrmSet();
+    }
+
+    private void TrmSet()
+    {
+        if (_thisTrm != null)
+            return;
+
+        _thisTrm = GetComponent<RectTransform>();
+        for (int i = 0; i < _stages.Count; i++)
+            _stageTrms.Add(_stages[i].GetComponent<RectTransform>());
     }
 
     private void Lis(StageSelectUI ui, int index)
@@ -37,10 +51,10 @@ public class StageWorldUI : MonoBehaviour
         int minIndex = 0;
         if (ui == null)
         {
-            float minX = Mathf.Abs((Screen.currentResolution.width / 2) - Mathf.Abs(_stages[0].transform.position.x));
+            float minX = Mathf.Abs(_stageTrms[0].anchoredPosition.x + _thisTrm.anchoredPosition.x);
             for (int i = 1; i < _stages.Count; i++)
             {
-                float curX = Mathf.Abs((Screen.currentResolution.width / 2) - Mathf.Abs(_stages[i].transform.position.x));
+                float curX = Mathf.Abs(_stageTrms[i].anchoredPosition.x + _thisTrm.anchoredPosition.x);
                 if (minX > curX)
                 {
                     minX = curX;
