@@ -39,7 +39,9 @@ public class Player : MonoBehaviour
     private CharacterController _characterController = null;
     public CharacterController characterController => _characterController;
     private Vector3 _moveAmount = Vector3.zero;
+    public Vector3 MoveAmount => _moveAmount;
     private Vector3 _extraMoveAmount = Vector3.zero;
+    public Vector3 ExtraMoveAmount => _extraMoveAmount;
     private Vector3 _characterMoveAmount = Vector3.zero;
     public Vector3 CharacterMoveAmount => _characterMoveAmount;
 
@@ -201,7 +203,10 @@ public class Player : MonoBehaviour
         _characterMoveAmount = ((_moveAmount + _extraMoveAmount) +
             ((_isGrounded == false && _gravityModule.UseGravity) ? _gravityModule.GetGravity() : Vector3.zero))
             ;
-
+        if(_characterController.velocity.y < 0f)
+        {
+            _characterMoveAmount += Vector3.up * GravityModule.GetGravity().y * (_playerMovementSO.fallMultiplier - 1) * Time.deltaTime;
+        }
         _collisionFlag = _characterController.Move(_characterMoveAmount * Time.deltaTime);
     }
 

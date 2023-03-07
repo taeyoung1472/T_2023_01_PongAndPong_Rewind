@@ -176,6 +176,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37e4f44bf7499b645b5dcfe572673577, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _fallMultiplier: 6
   _playerMovementSO: {fileID: 11400000, guid: 7b340fc37eed2244bb3a508fc629a727, type: 2}
   _playerAttackSO: {fileID: 11400000, guid: 9c0314343253bb54a9880059056c3f23, type: 2}
   OnIsGrounded:
@@ -183,18 +184,6 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 6691628707489746803}
         m_TargetAssemblyTypeName: PlayerDash, Assembly-CSharp
-        m_MethodName: OnGrounded
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 6691628707489746804}
-        m_TargetAssemblyTypeName: PlayerJump, Assembly-CSharp
         m_MethodName: OnGrounded
         m_Mode: 0
         m_Arguments:
@@ -229,7 +218,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-  _groundCheckRayLength: 0.225
+      - m_Target: {fileID: 6691628707489746804}
+        m_TargetAssemblyTypeName: PlayerJump, Assembly-CSharp
+        m_MethodName: OnGrounded
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+  _groundCheckRayLength: 0.25
   _groundMask:
     serializedVersion: 2
     m_Bits: 3221226423
@@ -451,19 +452,7 @@ MonoBehaviour:
         m_CallState: 2
   OnJumpEnd:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 6691628707489746804}
-        m_TargetAssemblyTypeName: PlayerJump, Assembly-CSharp
-        m_MethodName: JumpEnd
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   OnDash:
     m_PersistentCalls:
       m_Calls:
