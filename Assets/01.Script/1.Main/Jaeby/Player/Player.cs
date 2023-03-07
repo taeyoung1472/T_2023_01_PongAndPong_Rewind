@@ -40,6 +40,9 @@ public class Player : MonoBehaviour
     public CharacterController characterController => _characterController;
     private Vector3 _moveAmount = Vector3.zero;
     private Vector3 _extraMoveAmount = Vector3.zero;
+    private Vector3 _characterMoveAmount = Vector3.zero;
+    public Vector3 CharacterMoveAmount => _characterMoveAmount;
+
     private CollisionFlags _collisionFlag = CollisionFlags.None;
 
     [SerializeField]
@@ -195,9 +198,11 @@ public class Player : MonoBehaviour
 
     private void Move()
     {
-        _collisionFlag = _characterController.Move(((_moveAmount + _extraMoveAmount) + 
-            ((_characterController.isGrounded == false && _gravityModule.UseGravity) ? _gravityModule.GetGravity() : Vector3.zero))
-            * Time.deltaTime);
+        _characterMoveAmount = ((_moveAmount + _extraMoveAmount) +
+            ((_isGrounded == false && _gravityModule.UseGravity) ? _gravityModule.GetGravity() : Vector3.zero))
+            ;
+
+        _collisionFlag = _characterController.Move(_characterMoveAmount * Time.deltaTime);
     }
 
     public void PlayerInteractActionExit()
