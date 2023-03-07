@@ -1,10 +1,8 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Threading;
-using TreeEditor;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 [ExecuteInEditMode]
 public class DeployHandler : MonoBehaviour
@@ -14,9 +12,13 @@ public class DeployHandler : MonoBehaviour
     public Vector3 firstAxis = new Vector3(1, 0, 1);
     public Vector3 secondAxis = new Vector3(-1, 0, -1);
 
+    [Header("[Prefab 정보]")]
     [SerializeField] private MapElement prefab;
-
     [SerializeField] private bool centerX, centerY;
+    [Header("[Decal 정보]")]
+    [SerializeField] private MapElement decalPrefab;
+    [SerializeField, Range(0.0f, 1.0f)] private float decalChance;
+    [SerializeField] private bool centerX_decal, centerY_decal, rotX, rotY, rotZ;
 
     private Vector2 size;
 
@@ -103,8 +105,8 @@ public class DeployHandler : MonoBehaviour
         }
 
         GUIStyle labelStyle = new();
-        
-        if(Selection.activeObject == gameObject)
+
+        if (Selection.activeObject == gameObject)
         {
             labelStyle.alignment = TextAnchor.MiddleCenter;
             labelStyle.fontSize = 32;
@@ -142,7 +144,7 @@ public class DeployHandler : MonoBehaviour
 
     public void Generate()
     {
-        while(transform.childCount > 0)
+        while (transform.childCount > 0)
         {
             DestroyImmediate(transform.GetChild(0).gameObject);
         }
@@ -176,41 +178,94 @@ public class DeployHandler : MonoBehaviour
 
         float curX = minX;
         float curY = minY;
-        while (curX < maxX)
+        if(prefab != null)
         {
-            while (curY < maxY)
+            while (curX < maxX)
             {
-                Vector3 pos = new();
+                while (curY < maxY)
+                {
+                    Vector3 pos = new();
+                    switch (deployType)
+                    {
+                        case DeployType.XY:
+                            pos = new Vector3(curX + (centerX ? prefab.size.x / 2 : 0), curY + (centerY ? prefab.size.y / 2 : 0), transform.position.z);
+                            curY += prefab.size.y;
+                            break;
+                        case DeployType.XZ:
+                            pos = new Vector3(curX + (centerX ? prefab.size.x / 2 : 0), transform.position.y, curY + (centerY ? prefab.size.z / 2 : 0));
+                            curY += prefab.size.z;
+                            break;
+                        case DeployType.YZ:
+                            pos = new Vector3(transform.position.x, curX + (centerX ? prefab.size.y / 2 : 0), curY + (centerY ? prefab.size.z / 2 : 0));
+                            curY += prefab.size.z;
+                            break;
+                    }
+                    GameObject obj = Instantiate(prefab, pos, Quaternion.identity).gameObject;
+                    obj.transform.parent = transform;
+                }
+                curY = minY;
                 switch (deployType)
                 {
                     case DeployType.XY:
-                        pos = new Vector3(curX + (centerX ? prefab.size.x / 2 : 0), curY + (centerY ? prefab.size.y / 2 : 0), transform.position.z);
-                        curY += prefab.size.y;
+                        curX += prefab.size.x;
                         break;
                     case DeployType.XZ:
-                        pos = new Vector3(curX + (centerX ? prefab.size.x / 2 : 0), transform.position.y, curY + (centerY ? prefab.size.z / 2 : 0));
-                        curY += prefab.size.z;
+                        curX += prefab.size.x;
                         break;
                     case DeployType.YZ:
-                        pos = new Vector3(transform.position.x, curX + (centerX ? prefab.size.y / 2 : 0), curY + (centerY ? prefab.size.z / 2 : 0));
-                        curY += prefab.size.z;
+                        curX += prefab.size.y;
                         break;
                 }
-                GameObject obj = Instantiate(prefab, pos, Quaternion.identity).gameObject;
-                obj.transform.parent = transform;
             }
+        }
+        if(decalPrefab != null)
+        {
+            curX = minX;
             curY = minY;
-            switch (deployType)
+            while (curX < maxX)
             {
-                case DeployType.XY:
-                    curX += prefab.size.x;
-                    break;
-                case DeployType.XZ:
-                    curX += prefab.size.x;
-                    break;
-                case DeployType.YZ:
-                    curX += prefab.size.y;
-                    break;
+                while (curY < maxY)
+                {
+                    Vector3 decalPos = new();
+                    switch (deployType)
+                    {
+                        case DeployType.XY:
+                            decalPos = new Vector3(curX + (centerX_decal ? decalPrefab.size.x / 2 : 0), curY + (centerY_decal ? decalPrefab.size.y / 2 : 0), transform.position.z);
+                            curY += decalPrefab.size.y * UnityEngine.Random.Range(0.5f, 1.5f);
+                            break;
+                        case DeployType.XZ:
+                            decalPos = new Vector3(curX + (centerX_decal ? decalPrefab.size.x / 2 : 0), transform.position.y, curY + (centerY_decal ? decalPrefab.size.z / 2 : 0));
+                            curY += decalPrefab.size.z * UnityEngine.Random.Range(0.5f, 1.5f);
+                            break;
+                        case DeployType.YZ:
+                            decalPos = new Vector3(transform.position.x, curX + (centerX_decal ? decalPrefab.size.y / 2 : 0), curY + (centerY_decal ? decalPrefab.size.z / 2 : 0));
+                            curY += decalPrefab.size.z * UnityEngine.Random.Range(0.5f, 1.5f);
+                            break;
+                    }
+
+                    if (UnityEngine.Random.value < decalChance)
+                    {
+                        Quaternion rot = Quaternion.identity;
+                        rot.eulerAngles = new Vector3(rotX ? Random.Range(0.0f, 180.0f) : 0, rotY ? Random.Range(0.0f, 180.0f) : 0, rotZ ? Random.Range(0.0f, 180.0f) : 0);
+
+                        GameObject decal = Instantiate(decalPrefab, decalPos, rot).gameObject;
+                        decal.transform.parent = transform;
+                        decal.transform.GetChild(UnityEngine.Random.Range(0, decal.transform.childCount)).gameObject.SetActive(true);
+                    }
+                }
+                curY = minY;
+                switch (deployType)
+                {
+                    case DeployType.XY:
+                        curX += decalPrefab.size.x * UnityEngine.Random.Range(0.5f, 1.5f);
+                        break;
+                    case DeployType.XZ:
+                        curX += decalPrefab.size.x * UnityEngine.Random.Range(0.5f, 1.5f);
+                        break;
+                    case DeployType.YZ:
+                        curX += decalPrefab.size.y * UnityEngine.Random.Range(0.5f, 1.5f);
+                        break;
+                }
             }
         }
     }
