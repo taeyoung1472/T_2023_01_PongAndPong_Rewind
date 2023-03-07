@@ -16,7 +16,7 @@ public class StageAreaT : MonoBehaviour
         set { areaData = value; }
     }
 
-    public int PlayTime { get => AreaData.stagePlayTime; }
+    public int PlayTime { get => AreaData.stagePlayTime; set => AreaData.stagePlayTime = value; }
 
     public bool IsClear { get { return AreaData.isAreaClear; } set => AreaData.isAreaClear = value; }
 

@@ -37,6 +37,8 @@ public class ReTimeManager : MonoSingleTon<ReTimeManager>
     }
     public void Init()
     {
+
+
         //Debug.Log(StageManager.Instance.curArea.name);
         defaultVolume.SetActive(true);
         rewindVolume.SetActive(false);
@@ -49,6 +51,7 @@ public class ReTimeManager : MonoSingleTon<ReTimeManager>
 
         Debug.Log("¼ø");
 
+        
         curStagePlayTime = StageManager.Instance.curArea.PlayTime;
         curTime = 0;
     }
