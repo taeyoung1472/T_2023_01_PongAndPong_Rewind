@@ -11,4 +11,17 @@ public class MethodRun : MonoBehaviour {
 			GetComponent<ReTime> ().StopTimeRewind ();
 		}
 	}
+
+	public void RewindStart()
+    {
+		GetComponent<ReTime> ().StartTimeRewind ();
+
+    }
+
+	public void RewindStop()
+	{
+
+		GetComponent<ReTime>().StopTimeRewind();
+
+	}
 }

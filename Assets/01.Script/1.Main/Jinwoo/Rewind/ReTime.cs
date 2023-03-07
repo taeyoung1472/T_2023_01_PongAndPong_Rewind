@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -21,10 +22,10 @@ public class ReTime : MonoBehaviour {
 
 
 	public float RewindSeconds = 5;
-	//public float curTime = 0;
+	public float curTime = 0;
 	// 시간 체크용
 	public float timer = 0.0f;
-	private readonly float recordeTurm = 0.1f;
+	private readonly float recordeTurm = 0.01f;
 
 	public float RecordeTurm { get { return recordeTurm; } }
 
@@ -81,7 +82,10 @@ public class ReTime : MonoBehaviour {
 			child.GetComponent<ReTime>().PauseEnd = PauseEnd;
 		}
 
-
+		RewindSeconds = StageManager.Instance.curArea.PlayTime;
+		
+		UIManager.Instance.Init();
+		curTime = 0;
 		timer = Time.time + recordeTurm;
 	}
 	protected virtual void Update() 
@@ -92,12 +96,25 @@ public class ReTime : MonoBehaviour {
 				StartRewind();
 			else
 				StopRewind();
+
+
+		if (Time.time > timer) //레코드 할 텀인거임
+		{
+			timer = Time.time + recordeTurm;
+		}
+		if (curTime >= RewindSeconds)
+        {
+			curTime = 0;
+        }
+		else
+			curTime += Time.deltaTime;
+		UIManager.Instance.OnTimeChange((int)curTime);
 	}
 
 	private void FixedUpdate()
 	{
-		ChangeTimeScale (RewindSpeed);
-		
+		ChangeTimeScale(RewindSpeed);
+
 		//true이면 되감기를 실행하고, 그렇지 않으면 이벤트를 기록
 		if (isRewinding)
 		{
@@ -105,16 +122,15 @@ public class ReTime : MonoBehaviour {
 		}
 		else
 		{
-			if (Time.time > timer) //레코드 할 텀인거임
-			{
-				timer = Time.time + recordeTurm;
-			}
+
 			Time.timeScale = 1f;
-			if(isFeeding)
-            {
+			if (isFeeding)
+			{
 				Record();
-            }
+			}
 		}
+		
+		
 	}
 
 	//되감기 메소드
@@ -150,7 +166,8 @@ public class ReTime : MonoBehaviour {
 
 	private void StartRewind()
 	{
-		isRewinding = true;
+        Debug.Log("StartRewind");
+        isRewinding = true;
 		if(hasAnimator)
 			animator.enabled = false;
 
@@ -192,7 +209,11 @@ public class ReTime : MonoBehaviour {
 		
 		if(transform.childCount > 0){
 			foreach (Transform child in transform)
+            {
+				//Debug.Log(child.GetComponent<ReTime>());
 				child.GetComponent<ReTime>().StartRewind ();
+
+            }
 		}
 	}
 

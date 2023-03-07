@@ -15,19 +15,18 @@ public class PlayerReTime : ReTime
 
     protected override void Start()
     {
-        base.Start();
-        
+        //base.Start();
+        Debug.Log("playerstart");
     }
     public override void Init()
     {
         base.Init();
 
-        InitOnPlay();
-
         spriteList = new LinkedList<Sprite>();
         flipList = new LinkedList<bool>();
 
         //Debug.Log("이이잉");
+        
 
         spriteList.AddFirst(spriteRenderer.sprite);
         flipList.AddFirst(spriteRenderer.transform.localScale.x > 0 ? true : false);
@@ -69,6 +68,12 @@ public class PlayerReTime : ReTime
             GetComponent<ReTime>().StopTimeRewind();
         }
     }
+    public void RewindStart()
+    {
+        //Debug.Log("Player RewindStart");
+        StartTimeRewind();
+        InitOnRewind();
+    }
     protected override void Record()
     {
         base.Record();
@@ -88,19 +93,17 @@ public class PlayerReTime : ReTime
 
     protected override void Rewind()
     {
-        
-
         base.Rewind();
 
-        //노드의 첫번째를 대입하고 첫번째를 삭제함.
         if (spriteList.Count <= 0)
         {
-            Debug.Log("dsfjsd");
+            //Debug.Log("dsfjsd");
             spriteList.Clear();
             flipList.Clear();
             InitOnPlay();
             return;
         }
+        //노드의 첫번째를 대입하고 첫번째를 삭제함.
         spriteRenderer.sprite = spriteList.First.Value;
         spriteRenderer.transform.localScale 
             = flipList.First.Value ? Vector3.one * 0.5f : new Vector3(-1, 1, 1) * 0.5f;
