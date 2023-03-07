@@ -42,6 +42,7 @@ public class PlayerJump : PlayerAction
 
     public void JumpStart()
     {
+        Debug.Log(_curJumpCount + " " + _locked);
         if (_locked || _curJumpCount >= _player.playerMovementSO.jumpCount)
             return;
 
@@ -111,6 +112,8 @@ public class PlayerJump : PlayerAction
             _player.PlayerActionLock(false, PlayerActionType.Move);
         }
         _player.VelocitySetExtra(0f, 0f);
+        if (_player.IsGrounded)
+            OnGrounded(true);
     }
 
     public void MoreJump()
