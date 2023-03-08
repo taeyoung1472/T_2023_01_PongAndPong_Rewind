@@ -65,7 +65,7 @@ public class PlayerWallGrab : PlayerAction
 
     public override void ActionExit()
     {
-        WallGrabExit();
         _excuting = false;
+        WallGrabExit();
     }
 }
