@@ -32,9 +32,9 @@ public class PlayerDash : PlayerAction
     private IEnumerator DashCoroutine()
     {
         _curDashCount++;
-        _player.PlayerActionLock(true, PlayerActionType.Jump, PlayerActionType.Move);
-        _player.PlayerActionExit(PlayerActionType.Jump, PlayerActionType.Move);
-        _player.VelocitySetMove(0f, 0f);
+        _player.PlayerActionLock(true, PlayerActionType.Jump, PlayerActionType.Move, PlayerActionType.WallGrab);
+        _player.PlayerActionExit(PlayerActionType.Jump, PlayerActionType.Move, PlayerActionType.WallGrab);
+        _player.VeloCityResetImm(true, true);
         if (_player.IsGrounded == false)
             _player.GravityModule.UseGravity = false;
         Vector2 dashVector = _player.PlayerInput.InputVectorNorm * _player.playerMovementSO.dashPower;
@@ -51,7 +51,7 @@ public class PlayerDash : PlayerAction
 
     public void DashExit()
     {
-        _player.PlayerActionLock(false, PlayerActionType.Jump, PlayerActionType.Move);
+        _player.PlayerActionLock(false, PlayerActionType.Jump, PlayerActionType.Move, PlayerActionType.WallGrab);
         _player.GravityModule.UseGravity = true;
         _player.VelocitySetExtra(0f, 0f);
         OnDashEnded?.Invoke(_player.IsGrounded);

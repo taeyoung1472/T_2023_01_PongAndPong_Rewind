@@ -53,7 +53,7 @@ public class PlayerAnimation : MonoBehaviour
             _player.PlayerActionExit(PlayerActionType.Attack);
             _animator.SetTrigger("AttackForceExit");
         }
-        _animator.Play("PlayerWallGrab");
+        _animator.SetTrigger("WallGrab");
         _animator.Update(0);
     }
 
@@ -65,6 +65,9 @@ public class PlayerAnimation : MonoBehaviour
 
     public void FallOrIdleAnimation(bool isGround)
     {
+        if (_player.PlayeActionCheck(PlayerActionType.WallGrab))
+            return;
+
         if (isGround)
         {
             IdleAnimation();
