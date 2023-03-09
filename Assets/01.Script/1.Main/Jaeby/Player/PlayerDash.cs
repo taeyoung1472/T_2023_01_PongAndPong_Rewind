@@ -25,19 +25,33 @@ public class PlayerDash : PlayerAction
             StopCoroutine(_dashCoroutine);
             DashExit();
         }
-        _dashCoroutine = StartCoroutine(DashCoroutine());
+        bool slide = _player.IsGrounded;
+        _dashCoroutine = StartCoroutine(DashCoroutine(slide));
+        if (slide)
+            _player.PlayerAnimation.SlideAnimation();
+        else
+            _player.PlayerAnimation.DashAnimation(_player.PlayerInput.InputVectorNorm);
         OnDashStarted?.Invoke(_player.PlayerInput.InputVectorNorm);
     }
 
-    private IEnumerator DashCoroutine()
+    private IEnumerator DashCoroutine(bool slide)
     {
+        Vector2 dashVector = Vector2.zero;
         _curDashCount++;
+        if (slide)
+        {
+            _player.GravityModule.UseGravity = true;
+            dashVector = _player.PlayerInput.InputVector * _player.playerMovementSO.dashPower;
+            dashVector.y = 0f;
+        }
+        else
+        {
+            _player.GravityModule.UseGravity = false;
+            dashVector = _player.PlayerInput.InputVectorNorm * _player.playerMovementSO.dashPower;
+        }
         _player.PlayerActionLock(true, PlayerActionType.Jump, PlayerActionType.Move, PlayerActionType.WallGrab);
         _player.PlayerActionExit(PlayerActionType.Jump, PlayerActionType.Move, PlayerActionType.WallGrab);
         _player.VeloCityResetImm(true, true);
-        if (_player.IsGrounded == false)
-            _player.GravityModule.UseGravity = false;
-        Vector2 dashVector = _player.PlayerInput.InputVectorNorm * _player.playerMovementSO.dashPower;
         _player.VelocitySetExtra(dashVector.x, dashVector.y);
         yield return new WaitForSeconds(_player.playerMovementSO.dashContinueTime);
         DashExit();

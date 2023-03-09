@@ -27,6 +27,12 @@ public class PlayerAnimation : MonoBehaviour
         _animator.SetBool("Move", Mathf.Abs(input.x) > 0f);
     }
 
+    public void SlideAnimation()
+    {
+        _animator.SetTrigger("Slide");
+        _animator.Update(0);
+    }
+
     public void DashAnimation(Vector2 input)
     {
         if (input.y > 0f)
