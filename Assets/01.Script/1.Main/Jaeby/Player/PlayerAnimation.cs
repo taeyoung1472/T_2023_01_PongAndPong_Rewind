@@ -34,7 +34,7 @@ public class PlayerAnimation : MonoBehaviour
         else if (input.y < 0f)
             _animator.Play("PlayerFall");
         else
-            _animator.Play("PlayerDash");
+            _animator.SetTrigger("Dash");
         _animator.Update(0);
     }
 
