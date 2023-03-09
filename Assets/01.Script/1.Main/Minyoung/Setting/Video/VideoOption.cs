@@ -5,9 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 public class VideoOption : MonoBehaviour
 {
-    public Toggle fullScreenBtn;
     FullScreenMode screenMode;
-    public Dropdown resolutionDropdown;
     public List<Resolution> resolutions = new List<Resolution>();
     
 
