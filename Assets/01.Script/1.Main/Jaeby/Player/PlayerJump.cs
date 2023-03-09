@@ -83,8 +83,8 @@ public class PlayerJump : PlayerAction
 
         if (_player.PlayeActionCheck(PlayerActionType.WallGrab)) // ¿ùÁ¡ÇÁ!!
         {
-            _player.VeloCityResetImm(x: true, y: true);
             _player.PlayerActionExit(PlayerActionType.WallGrab);
+            _player.VeloCityResetImm(x: true, y: true);
             _player.PlayerRenderer.ForceFlip();
             _jumpCoroutine = StartCoroutine(JumpCoroutine(_player.playerMovementSO.wallJumpPower * _player.PlayerRenderer.Forward.x, _player.playerMovementSO.wallGrabJumpPower));
             _moveLockCoroutine = StartCoroutine(MoveLockCoroutine());

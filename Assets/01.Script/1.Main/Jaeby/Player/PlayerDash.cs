@@ -54,6 +54,8 @@ public class PlayerDash : PlayerAction
         _player.PlayerActionLock(false, PlayerActionType.Jump, PlayerActionType.Move, PlayerActionType.WallGrab);
         _player.GravityModule.UseGravity = true;
         _player.VelocitySetExtra(0f, 0f);
+        if (_player.PlayeActionCheck(PlayerActionType.WallGrab) == false)
+            _player.PlayerAnimation.FallOrIdleAnimation(_player.IsGrounded);
         OnDashEnded?.Invoke(_player.IsGrounded);
         if (_player.IsGrounded)
             DashCharge();

@@ -65,9 +65,6 @@ public class PlayerAnimation : MonoBehaviour
 
     public void FallOrIdleAnimation(bool isGround)
     {
-        if (_player.PlayeActionCheck(PlayerActionType.WallGrab))
-            return;
-
         if (isGround)
         {
             IdleAnimation();
