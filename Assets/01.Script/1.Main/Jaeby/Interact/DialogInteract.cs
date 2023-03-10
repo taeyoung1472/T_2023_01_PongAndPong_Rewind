@@ -64,7 +64,7 @@ public class DialogInteract : Interact
 
     public override void InteractEnter()
     {
-        UIGetter.Instance.GetInteractUI(_canvas, _interactUIPos.position, _interactSprite, KeyCode.F);
+        UIGetter.Instance.GetInteractUI(_interactUIPos.position, _interactSprite, KeyManager.keys[InputType.Interact]);
     }
 
     public override void InteractExit()

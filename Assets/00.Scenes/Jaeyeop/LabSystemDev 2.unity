@@ -5247,6 +5247,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 476221214}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &477538172
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 477538173}
+  m_Layer: 0
+  m_Name: InteractObjPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &477538173
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 477538172}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.357, y: -0.285, z: -3}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1391689050}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &484309250
 GameObject:
   m_ObjectHideFlags: 0
@@ -9067,8 +9098,8 @@ GameObject:
   - component: {fileID: 977186409}
   - component: {fileID: 977186410}
   m_Layer: 0
-  m_Name: InteractOvj
-  m_TagString: Untagged
+  m_Name: InteractCollider
+  m_TagString: Interact
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11838,6 +11869,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1086975341}
   m_CullTransparentMesh: 1
+--- !u!1 &1113571767
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1113571768}
+  m_Layer: 0
+  m_Name: PlayerPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1113571768
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1113571767}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.417, z: -3.84}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1391689050}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1114728414
 GameObject:
   m_ObjectHideFlags: 0
@@ -13976,6 +14038,8 @@ Transform:
   - {fileID: 1082203536}
   - {fileID: 2140646369}
   - {fileID: 977186409}
+  - {fileID: 477538173}
+  - {fileID: 1113571768}
   m_Father: {fileID: 532431496}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -14011,6 +14075,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba9cd6675d0a4364fb2684ea60bfac2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _interactUIPos: {fileID: 477538173}
+  _interactSprite: {fileID: 21300000, guid: f4fe5647cf05a402ebecf4bd69d04590, type: 3}
   OnInteractStart:
     m_PersistentCalls:
       m_Calls: []
@@ -14018,9 +14084,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   _chainInteract: {fileID: 0}
-  _playerPosition: {fileID: 0}
-  _doInteractIcon: {fileID: 0}
-  _elevatorCutScene: {fileID: 0}
+  _playerPosition: {fileID: 1113571768}
+  _elevatorCutScene: {fileID: 264727282}
 --- !u!1001 &1397228241
 PrefabInstance:
   m_ObjectHideFlags: 0

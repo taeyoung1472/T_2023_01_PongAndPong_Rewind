@@ -20,9 +20,8 @@ public class UIGetter : MonoSingleTon<UIGetter>
         _interactText = _interactUI.GetComponentInChildren<TextMeshProUGUI>();
     }
 
-    public GameObject GetInteractUI(Canvas canvas,Vector3 pos, Sprite sprite, KeyCode key)
+    public GameObject GetInteractUI(Vector3 pos, Sprite sprite, KeyCode key)
     {
-        _interactUI.transform.SetParent(canvas.transform);
         _interactUI.transform.position = pos;
         _interactImage.sprite = sprite;
         _interactText.SetText(key.ToString());

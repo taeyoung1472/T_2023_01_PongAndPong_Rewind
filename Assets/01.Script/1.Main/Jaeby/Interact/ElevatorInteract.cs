@@ -8,23 +8,21 @@ public class ElevatorInteract : Interact
     [SerializeField]
     private Transform _playerPosition = null;
     [SerializeField]
-    private GameObject _doInteractIcon = null;
-    [SerializeField]
     private PlayableDirector _elevatorCutScene = null;
 
     protected override void ChildInteractEnd()
     {
-        throw new System.NotImplementedException();
     }
 
     protected override void ChildInteractStart()
     {
-        throw new System.NotImplementedException();
+        _player.characterController.Move(_player.transform.position - _playerPosition.position);
+        _elevatorCutScene.Play();
     }
 
     public override void InteractEnter()
     {
-        UIGetter.Instance.GetInteractUI(_canvas, _interactUIPos.position, _interactSprite, KeyCode.F);
+        UIGetter.Instance.GetInteractUI(_interactUIPos.position, _interactSprite, KeyManager.keys[InputType.Interact]);
     }
 
     public override void InteractExit()
