@@ -6,6 +6,13 @@ using UnityEngine.Events;
 public abstract class Interact : MonoBehaviour
 {
     [SerializeField]
+    protected Canvas _canvas = null;
+    [SerializeField]
+    protected Transform _interactUIPos = null;
+    [SerializeField]
+    protected Sprite _interactSprite = null;
+
+    [SerializeField]
     private UnityEvent OnInteractStart = null;
     [SerializeField]
     private UnityEvent OnInteractEnd = null;

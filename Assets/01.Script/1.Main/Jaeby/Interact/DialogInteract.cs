@@ -9,15 +9,11 @@ public class DialogInteract : Interact
     private DialogDataSO _curDialogData = null;
     [SerializeField]
     private List<DialogOptionDataSO> _dialogOptions = new List<DialogOptionDataSO>();
-    [SerializeField]
-    private GameObject _doInteractIcon = null;
     private NPC _myNPC = null;
     protected Animator _animator = null;
 
     private void Start()
     {
-        if (_doInteractIcon != null)
-            _doInteractIcon.SetActive(false);
         _myNPC ??= GetComponentInParent<NPC>();
         _animator ??= GetComponentInParent<Animator>();
     }
@@ -53,7 +49,7 @@ public class DialogInteract : Interact
         }
         else
         {
-            if(_animator != null)
+            if (_animator != null)
             {
                 _animator.Play("DialogStart");
                 _animator.Update(0);
@@ -68,13 +64,11 @@ public class DialogInteract : Interact
 
     public override void InteractEnter()
     {
-        if (_doInteractIcon != null)
-            _doInteractIcon.SetActive(true);
+        UIGetter.Instance.GetInteractUI(_canvas, _interactUIPos.position, _interactSprite, KeyCode.F);
     }
 
     public override void InteractExit()
     {
-        if (_doInteractIcon != null)
-            _doInteractIcon.SetActive(false);
+        UIGetter.Instance.PushUIs();
     }
 }

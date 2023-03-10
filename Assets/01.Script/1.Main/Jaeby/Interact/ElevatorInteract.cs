@@ -1,18 +1,34 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Playables;
 
-public class ElevatorInteract : MonoBehaviour
+public class ElevatorInteract : Interact
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField]
+    private Transform _playerPosition = null;
+    [SerializeField]
+    private GameObject _doInteractIcon = null;
+    [SerializeField]
+    private PlayableDirector _elevatorCutScene = null;
+
+    protected override void ChildInteractEnd()
     {
-        
+        throw new System.NotImplementedException();
     }
 
-    // Update is called once per frame
-    void Update()
+    protected override void ChildInteractStart()
     {
-        
+        throw new System.NotImplementedException();
+    }
+
+    public override void InteractEnter()
+    {
+        UIGetter.Instance.GetInteractUI(_canvas, _interactUIPos.position, _interactSprite, KeyCode.F);
+    }
+
+    public override void InteractExit()
+    {
+        UIGetter.Instance.PushUIs();
     }
 }
