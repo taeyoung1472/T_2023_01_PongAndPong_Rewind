@@ -29,7 +29,10 @@ public class PlayerWallGrab : PlayerAction
         if (_player.IsGrounded)
         {
             if (_excuting)
+            {
                 ActionExit();
+                _player.PlayerAnimation.FallOrIdleAnimation(_player.IsGrounded);
+            }
 
             return;
         }
@@ -48,9 +51,8 @@ public class PlayerWallGrab : PlayerAction
 
     private void WallGrabExit() // 벽에서 나가!
     {
-        _player.GravityModule.GravityScale = _player.GravityModule.OriginGravityScale;
-        _player.PlayerAnimation.FallOrIdleAnimation(_player.IsGrounded);
         _player.PlayerActionLock(false, PlayerActionType.Dash, PlayerActionType.Move, PlayerActionType.WallGrab);
+        _player.GravityModule.GravityScale = _player.GravityModule.OriginGravityScale;
     }
 
     private void WallGrabEnter()
@@ -65,7 +67,7 @@ public class PlayerWallGrab : PlayerAction
 
     public override void ActionExit()
     {
-        WallGrabExit();
         _excuting = false;
+        WallGrabExit();
     }
 }

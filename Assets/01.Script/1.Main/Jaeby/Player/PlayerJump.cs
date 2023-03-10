@@ -17,10 +17,32 @@ public class PlayerJump : PlayerAction
     private Coroutine _jumpCoroutine = null;
     private Coroutine _moveLockCoroutine = null;
 
+    private float _jumpInputTime = 0f;
+    private bool _jumpKeyUped = false;  
+
+    private void Update()
+    {
+        if (_excuting)
+            _jumpInputTime += Time.deltaTime;
+        if(_jumpKeyUped && _jumpInputTime >= _player.playerMovementSO.jumpHoldTime * 0.5f)
+        {
+            _jumpKeyUped = false;
+            _jumpInputTime = 0f;
+            JumpEnd();
+        }
+    }
+
+    public void JumpKeyUp()
+    {
+        _jumpKeyUped = true;
+    }
+
     public void OnGrounded(bool val)
     {
         if (val == false)
             return;
+        _jumpKeyUped = false;
+        _jumpInputTime = 0f;
         _curJumpCount = 0;
         _player.GravityModule.GravityScale = _player.GravityModule.OriginGravityScale;
     }
@@ -48,6 +70,8 @@ public class PlayerJump : PlayerAction
         _jumpEndCheck = false;
         _excuting = true;
         _curJumpCount++;
+        _jumpKeyUped = false;
+        _jumpInputTime = 0f;
 
         if (_jumpCoroutine != null)
             StopCoroutine(_jumpCoroutine);
@@ -59,8 +83,8 @@ public class PlayerJump : PlayerAction
 
         if (_player.PlayeActionCheck(PlayerActionType.WallGrab)) // ¿ùÁ¡ÇÁ!!
         {
-            _player.VeloCityResetImm(x: true, y: true);
             _player.PlayerActionExit(PlayerActionType.WallGrab);
+            _player.VeloCityResetImm(x: true, y: true);
             _player.PlayerRenderer.ForceFlip();
             _jumpCoroutine = StartCoroutine(JumpCoroutine(_player.playerMovementSO.wallJumpPower * _player.PlayerRenderer.Forward.x, _player.playerMovementSO.wallGrabJumpPower));
             _moveLockCoroutine = StartCoroutine(MoveLockCoroutine());
@@ -88,6 +112,7 @@ public class PlayerJump : PlayerAction
             //_player.GravityModule.GravityScale = _player.GravityModule.OriginGravityScale;
             //sqrt(1 - Math.pow(x - 1, 2));
             Vector2 final = new Vector2(Mathf.Sqrt(1 - (float)Math.Pow(time - 1, 2)) * dir.x * jumpPower, Mathf.Sqrt(1 - (float)Math.Pow(time - 1, 2)) * dir.y * jumpPower);
+            //Vector2 final = Vector2.up *  _player.GravityModule.GetGravity().y * (_fallMultiplier - 1) * Time.deltaTime;
             //Vector2 final = new Vector2(dir.x * jumpPower * (time * Mathf.PI) * 0.5f, dir.y * jumpPower * (time * Mathf.PI) * 0.5f);
             _player.VelocitySetExtra(final.x, final.y);
             time -= Time.deltaTime * (1f / _player.playerMovementSO.jumpHoldTime);
@@ -100,7 +125,6 @@ public class PlayerJump : PlayerAction
     {
         if (_jumpEndCheck)
             return;
-
         _jumpEndCheck = true;
         _excuting = false;
         if (_jumpCoroutine != null)
@@ -111,6 +135,8 @@ public class PlayerJump : PlayerAction
             _player.PlayerActionLock(false, PlayerActionType.Move);
         }
         _player.VelocitySetExtra(0f, 0f);
+        if (_player.IsGrounded)
+            OnGrounded(true);
     }
 
     public void MoreJump()
@@ -134,6 +160,8 @@ public class PlayerJump : PlayerAction
     public override void ActionExit()
     {
         _jumpEndCheck = false;
+        _jumpInputTime = 0f;
+        _jumpKeyUped = false;
         JumpEnd();
         if (_player.PlayeActionCheck(PlayerActionType.WallGrab))
             JumpCountUp();

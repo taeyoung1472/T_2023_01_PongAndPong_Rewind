@@ -25,19 +25,33 @@ public class PlayerDash : PlayerAction
             StopCoroutine(_dashCoroutine);
             DashExit();
         }
-        _dashCoroutine = StartCoroutine(DashCoroutine());
+        bool slide = _player.IsGrounded;
+        _dashCoroutine = StartCoroutine(DashCoroutine(slide));
+        if (slide)
+            _player.PlayerAnimation.SlideAnimation();
+        else
+            _player.PlayerAnimation.DashAnimation(_player.PlayerInput.InputVectorNorm);
         OnDashStarted?.Invoke(_player.PlayerInput.InputVectorNorm);
     }
 
-    private IEnumerator DashCoroutine()
+    private IEnumerator DashCoroutine(bool slide)
     {
+        Vector2 dashVector = Vector2.zero;
         _curDashCount++;
-        _player.PlayerActionLock(true, PlayerActionType.Jump, PlayerActionType.Move);
-        _player.PlayerActionExit(PlayerActionType.Jump, PlayerActionType.Move);
-        _player.VelocitySetMove(0f, 0f);
-        if (_player.IsGrounded == false)
+        if (slide)
+        {
+            _player.GravityModule.UseGravity = true;
+            dashVector = _player.PlayerInput.InputVector * _player.playerMovementSO.dashPower;
+            dashVector.y = 0f;
+        }
+        else
+        {
             _player.GravityModule.UseGravity = false;
-        Vector2 dashVector = _player.PlayerInput.InputVectorNorm * _player.playerMovementSO.dashPower;
+            dashVector = _player.PlayerInput.InputVectorNorm * _player.playerMovementSO.dashPower;
+        }
+        _player.PlayerActionLock(true, PlayerActionType.Jump, PlayerActionType.Move, PlayerActionType.WallGrab);
+        _player.PlayerActionExit(PlayerActionType.Jump, PlayerActionType.Move, PlayerActionType.WallGrab);
+        _player.VeloCityResetImm(true, true);
         _player.VelocitySetExtra(dashVector.x, dashVector.y);
         yield return new WaitForSeconds(_player.playerMovementSO.dashContinueTime);
         DashExit();
@@ -51,9 +65,11 @@ public class PlayerDash : PlayerAction
 
     public void DashExit()
     {
-        _player.PlayerActionLock(false, PlayerActionType.Jump, PlayerActionType.Move);
+        _player.PlayerActionLock(false, PlayerActionType.Jump, PlayerActionType.Move, PlayerActionType.WallGrab);
         _player.GravityModule.UseGravity = true;
         _player.VelocitySetExtra(0f, 0f);
+        if (_player.PlayeActionCheck(PlayerActionType.WallGrab) == false)
+            _player.PlayerAnimation.FallOrIdleAnimation(_player.IsGrounded);
         OnDashEnded?.Invoke(_player.IsGrounded);
         if (_player.IsGrounded)
             DashCharge();
