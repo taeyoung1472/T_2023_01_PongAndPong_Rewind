@@ -2,12 +2,13 @@ using UnityEngine;
 
 public class StageEndPoint : MonoBehaviour
 {
-    [SerializeField] private StageArea curArea;
+    //[SerializeField] private StageAreaT curArea;
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            curArea.IsClear = true;
+            Debug.Log("플레이어 앤드");
+            StageManager.Instance.curArea.IsClear = true;
         }
     }
 }

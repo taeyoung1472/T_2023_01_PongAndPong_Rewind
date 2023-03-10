@@ -5,8 +5,8 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "SO/Stage")]
 public class StageDataSO : ScriptableObject
 {
-    public int stagePlayTime;
-    public GameObject StagePrefab;
+    public List<StageAreaT> StageAreaList;
+    //public StageT stagePrefab;
     public bool isClear = false;
     public string stageInfo;
 }
