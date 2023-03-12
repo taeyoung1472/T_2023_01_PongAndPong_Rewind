@@ -26,6 +26,7 @@ public class StageArea : MonoBehaviour
     public void Awake()
     {
         rewindManager = FindObjectOfType<RewindManager>();
+        
     }
 
     public void EntryArea(bool isNew = false)
