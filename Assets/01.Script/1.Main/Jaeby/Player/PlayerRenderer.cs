@@ -41,7 +41,7 @@ public class PlayerRenderer : MonoBehaviour
             flipDir = FlipDirection.Left;
 
         Quaternion targetRotation = Quaternion.Euler(0f, (flipDir == FlipDirection.Left) ? -90f : 90f, 0f);
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, _rotationSpeed * Time.deltaTime);
+        _player.transform.rotation = Quaternion.Slerp(_player.transform.rotation, targetRotation, _rotationSpeed * Time.deltaTime);
         /*Vector3 sc = transform.localScale;
         sc.x = Mathf.Abs(sc.x);
         if (flipDir == FlipDirection.Left)
@@ -57,7 +57,7 @@ public class PlayerRenderer : MonoBehaviour
     {
         // left : -90 right : 90
         Quaternion targetRotation = Quaternion.Euler(0f, _fliped ? 90f : -90f, 0f); // ¹Ý´ë
-        transform.rotation = targetRotation;
+        _player.transform.rotation = targetRotation;
         /*Vector3 sc = transform.localScale;
         sc.x = Mathf.Abs(sc.x);
         if (_fliped == false)
