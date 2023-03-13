@@ -10,5 +10,6 @@ public enum InputType
     Attack,
     WeaponChange,
     Dash,
+    Interact,
     Size
 }
