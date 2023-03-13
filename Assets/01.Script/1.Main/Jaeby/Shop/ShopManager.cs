@@ -23,9 +23,11 @@ public class ShopManager : MonoSingleTon<ShopManager>
 
     [SerializeField]
     private RectTransform _content = null;
+    private float _originHeight = 0f;
 
     private void Start()
     {
+        _originHeight = _content.rect.height;
         _moneyText.SetText(player.playerJsonData.money.ToString());
         GoItemList();
     }
@@ -46,8 +48,9 @@ public class ShopManager : MonoSingleTon<ShopManager>
 
         _itemListObj.SetActive(false);
         _jangbaguniObj.SetActive(true);
+        _content.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, _originHeight);
 
-        for(int i = 0; i < _damgis.Count; i++)
+        for (int i = 0; i < _damgis.Count; i++)
         {
             DamgiItem damgi = Instantiate(_damgiItemPrefab, _damgiParent);
             damgi.UISet(_damgis[i].Data);

@@ -27,6 +27,12 @@ public class PlayerAnimation : MonoBehaviour
         _animator.SetBool("Move", Mathf.Abs(input.x) > 0f);
     }
 
+    public void SlideAnimation()
+    {
+        _animator.SetTrigger("Slide");
+        _animator.Update(0);
+    }
+
     public void DashAnimation(Vector2 input)
     {
         if (input.y > 0f)
@@ -34,7 +40,7 @@ public class PlayerAnimation : MonoBehaviour
         else if (input.y < 0f)
             _animator.Play("PlayerFall");
         else
-            _animator.Play("PlayerDash");
+            _animator.SetTrigger("Dash");
         _animator.Update(0);
     }
 
@@ -53,7 +59,7 @@ public class PlayerAnimation : MonoBehaviour
             _player.PlayerActionExit(PlayerActionType.Attack);
             _animator.SetTrigger("AttackForceExit");
         }
-        _animator.Play("PlayerWallGrab");
+        _animator.SetTrigger("WallGrab");
         _animator.Update(0);
     }
 
