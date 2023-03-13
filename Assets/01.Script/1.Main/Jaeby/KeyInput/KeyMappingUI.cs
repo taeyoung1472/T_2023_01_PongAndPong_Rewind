@@ -27,6 +27,9 @@ public class KeyMappingUI : MonoBehaviour
     [SerializeField]
     private KeyInputUI _keyMappingPrefab = null;
 
+    [SerializeField]
+    private TextMeshProUGUI waringText;
+
     Event keyEvent;
 
     private bool _keyMapping = false;
@@ -37,9 +40,13 @@ public class KeyMappingUI : MonoBehaviour
     private void Start()
     {
         KeyManager.LoadKey();
+        foreach (var k in KeyManager.keys)
+        {
+            _saveKeys.Add(k.Key, k.Value);
+        }
         UIInit();
     }
-
+   
     private void UIInit()
     {
         for (int i = 0; i < (int)InputType.Size; i++)
@@ -53,7 +60,10 @@ public class KeyMappingUI : MonoBehaviour
 
     public void ButtonSet(Button button, int index)
     {
-        button.onClick.AddListener(() => { KeyMappingStart((InputType)index); });
+        button.onClick.AddListener(() =>
+        {
+            KeyMappingStart((InputType)index);
+        });
     }
 
     public void UIOn()
@@ -114,10 +124,27 @@ public class KeyMappingUI : MonoBehaviour
                 continue;
             }
         }
+        if (_saveKeys.ContainsKey(type))
+        {
+            foreach (var val in _saveKeys.Values)
+            {
+                if (value == val)
+                {
+                    waringText.gameObject.SetActive(true);
+                    Debug.Log("그 키가 있습ㄴ다");
+                    _keyMapping = false;
+                    KeyMappingStart(type);
+                    yield break;
+                }
+            }
+        }
+        waringText.gameObject.SetActive(false);
         SaveOneKey(type, value);
         keyUI[type].DisplayData(type, value);
         KeyMappingEnd();
         _keyMapping = false;
+        SaveAllKey();
+
     }
 
     private void OnGUI()
@@ -137,10 +164,14 @@ public class KeyMappingUI : MonoBehaviour
     [ContextMenu("저장!!")]
     public void SaveAllKey()
     {
+
         KeyManager.ChangeKeySetting(_saveKeys);
+
+
         Debug.Log(_saveKeys.Count);
         Debug.Log(KeyManager.keys.Count);
 
+        Debug.Log("안녕하세요");
         string path = Application.dataPath + "/Save/KeyData.json";
         string json = Newtonsoft.Json.JsonConvert.SerializeObject(KeyManager.keys);
         Debug.Log(json);

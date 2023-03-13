@@ -41,7 +41,9 @@ public static class KeyManager
     public static void ChangeKeySetting(Dictionary<InputType, KeyCode> newKeys)
     {
         foreach (var k in newKeys)
+        {
             keys[k.Key] = k.Value;
+        }
 
         foreach (var k in keys)
         {
