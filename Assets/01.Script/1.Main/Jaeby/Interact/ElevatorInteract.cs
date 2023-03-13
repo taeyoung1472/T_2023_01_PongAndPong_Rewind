@@ -1,18 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Playables;
 using DG.Tweening;
 
 public class ElevatorInteract : Interact
 {
     [SerializeField]
     private Transform _playerPosition = null;
-    [SerializeField]
-    private PlayableDirector _elevatorCutScene = null;
+    private Elevator _elevator = null;
 
     private bool _interacting = false;
     private Vector2 targetDir = Vector2.zero;
+
+    private void Start()
+    {
+        _elevator = GetComponent<Elevator>();
+    }
 
     protected override void ChildInteractEnd()
     {
@@ -20,6 +23,8 @@ public class ElevatorInteract : Interact
 
     protected override void ChildInteractStart()
     {
+        ElevatorManager.Instance.TargetElevatorSet(_elevator.MyIndex);
+
         Sequence seq = DOTween.Sequence();
         targetDir = _playerPosition.position - _player.transform.position;
         targetDir.y = 0f;
@@ -35,7 +40,7 @@ public class ElevatorInteract : Interact
         seq.AppendCallback(() =>
         {
             _player.transform.rotation = Quaternion.identity;
-            _elevatorCutScene.Play();
+            ElevatorManager.Instance.PlayCutScene();
         });
     }
 
