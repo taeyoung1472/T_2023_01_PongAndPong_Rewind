@@ -10,64 +10,61 @@ public class ElevatorManager : MonoSingleTon<ElevatorManager>
     private GameObject _elevatorUI = null;
 
     [SerializeField]
-    private List<Elevator> _elevators = new List<Elevator>();
+    private List<ElevatorInteract> _elevators = new List<ElevatorInteract>();
+    [SerializeField]
+    private ElevatorOptionUI _elevatorOptionUIPrefab = null;
+    [SerializeField]
+    private Transform _optionUIParent = null;
+
     private List<ElevatorOptionUI> _elevatorOptionUIs = new List<ElevatorOptionUI>();
 
     [SerializeField]
     private PlayableDirector _elevatorCutScene = null;
-    [SerializeField]
-    private Transform _elevatorOptionsParent = null;
 
-    private int _curIndex = 0;
-    public int CurIndex => _curIndex;
-    private int _targetIndex = 0;
+    private ElevatorInteract _curElevator = null;
+    private ElevatorInteract _targetElevator = null;
 
+    public ElevatorInteract CurElevator { get => _curElevator; set => _curElevator = value; }
+    public ElevatorInteract TargetElevator { get => _targetElevator; set => _targetElevator = value; }
 
     private void Start()
     {
-        _elevatorOptionUIs.AddRange(_elevatorOptionsParent.GetComponentsInChildren<ElevatorOptionUI>());
-        for(int i = 0; i < _elevatorOptionUIs.Count; i++)
+        for(int i = 0; i < _elevators.Count; i++)
         {
-            _elevators[i].MyIndex = i;
-            _elevatorOptionUIs[i].Myindex = i;
-            _elevatorOptionUIs[i].ButtonMapping();
+            ElevatorOptionUI option = Instantiate(_elevatorOptionUIPrefab, _optionUIParent);
+            option.Elevator = _elevators[i];
+            option.OptionUIInit(_elevators[i].AreaName);
+            _elevatorOptionUIs.Add(option);
         }
+        _elevatorUI.SetActive(false);
     }
 
-    public void UIOpen()
+    public void ElevatorInit(ElevatorInteract curElevator)
     {
+        _curElevator = curElevator;
         for(int i = 0; i < _elevatorOptionUIs.Count; i++)
         {
-            _elevatorOptionUIs[i].TextChange(_curIndex);
+            _elevatorOptionUIs[i].TextChange(_curElevator);
         }
         _elevatorUI.SetActive(true);
-    }
-
-    public void UIClose()
-    {
-        _elevatorUI.SetActive(false);
     }
 
     public void PlayCutScene()
     {
         _elevatorCutScene.Play();
+        _elevatorUI.SetActive(false);
     }
 
-    public void CurElevatorSet(int index)
-    {
-        _curIndex = index;
-        UIOpen();
-    }
-
-    public void TargetElevatorSet(int index)
-    {
-        _targetIndex = index;
-    }
-
-    public void PlayerPositionChange()
+    public void PlayerPositionChangeToTarget()
     {
         player.characterController.enabled = false;
-        player.transform.position = _elevators[_targetIndex].EndPosition.position;
+        player.transform.position =TargetElevator.PlayerPosition.position;
         player.characterController.enabled = true;
+    }
+
+    public void ElevatorInteractEnd()
+    {
+        _curElevator.InteractEnd(true);
+        _curElevator = _targetElevator = null;
     }
 }

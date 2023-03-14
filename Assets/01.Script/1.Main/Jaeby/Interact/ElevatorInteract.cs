@@ -5,17 +5,17 @@ using DG.Tweening;
 
 public class ElevatorInteract : Interact
 {
-    [SerializeField]
-    private Transform _playerPosition = null;
-    private Elevator _elevator = null;
-
     private bool _interacting = false;
     private Vector2 targetDir = Vector2.zero;
 
-    private void Start()
-    {
-        _elevator = GetComponent<Elevator>();
-    }
+    [SerializeField]
+    private Transform _playerPosition = null;
+    public Transform PlayerPosition => _playerPosition;
+
+    [SerializeField]
+    private string _areaName = "";
+
+    public string AreaName => _areaName;
 
     protected override void ChildInteractEnd()
     {
@@ -23,25 +23,7 @@ public class ElevatorInteract : Interact
 
     protected override void ChildInteractStart()
     {
-        ElevatorManager.Instance.TargetElevatorSet(_elevator.MyIndex);
-
-        Sequence seq = DOTween.Sequence();
-        targetDir = _playerPosition.position - _player.transform.position;
-        targetDir.y = 0f;
-        _interacting = true;
-        _player.PlayerAnimation.MoveAnimation(targetDir);
-        seq.Append(_player.transform.DOMoveX(_playerPosition.position.x, 1f));
-        seq.AppendCallback(() =>
-        {
-            _interacting = false;
-            _player.PlayerAnimation.MoveAnimation(Vector2.zero);
-        });
-        seq.Append(_player.transform.DORotate(Vector2.zero, 0.5f));
-        seq.AppendCallback(() =>
-        {
-            _player.transform.rotation = Quaternion.identity;
-            ElevatorManager.Instance.PlayCutScene();
-        });
+        ElevatorManager.Instance.ElevatorInit(this);
     }
 
     public override void InteractEnter()
@@ -64,5 +46,26 @@ public class ElevatorInteract : Interact
     private void PlayerFlip()
     {
         _player.PlayerRenderer.Flip(targetDir);
+    }
+
+    public void ElevatorAnimation()
+    {
+        Sequence seq = DOTween.Sequence();
+        targetDir = _playerPosition.position - _player.transform.position;
+        targetDir.y = 0f;
+        _interacting = true;
+        _player.PlayerAnimation.MoveAnimation(targetDir);
+        seq.Append(_player.transform.DOMoveX(_playerPosition.position.x, 1f));
+        seq.AppendCallback(() =>
+        {
+            _interacting = false;
+            _player.PlayerAnimation.MoveAnimation(Vector2.zero);
+        });
+        seq.Append(_player.transform.DORotate(Vector2.zero, 0.5f));
+        seq.AppendCallback(() =>
+        {
+            _player.transform.rotation = Quaternion.identity;
+            ElevatorManager.Instance.PlayCutScene();
+        });
     }
 }
