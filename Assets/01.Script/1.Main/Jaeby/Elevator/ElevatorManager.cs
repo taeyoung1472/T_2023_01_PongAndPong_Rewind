@@ -67,4 +67,24 @@ public class ElevatorManager : MonoSingleTon<ElevatorManager>
         _curElevator.InteractEnd(true);
         _curElevator = _targetElevator = null;
     }
+
+    public void CurElevatorOpenAnimation()
+    {
+        _curElevator?.Animation(true);
+    }
+
+    public void CurElevatorCloseAnimation()
+    {
+        _curElevator?.Animation(false);
+    }
+
+    public void TargetElevatorOpenAnimation()
+    {
+        _targetElevator?.Animation(true);
+    }
+
+    public void TargetElevatorCloseAnimation()
+    {
+        _targetElevator?.Animation(false);
+    }
 }

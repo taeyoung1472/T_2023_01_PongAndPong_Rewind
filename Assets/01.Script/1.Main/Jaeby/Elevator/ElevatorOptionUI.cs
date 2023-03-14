@@ -31,7 +31,6 @@ public class ElevatorOptionUI : MonoBehaviour
 
     public void ButtonMapping()
     {
-        Debug.Log("아니 이게 뭐임");
         ElevatorManager.Instance.TargetElevator = _elevator;
         ElevatorManager.Instance.CurElevator.ElevatorAnimation();
     }
@@ -39,12 +38,15 @@ public class ElevatorOptionUI : MonoBehaviour
     public void TextChange(ElevatorInteract curElevator)
     {
         if(curElevator == _elevator)
-        {
             _text.SetText("(현재 위치)     " + _originString);
-        }
         else
-        {
             _text.SetText(_originString);
-        }
+
+        _button.enabled = CanRide(curElevator);
+    }
+
+    public bool CanRide(ElevatorInteract elevator)
+    {
+        return _elevator != elevator;
     }
 }

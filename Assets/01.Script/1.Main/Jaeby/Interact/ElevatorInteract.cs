@@ -17,6 +17,8 @@ public class ElevatorInteract : Interact
 
     public string AreaName => _areaName;
 
+    private Animator _animator = null;
+
     protected override void ChildInteractEnd()
     {
     }
@@ -50,12 +52,18 @@ public class ElevatorInteract : Interact
 
     public void ElevatorAnimation()
     {
-        Sequence seq = DOTween.Sequence();
         targetDir = _playerPosition.position - _player.transform.position;
         targetDir.y = 0f;
         _interacting = true;
         _player.PlayerAnimation.MoveAnimation(targetDir);
-        seq.Append(_player.transform.DOMoveX(_playerPosition.position.x, 1f));
+
+        BoxCollider interactCol = transform.Find("InteractCollider").GetComponent<BoxCollider>();
+        float interactColliderSize = interactCol.size.x;
+        interactColliderSize *= 0.5f;
+        float moveDuration = Mathf.Abs(transform.position.x + interactCol.center.x - _player.transform.position.x) / Mathf.Abs(transform.position.x + interactColliderSize * ((targetDir.x < 0f) ? -1f : 1f) - _player.transform.position.x);
+
+        Sequence seq = DOTween.Sequence();
+        seq.Append(_player.transform.DOMoveX(_playerPosition.position.x, moveDuration));
         seq.AppendCallback(() =>
         {
             _interacting = false;
@@ -67,5 +75,15 @@ public class ElevatorInteract : Interact
             _player.transform.rotation = Quaternion.identity;
             ElevatorManager.Instance.PlayCutScene();
         });
+    }
+
+    public void Animation(bool open)
+    {
+        if (_animator == null)
+            _animator = GetComponent<Animator>();
+        if (open)
+            _animator.Play("ElevatorOpen");
+        else
+            _animator.Play("ElevatorClose");
     }
 }
