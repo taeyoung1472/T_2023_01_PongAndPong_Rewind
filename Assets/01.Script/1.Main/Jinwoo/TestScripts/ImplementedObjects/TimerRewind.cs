@@ -51,4 +51,14 @@ public class TimerRewind : RewindAbstract
         particleTimer.CurrentTimer = rewindValue;
         particleTimer.SetText(rewindValue);
     }
+
+    protected override void InitOnPlay()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    protected override void InitOnRewind()
+    {
+        throw new System.NotImplementedException();
+    }
 }

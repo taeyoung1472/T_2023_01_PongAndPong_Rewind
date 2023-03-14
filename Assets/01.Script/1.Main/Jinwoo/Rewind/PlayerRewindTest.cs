@@ -4,15 +4,47 @@ using UnityEngine;
 
 public class PlayerRewindTest : RewindAbstract
 {
-    [SerializeField] bool trackPositionRotation;
-    [SerializeField] bool trackVelocity;
-    [SerializeField] bool trackAnimator;
-    [SerializeField] bool trackAudio;
-    [SerializeField] bool trackParticles;
+    [SerializeField] private bool trackPositionRotation;
+    [SerializeField] private bool trackVelocity;
+    [SerializeField] private bool trackAnimator;
+    [SerializeField] private bool trackAudio;
+    [SerializeField] private bool trackParticles;
 
     [Tooltip("파티클 추적을 선택한 경우에만 파티클 설정 채우기")]
     [SerializeField] ParticlesSetting particleSettings;
 
+
+    [SerializeField] private List<MonoBehaviour> enableList;
+
+    [SerializeField] private CharacterController characterController;
+    protected override void Init()
+    {
+        animator = transform.GetChild(0).GetComponent<Animator>();
+        base.Init();
+        characterController = GetComponent<CharacterController>();
+
+    }
+
+    protected override void InitOnPlay()
+    {
+        foreach (var item in enableList)
+        {
+            item.enabled = true;
+        }
+
+        characterController.enabled = true;
+    }
+
+    protected override void InitOnRewind()
+    {
+
+        foreach (var item in enableList)
+        {
+            item.enabled = false;
+        }
+
+        characterController.enabled = false;
+    }
     protected override void Rewind(float seconds)
     {
 

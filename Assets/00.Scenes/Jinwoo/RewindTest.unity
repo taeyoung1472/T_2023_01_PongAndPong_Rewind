@@ -371,6 +371,8 @@ GameObject:
   - component: {fileID: 497958848}
   - component: {fileID: 497958847}
   - component: {fileID: 497958846}
+  - component: {fileID: 497958852}
+  - component: {fileID: 497958851}
   m_Layer: 0
   m_Name: Cube (10)
   m_TagString: Untagged
@@ -472,6 +474,40 @@ Transform:
   m_Father: {fileID: 305069007}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -24.017}
+--- !u!114 &497958851
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 497958845}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1853014c10a6eb46a8363fdc11758e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trackPositionRotation: 1
+  trackVelocity: 0
+  trackAnimator: 0
+  trackAudio: 0
+  trackParticles: 0
+  particleSettings:
+    particleLimiter: 0
+    particleResetTo: 0
+    particlesData: []
+--- !u!114 &497958852
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 497958845}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ecaed673fa7fb314aabff2bcf5b7f891, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rig: {fileID: 0}
 --- !u!1 &536105926
 GameObject:
   m_ObjectHideFlags: 0
@@ -617,7 +653,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rewindIntensity: 0.02
-  rewindManager: {fileID: 565761450}
   rewindSound: {fileID: 839126657}
 --- !u!114 &565761450
 MonoBehaviour:
@@ -631,6 +666,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e64d270227f9e234d98e01d146ee25a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  howManySecondsToTrack: 10
 --- !u!4 &565761451
 Transform:
   m_ObjectHideFlags: 0
@@ -1099,6 +1135,8 @@ GameObject:
   - component: {fileID: 1089005152}
   - component: {fileID: 1089005151}
   - component: {fileID: 1089005150}
+  - component: {fileID: 1089005156}
+  - component: {fileID: 1089005155}
   m_Layer: 0
   m_Name: Cube (12)
   m_TagString: Untagged
@@ -1200,6 +1238,40 @@ Transform:
   m_Father: {fileID: 305069007}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1089005155
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1089005149}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1853014c10a6eb46a8363fdc11758e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trackPositionRotation: 1
+  trackVelocity: 0
+  trackAnimator: 0
+  trackAudio: 0
+  trackParticles: 0
+  particleSettings:
+    particleLimiter: 0
+    particleResetTo: 0
+    particlesData: []
+--- !u!114 &1089005156
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1089005149}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ecaed673fa7fb314aabff2bcf5b7f891, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rig: {fileID: 0}
 --- !u!1 &1127889793
 GameObject:
   m_ObjectHideFlags: 0
@@ -1555,6 +1627,8 @@ GameObject:
   - component: {fileID: 1228194651}
   - component: {fileID: 1228194650}
   - component: {fileID: 1228194649}
+  - component: {fileID: 1228194654}
+  - component: {fileID: 1228194653}
   m_Layer: 0
   m_Name: Cube (14)
   m_TagString: Untagged
@@ -1656,6 +1730,40 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1228194647}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1228194653
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1228194647}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1853014c10a6eb46a8363fdc11758e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trackPositionRotation: 1
+  trackVelocity: 0
+  trackAnimator: 0
+  trackAudio: 0
+  trackParticles: 0
+  particleSettings:
+    particleLimiter: 0
+    particleResetTo: 0
+    particlesData: []
+--- !u!114 &1228194654
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1228194647}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ecaed673fa7fb314aabff2bcf5b7f891, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rig: {fileID: 0}
 --- !u!1 &1251902549 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6691628707489746810, guid: 7d960efedb9daff45afe3fe7ff9c822f, type: 3}
@@ -1682,6 +1790,45 @@ MonoBehaviour:
     particleLimiter: 0
     particleResetTo: 0
     particlesData: []
+  enableList:
+  - {fileID: 1251902569}
+  - {fileID: 1251902574}
+  - {fileID: 1622120779}
+  - {fileID: 1251902577}
+  characterController: {fileID: 0}
+--- !u!114 &1251902569 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6691628707489746807, guid: 7d960efedb9daff45afe3fe7ff9c822f, type: 3}
+  m_PrefabInstance: {fileID: 2140039893}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1251902549}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 317fb52457f3b1c49b3a99fb41237d7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1251902574 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6691628707489746805, guid: 7d960efedb9daff45afe3fe7ff9c822f, type: 3}
+  m_PrefabInstance: {fileID: 2140039893}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1251902549}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37e4f44bf7499b645b5dcfe572673577, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1251902577 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6691628707489746801, guid: 7d960efedb9daff45afe3fe7ff9c822f, type: 3}
+  m_PrefabInstance: {fileID: 2140039893}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1251902549}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53f306b68a86e33449d824bbe562ae78, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1321992197
 GameObject:
   m_ObjectHideFlags: 0
@@ -1695,6 +1842,8 @@ GameObject:
   - component: {fileID: 1321992200}
   - component: {fileID: 1321992199}
   - component: {fileID: 1321992198}
+  - component: {fileID: 1321992204}
+  - component: {fileID: 1321992203}
   m_Layer: 0
   m_Name: Cube (11)
   m_TagString: Untagged
@@ -1796,6 +1945,40 @@ Transform:
   m_Father: {fileID: 305069007}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -38.350002}
+--- !u!114 &1321992203
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1321992197}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1853014c10a6eb46a8363fdc11758e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trackPositionRotation: 1
+  trackVelocity: 0
+  trackAnimator: 0
+  trackAudio: 0
+  trackParticles: 0
+  particleSettings:
+    particleLimiter: 0
+    particleResetTo: 0
+    particlesData: []
+--- !u!114 &1321992204
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1321992197}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ecaed673fa7fb314aabff2bcf5b7f891, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rig: {fileID: 0}
 --- !u!1 &1341189316
 GameObject:
   m_ObjectHideFlags: 0
@@ -1809,6 +1992,8 @@ GameObject:
   - component: {fileID: 1341189320}
   - component: {fileID: 1341189319}
   - component: {fileID: 1341189318}
+  - component: {fileID: 1341189323}
+  - component: {fileID: 1341189322}
   m_Layer: 0
   m_Name: Cube (13)
   m_TagString: Untagged
@@ -1910,6 +2095,40 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1341189316}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1341189322
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1341189316}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1853014c10a6eb46a8363fdc11758e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trackPositionRotation: 1
+  trackVelocity: 0
+  trackAnimator: 0
+  trackAudio: 0
+  trackParticles: 0
+  particleSettings:
+    particleLimiter: 0
+    particleResetTo: 0
+    particlesData: []
+--- !u!114 &1341189323
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1341189316}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ecaed673fa7fb314aabff2bcf5b7f891, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rig: {fileID: 0}
 --- !u!1 &1607998251
 GameObject:
   m_ObjectHideFlags: 0
@@ -1923,6 +2142,8 @@ GameObject:
   - component: {fileID: 1607998254}
   - component: {fileID: 1607998253}
   - component: {fileID: 1607998252}
+  - component: {fileID: 1607998258}
+  - component: {fileID: 1607998257}
   m_Layer: 0
   m_Name: Cube (8)
   m_TagString: Untagged
@@ -2024,6 +2245,51 @@ Transform:
   m_Father: {fileID: 305069007}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1607998257
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1607998251}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1853014c10a6eb46a8363fdc11758e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trackPositionRotation: 1
+  trackVelocity: 0
+  trackAnimator: 0
+  trackAudio: 0
+  trackParticles: 0
+  particleSettings:
+    particleLimiter: 0
+    particleResetTo: 0
+    particlesData: []
+--- !u!114 &1607998258
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1607998251}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ecaed673fa7fb314aabff2bcf5b7f891, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rig: {fileID: 0}
+--- !u!114 &1622120779 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6691628707631861890, guid: 7d960efedb9daff45afe3fe7ff9c822f, type: 3}
+  m_PrefabInstance: {fileID: 2140039893}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 828fe12625591ea4d9de71b786ff4c67, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1813633489
 GameObject:
   m_ObjectHideFlags: 0
@@ -2506,6 +2772,8 @@ GameObject:
   - component: {fileID: 1994985501}
   - component: {fileID: 1994985500}
   - component: {fileID: 1994985499}
+  - component: {fileID: 1994985504}
+  - component: {fileID: 1994985503}
   m_Layer: 0
   m_Name: Cube (15)
   m_TagString: Untagged
@@ -2607,6 +2875,40 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1994985497}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1994985503
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1994985497}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1853014c10a6eb46a8363fdc11758e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trackPositionRotation: 1
+  trackVelocity: 0
+  trackAnimator: 0
+  trackAudio: 0
+  trackParticles: 0
+  particleSettings:
+    particleLimiter: 0
+    particleResetTo: 0
+    particlesData: []
+--- !u!114 &1994985504
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1994985497}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ecaed673fa7fb314aabff2bcf5b7f891, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rig: {fileID: 0}
 --- !u!1 &2069358828
 GameObject:
   m_ObjectHideFlags: 0
@@ -2620,6 +2922,8 @@ GameObject:
   - component: {fileID: 2069358831}
   - component: {fileID: 2069358830}
   - component: {fileID: 2069358829}
+  - component: {fileID: 2069358835}
+  - component: {fileID: 2069358834}
   m_Layer: 0
   m_Name: Cube (9)
   m_TagString: Untagged
@@ -2721,6 +3025,40 @@ Transform:
   m_Father: {fileID: 305069007}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2069358834
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2069358828}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1853014c10a6eb46a8363fdc11758e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trackPositionRotation: 1
+  trackVelocity: 0
+  trackAnimator: 0
+  trackAudio: 0
+  trackParticles: 0
+  particleSettings:
+    particleLimiter: 0
+    particleResetTo: 0
+    particlesData: []
+--- !u!114 &2069358835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2069358828}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ecaed673fa7fb314aabff2bcf5b7f891, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rig: {fileID: 0}
 --- !u!1001 &2140039893
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2775,6 +3113,18 @@ PrefabInstance:
     - target: {fileID: 6691628707489746810, guid: 7d960efedb9daff45afe3fe7ff9c822f, type: 3}
       propertyPath: m_Name
       value: NewPlayer 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6691628707631861921, guid: 7d960efedb9daff45afe3fe7ff9c822f, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6691628707631861921, guid: 7d960efedb9daff45afe3fe7ff9c822f, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6691628707631861921, guid: 7d960efedb9daff45afe3fe7ff9c822f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7d960efedb9daff45afe3fe7ff9c822f, type: 3}

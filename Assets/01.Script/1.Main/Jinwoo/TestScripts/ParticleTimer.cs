@@ -5,17 +5,17 @@ public class ParticleTimer : MonoBehaviour
 {
     [SerializeField] Text timeText;
     [SerializeField] GameObject particles;
-    RewindTestManager rewindManager;
+    //RewindTestManager rewindManager;
     float timerDefault = 5;    
     public float CurrentTimer { get; set; }
     private void Start()
     {
         CurrentTimer = timerDefault;
-        rewindManager = FindObjectOfType<RewindTestManager>();
+        //rewindManager = FindObjectOfType<RewindTestManager>();
     }
     void Update()                               
     {
-        if(rewindManager.IsBeingRewinded)                       //Simple solution how to solve Update fighting with FixedUpdate in rewind
+        if(RewindTestManager.Instance.IsBeingRewinded)                       //Simple solution how to solve Update fighting with FixedUpdate in rewind
             return;
         
 

@@ -47,6 +47,16 @@ public class ScaleRewind : RewindAbstract
         scaleSlider.value = transform.localScale.x;
     }
 
+    protected override void InitOnPlay()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    protected override void InitOnRewind()
+    {
+        throw new System.NotImplementedException();
+    }
+
     //데모 개체 스케일 조정이 선택된 경우에만 하는 것이 좋을 듯
     //그렇지 않으면 슬라이더 값을 추적하고 되돌리는 것이 더 나을 것 같음
     //그러면 그에 따라 개체 배율도 업데이트 됨
