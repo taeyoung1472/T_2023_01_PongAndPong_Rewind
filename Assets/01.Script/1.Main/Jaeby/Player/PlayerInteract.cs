@@ -10,6 +10,7 @@ public class PlayerInteract : PlayerAction
     {
         if(other.CompareTag("Interact"))
         {
+            
             Debug.Log("´ê¾Ò¾î");
             _curInteract = other.GetComponentInParent<Interact>();
             _curInteract.InteractEnter();

@@ -5,5 +5,5 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "SO/Obj/Weight")]
 public class ObjWeightSO : ScriptableObject
 {
-    public float weight;
+    public int weight;
 }
