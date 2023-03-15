@@ -31,6 +31,8 @@ public class PlayerDash : PlayerAction
             _player.PlayerAnimation.SlideAnimation();
         else
             _player.PlayerAnimation.DashAnimation(_player.PlayerInput.InputVectorNorm);
+
+        PoolManager.Pop(PoolType.DashEffect).transform.position = transform.position;
         OnDashStarted?.Invoke(_player.PlayerInput.InputVectorNorm);
     }
 
