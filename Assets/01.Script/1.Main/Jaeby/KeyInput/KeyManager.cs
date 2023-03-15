@@ -15,6 +15,7 @@ public static class KeyManager
         KeyCode.Mouse0,
         KeyCode.LeftShift,
         KeyCode.Mouse1,
+        KeyCode.F,
     };
 
     public static Dictionary<InputType, KeyCode> keys = new Dictionary<InputType, KeyCode>();

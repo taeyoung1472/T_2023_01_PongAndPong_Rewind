@@ -36,7 +36,7 @@ public class PlayerInput : MonoBehaviour
     {
         if (_player == null)
             return;
-        if(Input.GetKeyDown(KeyCode.F))
+        if (Input.GetKeyDown(KeyManager.keys[InputType.Interact]))
         {
             PlayerInteract playerInteract = _player.GetPlayerAction(PlayerActionType.Interact) as PlayerInteract;
             if (playerInteract.TryInteract())
