@@ -10,17 +10,22 @@ public class Player : MonoBehaviour
 {
     private List<PlayerAction> _playerActions = new List<PlayerAction>();
 
+    #region SO
     [SerializeField]
     private PlayerMovementSO _playerMovementSO = null;
     [SerializeField]
     private PlayerAttackSO _playerAttackSO = null;
     [SerializeField]
     private UnityEvent<bool> OnIsGrounded = null;
+    #endregion
 
+    #region 캐싱 데이터
     private PlayerAnimation _playerAnimation = null;
     private PlayerRenderer _playerRenderer = null;
     private GravityModule _gravityModule = null;
     private PlayerInput _playerInput = null;
+    private CharacterController _characterController = null;
+    #endregion
 
     #region 프로퍼티
     public PlayerRenderer PlayerRenderer => _playerRenderer;
@@ -29,24 +34,27 @@ public class Player : MonoBehaviour
     public PlayerInput PlayerInput => _playerInput;
     public PlayerMovementSO playerMovementSO => _playerMovementSO;
     public PlayerAttackSO playerAttackSO => _playerAttackSO;
+    public CharacterController characterController => _characterController;
     #endregion
 
+    #region Json 저장 데이터
     private PlayerJsonData _playerJsonData = null;
     public PlayerJsonData playerJsonData => _playerJsonData;
     private PlayerInventory _playerInventory = null;
     public PlayerInventory playerInventory => _playerInventory;
+    #endregion
 
-    private CharacterController _characterController = null;
-    public CharacterController characterController => _characterController;
+    #region 이동 관련
     private Vector3 _moveAmount = Vector3.zero;
     public Vector3 MoveAmount => _moveAmount;
     private Vector3 _extraMoveAmount = Vector3.zero;
     public Vector3 ExtraMoveAmount => _extraMoveAmount;
     private Vector3 _characterMoveAmount = Vector3.zero;
     public Vector3 CharacterMoveAmount => _characterMoveAmount;
-
     private CollisionFlags _collisionFlag = CollisionFlags.None;
+    #endregion
 
+    #region 바닥 체크용 박스캐스트 관련
     [SerializeField]
     private float _groundCheckRayLength = 0.225f;
     [SerializeField]
@@ -54,12 +62,15 @@ public class Player : MonoBehaviour
     private Collider _col = null;
     private bool _isGrounded = false;
     public bool IsGrounded => _isGrounded;
+    #endregion
 
     private void Awake()
     {
         LoadJson();
+        //액션 초기화
         List<PlayerAction> tempActions = new List<PlayerAction>(GetComponents<PlayerAction>());
         _playerActions = (from action in tempActions orderby action.ActionType ascending select action).ToList();
+        //캐싱
         _characterController = GetComponent<CharacterController>();
         _playerInput = GetComponent<PlayerInput>();
         _playerAnimation = transform.Find("AgentRenderer").GetComponent<PlayerAnimation>();
@@ -182,7 +193,31 @@ public class Player : MonoBehaviour
             Debug.LogError("type이 None인데?");
             return null;
         }
-        return _playerActions[((int)type) - 1];
+
+        if (_playerActions.Count == (int)PlayerActionType.Size - 1) // 다 있음
+        {
+            return _playerActions[((int)type) - 1];
+        }
+        else
+        {
+            for (int i = 0; i < _playerActions.Count; i++)
+            {
+                if (_playerActions[i].ActionType == type)
+                    return _playerActions[i];
+            }
+        }
+
+        return null;
+    }
+
+    public T GetPlayerAction<T>() where T : PlayerAction
+    {
+        for (int i = 0; i < _playerActions.Count; i++)
+        {
+            if (_playerActions[i] is T)
+                return _playerActions[i] as T;
+        }
+        return null;
     }
 
     private void GroundCheck()
@@ -203,7 +238,7 @@ public class Player : MonoBehaviour
         _characterMoveAmount = ((_moveAmount + _extraMoveAmount) +
             ((_isGrounded == false && _gravityModule.UseGravity) ? _gravityModule.GetGravity() : Vector3.zero))
             ;
-        if(_characterController.velocity.y < 0f)
+        if (_characterController.velocity.y < 0f)
         {
             _characterMoveAmount += Vector3.up * GravityModule.GetGravity().y * (_playerMovementSO.fallMultiplier - 1) * Time.deltaTime;
         }
@@ -213,5 +248,13 @@ public class Player : MonoBehaviour
     public void PlayerInteractActionExit()
     {
         PlayerActionExit(PlayerActionType.Interact);
+    }
+
+    public void ForceStop()
+    {
+        PlayerActionExit(PlayerActionType.Move, PlayerActionType.Dash, PlayerActionType.Jump);
+        VeloCityResetImm(true, true);
+        _playerInput.InputVectorReset();
+        _playerAnimation.FallOrIdleAnimation(IsGrounded);
     }
 }
