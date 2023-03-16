@@ -53,6 +53,7 @@ public class PlayerWallGrab : PlayerAction
     {
         _player.PlayerActionLock(false, PlayerActionType.Dash, PlayerActionType.Move, PlayerActionType.WallGrab);
         _player.GravityModule.GravityScale = _player.GravityModule.OriginGravityScale;
+        _player.GravityModule.UseGravity = true;
     }
 
     private void WallGrabEnter()
@@ -61,6 +62,9 @@ public class PlayerWallGrab : PlayerAction
         _player.PlayerActionExit(PlayerActionType.Jump);
         _player.GravityModule.UseGravity = true;
         _player.GravityModule.GravityScale = _player.playerMovementSO.wallSlideGravityScale;
+        if (_player.playerMovementSO.wallSlideGravityScale < 0.02f)
+            _player.GravityModule.UseGravity = false;
+
         _player.VeloCityResetImm(true, true);
         _player.PlayerActionLock(true, PlayerActionType.Dash, PlayerActionType.Move, PlayerActionType.WallGrab);
     }

@@ -63,7 +63,7 @@ public class ElevatorInteract : Interact
         float moveDuration = Mathf.Abs(transform.position.x + interactCol.center.x - _player.transform.position.x) / Mathf.Abs(transform.position.x + interactColliderSize * ((targetDir.x < 0f) ? -1f : 1f) - _player.transform.position.x);
 
         Sequence seq = DOTween.Sequence();
-        seq.Append(_player.transform.DOMoveX(_playerPosition.position.x, moveDuration));
+        seq.Append(_player.transform.DOMoveX(_playerPosition.position.x, moveDuration * 0.5f).SetEase(Ease.Linear));
         seq.AppendCallback(() =>
         {
             _interacting = false;
