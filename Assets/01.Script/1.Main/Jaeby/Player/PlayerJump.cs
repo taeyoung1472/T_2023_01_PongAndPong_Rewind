@@ -144,7 +144,7 @@ public class PlayerJump : PlayerAction
         JumpEnd();
     }
 
-    private void JumpCountUp()
+    public void JumpCountUp()
     {
         _curJumpCount--;
         _curJumpCount = Mathf.Clamp(_curJumpCount, 0, _player.playerMovementSO.jumpCount);

@@ -39,7 +39,7 @@ public class PlayerDash : PlayerAction
     private IEnumerator DashCoroutine(bool slide)
     {
         _player.PlayerActionExit(PlayerActionType.Jump, PlayerActionType.Move, PlayerActionType.WallGrab);
-        _player.PlayerActionLock(true, PlayerActionType.Jump, PlayerActionType.Move, PlayerActionType.WallGrab);
+        _player.PlayerActionLock(true, PlayerActionType.Jump, PlayerActionType.Move);
         _player.VeloCityResetImm(true, true);
         _excuting = true;
         Vector2 dashVector = Vector2.zero;
@@ -69,7 +69,7 @@ public class PlayerDash : PlayerAction
     public void DashExit()
     {
         _excuting = false;
-        _player.PlayerActionLock(false, PlayerActionType.Jump, PlayerActionType.Move, PlayerActionType.WallGrab);
+        _player.PlayerActionLock(false, PlayerActionType.Jump, PlayerActionType.Move);
         _player.GravityModule.UseGravity = true;
         _player.VelocitySetExtra(0f, 0f);
         if (_player.PlayeActionCheck(PlayerActionType.WallGrab) == false)
@@ -97,6 +97,8 @@ public class PlayerDash : PlayerAction
     public override void ActionExit()
     {
         _excuting = false;
+        if (_dashCoroutine != null)
+            StopCoroutine(_dashCoroutine);
         DashExit();
     }
 }
