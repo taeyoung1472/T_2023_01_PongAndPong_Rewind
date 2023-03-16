@@ -14,7 +14,6 @@ public class SpringGimmick : MonoBehaviour
     private int _maxDeceleration = 4;
     public Dictionary<Collider, int> decelerationColDic = new Dictionary<Collider, int>();
 
-    private List<Collider> _cols = new List<Collider>();
     private void Awake()
     {
         _col = GetComponent<Collider>();
@@ -22,6 +21,7 @@ public class SpringGimmick : MonoBehaviour
     private void Update()
     {
         ShootUpBoxCast();
+       // ShootInfi();
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -36,7 +36,24 @@ public class SpringGimmick : MonoBehaviour
 
         }
     }
+    public void ShootInfi()
+    {
+        RaycastHit hit;
 
+        Vector3 boxCenter = _col.bounds.center;
+        Vector3 halfExtents = _col.bounds.extents;
+
+        Physics.BoxCast(boxCenter, new Vector3(halfExtents.x, halfExtents.y, halfExtents.z), transform.up, out hit, transform.rotation, Mathf.Infinity);
+
+        if (hit.collider != null)
+        {
+
+        }
+        else
+        {
+            decelerationColDic.Remove(hit.collider);
+        }
+    }
 
     //박스캐스트를 쏴서 캐릭터에 부터ㅇ이쓴ㄴ 그 체공시간을 아는걸 같고와야하는거지
     public void ShootUpBoxCast()
@@ -50,12 +67,14 @@ public class SpringGimmick : MonoBehaviour
 
         if (hit.collider != null)
         {
+          
+
             if (!decelerationColDic.ContainsKey(hit.collider))
             {
                 decelerationColDic.Add(hit.collider, 0);
                 decelerationColDic[hit.collider] = _maxDeceleration;
             }
-            
+
             float time = hit.collider.GetComponent<StayTimeChecker>().StayTime;
 
             float weight = hit.collider.GetComponent<ObjWeight>().so.weight;
@@ -65,7 +84,7 @@ public class SpringGimmick : MonoBehaviour
             jumpPower = decelerationColDic[hit.collider] * (int)ratio;
             // 4 2 1 0
 
-           // Debug.Log(decelerationColDic[hit.collider] + "      " + ratio);
+            // Debug.Log(decelerationColDic[hit.collider] + "      " + ratio);
             if (isJump == false)
             {
                 if (decelerationColDic[hit.collider] <= 0)
@@ -76,13 +95,34 @@ public class SpringGimmick : MonoBehaviour
                 isJump = true;
             }
 
-            Debug.Log(jumpPower);
-             hit.collider.GetComponent<Rigidbody>().AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
+            if (hit.collider.CompareTag("Player"))
+            {
+                hit.collider.GetComponent<PlayerJump>().ForceJump(Vector3.up, jumpPower);
+            }
+            else
+            {
+                hit.collider.GetComponent<Rigidbody>().AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
+            }
+
         }
         else
         {
             isJump = false;
+
+            foreach (var exitCol in decelerationColDic)
+            {
+                float X = exitCol.Key.gameObject.transform.position.x; //물체위치 
+
+                float boxX = halfExtents.x; // 박스 캐스트 길이 반절
+                if (X > boxX + transform.position.x || X < transform.position.x - boxX)
+                {
+                    decelerationColDic.Remove(exitCol.Key);
+                    Debug.Log("나감?");
+                }
+            }
         }
+
+    
     }
 
 }
