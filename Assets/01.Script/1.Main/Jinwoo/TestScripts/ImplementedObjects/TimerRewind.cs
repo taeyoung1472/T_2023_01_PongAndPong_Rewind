@@ -5,7 +5,7 @@ using UnityEngine;
 public class TimerRewind : RewindAbstract
 {
     CircularBuffer<float> trackedTime;     //데이터를 저장하려면 이 CircularBuffer 클래스를 사용해라.
-    [SerializeField] ParticleTimer particleTimer;
+    [SerializeField] TestTimer testTimer;
     
     [SerializeField] ParticlesSetting particleSettings;
 
@@ -22,8 +22,9 @@ public class TimerRewind : RewindAbstract
     //일단 지금은 이미 구현된 오디오 추적, 파티클 추적 + 새로운 사용자 지정 타이머 추적을 추적하려고 함
     protected override void Track()
     {
-        TrackParticles();
-        TrackAudio();
+        Debug.Log("기록 중");
+        //TrackParticles();
+        //TrackAudio();
         TrackTimer();
     }
 
@@ -31,8 +32,9 @@ public class TimerRewind : RewindAbstract
     //일단 파티클, 오디오 및 사용자 정의 구현 타이머를 리와인드 하려고 함
     protected override void Rewind(float seconds)
     {
-        RestoreParticles(seconds);
-        RestoreAudio(seconds);
+        Debug.Log("되감기 중");
+        //RestoreParticles(seconds);
+        //RestoreAudio(seconds);
         RestoreTimer(seconds);
     }
 
@@ -40,7 +42,7 @@ public class TimerRewind : RewindAbstract
     // 커스텀 변수 추적의 예
     public void TrackTimer()
     {
-        trackedTime.WriteLastValue(particleTimer.CurrentTimer);
+        trackedTime.WriteLastValue(testTimer.CurrentTimer);
     }
 
 
@@ -48,17 +50,18 @@ public class TimerRewind : RewindAbstract
     public void RestoreTimer(float seconds)
     {
         float rewindValue= trackedTime.ReadFromBuffer(seconds);
-        particleTimer.CurrentTimer = rewindValue;
-        particleTimer.SetText(rewindValue);
+        //testTimer.CurrentTimer = rewindValue;
+        //testTimer.SetText(rewindValue);
     }
 
     protected override void InitOnPlay()
     {
-        throw new System.NotImplementedException();
+        //testTimer.timerDefault = RewindTestManager.Instance.howManySecondsToTrack;
+        //testTimer.CurrentTimer = testTimer.timerDefault;
     }
 
     protected override void InitOnRewind()
     {
-        throw new System.NotImplementedException();
+
     }
 }

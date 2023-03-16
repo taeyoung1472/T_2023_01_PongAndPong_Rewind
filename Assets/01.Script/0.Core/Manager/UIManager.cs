@@ -12,7 +12,7 @@ public class UIManager : MonoSingleTon<UIManager>
     [SerializeField] private Color[] clockColorArray;
 
     //private int totalTIme { get { return RewindManager.Instance.CurStageRecordCount; } }
-    private int totalTIme { get { return StageManager.Instance.curArea.PlayTime; } }
+    private int totalTIme { get { return (int)RewindTestManager.Instance.howManySecondsToTrack; } }
 
     public void Init()
     {
@@ -20,10 +20,10 @@ public class UIManager : MonoSingleTon<UIManager>
         
     }
 
-    public void OnTimeChange(int time)
+    public void OnPlayTimeChange(int time)
     {
-        clockFill.fillAmount = time / (float)(totalTIme - 1);
-        clockTimeText.text = $"{time}";
+        clockFill.fillAmount = time / (float)(totalTIme);
+        clockTimeText.SetText($"{time}");
 
         int clockTime = totalTIme / clockColorArray.Length;
         int tempTime = 0;
@@ -34,6 +34,23 @@ public class UIManager : MonoSingleTon<UIManager>
                 clockFill.color = Color.Lerp(clockColorArray[i], clockColorArray[Mathf.Clamp(i + 1, 0, clockColorArray.Length - 1)], (float)(time % clockTime) / (float)clockTime);
             }
             tempTime += clockTime;
+        }
+    }
+
+    public void OnRewindTimeChange(int time)
+    {
+        clockFill.fillAmount = (time / (float)(totalTIme));
+        clockTimeText.SetText($"{time}");
+
+        int clockTime = totalTIme / clockColorArray.Length;
+        int tempTime = totalTIme;
+        for (int i = clockColorArray.Length -1; i > 0; i--)
+        {
+            if (time <= tempTime)
+            {
+                clockFill.color = Color.Lerp(clockColorArray[i], clockColorArray[Mathf.Clamp(i - 1, 0, clockColorArray.Length - 1)], (float)(time % clockTime) / (float)clockTime);
+            }
+            tempTime -= clockTime;
         }
     }
 }

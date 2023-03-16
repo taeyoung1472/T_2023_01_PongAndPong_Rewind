@@ -395,10 +395,14 @@ public abstract class RewindAbstract : MonoBehaviour
     }
     protected void OnDisable()
     {
-        RewindTestManager.Instance.RewindTimeCall -= Rewind;
-        RewindTestManager.Instance.TrackingStateCall -= OnTrackingChange;            
-        RewindTestManager.Instance.InitPlay -= InitOnPlay;
-        RewindTestManager.Instance.InitRewind -= InitOnRewind;
+        if (RewindTestManager.Instance != null)
+        {
+            RewindTestManager.Instance.RewindTimeCall -= Rewind;
+            RewindTestManager.Instance.TrackingStateCall -= OnTrackingChange;
+            RewindTestManager.Instance.InitPlay -= InitOnPlay;
+            RewindTestManager.Instance.InitRewind -= InitOnRewind;
+        }
+        
     }
 
     /// <summary>

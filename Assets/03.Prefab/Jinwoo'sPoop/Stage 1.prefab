@@ -3789,22 +3789,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 850207823381754031}
     m_Modifications:
-    - target: {fileID: 281645587675398459, guid: bcde9c6c9f0c35f4394e08f78945e239, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 29.52
-      objectReference: {fileID: 0}
-    - target: {fileID: 281645587675398459, guid: bcde9c6c9f0c35f4394e08f78945e239, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 3.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 895550493211145333, guid: bcde9c6c9f0c35f4394e08f78945e239, type: 3}
-      propertyPath: m_Name
-      value: Obstacle1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2058994806454001591, guid: bcde9c6c9f0c35f4394e08f78945e239, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 5248702449949089728, guid: bcde9c6c9f0c35f4394e08f78945e239, type: 3}
       propertyPath: m_Name
       value: 2Level
@@ -3853,10 +3837,7 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 2754398012262791455, guid: bcde9c6c9f0c35f4394e08f78945e239, type: 3}
-    - {fileID: 5426221621031344733, guid: bcde9c6c9f0c35f4394e08f78945e239, type: 3}
-    - {fileID: 1033118245365418837, guid: bcde9c6c9f0c35f4394e08f78945e239, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bcde9c6c9f0c35f4394e08f78945e239, type: 3}
 --- !u!4 &850207822977115139 stripped
 Transform:
@@ -3870,22 +3851,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 850207823381754031}
     m_Modifications:
-    - target: {fileID: 3874716865815422508, guid: 0e8eb1e7b724c654bbecb5e533e3477b, type: 3}
-      propertyPath: player
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 3874716865815422508, guid: 0e8eb1e7b724c654bbecb5e533e3477b, type: 3}
-      propertyPath: replayer
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 4690579044880194310, guid: 0e8eb1e7b724c654bbecb5e533e3477b, type: 3}
-      propertyPath: m_Name
-      value: Obstacle0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7070856307534574998, guid: 0e8eb1e7b724c654bbecb5e533e3477b, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 7247769038780374171, guid: 0e8eb1e7b724c654bbecb5e533e3477b, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -3934,21 +3899,88 @@ PrefabInstance:
       propertyPath: m_Name
       value: 1Level
       objectReference: {fileID: 0}
-    - target: {fileID: 8605700366948205978, guid: 0e8eb1e7b724c654bbecb5e533e3477b, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -3.57
-      objectReference: {fileID: 0}
-    - target: {fileID: 8605700366948205978, guid: 0e8eb1e7b724c654bbecb5e533e3477b, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 2.75
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 942649498, guid: 0e8eb1e7b724c654bbecb5e533e3477b, type: 3}
-    - {fileID: 5387177163408639404, guid: 0e8eb1e7b724c654bbecb5e533e3477b, type: 3}
-    - {fileID: 3874716865815422508, guid: 0e8eb1e7b724c654bbecb5e533e3477b, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0e8eb1e7b724c654bbecb5e533e3477b, type: 3}
 --- !u!4 &850207823068631124 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7247769038780374171, guid: 0e8eb1e7b724c654bbecb5e533e3477b, type: 3}
   m_PrefabInstance: {fileID: 8023642161714531535}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &3333223111829527364 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4690579046011967371, guid: 0e8eb1e7b724c654bbecb5e533e3477b, type: 3}
+  m_PrefabInstance: {fileID: 8023642161714531535}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1386985565830786217
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3333223111829527364}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1853014c10a6eb46a8363fdc11758e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trackPositionRotation: 1
+  trackVelocity: 0
+  trackAnimator: 0
+  trackAudio: 0
+  trackParticles: 0
+  particleSettings:
+    particleLimiter: 0
+    particleResetTo: 0
+    particlesData: []
+--- !u!1 &3333223111977274548 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4690579046194511995, guid: 0e8eb1e7b724c654bbecb5e533e3477b, type: 3}
+  m_PrefabInstance: {fileID: 8023642161714531535}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6621224517512776710
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3333223111977274548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1853014c10a6eb46a8363fdc11758e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trackPositionRotation: 1
+  trackVelocity: 0
+  trackAnimator: 0
+  trackAudio: 0
+  trackParticles: 0
+  particleSettings:
+    particleLimiter: 0
+    particleResetTo: 0
+    particlesData: []
+--- !u!1 &3333223112974740009 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4690579044866762470, guid: 0e8eb1e7b724c654bbecb5e533e3477b, type: 3}
+  m_PrefabInstance: {fileID: 8023642161714531535}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5068497268212243289
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3333223112974740009}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1853014c10a6eb46a8363fdc11758e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trackPositionRotation: 1
+  trackVelocity: 0
+  trackAnimator: 0
+  trackAudio: 0
+  trackParticles: 0
+  particleSettings:
+    particleLimiter: 0
+    particleResetTo: 0
+    particlesData: []

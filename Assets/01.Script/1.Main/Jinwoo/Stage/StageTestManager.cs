@@ -1,9 +1,8 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StageManager : MonoSingleTon<StageManager>
+public class StageTestManager : MonoSingleTon<StageTestManager>
 {
     [SerializeField]
     private StageDataSO stageData;
@@ -12,17 +11,23 @@ public class StageManager : MonoSingleTon<StageManager>
 
     [SerializeField] private List<StageAreaT> stageAreaList;
 
-    public int stageNum = 0;
-    public bool stageClear = false;
+    public int stageAreaNum = 0;
+    public bool curstageClear = false;
 
-    public void Init()
+    public bool isStageAreaPlayStart = false;
+    private void Awake()
     {
-        stageNum = 0;
+        Init();
+    }
+    public void Init()//첫 스테이지에 들어왔을 때만
+    {
+        isStageAreaPlayStart = false;
+        stageAreaNum = 0;
         //curStage = Instantiate(stageData.stagePrefab, Vector3.zero, Quaternion.identity);
         InitSetData();
     }
 
-    public void InitSetData()
+    public void InitSetData() //첫 스테이지에 들어왔을 때만
     {
         stageAreaList.AddRange(stageData.StageAreaList);
 
@@ -34,15 +39,20 @@ public class StageManager : MonoSingleTon<StageManager>
 
         StartCoroutine(StageCycle());
     }
+
     public void SetArea(StageAreaT area)
     {
         if (curArea != null)
-            curArea.ExitArea();
-
+        {
+            area.ExitArea();
+        }
         if (curArea == area)
         {
             area.EntryArea(true);
         }
+        else
+            area.EntryArea();
+
         curArea = area;
     }
 
@@ -50,19 +60,19 @@ public class StageManager : MonoSingleTon<StageManager>
     {
         for (int i = 0; i < stageAreaList.Count; i++)
         {
-            //curArea = stageAreaList[i];
             SetArea(stageAreaList[i]);
-            //ReTimeManager.Instance.Init();
-            curArea.EntryArea();
+            isStageAreaPlayStart = true;
             yield return new WaitUntil(() => curArea.IsClear); //클리어 했을 경우에만 다음으로 넘어감
-            stageNum++;
+            isStageAreaPlayStart = false;
+            stageAreaNum++;
             Debug.Log("대음");
             curArea.IsClear = false;
-            //curArea.IsRewind = false;
-            ReTimeManager.Instance.Init();
+            //ReTimeManager.Instance.Init();
             curArea.ExitArea();
         }
-        stageClear = true;
+        isStageAreaPlayStart = false;
+        curstageClear = true;
         EndManager.Instance.End();
     }
+
 }
