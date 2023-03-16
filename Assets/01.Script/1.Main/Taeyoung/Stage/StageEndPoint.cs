@@ -8,7 +8,7 @@ public class StageEndPoint : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             Debug.Log("플레이어 앤드");
-            StageManager.Instance.curArea.IsClear = true;
+            StageTestManager.Instance.curArea.IsClear = true;
         }
     }
 }

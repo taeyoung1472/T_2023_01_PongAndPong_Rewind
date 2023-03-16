@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class StageAreaT : MonoBehaviour
 {
+    #region º¯¼öµé
     [SerializeField] private Transform defaultPlayerSpawn;
     [SerializeField] private Transform rewindPlayerSpawn;
 
@@ -20,14 +21,21 @@ public class StageAreaT : MonoBehaviour
 
     public bool IsClear { get { return AreaData.isAreaClear; } set => AreaData.isAreaClear = value; }
 
-    public PlayerReTime playerPrefab;
+    //public PlayerRewindTest playerPrefab;
 
-    public PlayerReTime player;
-    public PlayerReTime replayer;
+    public PlayerRewindTest player;
+    public GameObject replayer;
+    public PlayerRewindTest p;
+    public GameObject p2;
 
     private bool isRewind = false;
-    public bool IsRewind { get => isRewind; set { isRewind = value;  Debug.Log(value); } }
+    public bool IsRewind { get => isRewind; set { isRewind = value;  } }
 
+    #endregion
+    private void Start()
+    {
+        RewindTestManager.Instance.ReTimeStop.AddListener(ExitArea);
+    }
 
     public void EntryArea(bool isNew = false)
     {
@@ -36,29 +44,26 @@ public class StageAreaT : MonoBehaviour
             //RewindManager.Instance.SetArea(this);
             //ExitArea();
         }
-        player = Instantiate(playerPrefab, defaultPlayerSpawn.position, Quaternion.identity);
-        player.GetComponent<PlayerReTime>().Init();
-        player.GetComponent<PlayerReTime>().InitOnPlay();
-        PlayerCam.SetTarget(player.transform);
+        RewindTestManager.Instance.howManySecondsToTrack = PlayTime;
+        p = Instantiate(player, defaultPlayerSpawn.position, Quaternion.identity);
+        
+        //PlayerCam.SetTarget(player.transform);
     }
 
     public void Rewind()
     {
         //Debug.Log("djkfs");
-        replayer = Instantiate(playerPrefab, rewindPlayerSpawn.position, Quaternion.identity);
+        p2 =Instantiate(replayer, rewindPlayerSpawn.position, Quaternion.identity);
         
-        player.GetComponent<PlayerReTime>().InitOnRewind();
-        replayer.GetComponent<PlayerReTime>().Init();
-        replayer.GetComponent<PlayerReTime>().InitOnPlay();
-        PlayerCam.SetTarget(replayer.transform);
+        //PlayerCam.SetTarget(replayer.transform);
     }
 
     public void ExitArea()
     {
-        player.gameObject.SetActive(false);
-        if (replayer)
+        p.gameObject.SetActive(false);
+        if (p2)
         {
-            replayer.gameObject.SetActive(false);
+            p2.gameObject.SetActive(false);
         }
     }
 }

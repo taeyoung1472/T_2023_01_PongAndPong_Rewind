@@ -11,6 +11,16 @@ public class GenericRewind : RewindAbstract
     [Tooltip("파티클 추적을 선택한 경우에만 파티클 설정 채우기")]
     [SerializeField] ParticlesSetting particleSettings;
 
+    protected override void InitOnPlay()
+    {
+
+    }
+
+    protected override void InitOnRewind()
+    {
+
+    }
+
     protected override void Rewind(float seconds)
     {
 
