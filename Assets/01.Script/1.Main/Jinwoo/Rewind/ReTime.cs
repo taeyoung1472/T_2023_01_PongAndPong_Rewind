@@ -108,7 +108,7 @@ public class ReTime : MonoBehaviour {
         }
 		else
 			curTime += Time.deltaTime;
-		UIManager.Instance.OnTimeChange((int)curTime);	
+		UIManager.Instance.OnPlayTimeChange((int)curTime);	
 	}
 
 	private void FixedUpdate()

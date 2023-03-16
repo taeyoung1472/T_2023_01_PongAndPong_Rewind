@@ -15,7 +15,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &281645587675398459
 Transform:
   m_ObjectHideFlags: 0
@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2058994806454001591}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 29.52, y: 3.2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -431,7 +431,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5248702449949089729}
-  - component: {fileID: 1033118245365418837}
+  - component: {fileID: 154580511}
   m_Layer: 0
   m_Name: 2Level
   m_TagString: Untagged
@@ -456,7 +456,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1033118245365418837
+--- !u!114 &154580511
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -471,9 +471,8 @@ MonoBehaviour:
   defaultPlayerSpawn: {fileID: 5360702792017363562}
   rewindPlayerSpawn: {fileID: 5035558846938272341}
   areaData: {fileID: 11400000, guid: f1e8ad4cb22567349954280073f7bc02, type: 2}
-  playerPrefab: {fileID: 1130859995, guid: c6255b69abc949f42ab5dd46244ca0b5, type: 3}
-  player: {fileID: 0}
-  replayer: {fileID: 0}
+  player: {fileID: 1251902565, guid: 7d960efedb9daff45afe3fe7ff9c822f, type: 3}
+  replayer: {fileID: 6691628707489746810, guid: 18f205ab32cd84a4898ba28bf639789b, type: 3}
 --- !u!1 &5248702449966277362
 GameObject:
   m_ObjectHideFlags: 0
@@ -19661,9 +19660,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8024545559304223564, guid: 29adc4ecc9ca829498067bb89be3861a, type: 3}
       propertyPath: m_Name
-      value: Obstacle 2
+      value: Obstacle1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4974469468952835622, guid: 29adc4ecc9ca829498067bb89be3861a, type: 3}
+    - {fileID: 2917351892849562980, guid: 29adc4ecc9ca829498067bb89be3861a, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 29adc4ecc9ca829498067bb89be3861a, type: 3}
 --- !u!4 &6354704950998512715 stripped
 Transform:

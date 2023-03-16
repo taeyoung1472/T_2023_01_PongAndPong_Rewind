@@ -1,7 +1,8 @@
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 
-public class RewindTestManager : MonoBehaviour
+public class RewindTestManager : MonoSingleTon<RewindTestManager>
 {
     /// <summary>
     /// 이 액션은 사용자가 사용하기 위한 것이 아님 
@@ -9,22 +10,31 @@ public class RewindTestManager : MonoBehaviour
     /// RewindTimeBySeconds(), StartRewindTimeBySeconds(),
     /// SetTimeSecondsInRewind(), StopRewindTimeBySeconds()와 같은 준비된 메서드를 사용하고 싶을 것 같아서 만듦
     /// </summary>
-    public static Action<float> RewindTimeCall { get; set; }
+    public Action<float> RewindTimeCall { get; set; }
     /// <summary>
     /// 이 액션은 사용자가 사용하기 위한 것이 아님 
     /// 클래스 간에 데이터를 공유함
     /// RewindTimeBySeconds(), StartRewindTimeBySeconds(),
     /// SetTimeSecondsInRewind(), StopRewindTimeBySeconds()와 같은 준비된 메서드를 사용하고 싶을 것 같아서 만듦
     /// </summary>
-    public static Action<bool> TrackingStateCall { get; set; }
+    public Action<bool> TrackingStateCall { get; set; }
     /// <summary>
     /// 이 액션은 사용자가 사용하기 위한 것이 아님 
     /// 클래스 간에 데이터를 공유함
     /// RewindTimeBySeconds(), StartRewindTimeBySeconds(),
     /// SetTimeSecondsInRewind(), StopRewindTimeBySeconds()와 같은 준비된 메서드를 사용하고 싶을 것 같아서 만듦
     /// </summary>
-    public static Action<float> RestoreBuffers { get; set; }
+    public Action<float> RestoreBuffers { get; set; }
+    public Action InitRewind { get; set; }
+    public Action InitPlay { get; set; }
 
+    public UnityEvent ReTimeStart;
+    public UnityEvent ReTimeStop;
+
+    /// <summary>
+    /// 과거까지 얼마나 추적해야 하는지를 정의하는 변수, 설정된 한계에 도달한 후 순환 버퍼에서 이전 값을 덮어씀
+    /// </summary>
+    public float howManySecondsToTrack = 10;
 
     /// <summary>
     /// 이 변수는 되감기에 사용할 수 있는 시간(초)을 반환함 (그니깐 시간이 지날수록 커지는 거임)
@@ -46,21 +56,20 @@ public class RewindTestManager : MonoBehaviour
     }
     private void Awake()
     {
-        RewindManager[] managers= FindObjectsOfType<RewindManager>();
+        //RewindManager[] managers= FindObjectsOfType<RewindManager>();
 
-        //RewindManager를 사용하여 각 씬에 하나의 스크립트만 포함되어 있는지 확인
-        if (managers.Length>1)                                               
-        {
-            Debug.LogError("RewindManager는 각 씬에서 두 번 이상 사용할 수 없습니다. 다른 RewindManager 제거 바람!!!");
-        }
+        ////RewindManager를 사용하여 각 씬에 하나의 스크립트만 포함되어 있는지 확인
+        //if (managers.Length>1)                                               
+        //{
+        //    Debug.LogError("RewindManager는 각 씬에서 두 번 이상 사용할 수 없습니다. 다른 RewindManager 제거 바람!!!");
+        //}
     }
 
-
-    /// <summary>
-    /// 과거까지 얼마나 추적해야 하는지를 정의하는 변수, 설정된 한계에 도달한 후 순환 버퍼에서 이전 값을 덮어씀
-    /// </summary>
-    public static float howManySecondsToTrack = 10;
-
+    private void Start()
+    {
+        InitPlay?.Invoke();
+        
+    }
 
     /// <summary>
     /// 이 메서드를 호출하여 스냅샷 미리보기 없이 즉시 지정된 초만큼 시간을 되감음
@@ -78,10 +87,12 @@ public class RewindTestManager : MonoBehaviour
             Debug.LogError("RewindTimeBySeconds()의 매개변수는 양수 값이어야 함!!!");
             return;
         }
+        InitRewind?.Invoke();
         TrackingStateCall?.Invoke(false);
         RewindTimeCall?.Invoke(seconds);
         RestoreBuffers?.Invoke(seconds);
         TrackingStateCall?.Invoke(true);
+        IsBeingRewinded = true;
     }
     /// <summary>
     /// 스냅샷을 미리 볼 수 있는 기능으로 시간 되감기를 시작하려면 이 메서드를 호출해라. 
@@ -103,15 +114,19 @@ public class RewindTestManager : MonoBehaviour
             return;
         }
 
+        InitRewind?.Invoke();
+        ReTimeStart?.Invoke();
         rewindSeconds = seconds;
         TrackingStateCall?.Invoke(false);
         IsBeingRewinded = true;
     }
     private void FixedUpdate()
     {
+        //Debug.Log(Time.time);
         if (IsBeingRewinded)
         {
             RewindTimeCall?.Invoke(rewindSeconds);
+            //Debug.Log(rewindSeconds);
         }
         else if (HowManySecondsAvailableForRewind != howManySecondsToTrack)
         {
@@ -150,5 +165,8 @@ public class RewindTestManager : MonoBehaviour
         IsBeingRewinded = false;
         RestoreBuffers?.Invoke(rewindSeconds);
         TrackingStateCall?.Invoke(true);
+        InitPlay?.Invoke();
+        ReTimeStop?.Invoke();
+        Debug.Log("리와인드 끝남");
     }
 }
