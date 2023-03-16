@@ -5,69 +5,84 @@ using UnityEngine;
 
 public class SpringGimmick : MonoBehaviour
 {
-    [SerializeField]
-    private LayerMask _playerLayer = 0;
-    [SerializeField]
-    private float _rayLength = 0.2f;
-    [SerializeField]
-    private float _jumpPower = 5f;
-    [SerializeField]
-    private float _cooltime = 0.2f;
-    private bool _lock = false;
-
     private Collider _col = null;
+    public float rayDistance = 1f;
+    public bool isJump = false;
+    public int jumpPower;
 
-    private void Start()
+    [SerializeField]
+    private int _maxDeceleration = 4;
+    public Dictionary<Collider, int> decelerationColDic = new Dictionary<Collider, int>();
+
+    private List<Collider> _cols = new List<Collider>();
+    private void Awake()
     {
         _col = GetComponent<Collider>();
     }
-
-    private void FixedUpdate()
+    private void Update()
     {
-        PlayerCheck();
+        ShootUpBoxCast();
     }
 
-    private void PlayerCheck()
+    private void OnCollisionEnter(Collision collision)
     {
-        if (_lock)
-            return;
-        RaycastHit hit;
-        Vector3 boxCenter = _col.bounds.center;
-        Vector3 halfExtents = _col.bounds.extents;
-        halfExtents.y = _rayLength;
-        float maxDistance = _col.bounds.extents.y;
-        Physics.BoxCast(boxCenter, halfExtents, Vector3.up, out hit, transform.rotation, maxDistance, _playerLayer);
-        if (hit.collider != null)
+        if (collision.gameObject.CompareTag("Player"))
         {
-            Player player = hit.collider.GetComponent<Player>();
-            float power = 1f;
-            int gravity = Mathf.RoundToInt(player.GravityModule.CurGravityAcceleration / player.GravityModule.MaxGravityAcceleration * 100f);
-            if (gravity < 40)
-                power = 1f;
-            else if (gravity < 80)
-                power = 2f;
-            else if (gravity <= 100)
-                power = 3f;
+            float time = collision.collider.GetComponent<StayTimeChecker>().StayTime;
 
-            StartCoroutine(LockCo());
-            PlayerJump playerJump = player.GetPlayerAction(PlayerActionType.Jump) as PlayerJump;
-            playerJump.ForceJump(Vector2.up, power * _jumpPower);
-            player.GravityModule.OnGrounded(false);
+            float weight = collision.collider.GetComponent<ObjWeight>().so.weight;
+
+            float ratio = time * weight;
+
         }
     }
 
-    private IEnumerator LockCo()
-    {
-        _lock = true;
-        yield return new WaitForSeconds(_cooltime);
-        _lock = false;
-    }
-}
 
-public enum JumpPowerStage
-{
-    None,
-    Weak,
-    Normal,
-    Hard
+    //박스캐스트를 쏴서 캐릭터에 부터ㅇ이쓴ㄴ 그 체공시간을 아는걸 같고와야하는거지
+    public void ShootUpBoxCast()
+    {
+        RaycastHit hit;
+
+        Vector3 boxCenter = _col.bounds.center;
+        Vector3 halfExtents = _col.bounds.extents;
+
+        Physics.BoxCast(boxCenter, new Vector3(halfExtents.x, halfExtents.y, halfExtents.z), transform.up, out hit, transform.rotation, rayDistance);
+
+        if (hit.collider != null)
+        {
+            if (!decelerationColDic.ContainsKey(hit.collider))
+            {
+                decelerationColDic.Add(hit.collider, 0);
+                decelerationColDic[hit.collider] = _maxDeceleration;
+            }
+            
+            float time = hit.collider.GetComponent<StayTimeChecker>().StayTime;
+
+            float weight = hit.collider.GetComponent<ObjWeight>().so.weight;
+
+            float ratio = time * weight; //라티오가 크면 점프cnt가 크고 라이토가 작으면 점프 cnt가 작아
+
+            jumpPower = decelerationColDic[hit.collider] * (int)ratio;
+            // 4 2 1 0
+
+           // Debug.Log(decelerationColDic[hit.collider] + "      " + ratio);
+            if (isJump == false)
+            {
+                if (decelerationColDic[hit.collider] <= 0)
+                {
+                    return;
+                }
+                decelerationColDic[hit.collider] /= 2;
+                isJump = true;
+            }
+
+            Debug.Log(jumpPower);
+             hit.collider.GetComponent<Rigidbody>().AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
+        }
+        else
+        {
+            isJump = false;
+        }
+    }
+
 }
