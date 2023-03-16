@@ -33,6 +33,13 @@ public class ButtonTest : MonoBehaviour
             targetObject.Remove(obj);
         }
     }
+
+    private void Start()
+    {
+        InitOnPlay();
+        RewindTestManager.Instance.ReTimeStart.AddListener(InitOnPlay);
+        RewindTestManager.Instance.ReTimeStop.AddListener(InitOnRewind);
+    }
     public void InitOnPlay()
     {
         isActive = true;

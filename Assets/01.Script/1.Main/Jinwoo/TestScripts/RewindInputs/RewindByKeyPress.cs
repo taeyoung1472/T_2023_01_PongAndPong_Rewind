@@ -6,10 +6,11 @@ using UnityEngine;
 public class RewindByKeyPress : MonoBehaviour
 {
     bool isRewinding = false;
-    [SerializeField] float rewindIntensity = 0.02f;          //되감기 속도를 변경하는 변수
-    [SerializeField] RewindTestManager rewindManager;
+    [SerializeField] float rewindIntensity = 0.01f;          //되감기 속도를 변경하는 변수
+    //[SerializeField] RewindTestManager rewindManager;
     [SerializeField] AudioSource rewindSound;
     float rewindValue = 0;
+
 
     void FixedUpdate()
     {
@@ -19,13 +20,13 @@ public class RewindByKeyPress : MonoBehaviour
 
             if (!isRewinding)
             {
-                rewindManager.StartRewindTimeBySeconds(rewindValue);
+                RewindTestManager.Instance.StartRewindTimeBySeconds(rewindValue);
                 rewindSound.Play();
             }
             else
             {
-                if(rewindManager.HowManySecondsAvailableForRewind>rewindValue)      //범위를 벗어난 값을 가져오지 않도록 안전 확인
-                    rewindManager.SetTimeSecondsInRewind(rewindValue);
+                if(RewindTestManager.Instance.HowManySecondsAvailableForRewind>rewindValue)      //범위를 벗어난 값을 가져오지 않도록 안전 확인
+                    RewindTestManager.Instance.SetTimeSecondsInRewind(rewindValue);
             }
             isRewinding = true;
         }
@@ -33,7 +34,7 @@ public class RewindByKeyPress : MonoBehaviour
         {
             if(isRewinding)
             {
-                rewindManager.StopRewindTimeBySeconds();
+                RewindTestManager.Instance.StopRewindTimeBySeconds();
                 rewindSound.Stop();
                 rewindValue = 0;
                 isRewinding = false;

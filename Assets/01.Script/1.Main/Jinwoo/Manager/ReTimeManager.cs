@@ -101,7 +101,7 @@ public class ReTimeManager : MonoSingleTon<ReTimeManager>
             curTime += Time.deltaTime;
 
         if(!StageManager.Instance.stageClear)
-            UIManager.Instance.OnTimeChange((int)curTime);
+            UIManager.Instance.OnPlayTimeChange((int)curTime);
     }
     public void PlayStartRewind()
     {
@@ -110,7 +110,7 @@ public class ReTimeManager : MonoSingleTon<ReTimeManager>
         ReTimeStart?.Invoke();
         Debug.Log("¿ª");
         StageManager.Instance.curArea.Rewind();
-        StageManager.Instance.curArea.player.RewindStart();
+        //StageManager.Instance.curArea.player.RewindStart();
         //obstacle.StartTimeRewind();
         Debug.Log("À×");
         //foreach (var re in rewindObjectList)
