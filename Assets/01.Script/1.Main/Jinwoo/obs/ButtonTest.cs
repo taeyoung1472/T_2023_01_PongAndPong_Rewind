@@ -3,14 +3,29 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-public class ButtonTest : MonoBehaviour
+public class ButtonTest : RewindAbstract
 {
     [Header("[Button]")]
     private bool isActive = false;
     [SerializeField] private string buttonName;
     [SerializeField] private List<GameObject> targetObject;
     List<IFunctionalObject> function = new();
+
+
+    [SerializeField] bool trackPositionRotation;
+    [SerializeField] bool trackVelocity;
+    [SerializeField] bool trackAnimator;
+    [SerializeField] bool trackAudio;
+    [SerializeField] bool trackParticles;
+
+    [Tooltip("파티클 추적을 선택한 경우에만 파티클 설정 채우기")]
+    [SerializeField] ParticlesSetting particleSettings;
+
     private void OnValidate()
+    {
+        CheckWrongObjFunction();
+    }
+    public void CheckWrongObjFunction()
     {
         function.Clear();
         List<GameObject> wrongObjectList = new();
@@ -33,26 +48,10 @@ public class ButtonTest : MonoBehaviour
             targetObject.Remove(obj);
         }
     }
-
-    private void Start()
-    {
-        InitOnPlay();
-        RewindTestManager.Instance.ReTimeStart.AddListener(InitOnPlay);
-        RewindTestManager.Instance.ReTimeStop.AddListener(InitOnRewind);
-    }
-    public void InitOnPlay()
-    {
-        isActive = true;
-    }
-
-    public void InitOnRewind()
-    {
-        isActive = false;
-    }
     public void OnTriggerEnter(Collider other)
     {
         if (!isActive) return;
-        if (other.gameObject.CompareTag("Player"))
+        if (other.gameObject.CompareTag("PlayerCollider"))
         {
             for (int i = 0; i < function.Count; ++i)
             {
@@ -64,13 +63,57 @@ public class ButtonTest : MonoBehaviour
     public void OnTriggerExit(Collider other)
     {
         if (!isActive) return;
-        if (other.gameObject.CompareTag("Player"))
+        if (other.gameObject.CompareTag("PlayerCollider"))
         {
             for (int i = 0; i < function.Count; ++i)
             {
                 function[i].Function(false);
             }
         }
+    }
+
+    protected override void InitOnPlay()
+    {
+        isActive = true;
+    }
+
+    protected override void InitOnRewind()
+    {
+        isActive = false;
+    }
+
+    protected override void Rewind(float seconds)
+    {
+
+        if (trackPositionRotation)
+            RestorePositionAndRotation(seconds);
+        if (trackVelocity)
+            RestoreVelocity(seconds);
+        if (trackAnimator)
+            RestoreAnimator(seconds);
+        if (trackParticles)
+            RestoreParticles(seconds);
+        if (trackAudio)
+            RestoreAudio(seconds);
+    }
+
+    protected override void Track()
+    {
+        if (trackPositionRotation)
+            TrackPositionAndRotation();
+        if (trackVelocity)
+            TrackVelocity();
+        if (trackAnimator)
+            TrackAnimator();
+        if (trackParticles)
+            TrackParticles();
+        if (trackAudio)
+            TrackAudio();
+    }
+    private void Start()
+    {
+        InitializeParticles(particleSettings);
+        CheckWrongObjFunction();
     }
 
 #if UNITY_EDITOR

@@ -23,7 +23,7 @@ public class DoorTest : MonoBehaviour, IFunctionalObject
 
     public void Update()
     {
-        if(!RewindTestManager.Instance.IsBeingRewinded)
+        if(!TimerManager.Instance.isRewinding)
             transform.localPosition = Vector3.Lerp(transform.localPosition, isOpen ? openPos : originPos, Time.deltaTime * speed);
     }
 }

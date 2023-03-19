@@ -104,7 +104,7 @@ public class RewindManager : MonoSingleTon<RewindManager>
         }
     }
     private bool isEnd = false;
-    public bool IsEnd { get { return curStageArea ? curStageArea.IsClear : false; } } //EndManager.Instance.ActivePanel(); Time.timeScale = 1; } }
+    public bool IsEnd { get { return curStageArea ? curStageArea.AreaData.isAreaClear : false; } } //EndManager.Instance.ActivePanel(); Time.timeScale = 1; } }
     private bool isInit;
 
     // Event
@@ -116,7 +116,7 @@ public class RewindManager : MonoSingleTon<RewindManager>
 
     private StageArea curStageArea;
     private StageController stageController;
-    
+
 
     //매니저 초기화 
     [ContextMenu("Init")]
@@ -129,9 +129,9 @@ public class RewindManager : MonoSingleTon<RewindManager>
 
         foreach (var area in areas)
         {
-            if (area.PlayTime > maxPlayTime)
+            if (area.AreaData.stagePlayTime > maxPlayTime)
             {
-                maxPlayTime = area.PlayTime;
+                maxPlayTime = area.AreaData.stagePlayTime;
             }
         }
 
@@ -158,15 +158,15 @@ public class RewindManager : MonoSingleTon<RewindManager>
     public void SetArea(StageArea area)
     {
         if (curStageArea != null)
-            curStageArea.ExitArea();
+            //curStageArea.ExitArea();
         if (curStageArea == area)
         {
-            area.EntryArea(true);
+            //area.EntryArea(true);
         }
 
         IsRewinding = false;
         curStageArea = area;
-        curStagePlayTime = curStageArea.PlayTime;
+        curStagePlayTime = curStageArea.AreaData.stagePlayTime;
     }
 
     public void Update()
@@ -182,7 +182,7 @@ public class RewindManager : MonoSingleTon<RewindManager>
     {
         if (IsEnd)
         {
-            stageController.IsClearNext = true;
+            //stageController.IsClearNext = true;
             CurRecordingIndex = 0;
             return;
         }
