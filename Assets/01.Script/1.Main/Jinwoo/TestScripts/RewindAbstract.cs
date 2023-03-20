@@ -9,25 +9,27 @@ public abstract class RewindAbstract : MonoBehaviour
     //트래킹은 한마디로 추적한다는 거임. 그니깐 순행 시간 추적해서 오브젝트 저장한다는 뜻
     public bool IsTracking { get; set; } = false;
 
-    private Rigidbody body;
-    private Rigidbody2D body2;
-    private Animator animator;
-    private AudioSource audioSource;
+    protected Rigidbody body;
+    protected Rigidbody2D body2;
+    protected Animator animator;
+    protected AudioSource audioSource;
 
 
     protected void Awake()
     {
+        Init();
+        
+    }
 
+    protected virtual void Init()
+    {
         rewindManager = FindObjectOfType<RewindTestManager>();
         if (rewindManager != null)
         {
             body = GetComponent<Rigidbody>();
             body2 = GetComponent<Rigidbody2D>();
-            animator = GetComponent<Animator>();
-            if (animator == null)
-            {
-                animator = transform.GetChild(0).GetComponent<Animator>(); //이 부분 나중에 수정해야됨
-            }
+            if(animator == null)
+                animator = GetComponent<Animator>();
             audioSource = GetComponent<AudioSource>();
 
             IsTracking = true;
@@ -41,8 +43,10 @@ public abstract class RewindAbstract : MonoBehaviour
         trackedVelocities = new CircularBuffer<Vector3>();
         trackedAnimationTimes = new List<CircularBuffer<AnimationValues>>();
         if (animator != null)
+        {
             for (int i = 0; i < animator.layerCount; i++)
                 trackedAnimationTimes.Add(new CircularBuffer<AnimationValues>());
+        }
         trackedAudioTimes = new CircularBuffer<AudioTrackedData>();
     }
 
@@ -80,7 +84,7 @@ public abstract class RewindAbstract : MonoBehaviour
     {
         PositionAndRotationValues valuesToRead = trackedPositionsAndRotation.ReadFromBuffer(seconds);
         //transform.SetPositionAndRotation(valuesToRead.position, valuesToRead.rotation);
-        transform.position = Vector3.Lerp(transform.position, valuesToRead.position, seconds);
+        transform.position = Vector3.Slerp(transform.position, valuesToRead.position, seconds);
         transform.rotation = Quaternion.Lerp(transform.rotation, valuesToRead.rotation, seconds);
 
     }
@@ -168,17 +172,23 @@ public abstract class RewindAbstract : MonoBehaviour
     protected void RestoreAnimator(float seconds)
     {
         animator.speed = 0;
+        //bool isFix = false;
         
         for(int i=0;i<animator.layerCount;i++)
         {
             AnimationValues readValues = trackedAnimationTimes[i].ReadFromBuffer(seconds);
-            animator.CrossFade(readValues.animationHash, readValues.animationTransition, i);
-            //if (readValues.animatorTransitionType == 0)
+            animator.Play(readValues.animationHash, i, readValues.animationStateTime);
+            //if (readValues.animatorTransitionType == 0 && !isFix)
             //{
+            //    Debug.Log("Fixed");
+            //    isFix = true;
+            //    animator.CrossFade(readValues.animationHash, readValues.animationTransition, i);
             //}
             //else
             //{
-            //    animator.Play(readValues.animationHash,i, readValues.animationStateTime);
+            //    Debug.Log("Not Fixed");
+            //    isFix = false;
+            //    animator.Play(readValues.animationHash, i, readValues.animationStateTime);
             //}
         }         
     }
@@ -378,13 +388,21 @@ public abstract class RewindAbstract : MonoBehaviour
     }
     protected void OnEnable()
     {
-        RewindTestManager.RewindTimeCall += Rewind;
-        RewindTestManager.TrackingStateCall += OnTrackingChange;        
+        RewindTestManager.Instance.RewindTimeCall += Rewind;
+        RewindTestManager.Instance.TrackingStateCall += OnTrackingChange;
+        RewindTestManager.Instance.InitPlay += InitOnPlay;
+        RewindTestManager.Instance.InitRewind += InitOnRewind;
     }
     protected void OnDisable()
     {
-        RewindTestManager.RewindTimeCall -= Rewind;
-        RewindTestManager.TrackingStateCall -= OnTrackingChange;            
+        if (RewindTestManager.Instance != null)
+        {
+            RewindTestManager.Instance.RewindTimeCall -= Rewind;
+            RewindTestManager.Instance.TrackingStateCall -= OnTrackingChange;
+            RewindTestManager.Instance.InitPlay -= InitOnPlay;
+            RewindTestManager.Instance.InitRewind -= InitOnRewind;
+        }
+        
     }
 
     /// <summary>
@@ -398,5 +416,13 @@ public abstract class RewindAbstract : MonoBehaviour
     /// </summary>
     /// <param name="seconds">되감기를 원하는 초 수를 정의하는 매개변수</param>
     protected abstract void Rewind(float seconds);
+    /// <summary>
+    /// 되감기가 끝나거나 처음 시작할 때 호출 ( =순행 시간의 맨 처음에 실행됨)
+    /// </summary>
+    protected abstract void InitOnPlay();
+    /// <summary>
+    /// 되감기가 실행될 때 맨 처음 한 번 실행되는 함수
+    /// </summary>
+    protected abstract void InitOnRewind();
 
 }      

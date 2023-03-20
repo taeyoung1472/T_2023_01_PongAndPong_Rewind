@@ -77,7 +77,18 @@ public class DeployHandlerEditor : Editor
         }
         if (GUILayout.Button("ChangeDrawMode"))
         {
-            DeployHandler.isDrawWire = !DeployHandler.isDrawWire;
+            switch (DeployHandler.drawMode)
+            {
+                case DrawMode.Wire:
+                    DeployHandler.drawMode = DrawMode.Mesh;
+                    break;
+                case DrawMode.Mesh:
+                    DeployHandler.drawMode = DrawMode.None;
+                    break;
+                case DrawMode.None:
+                    DeployHandler.drawMode = DrawMode.Wire;
+                    break;
+            }
         }
 
         //serializedObject.ApplyModifiedProperties();

@@ -22,12 +22,15 @@ public class DeployHandler : MonoBehaviour
     public float decalSizeFactor = 1;
     public bool centerX_decal, centerY_decal, rotX, rotY, rotZ;
 
-    public static bool isDrawWire = true;
+    public static DrawMode drawMode;
 
     private Vector2 size;
 
     public void OnDrawGizmos()
     {
+        if (drawMode == DrawMode.None)
+            return;
+
         switch (deployType)
         {
             case DeployType.XY:
@@ -100,22 +103,22 @@ public class DeployHandler : MonoBehaviour
         {
             case DeployType.XY:
                 size = new Vector3(this.size.x, this.size.y, 0);
-                if (!isDrawWire)
+                if (drawMode == DrawMode.Mesh)
                     size.z = 0.1f;
                 break;
             case DeployType.XZ:
                 size = new Vector3(this.size.x, 0, this.size.y);
-                if (!isDrawWire)
+                if (drawMode == DrawMode.Mesh)
                     size.y = 0.1f;
                 break;
             case DeployType.YZ:
                 size = new Vector3(0, this.size.x, this.size.y);
-                if (!isDrawWire)
+                if (drawMode == DrawMode.Mesh)
                     size.x = 0.1f;
                 break;
         }
 
-        if (isDrawWire)
+        if (drawMode == DrawMode.Wire)
             Gizmos.DrawWireCube(center, size);
         else
         {
@@ -305,4 +308,10 @@ public enum DeployType
     XY,
     XZ,
     YZ
+}
+public enum DrawMode
+{
+    Wire,
+    Mesh,
+    None
 }
