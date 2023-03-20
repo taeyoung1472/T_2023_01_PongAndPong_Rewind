@@ -32,4 +32,9 @@ public class RigidbodyGimmickObject : GimmickObject
     {
         RecordTopPosition();
     }
+
+    public override bool IsGimmickable(GameObject gimmickObj)
+    {
+        return true;
+    }
 }
