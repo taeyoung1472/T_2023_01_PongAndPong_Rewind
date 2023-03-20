@@ -65,7 +65,7 @@ public class RewindBySlider : MonoBehaviour,IPointerDownHandler, IPointerUpHandl
     }
     public void RestoreSliderAnimation()                                //슬라이더 복원으로 사용 후 해제하면 올바른 값으로 되돌아감
     {
-        float animationTimeStartFrom = (slider.value - slider.minValue) / RewindTestManager.howManySecondsToTrack;
+        float animationTimeStartFrom = (slider.value - slider.minValue) / RewindTestManager.Instance.howManySecondsToTrack;
         sliderAnimator.Play("AutoResizeAnim", 0, animationTimeStartFrom);
         sliderAnimator.SetFloat("TimeRewindSpeed", 1);
         StartCoroutine(ResetSliderValue());

@@ -58,7 +58,7 @@ public class StageManager : MonoSingleTon<StageManager>
             stageNum++;
             Debug.Log("¥Î¿Ω");
             curArea.IsClear = false;
-            curArea.IsRewind = false;
+            //curArea.IsRewind = false;
             ReTimeManager.Instance.Init();
             curArea.ExitArea();
         }
