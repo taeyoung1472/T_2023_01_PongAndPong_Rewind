@@ -113,7 +113,7 @@ Transform:
   m_GameObject: {fileID: 6691628707489746810}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1.04, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 6691628707631861921}
@@ -246,6 +246,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _actionType: 1
+  isSlow: 0
 --- !u!114 &6691628707489746804
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -386,18 +387,6 @@ MonoBehaviour:
   OnMoveInput:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 6691628707489746804}
-        m_TargetAssemblyTypeName: PlayerJump, Assembly-CSharp
-        m_MethodName: TryGravityUp
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 6691628707631861949}
         m_TargetAssemblyTypeName: PlayerAnimation, Assembly-CSharp
         m_MethodName: MoveAnimation
@@ -566,15 +555,15 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6691628707631861922}
-  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
-  m_ConstrainProportionsScale: 1
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 53704309651562517}
   m_Father: {fileID: 6691628707489746809}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6691628707631861949
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -629,7 +618,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 828fe12625591ea4d9de71b786ff4c67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _rotationSpeed: 10
+  _rotationSpeed: 1000
   OnFliped:
     m_PersistentCalls:
       m_Calls: []
@@ -643,7 +632,7 @@ Animator:
   m_GameObject: {fileID: 6691628707631861922}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 7c105f6f61a2b3045a1e0bb6ebf01c3b, type: 3}
-  m_Controller: {fileID: 9100000, guid: fa1f00a1e79d46648bbdae749c6fc69a, type: 2}
+  m_Controller: {fileID: 9100000, guid: e1cebf3b0d6191f41b94309aedc2d75d, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
