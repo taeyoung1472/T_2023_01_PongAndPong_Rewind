@@ -73,7 +73,8 @@ public class PlayerAnimation : MonoBehaviour
     {
         if (isGround)
         {
-            IdleAnimation();
+            _animator.SetTrigger("GoIdle");
+            _animator.Update(0);
         }
         else
         {

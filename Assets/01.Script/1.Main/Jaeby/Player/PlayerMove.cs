@@ -10,14 +10,16 @@ public class PlayerMove : PlayerAction
     private void Update()
     {
         if (_locked)
+        {
             return;
+        }
         if (!isSlow)
         {
-            Move(_player.PlayerInput.InputVectorNorm);
+            Move(_player.PlayerInput.InputVector);
         }
         else
         {
-            SlowMove(_player.PlayerInput.InputVectorNorm);
+            SlowMove(_player.PlayerInput.InputVector);
         }
     }
 

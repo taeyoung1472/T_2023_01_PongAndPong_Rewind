@@ -29,10 +29,8 @@ public class PlayerInteract : PlayerAction
         if (_curInteract == null || _locked)
             return false;
         _excuting = true;
-        _player.PlayerInput.InputVectorReset();
-        _player.VeloCityResetImm(true, true);
         _player.PlayerInput.enabled = false;
-        _player.PlayerAnimation.FallOrIdleAnimation(_player.IsGrounded);
+        _player.ForceStop();
         _curInteract.InteractStart(_player);
         return true;
     }

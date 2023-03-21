@@ -32,12 +32,17 @@ public class PlayerDash : PlayerAction
         else
             _player.PlayerAnimation.DashAnimation(_player.PlayerInput.InputVectorNorm);
 
-        PoolManager.Pop(PoolType.DashEffect).transform.position = transform.position;
+        GameObject effectObj = PoolManager.Pop(PoolType.DashEffect);
+        effectObj.transform.SetPositionAndRotation(transform.position + Vector3.up * 0.3f + Vector3.forward * 0.15f, _player.PlayerRenderer.BackRot);
         OnDashStarted?.Invoke(_player.PlayerInput.InputVectorNorm);
     }
 
     private IEnumerator DashCoroutine(bool slide)
     {
+        _player.PlayerActionExit(PlayerActionType.Jump, PlayerActionType.Move, PlayerActionType.WallGrab);
+        _player.PlayerActionLock(true, PlayerActionType.Jump, PlayerActionType.Move);
+        _player.VeloCityResetImm(true, true);
+        _excuting = true;
         Vector2 dashVector = Vector2.zero;
         _curDashCount++;
         if (slide)
@@ -51,10 +56,8 @@ public class PlayerDash : PlayerAction
             _player.GravityModule.UseGravity = false;
             dashVector = _player.PlayerInput.InputVectorNorm * _player.playerMovementSO.dashPower;
         }
-        _player.PlayerActionLock(true, PlayerActionType.Jump, PlayerActionType.Move, PlayerActionType.WallGrab);
-        _player.PlayerActionExit(PlayerActionType.Jump, PlayerActionType.Move, PlayerActionType.WallGrab);
-        _player.VeloCityResetImm(true, true);
         _player.VelocitySetExtra(dashVector.x, dashVector.y);
+        _player.AfterImageEnable(true);
         yield return new WaitForSeconds(_player.playerMovementSO.dashContinueTime);
         DashExit();
     }
@@ -67,7 +70,9 @@ public class PlayerDash : PlayerAction
 
     public void DashExit()
     {
-        _player.PlayerActionLock(false, PlayerActionType.Jump, PlayerActionType.Move, PlayerActionType.WallGrab);
+        _player.AfterImageEnable(false);
+        _excuting = false;
+        _player.PlayerActionLock(false, PlayerActionType.Jump, PlayerActionType.Move);
         _player.GravityModule.UseGravity = true;
         _player.VelocitySetExtra(0f, 0f);
         if (_player.PlayeActionCheck(PlayerActionType.WallGrab) == false)
@@ -94,6 +99,9 @@ public class PlayerDash : PlayerAction
 
     public override void ActionExit()
     {
+        _excuting = false;
+        if (_dashCoroutine != null)
+            StopCoroutine(_dashCoroutine);
         DashExit();
     }
 }

@@ -8,6 +8,7 @@ public class StageUnitUI : MonoBehaviour
 {
     private Sequence _seq = null;
     private Image _image = null;
+    [SerializeField]
     private StageInfoSO _stageInfoSO = null;
     public StageInfoSO stageInfoSO => _stageInfoSO;
 

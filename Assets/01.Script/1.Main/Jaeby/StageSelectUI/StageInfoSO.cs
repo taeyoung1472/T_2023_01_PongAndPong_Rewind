@@ -7,4 +7,5 @@ public class StageInfoSO : ScriptableObject
     public string stageSubTitle;
     public string stageExplain;
     public int stageIndex;
+    public bool isClear = false;
 }

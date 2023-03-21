@@ -14,6 +14,7 @@ public class PlayerMovementSO : ScriptableObject
     [Header("대쉬 관련")]
     public float dashPower = 8f;
     public float dashContinueTime = 0.2f;
+    public float slideContinueTime = 0.5f;
     public float dashChargeTime = 0.2f;
     public int dashCount = 1;
     [Header("벽 짚기 관련")]

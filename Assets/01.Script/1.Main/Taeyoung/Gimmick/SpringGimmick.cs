@@ -7,8 +7,16 @@ public class SpringGimmick : MonoBehaviour
 {
     public void OnCollisionEnter(Collision collision)
     {
-        if(collision.transform.TryGetComponent<GimmickObject>(out GimmickObject obj))
+        ColliderEnter(collision.collider);
+    }
+
+    private void ColliderEnter(Collider target)
+    {
+        if (target.transform.root.TryGetComponent<GimmickObject>(out GimmickObject obj))
         {
+            if (obj.IsGimmickable(gameObject) == false)
+                return;
+
             float recordPosY = obj.RecordPosY - transform.position.y;
             recordPosY = Mathf.Clamp(recordPosY, 0, 17.5f);
 
