@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,9 +6,13 @@ using UnityEngine.UI;
 
 public class StageManager : MonoSingleTon<StageManager>
 {
-    private Dictionary<int, Stage> stageDictionary;
-    [SerializeField] private Stage stagePrefab;
-    public Stage currentStage;
+    static StageDataSO stageDataSO;
+
+    [SerializeField] private StageDatabase stageDatabase;
+    private StageDataSO curStageDataSO;
+    private Stage curStage;
+    public Stage CurStage { get { return curStage; } }
+    public StageDataSO CurStageDataSO { get { return curStageDataSO; } }
 
     [SerializeField] private PlayerRewind playerPrefab;
     [SerializeField] private GameObject rewindPlayerPrefab;
@@ -18,18 +23,15 @@ public class StageManager : MonoSingleTon<StageManager>
     public Image fadeImg;
     private void Awake()
     {
-        Init();
         SpawnStage();
     }
-    public void Init()
-    {
-
-    }
-
+    
     public void SpawnStage()
     {
-        currentStage = Instantiate(stagePrefab, Vector3.zero, Quaternion.identity);
-        currentStage.Init();
+        curStageDataSO = stageDataSO;
+
+        curStage = Instantiate(curStageDataSO.stagePrefab, Vector3.zero, Quaternion.identity);
+        curStage.Init();
     }
     public void NextStage()
     {
@@ -43,6 +45,7 @@ public class StageManager : MonoSingleTon<StageManager>
         else
             rePlayerObj = Instantiate(rewindPlayerPrefab, spawnPos.position, Quaternion.identity);
     }
+
     public void InitPlayer(bool isClear)
     {
         if (isClear)
