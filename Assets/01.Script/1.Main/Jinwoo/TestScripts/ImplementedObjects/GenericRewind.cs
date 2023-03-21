@@ -13,7 +13,7 @@ public class GenericRewind : RewindAbstract
 
     protected override void InitOnPlay()
     {
-
+        InitBuffer();
     }
 
     protected override void InitOnRewind()

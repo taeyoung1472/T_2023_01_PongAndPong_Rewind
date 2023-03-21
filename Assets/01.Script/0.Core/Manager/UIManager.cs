@@ -12,7 +12,7 @@ public class UIManager : MonoSingleTon<UIManager>
     [SerializeField] private Color[] clockColorArray;
 
     //private int totalTIme { get { return RewindManager.Instance.CurStageRecordCount; } }
-    private int totalTIme { get { return (int)RewindTestManager.Instance.howManySecondsToTrack; } }
+    private int totalTIme { get { return (int)RewindTestManager.Instance.howManySecondsToTrack -1; } }
 
     public void Init()
     {
@@ -48,7 +48,9 @@ public class UIManager : MonoSingleTon<UIManager>
         {
             if (time <= tempTime)
             {
-                clockFill.color = Color.Lerp(clockColorArray[i], clockColorArray[Mathf.Clamp(i - 1, 0, clockColorArray.Length - 1)], (float)(time % clockTime) / (float)clockTime);
+                clockFill.color =
+                    Color.Lerp(clockColorArray[i], clockColorArray[Mathf.Clamp(i - 1, 0, clockColorArray.Length - 1)], 
+                    (float)(time % clockTime) / (float)clockTime);
             }
             tempTime -= clockTime;
         }

@@ -5,7 +5,6 @@ using UnityEngine;
 
 public abstract class RewindAbstract : MonoBehaviour
 {
-    private RewindTestManager rewindManager;
     //트래킹은 한마디로 추적한다는 거임. 그니깐 순행 시간 추적해서 오브젝트 저장한다는 뜻
     public bool IsTracking { get; set; } = false;
 
@@ -18,13 +17,11 @@ public abstract class RewindAbstract : MonoBehaviour
     protected void Awake()
     {
         Init();
-        
     }
 
     protected virtual void Init()
     {
-        rewindManager = FindObjectOfType<RewindTestManager>();
-        if (rewindManager != null)
+        if (RewindTestManager.Instance != null)
         {
             body = GetComponent<Rigidbody>();
             body2 = GetComponent<Rigidbody2D>();
@@ -32,7 +29,7 @@ public abstract class RewindAbstract : MonoBehaviour
                 animator = GetComponent<Animator>();
             audioSource = GetComponent<AudioSource>();
 
-            IsTracking = true;
+            //IsTracking = true;
         }
         else
         {
@@ -48,6 +45,24 @@ public abstract class RewindAbstract : MonoBehaviour
                 trackedAnimationTimes.Add(new CircularBuffer<AnimationValues>());
         }
         trackedAudioTimes = new CircularBuffer<AudioTrackedData>();
+    }
+    public void InitBuffer()
+    {
+        //Debug.Log("버퍼 초기화");
+        trackedPositionsAndRotation.InitBuffer();
+        trackedVelocities.InitBuffer();
+        trackedAudioTimes.InitBuffer();
+
+        if (animator != null)
+        {
+            for (int i = 0; i < animator.layerCount; i++)
+            {
+                trackedAnimationTimes[i].InitBuffer();
+                //trackedAnimationTimes.Add(new CircularBuffer<AnimationValues>());
+            }
+        }
+
+        IsTracking = true;
     }
 
     protected void FixedUpdate()
@@ -83,10 +98,9 @@ public abstract class RewindAbstract : MonoBehaviour
     protected void RestorePositionAndRotation(float seconds)
     {
         PositionAndRotationValues valuesToRead = trackedPositionsAndRotation.ReadFromBuffer(seconds);
-        //transform.SetPositionAndRotation(valuesToRead.position, valuesToRead.rotation);
-        transform.position = Vector3.Slerp(transform.position, valuesToRead.position, seconds);
-        transform.rotation = Quaternion.Lerp(transform.rotation, valuesToRead.rotation, seconds);
-
+        transform.SetPositionAndRotation(valuesToRead.position, valuesToRead.rotation);
+        //transform.position = Vector3.Slerp(transform.position, valuesToRead.position, seconds);
+        //transform.rotation = Quaternion.Lerp(transform.rotation, valuesToRead.rotation, seconds);
     }
     #endregion
 
