@@ -1,14 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Playables;
+using DG.Tweening;
 
 public class ElevatorInteract : Interact
 {
+    private bool _interacting = false;
+    private Vector2 targetDir = Vector2.zero;
+
     [SerializeField]
     private Transform _playerPosition = null;
+    public Transform PlayerPosition => _playerPosition;
+
     [SerializeField]
-    private PlayableDirector _elevatorCutScene = null;
+    private string _areaName = "";
+
+    public string AreaName => _areaName;
+
+    private Animator _animator = null;
 
     protected override void ChildInteractEnd()
     {
@@ -16,8 +25,7 @@ public class ElevatorInteract : Interact
 
     protected override void ChildInteractStart()
     {
-        _player.characterController.Move(_player.transform.position - _playerPosition.position);
-        _elevatorCutScene.Play();
+        ElevatorManager.Instance.ElevatorInit(this);
     }
 
     public override void InteractEnter()
@@ -28,5 +36,54 @@ public class ElevatorInteract : Interact
     public override void InteractExit()
     {
         UIGetter.Instance.PushUIs();
+    }
+
+    private void Update()
+    {
+        if (_interacting == false)
+            return;
+        PlayerFlip();
+    }
+
+    private void PlayerFlip()
+    {
+        _player.PlayerRenderer.Flip(targetDir);
+    }
+
+    public void ElevatorAnimation()
+    {
+        targetDir = _playerPosition.position - _player.transform.position;
+        targetDir.y = 0f;
+        _interacting = true;
+        _player.PlayerAnimation.MoveAnimation(targetDir);
+
+        BoxCollider interactCol = transform.Find("InteractCollider").GetComponent<BoxCollider>();
+        float interactColliderSize = interactCol.size.x;
+        interactColliderSize *= 0.5f;
+        float moveDuration = Mathf.Abs(transform.position.x + interactCol.center.x - _player.transform.position.x) / Mathf.Abs(transform.position.x + interactColliderSize * ((targetDir.x < 0f) ? -1f : 1f) - _player.transform.position.x);
+
+        Sequence seq = DOTween.Sequence();
+        seq.Append(_player.transform.DOMoveX(_playerPosition.position.x, moveDuration));
+        seq.AppendCallback(() =>
+        {
+            _interacting = false;
+            _player.PlayerAnimation.MoveAnimation(Vector2.zero);
+        });
+        seq.Append(_player.transform.DORotate(Vector2.zero, 0.5f));
+        seq.AppendCallback(() =>
+        {
+            _player.transform.rotation = Quaternion.identity;
+            ElevatorManager.Instance.PlayCutScene();
+        });
+    }
+
+    public void Animation(bool open)
+    {
+        if (_animator == null)
+            _animator = GetComponent<Animator>();
+        if (open)
+            _animator.Play("ElevatorOpen");
+        else
+            _animator.Play("ElevatorClose");
     }
 }
