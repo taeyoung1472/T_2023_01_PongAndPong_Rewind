@@ -1,20 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class StageArea : MonoBehaviour
 {
-    [SerializeField]
-    private StageAreaDataSO areaData;
-    public StageAreaDataSO AreaData { get => areaData; set => areaData = value; }
-    
+    [Header("기본 데이터")]
+    public int stagePlayTime;
+    public bool isAreaClear = false;
 
+    [Header("코어 데이터")]
     [SerializeField] private Transform defaultPlayerSpawn;
     [SerializeField] private Transform rewindPlayerSpawn;
+
     public void InitArea()
     {
         TimerManager.Instance.InitTimer();
-        TimerManager.Instance.SetRewindTime(AreaData.stagePlayTime+1);
+        TimerManager.Instance.SetRewindTime(stagePlayTime + 1);
         //여기서 순환 버퍼 거시기 해주면 될듯 (초기화)
         TimerManager.Instance.ChangeOnTimer(true);
     }
@@ -35,14 +34,14 @@ public class StageArea : MonoBehaviour
 
     public void ExitArea()
     {
-        if(!areaData.isAreaClear)
+        if (!isAreaClear)
         {
-            StageManager.Instance.InitPlayer(AreaData.isAreaClear);
+            StageManager.Instance.InitPlayer(isAreaClear);
             EntryArea(false);
         }
         else
         {
-            StageManager.Instance.InitPlayer(AreaData.isAreaClear);
+            StageManager.Instance.InitPlayer(isAreaClear);
 
         }
     }

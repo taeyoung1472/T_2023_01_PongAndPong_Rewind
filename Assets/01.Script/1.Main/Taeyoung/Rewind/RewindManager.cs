@@ -104,7 +104,7 @@ public class RewindManager : MonoSingleTon<RewindManager>
         }
     }
     private bool isEnd = false;
-    public bool IsEnd { get { return curStageArea ? curStageArea.AreaData.isAreaClear : false; } } //EndManager.Instance.ActivePanel(); Time.timeScale = 1; } }
+    public bool IsEnd { get { return curStageArea ? curStageArea.isAreaClear : false; } } //EndManager.Instance.ActivePanel(); Time.timeScale = 1; } }
     private bool isInit;
 
     // Event
@@ -129,9 +129,9 @@ public class RewindManager : MonoSingleTon<RewindManager>
 
         foreach (var area in areas)
         {
-            if (area.AreaData.stagePlayTime > maxPlayTime)
+            if (area.stagePlayTime > maxPlayTime)
             {
-                maxPlayTime = area.AreaData.stagePlayTime;
+                maxPlayTime = area.stagePlayTime;
             }
         }
 
@@ -166,7 +166,7 @@ public class RewindManager : MonoSingleTon<RewindManager>
 
         IsRewinding = false;
         curStageArea = area;
-        curStagePlayTime = curStageArea.AreaData.stagePlayTime;
+        curStagePlayTime = curStageArea.stagePlayTime;
     }
 
     public void Update()
