@@ -42,7 +42,7 @@ public class TestTimer : MonoBehaviour
         isRewindStart = false;
         defaultVolume.SetActive(true);
         rewindVolume.SetActive(false);
-        timerDefault = StageManager.Instance.currentStage.curArea.AreaData.stagePlayTime;
+        timerDefault = StageManager.Instance.currentStage.curArea.stagePlayTime;
     }
     void Update()                               
     {

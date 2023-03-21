@@ -8,18 +8,15 @@ public class Stage : MonoBehaviour
 {
     [SerializeField] private List<StageArea> stageAreaList;
 
-    [SerializeField]
-    private StageDataSO stageData;
+    [SerializeField] private StageDataSO stageData;
 
     public StageArea curArea;
 
     public void Init()
     {
-        stageAreaList.AddRange(stageData.StageAreaList);
-
         foreach (var area in stageAreaList)
         {
-            area.AreaData.isAreaClear = false;
+            area.isAreaClear = false;
         }
 
         //for (int i = int.MinValue; i <= int.MaxValue; i++)
@@ -37,7 +34,7 @@ public class Stage : MonoBehaviour
         {
             curArea = stageAreaList[i];
             stageAreaList[i].EntryArea();
-            yield return new WaitUntil(() => stageAreaList[i].AreaData.isAreaClear);
+            yield return new WaitUntil(() => stageAreaList[i].isAreaClear);
             TimerManager.Instance.ChangeOnTimer(false);
 
             StageManager.Instance.fadeImg.gameObject.SetActive(true);
