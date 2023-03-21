@@ -43,10 +43,10 @@ GameObject:
   - component: {fileID: 387090875160708853}
   - component: {fileID: 387090875160708852}
   - component: {fileID: 387090875160708855}
-  - component: {fileID: 387090875160708854}
   - component: {fileID: 387090875160708851}
-  m_Layer: 0
-  m_Name: "Spring\uAE30\uBBF9"
+  - component: {fileID: 1523130967}
+  m_Layer: 4
+  m_Name: SpringGimmick
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -61,7 +61,7 @@ Transform:
   m_GameObject: {fileID: 387090875160708857}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.9898, y: 0.77, z: -2.26}
-  m_LocalScale: {x: 2.9797, y: 1, z: 1}
+  m_LocalScale: {x: 5, y: 1, z: 5}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 387090875138196980}
@@ -131,22 +131,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &387090875160708854
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 387090875160708857}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8500a4b46e092994384197a3010f16e2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rayDistance: 0.3
-  isJump: 0
-  jumpPower: 0
-  _maxDeceleration: 4
 --- !u!54 &387090875160708851
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -161,5 +145,17 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 126
   m_CollisionDetection: 0
+--- !u!114 &1523130967
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 387090875160708857}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1168e4f8308240b489669185adc9baed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
