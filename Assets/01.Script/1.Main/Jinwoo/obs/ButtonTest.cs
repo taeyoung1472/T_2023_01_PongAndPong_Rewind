@@ -75,6 +75,7 @@ public class ButtonTest : RewindAbstract
     protected override void InitOnPlay()
     {
         isActive = true;
+        InitBuffer();
     }
 
     protected override void InitOnRewind()

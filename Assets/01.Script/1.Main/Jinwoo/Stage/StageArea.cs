@@ -11,17 +11,20 @@ public class StageArea : MonoBehaviour
 
     [SerializeField] private Transform defaultPlayerSpawn;
     [SerializeField] private Transform rewindPlayerSpawn;
-    public void Init()
+    public void InitArea()
     {
         TimerManager.Instance.InitTimer();
         TimerManager.Instance.SetRewindTime(AreaData.stagePlayTime+1);
         //여기서 순환 버퍼 거시기 해주면 될듯 (초기화)
-        TimerManager.Instance.isOnTimer = true;
+        TimerManager.Instance.ChangeOnTimer(true);
     }
     public void EntryArea(bool isNew = false)
     {
-        Init();
+        //함수 실행 순서 매우 중요;
+        InitArea();
         StageManager.Instance.SpawnPlayer(defaultPlayerSpawn, true);
+
+        RewindTestManager.Instance.StartAreaPlay();
     }
 
     public void Rewind()

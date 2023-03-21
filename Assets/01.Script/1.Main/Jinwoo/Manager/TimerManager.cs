@@ -46,10 +46,11 @@ public class TimerManager : MonoSingleTon<TimerManager>
     }
     public void InitTimer()
     {
+        isOnTimer = false;
+
         CurrentTimer = 0;
         rewindValue = 0;
 
-        isOnTimer = false;
         isRewinding = false;
         isRewindStart = false;
 
@@ -63,6 +64,10 @@ public class TimerManager : MonoSingleTon<TimerManager>
     private void FixedUpdate()
     {
         StartRewindTime();
+    }
+    public void ChangeOnTimer(bool isOn)
+    {
+        isOnTimer = isOn;
     }
     public void SetRewindTime(float rewindTime)
     {

@@ -32,9 +32,12 @@ public class Stage : MonoBehaviour
             curArea = stageAreaList[i];
             stageAreaList[i].EntryArea();
             yield return new WaitUntil(() => stageAreaList[i].AreaData.isAreaClear);
-            TimerManager.Instance.isOnTimer = false;
+            TimerManager.Instance.ChangeOnTimer(false);
+
             StageManager.Instance.fadeImg.gameObject.SetActive(true);
+
             yield return new WaitForSeconds(3f);
+
             StageManager.Instance.fadeImg.gameObject.SetActive(false);
             TimerManager.Instance.EndRewind();
             

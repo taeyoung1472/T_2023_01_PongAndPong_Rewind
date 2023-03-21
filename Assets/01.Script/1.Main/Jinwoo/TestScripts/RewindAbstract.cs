@@ -29,7 +29,7 @@ public abstract class RewindAbstract : MonoBehaviour
                 animator = GetComponent<Animator>();
             audioSource = GetComponent<AudioSource>();
 
-            IsTracking = true;
+            //IsTracking = true;
         }
         else
         {
@@ -45,6 +45,24 @@ public abstract class RewindAbstract : MonoBehaviour
                 trackedAnimationTimes.Add(new CircularBuffer<AnimationValues>());
         }
         trackedAudioTimes = new CircularBuffer<AudioTrackedData>();
+    }
+    public void InitBuffer()
+    {
+        //Debug.Log("버퍼 초기화");
+        trackedPositionsAndRotation.InitBuffer();
+        trackedVelocities.InitBuffer();
+        trackedAudioTimes.InitBuffer();
+
+        if (animator != null)
+        {
+            for (int i = 0; i < animator.layerCount; i++)
+            {
+                trackedAnimationTimes[i].InitBuffer();
+                //trackedAnimationTimes.Add(new CircularBuffer<AnimationValues>());
+            }
+        }
+
+        IsTracking = true;
     }
 
     protected void FixedUpdate()
@@ -80,10 +98,9 @@ public abstract class RewindAbstract : MonoBehaviour
     protected void RestorePositionAndRotation(float seconds)
     {
         PositionAndRotationValues valuesToRead = trackedPositionsAndRotation.ReadFromBuffer(seconds);
-        //transform.SetPositionAndRotation(valuesToRead.position, valuesToRead.rotation);
-        transform.position = Vector3.Slerp(transform.position, valuesToRead.position, seconds);
-        transform.rotation = Quaternion.Lerp(transform.rotation, valuesToRead.rotation, seconds);
-
+        transform.SetPositionAndRotation(valuesToRead.position, valuesToRead.rotation);
+        //transform.position = Vector3.Slerp(transform.position, valuesToRead.position, seconds);
+        //transform.rotation = Quaternion.Lerp(transform.rotation, valuesToRead.rotation, seconds);
     }
     #endregion
 

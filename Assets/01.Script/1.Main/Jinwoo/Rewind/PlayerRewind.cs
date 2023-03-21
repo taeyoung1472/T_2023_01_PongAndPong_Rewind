@@ -27,6 +27,8 @@ public class PlayerRewind : RewindAbstract
 
     protected override void InitOnPlay()
     {
+        InitBuffer();
+
         foreach (var item in enableList)
         {
             item.enabled = true;

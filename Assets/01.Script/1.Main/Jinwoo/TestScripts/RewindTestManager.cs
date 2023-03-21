@@ -4,26 +4,8 @@ using UnityEngine.Events;
 
 public class RewindTestManager : MonoSingleTon<RewindTestManager>
 {
-    /// <summary>
-    /// 이 액션은 사용자가 사용하기 위한 것이 아님 
-    /// 클래스 간에 데이터를 공유함
-    /// RewindTimeBySeconds(), StartRewindTimeBySeconds(),
-    /// SetTimeSecondsInRewind(), StopRewindTimeBySeconds()와 같은 준비된 메서드를 사용하고 싶을 것 같아서 만듦
-    /// </summary>
     public Action<float> RewindTimeCall { get; set; }
-    /// <summary>
-    /// 이 액션은 사용자가 사용하기 위한 것이 아님 
-    /// 클래스 간에 데이터를 공유함
-    /// RewindTimeBySeconds(), StartRewindTimeBySeconds(),
-    /// SetTimeSecondsInRewind(), StopRewindTimeBySeconds()와 같은 준비된 메서드를 사용하고 싶을 것 같아서 만듦
-    /// </summary>
     public Action<bool> TrackingStateCall { get; set; }
-    /// <summary>
-    /// 이 액션은 사용자가 사용하기 위한 것이 아님 
-    /// 클래스 간에 데이터를 공유함
-    /// RewindTimeBySeconds(), StartRewindTimeBySeconds(),
-    /// SetTimeSecondsInRewind(), StopRewindTimeBySeconds()와 같은 준비된 메서드를 사용하고 싶을 것 같아서 만듦
-    /// </summary>
     public Action<float> RestoreBuffers { get; set; }
 
     /// <summary>
@@ -54,12 +36,12 @@ public class RewindTestManager : MonoSingleTon<RewindTestManager>
 
     private float rewindSeconds = 0;
 
-    private void Start()
-    {
-        HowManySecondsAvailableForRewind = 0;
-        InitPlay?.Invoke(); //여기 부분 나중에 바꿔야 될듯?
-        //Debug.Log("InitPlay");
-    }
+    //private void Start()
+    //{
+    //    //HowManySecondsAvailableForRewind = 0;
+        
+    //    //Debug.Log("InitPlay");
+    //}
 
 
     /// <summary>
@@ -160,9 +142,16 @@ public class RewindTestManager : MonoSingleTon<RewindTestManager>
         RestoreBuffers?.Invoke(rewindSeconds);
         TrackingStateCall?.Invoke(true);
 
-        InitPlay?.Invoke();
+        //InitPlay?.Invoke();
         //ReTimeStop?.Invoke();
 
         Debug.Log("리와인드 끝남");
+    }
+
+    public void StartAreaPlay()
+    {
+        HowManySecondsAvailableForRewind = 0;
+        InitPlay?.Invoke();
+
     }
 }
