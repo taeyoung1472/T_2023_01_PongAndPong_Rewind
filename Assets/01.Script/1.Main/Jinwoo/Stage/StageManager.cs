@@ -5,8 +5,8 @@ using UnityEngine.UI;
 
 public class StageManager : MonoSingleTon<StageManager>
 {
-    public Dictionary<int, Stage> stageDictionary;
-    public Stage stagePrefab;
+    private Dictionary<int, Stage> stageDictionary;
+    [SerializeField] private Stage stagePrefab;
     public Stage currentStage;
 
     [SerializeField] private PlayerRewind playerPrefab;

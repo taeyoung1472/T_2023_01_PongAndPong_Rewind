@@ -4,7 +4,11 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "SO/StageArea")]
 public class StageAreaDataSO : ScriptableObject
 {
-    public string areaInfo;
+    public string areaName;
+    public int areaNumber;
+
     public int stagePlayTime;
     public bool isAreaClear = false;
+
+    public string areaInfo;
 }
