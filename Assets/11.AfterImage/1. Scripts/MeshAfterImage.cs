@@ -43,7 +43,7 @@ public sealed class MeshAfterImage : AfterImageBase
 
         _data.Mat = _afterImageMaterial;
         //_data.Mat.color = new Vector4(_data.Mat.color.r, _data.Mat.color.g, _data.Mat.color.b, 0.4f);
-        isMotionTrail = false;
+        IsMotionTrail = false;
         
     }
 

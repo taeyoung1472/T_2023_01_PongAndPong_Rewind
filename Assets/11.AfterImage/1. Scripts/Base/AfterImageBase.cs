@@ -48,7 +48,21 @@ public abstract class AfterImageBase : MonoBehaviour
     protected Queue<AfterImageFaderBase> FaderRunningQueue { get; set; } // 현재 활성화된 잔상 목록
     protected int AvailableCount => FaderWaitQueue.Count;
 
-    public bool isMotionTrail = false; //모션트레일을 켯는지
+    [SerializeField]
+    private bool _isMotionTrail = false; //모션트레일을 켯는지
+    public bool IsMotionTrail
+    {
+        get => _isMotionTrail;
+        set
+        {
+            _isMotionTrail = value;
+            if (EnableSpawn && FaderWaitQueue != null)
+            {
+                ForceBakeImage();
+            }
+        }
+    }
+    public bool EnableSpawn = false; // enable이나 disable때 소환할 건지
 
     /***********************************************************************
     *                               Public Methods
@@ -97,6 +111,12 @@ public abstract class AfterImageBase : MonoBehaviour
         SetImageRunningState(fader);
     }
 
+    public void ForceBakeImage()
+    {
+        BakeImage();
+        _currentElapsedBakeTime = 0f;
+    }
+
     /***********************************************************************
     *                               Unity Events
     ***********************************************************************/
@@ -113,7 +133,7 @@ public abstract class AfterImageBase : MonoBehaviour
 
     protected void Update()
     {
-        if (isMotionTrail == false)
+        if (_isMotionTrail == false)
             return;
 
         _currentElapsedBakeTime += Time.deltaTime;
@@ -135,5 +155,16 @@ public abstract class AfterImageBase : MonoBehaviour
         UpdateColor();
     }
 
+    /*private void OnEnable()
+    {
+        if (EnableSpawn)
+            ForceBakeImage();
+    }
+
+    private void OnDisable()
+    {
+        if (EnableSpawn)
+            ForceBakeImage();
+    }*/
     #endregion
 }

@@ -16,6 +16,9 @@ public class PlayerRenderer : MonoBehaviour
 
     public Vector3 Forward => transform.forward;
 
+    public Quaternion ForwardRot => Quaternion.Euler(0f, (_fliped) ? -90f : 90f, 0f);
+    public Quaternion BackRot => Quaternion.Euler(0f, (_fliped) ? 90f : -90f, 0f);
+
     private void Start()
     {
         _player = GetComponentInParent<Player>();

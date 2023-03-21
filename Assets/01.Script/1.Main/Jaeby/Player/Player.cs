@@ -25,7 +25,7 @@ public class Player : MonoBehaviour
     private GravityModule _gravityModule = null;
     private PlayerInput _playerInput = null;
     private CharacterController _characterController = null;
-    private SkinnedMeshAfterImage _afterImage = null;
+    private MotionTrail _motionTrail = null;
     #endregion
 
     #region 프로퍼티
@@ -78,8 +78,8 @@ public class Player : MonoBehaviour
         _playerRenderer = _playerAnimation.GetComponent<PlayerRenderer>();
         _gravityModule = GetComponent<GravityModule>();
         _col = GetComponent<Collider>();
-        _afterImage = GetComponent<SkinnedMeshAfterImage>();
-        _afterImage.isMotionTrail = false;
+        _motionTrail = GetComponent<MotionTrail>();
+        _motionTrail.Init();
     }
 
     private void LoadJson()
@@ -263,6 +263,9 @@ public class Player : MonoBehaviour
 
     public void AfterImageEnable(bool value)
     {
-        _afterImage.isMotionTrail = value;
+        if (value)
+            _motionTrail.StartTrail();
+        else
+            _motionTrail.StopTrail();
     }
 }

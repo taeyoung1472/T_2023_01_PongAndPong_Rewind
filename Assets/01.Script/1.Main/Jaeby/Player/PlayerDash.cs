@@ -32,7 +32,8 @@ public class PlayerDash : PlayerAction
         else
             _player.PlayerAnimation.DashAnimation(_player.PlayerInput.InputVectorNorm);
 
-        PoolManager.Pop(PoolType.DashEffect).transform.position = transform.position;
+        GameObject effectObj = PoolManager.Pop(PoolType.DashEffect);
+        effectObj.transform.SetPositionAndRotation(transform.position + Vector3.up * 0.3f + Vector3.forward * 0.15f, _player.PlayerRenderer.BackRot);
         OnDashStarted?.Invoke(_player.PlayerInput.InputVectorNorm);
     }
 
