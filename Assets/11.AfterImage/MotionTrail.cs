@@ -8,7 +8,7 @@ using UnityEngine;
 [System.Serializable]
 public class MeshTrailStruct
 {
-    public GameObject Container;
+    public GameObject myObj;
 
     public MeshFilter BodyMeshFilter;
 
@@ -21,7 +21,7 @@ public class MotionTrail : MonoBehaviour
     [Header("[필요한 거시기들]")]
     [SerializeField] private SkinnedMeshRenderer SMR_Body;
 
-    private Transform TrailContainer;
+    private Transform TrailContainer; 
     [SerializeField] private GameObject MeshTrailPrefab;
     private List<MeshTrailStruct> MeshTrailStructs = new List<MeshTrailStruct>();
 
@@ -63,8 +63,8 @@ public class MotionTrail : MonoBehaviour
         {
             // 원하는 TrailCount만큼 생성
             MeshTrailStruct pss = new MeshTrailStruct();
-            pss.Container = Instantiate(MeshTrailPrefab, TrailContainer);
-            pss.BodyMeshFilter = pss.Container.transform.GetChild(0).GetComponent<MeshFilter>();
+            pss.myObj = Instantiate(MeshTrailPrefab, TrailContainer);
+            pss.BodyMeshFilter = pss.myObj.transform.GetChild(0).GetComponent<MeshFilter>();
 
             pss.bodyMesh = new Mesh();
 
@@ -76,7 +76,7 @@ public class MotionTrail : MonoBehaviour
 
             MeshTrailStructs.Add(pss);
 
-            bodyParts.Add(pss.Container);
+            bodyParts.Add(pss.myObj);
 
             // Material 속성 설정
             float alphaVal = (1f - (float)i / TrailCount) * 0.5f;
@@ -106,11 +106,11 @@ public class MotionTrail : MonoBehaviour
     public void StopTrail()
     {
         isMotionTrail = false;
-        //isDrawing = false;
+        isDrawing = false;
         //StartCoroutine(FadeMotionTrail());
         //StopCoroutine(BakeMeshCoroutine());
-        //StopAllCoroutines();
-        //DeleteMotion();
+        StopAllCoroutines();
+        DeleteMotion();
     }
     public void DeleteMotion()
     {

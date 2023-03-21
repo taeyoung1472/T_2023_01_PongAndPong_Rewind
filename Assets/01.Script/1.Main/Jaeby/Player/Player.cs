@@ -78,8 +78,8 @@ public class Player : MonoBehaviour
         _playerRenderer = _playerAnimation.GetComponent<PlayerRenderer>();
         _gravityModule = GetComponent<GravityModule>();
         _col = GetComponent<Collider>();
-        _motionTrail = GetComponent<MotionTrail>();
-        _motionTrail.Init();
+        //_motionTrail = GetComponent<MotionTrail>();
+        //_motionTrail.Init();
     }
 
     private void LoadJson()
@@ -263,9 +263,5 @@ public class Player : MonoBehaviour
 
     public void AfterImageEnable(bool value)
     {
-        if (value)
-            _motionTrail.StartTrail();
-        else
-            _motionTrail.StopTrail();
     }
 }

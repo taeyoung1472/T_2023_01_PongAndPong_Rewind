@@ -3692,11 +3692,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -20, y: -20}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!4 &298512834 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 95066360, guid: 18f205ab32cd84a4898ba28bf639789b, type: 3}
-  m_PrefabInstance: {fileID: 1372441655}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &304327899
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6235,11 +6230,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _worldName: america
---- !u!137 &521351166 stripped
-SkinnedMeshRenderer:
-  m_CorrespondingSourceObject: {fileID: 112894375679413401, guid: 18f205ab32cd84a4898ba28bf639789b, type: 3}
-  m_PrefabInstance: {fileID: 1372441655}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &532431495
 GameObject:
   m_ObjectHideFlags: 0
@@ -8608,11 +8598,6 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 5458762998963852002, guid: d475bff2886c1d44a8772a0dff3ce8a5, type: 3}
   m_PrefabInstance: {fileID: 828201141}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &835679071 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6691628707489746810, guid: 18f205ab32cd84a4898ba28bf639789b, type: 3}
-  m_PrefabInstance: {fileID: 1372441655}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &836494458
 GameObject:
@@ -14415,30 +14400,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2107113381, guid: 18f205ab32cd84a4898ba28bf639789b, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2107113381, guid: 18f205ab32cd84a4898ba28bf639789b, type: 3}
-      propertyPath: EnableSpawn
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2107113381, guid: 18f205ab32cd84a4898ba28bf639789b, type: 3}
-      propertyPath: _bakingCycle
-      value: 0.08
-      objectReference: {fileID: 0}
-    - target: {fileID: 2107113381, guid: 18f205ab32cd84a4898ba28bf639789b, type: 3}
-      propertyPath: _afterImageMaterial
+    - target: {fileID: 2107113385, guid: 18f205ab32cd84a4898ba28bf639789b, type: 3}
+      propertyPath: trailContainer
       value: 
-      objectReference: {fileID: 2100000, guid: 87a8e7835a48e984caf2614f59fbd386, type: 2}
-    - target: {fileID: 2107113381, guid: 18f205ab32cd84a4898ba28bf639789b, type: 3}
-      propertyPath: _containChildrenMeshes
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 112894375676232071, guid: 18f205ab32cd84a4898ba28bf639789b, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1522787155}
+    - target: {fileID: 2107113398, guid: 18f205ab32cd84a4898ba28bf639789b, type: 3}
+      propertyPath: _trailParentTrm
+      value: 
+      objectReference: {fileID: 1522787156}
     - target: {fileID: 6691628707489746809, guid: 18f205ab32cd84a4898ba28bf639789b, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -14487,7 +14456,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: NewPlayer
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2107113385, guid: 18f205ab32cd84a4898ba28bf639789b, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 18f205ab32cd84a4898ba28bf639789b, type: 3}
 --- !u!1 &1374699617
 GameObject:
@@ -23178,36 +23148,12 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6691628707489746805, guid: 18f205ab32cd84a4898ba28bf639789b, type: 3}
   m_PrefabInstance: {fileID: 1372441655}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 835679071}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 37e4f44bf7499b645b5dcfe572673577, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &2107113385
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 835679071}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bbeed8c3da4742947974e9bfa631ffab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SMR_Body: {fileID: 521351166}
-  MeshTrailPrefab: {fileID: 4867553156401008734, guid: 82c8866aba5457b4283e92a329e38fbb, type: 3}
-  TrailCount: 10
-  TrailGap: 0.07
-  frontColor: {r: 0.8392157, g: 0.19607843, b: 2, a: 0}
-  backColor: {r: 0.36078432, g: 0.47058824, b: 2.8705883, a: 0}
-  frontColor_Inner: {r: 0.34509805, g: 2.4156864, b: 3.545098, a: 0}
-  backColor_Inner: {r: 1.1329429, g: 0, b: 9.938317, a: 0}
-  isDrawing: 0
-  isMotionTrail: 0
-  basePos: {fileID: 298512834}
-  trailContainer: {fileID: 1522787155}
 --- !u!1 &2107602956
 GameObject:
   m_ObjectHideFlags: 0

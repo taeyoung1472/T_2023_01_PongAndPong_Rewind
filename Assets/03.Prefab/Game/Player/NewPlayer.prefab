@@ -216,7 +216,8 @@ GameObject:
   - component: {fileID: 6691628707489746807}
   - component: {fileID: 6691628707489746815}
   - component: {fileID: 2107113391}
-  - component: {fileID: 2107113381}
+  - component: {fileID: 2107113385}
+  - component: {fileID: 2107113398}
   m_Layer: 0
   m_Name: NewPlayer
   m_TagString: Player
@@ -631,7 +632,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _springAmplification: 5
   _minSpringForce: 3
---- !u!114 &2107113381
+--- !u!114 &2107113385
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -640,50 +641,39 @@ MonoBehaviour:
   m_GameObject: {fileID: 6691628707489746810}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a170008e213674d42ad66de6fcbea24a, type: 3}
+  m_Script: {fileID: 11500000, guid: bbeed8c3da4742947974e9bfa631ffab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myMesh: {fileID: 196536015}
-  _afterImageMaterial: {fileID: 2100000, guid: 87a8e7835a48e984caf2614f59fbd386, type: 2}
-  _afterImageGradient:
-    serializedVersion: 2
-    key0: {r: 0.7, g: 0, b: 1, a: 1}
-    key1: {r: 0.3, g: 1, b: 1, a: 1}
-    key2: {r: 1, g: 1, b: 0, a: 0}
-    key3: {r: 0.3, g: 1, b: 1, a: 0}
-    key4: {r: 0.7, g: 0, b: 1, a: 0}
-    key5: {r: 0, g: 0, b: 0, a: 0}
-    key6: {r: 0, g: 0, b: 0, a: 0}
-    key7: {r: 0, g: 0, b: 0, a: 0}
-    ctime0: 0
-    ctime1: 16384
-    ctime2: 32768
-    ctime3: 49151
-    ctime4: 65535
-    ctime5: 0
-    ctime6: 0
-    ctime7: 0
-    atime0: 0
-    atime1: 65535
-    atime2: 0
-    atime3: 0
-    atime4: 0
-    atime5: 0
-    atime6: 0
-    atime7: 0
-    m_Mode: 0
-    m_NumColorKeys: 5
-    m_NumAlphaKeys: 2
-  _colorUpdateSpeed: 1
-  _bakingCycle: 0.08
-  _data:
-    duration: 1.25
-    shaderColorName: _Color
-    shaderAlphaName: _Alpha
-  _containChildrenMeshes: 0
-  isMotionTrail: 1
-  <TargetSmrArray>k__BackingField:
-  - {fileID: 112894375679413401}
+  SMR_Body: {fileID: 112894375679413401}
+  MeshTrailPrefab: {fileID: 4867553156401008734, guid: 82c8866aba5457b4283e92a329e38fbb, type: 3}
+  TrailCount: 10
+  TrailGap: 0.07
+  frontColor: {r: 0.8392157, g: 0.19607843, b: 2, a: 0}
+  backColor: {r: 0.36078432, g: 0.47058824, b: 2.8705883, a: 0}
+  frontColor_Inner: {r: 0.34509805, g: 2.4156864, b: 3.545098, a: 0}
+  backColor_Inner: {r: 1.1329429, g: 0, b: 9.938317, a: 0}
+  isDrawing: 0
+  isMotionTrail: 0
+  basePos: {fileID: 95066360}
+  trailContainer: {fileID: 0}
+--- !u!114 &2107113398
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6691628707489746810}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 081a2843c2d59294e85c01ab952a6b22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _spawnTrm: {fileID: 6691628707489746809}
+  _meshTrailPrefab: {fileID: 4867553156401008734, guid: 82c8866aba5457b4283e92a329e38fbb, type: 3}
+  _trailParentTrm: {fileID: 0}
+  _skinnedMeshRenderer: {fileID: 112894375679413401}
+  _spawnCount: 10
+  _trailSpawnTime: 0.1
 --- !u!1 &6691628707561677047
 GameObject:
   m_ObjectHideFlags: 0
