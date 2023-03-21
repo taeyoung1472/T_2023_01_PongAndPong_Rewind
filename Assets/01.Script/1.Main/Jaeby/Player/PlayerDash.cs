@@ -56,6 +56,7 @@ public class PlayerDash : PlayerAction
             dashVector = _player.PlayerInput.InputVectorNorm * _player.playerMovementSO.dashPower;
         }
         _player.VelocitySetExtra(dashVector.x, dashVector.y);
+        _player.AfterImageEnable(true);
         yield return new WaitForSeconds(_player.playerMovementSO.dashContinueTime);
         DashExit();
     }
@@ -68,6 +69,7 @@ public class PlayerDash : PlayerAction
 
     public void DashExit()
     {
+        _player.AfterImageEnable(false);
         _excuting = false;
         _player.PlayerActionLock(false, PlayerActionType.Jump, PlayerActionType.Move);
         _player.GravityModule.UseGravity = true;
