@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
-public class CircularBuffer <T>
-{ 
+public class CircularBuffer<T>
+{
     private T[] dataArray;
     private int bufferCurrentPosition = -1;
     private int bufferCapacity;
@@ -12,17 +12,25 @@ public class CircularBuffer <T>
     /// </summary>
     public CircularBuffer()
     {
+        
+    }
+    /// <summary>
+    /// 버퍼 초기화
+    /// </summary>
+    public void InitBuffer()
+    {
         try
         {
             howManyRecordsPerSecond = Time.timeScale / Time.fixedDeltaTime;
-            bufferCapacity = (int)(RewindTestManager.Instance.howManySecondsToTrack *howManyRecordsPerSecond);
+            bufferCapacity = (int)(RewindTestManager.Instance.howManySecondsToTrack * howManyRecordsPerSecond);
             dataArray = new T[bufferCapacity];
+            //Debug.Log(dataArray.Length);
             RewindTestManager.Instance.RestoreBuffers += OnBuffersRestore;
         }
         catch
         {
             Debug.LogError("순환 버퍼는 필드 초기화를 사용할 수 없음(Time.fixedDeltaTime은 아직 알 수 없음). Start() 메서드에서 순환 버퍼를 초기화하면 될거임");
-        }        
+        }
     }
 
     /// <summary>
@@ -60,9 +68,10 @@ public class CircularBuffer <T>
     {
         int howManyBeforeLast = (int)(howManyRecordsPerSecond * seconds); //현재 시간에서 기록될 수 있는 크기의 최대 (한마디로 최대 돌아갈 수 있는 크기)
 
-        if((bufferCurrentPosition-howManyBeforeLast) <0)
+        if ((bufferCurrentPosition - howManyBeforeLast) < 0)
         {
             int showingIndex = bufferCapacity - (howManyBeforeLast - bufferCurrentPosition);
+            //Debug.Log(showingIndex + "이새끼 말이 안되" + howManyBeforeLast);
             return dataArray[showingIndex];
         }
         else
@@ -72,7 +81,7 @@ public class CircularBuffer <T>
     }
     private void MoveLastBufferPosition(float seconds)
     {
-        int howManyBeforeLast=(int)(howManyRecordsPerSecond*seconds);
+        int howManyBeforeLast = (int)(howManyRecordsPerSecond * seconds);
 
         if ((bufferCurrentPosition - howManyBeforeLast) < 0)
         {
@@ -81,7 +90,7 @@ public class CircularBuffer <T>
         else
         {
             bufferCurrentPosition -= howManyBeforeLast;
-        }     
+        }
     }
     private void OnBuffersRestore(float seconds)
     {
