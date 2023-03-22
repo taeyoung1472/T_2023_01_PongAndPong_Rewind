@@ -272,4 +272,13 @@ public class Player : MonoBehaviour
         else
             _motionTrail.StopTrail();
     }
+
+    private void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        Rigidbody rb = hit.collider.GetComponent<Rigidbody>();
+        if (rb == null)
+            return;
+        Vector3 forceDir = hit.gameObject.transform.position - transform.position;
+        rb.AddForceAtPosition(forceDir, transform.position, ForceMode.Impulse);
+    }
 }
