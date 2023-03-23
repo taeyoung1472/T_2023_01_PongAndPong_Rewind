@@ -37,7 +37,7 @@ public class StageArea : MonoBehaviour
         if (!isAreaClear)
         {
             StageManager.Instance.InitPlayer(isAreaClear);
-            EntryArea(false);
+            EntryArea();
         }
         else
         {

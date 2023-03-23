@@ -20,12 +20,12 @@ public class StageInfoUI : MonoBehaviour
     public void UISet(StageUnitUI ui)
     {
         _stageSelectUI.Lock = true;
-        if (ui.stageInfoSO == null)
+        if (ui.StageDataSO == null)
             return;
-        _stageNameText.SetText(ui.stageInfoSO.stageName);
-        _stageSubTitleText.SetText(ui.stageInfoSO.stageSubTitle);
-        _stageExplainText.SetText(ui.stageInfoSO.stageExplain);
-        _stageImage.sprite = ui.stageInfoSO.stageSprite;
+        _stageNameText.SetText(ui.StageDataSO.stageName);
+        _stageSubTitleText.SetText(ui.StageDataSO.stageSubTitle);
+        _stageExplainText.SetText(ui.StageDataSO.stageExplain);
+        _stageImage.sprite = ui.StageDataSO.stageSprite;
     }
 
     public void UIDown()

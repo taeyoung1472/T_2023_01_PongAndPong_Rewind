@@ -19,6 +19,7 @@ public class Stage : MonoBehaviour
             area.isAreaClear = false;
         }
 
+
         StartCoroutine(StageCycle());
     }
 
@@ -37,7 +38,7 @@ public class Stage : MonoBehaviour
 
             StageManager.Instance.fadeImg.gameObject.SetActive(false);
             TimerManager.Instance.EndRewind();
-            
+
 
         }
         EndManager.Instance.End();

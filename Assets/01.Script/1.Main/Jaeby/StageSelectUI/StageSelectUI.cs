@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using static Define;
 
@@ -85,7 +86,7 @@ public class StageSelectUI : MonoBehaviour
         _curStageWorld = _stageWorlds[_worldIndex];
         _curStageWorld.gameObject.SetActive(true);
         _scrollRect.content = _curStageWorld.GetComponent<RectTransform>();
-        _worldNameText.SetText(_curStageWorld.WorldName);
+        _worldNameText.SetText(_curStageWorld.WorldType.ToString());
     }
 
     public void StageChange()
@@ -156,5 +157,10 @@ public class StageSelectUI : MonoBehaviour
         {
             WorldUISet(ui);
         }
+    }
+    public void RoadGameScene()
+    {
+        _curStage.SetStageData();
+        SceneManager.LoadScene(1);
     }
 }

@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using UnityEngine.UI;
+using System;
 
 public class StageUnitUI : MonoBehaviour
 {
     private Sequence _seq = null;
     private Image _image = null;
-    private StageInfoSO _stageInfoSO = null;
-    public StageInfoSO stageInfoSO => _stageInfoSO;
+    [SerializeField]
+    private StageDataSO _stageDataSO = null;
+    public StageDataSO StageDataSO => _stageDataSO;
 
     public void UIAccent(Color endColor, float endSize, float duration)
     {
@@ -30,5 +32,10 @@ public class StageUnitUI : MonoBehaviour
         if (_image == null)
             _image = GetComponent<Image>();
         _image.color = Color.white;
+    }
+
+    public void SetStageData()
+    {
+        StageManager.stageDataSO = _stageDataSO;
     }
 }
