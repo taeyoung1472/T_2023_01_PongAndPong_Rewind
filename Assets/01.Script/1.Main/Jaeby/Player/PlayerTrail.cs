@@ -9,6 +9,12 @@ public class PlayerTrail : MonoBehaviour
     private Transform _spawnTrm = null; // 어디에 생성띠?
 
     [SerializeField]
+    private Material _trailMaterial = null;
+    [SerializeField]
+    private Color _startColor = Color.white;
+    [SerializeField]
+    private Color _endColor = Color.white;
+    [SerializeField]
     private GameObject _meshTrailPrefab = null;
     [SerializeField]
     private Transform _trailParentTrm = null; // 트레일 부모
@@ -22,6 +28,8 @@ public class PlayerTrail : MonoBehaviour
     private int _spawnCount = 0; // 처음에 몇 개?
     [SerializeField]
     private float _trailSpawnTime = 0.2f; // 생성 주기
+    [SerializeField]
+    private float _fadeDuration = 0.5f;
     private float _spawnTimer = 0f;
 
     [SerializeField]
@@ -54,14 +62,12 @@ public class PlayerTrail : MonoBehaviour
         pss.myObj.SetActive(false);
         _readyTrails.Enqueue(pss);
 
-        //float alphaVal = (1f - (float)i / TrailCount) * 0.5f;
-        pss.BodyMeshFilter.GetComponent<MeshRenderer>().material.SetFloat("_Alpha", 1f);
-
-        //Color tmpColor = Color.Lerp(frontColor, backColor, (float)i / TrailCount);
-        //pss.BodyMeshFilter.GetComponent<MeshRenderer>().material.SetColor("_FresnelColor", tmpColor);
-
-        //Color tmpColor_Inner = Color.Lerp(frontColor_Inner, backColor_Inner, (float)i / TrailCount);
-        //pss.BodyMeshFilter.GetComponent<MeshRenderer>().material.SetColor("_BaselColor", tmpColor_Inner);
+        MeshRenderer renderer = pss.BodyMeshFilter.GetComponent<MeshRenderer>();
+        List<Material> materials = new List<Material>();
+        for (int i = 0; i < _skinnedMeshRenderer.materials.Length; i++)
+            materials.Add(_trailMaterial);
+        renderer.materials = materials.ToArray();
+        materialUpdate(renderer, 1f, _startColor, _startColor);
     }
 
     private void Update()
@@ -86,6 +92,9 @@ public class PlayerTrail : MonoBehaviour
         }
 
         MeshTrailStruct trail = _readyTrails.Dequeue();
+        trail.bodyMesh = new Mesh();
+        _skinnedMeshRenderer.BakeMesh(trail.bodyMesh);
+        trail.BodyMeshFilter.mesh = trail.bodyMesh;
         trail.myObj.SetActive(true);
         trail.myObj.transform.SetPositionAndRotation(_spawnTrm.position, _spawnTrm.rotation);
         StartCoroutine(FadeCoroutine(trail));
@@ -94,21 +103,38 @@ public class PlayerTrail : MonoBehaviour
     public void StartTrail()
     {
         _isMotionTrail = true;
+        _spawnTimer = 0f;
     }
 
     public void EndTrail()
     {
         _isMotionTrail = false;
+        _spawnTimer = 0f;
     }
 
     private IEnumerator FadeCoroutine(MeshTrailStruct trail)
     {
         _enalbeTrails.Enqueue(trail);
-        //페이드 to do
-        yield return new WaitForSeconds(1.5f);
+        float time = 1f;
+        while (time >= 0f)
+        {
+            MeshRenderer renderer = trail.BodyMeshFilter.GetComponent<MeshRenderer>();
+            Color color = Color.Lerp(_endColor, _startColor, time);
+            materialUpdate(renderer, time, color, color);
+            time -= Time.deltaTime * (1 / _fadeDuration);
+            yield return null;
+        }
+
         _enalbeTrails.Dequeue();
         trail.myObj.SetActive(false);
         _readyTrails.Enqueue(trail);
         yield break;
+    }
+
+    private void materialUpdate(MeshRenderer renderer, float alpha, Color fresnelColor, Color baselColor)
+    {
+        renderer.materials[0].SetFloat("_Alpha", alpha);
+        renderer.materials[0].SetColor("_FresnelColor", fresnelColor);
+        renderer.materials[0].SetColor("_BaselColor", baselColor);
     }
 }
