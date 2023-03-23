@@ -11,9 +11,11 @@ public class StageWorldUI : MonoBehaviour
     private List<RectTransform> _stageTrms = new List<RectTransform>();
     private RectTransform _thisTrm = null;
 
+    public StageDatabase db;
+
     [SerializeField]
-    private string _worldName = "";
-    public string WorldName => _worldName;
+    private WorldType _worldType;
+    public WorldType WorldType => _worldType;
 
     public void Init(StageSelectUI ui)
     {

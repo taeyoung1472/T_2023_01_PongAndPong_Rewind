@@ -216,7 +216,6 @@ GameObject:
   - component: {fileID: 6691628707489746807}
   - component: {fileID: 6691628707489746815}
   - component: {fileID: 2107113391}
-  - component: {fileID: 2107113385}
   - component: {fileID: 2107113398}
   m_Layer: 0
   m_Name: NewPlayer
@@ -632,30 +631,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _springAmplification: 5
   _minSpringForce: 3
---- !u!114 &2107113385
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6691628707489746810}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bbeed8c3da4742947974e9bfa631ffab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SMR_Body: {fileID: 112894375679413401}
-  MeshTrailPrefab: {fileID: 4867553156401008734, guid: 82c8866aba5457b4283e92a329e38fbb, type: 3}
-  TrailCount: 10
-  TrailGap: 0.07
-  frontColor: {r: 0.8392157, g: 0.19607843, b: 2, a: 0}
-  backColor: {r: 0.36078432, g: 0.47058824, b: 2.8705883, a: 0}
-  frontColor_Inner: {r: 0.34509805, g: 2.4156864, b: 3.545098, a: 0}
-  backColor_Inner: {r: 1.1329429, g: 0, b: 9.938317, a: 0}
-  isDrawing: 0
-  isMotionTrail: 0
-  basePos: {fileID: 95066360}
-  trailContainer: {fileID: 0}
 --- !u!114 &2107113398
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -663,7 +638,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6691628707489746810}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 081a2843c2d59294e85c01ab952a6b22, type: 3}
   m_Name: 
@@ -674,6 +649,7 @@ MonoBehaviour:
   _skinnedMeshRenderer: {fileID: 112894375679413401}
   _spawnCount: 10
   _trailSpawnTime: 0.1
+  _isMotionTrail: 1
 --- !u!1 &6691628707561677047
 GameObject:
   m_ObjectHideFlags: 0

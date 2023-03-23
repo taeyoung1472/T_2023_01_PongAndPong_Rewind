@@ -9,4 +9,9 @@ public class StageDataSO : ScriptableObject
     public Stage stagePrefab;
 
     public string stageInfo;
+
+    public Sprite stageSprite;
+    public string stageSubTitle;
+    public string stageExplain;
+    public int stageIndex;
 }

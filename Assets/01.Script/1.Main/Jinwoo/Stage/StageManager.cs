@@ -6,14 +6,17 @@ using UnityEngine.UI;
 
 public class StageManager : MonoSingleTon<StageManager>
 {
-    static StageDataSO stageDataSO;
+    [Header("스테이지 관련")]
+    public static StageDataSO stageDataSO;
 
-    [SerializeField] private StageDatabase stageDatabase;
+    //[SerializeField] private StageDatabase stageDatabase;
     private StageDataSO curStageDataSO;
-    private Stage curStage;
-    public Stage CurStage { get { return curStage; } }
     public StageDataSO CurStageDataSO { get { return curStageDataSO; } }
 
+    private Stage curStage;
+    public Stage CurStage { get { return curStage; } }
+
+    [Header("플레이어 관련")]
     [SerializeField] private PlayerRewind playerPrefab;
     [SerializeField] private GameObject rewindPlayerPrefab;
 
@@ -38,26 +41,51 @@ public class StageManager : MonoSingleTon<StageManager>
 
     }
 
-    public void SpawnPlayer(Transform spawnPos, bool isDefaultPlayer)
+    public void SpawnPlayer(Transform spawnPos, bool isDefaultPlayer, bool isFirst = false)
     {
+
         if (isDefaultPlayer)
             playerObj = Instantiate(playerPrefab, spawnPos.position, Quaternion.identity);
         else
             rePlayerObj = Instantiate(rewindPlayerPrefab, spawnPos.position, Quaternion.identity);
+
+        //if (isFirst)
+        //{
+        //    if (isDefaultPlayer)
+        //        playerObj = Instantiate(playerPrefab, spawnPos.position, Quaternion.identity);
+        //    else
+        //        rePlayerObj = Instantiate(rewindPlayerPrefab, spawnPos.position, Quaternion.identity);
+        //}
+        //else
+        //{
+        //    if (isDefaultPlayer)
+        //    {
+        //        playerObj.gameObject.SetActive(true);
+        //        playerObj.transform.position = spawnPos.position;
+        //    }
+        //    else
+        //    {
+        //        rePlayerObj.gameObject.SetActive(true);
+        //        rePlayerObj.transform.position = spawnPos.position;
+        //    }
+        //}
+
     }
 
     public void InitPlayer(bool isClear)
     {
-        if (isClear)
-        {
-            playerObj.gameObject.SetActive(false);
-            rePlayerObj.SetActive(false);
-        }
-        else
-        {
-            playerObj.gameObject.SetActive(false);
-            rePlayerObj.SetActive(false);
+        playerObj.gameObject.SetActive(false);
+        rePlayerObj.SetActive(false);
+        //if (isClear)
+        //{
+        //    playerObj.gameObject.SetActive(false);
+        //    rePlayerObj.SetActive(false);
+        //}
+        //else
+        //{
+        //    playerObj.gameObject.SetActive(false);
+        //    rePlayerObj.SetActive(false);
 
-        }
+        //}
     }
 }
