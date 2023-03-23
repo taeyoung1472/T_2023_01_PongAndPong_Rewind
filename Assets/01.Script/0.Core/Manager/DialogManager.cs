@@ -23,6 +23,8 @@ public class DialogManager : MonoSingleTon<DialogManager>
     [SerializeField]
     private GameObject _dialogCanvas = null;
     [SerializeField]
+    private TextMeshProUGUI _nextText = null;
+    [SerializeField]
     private TextMeshProUGUI _nameText = null;
     [SerializeField]
     private TextMeshProUGUI _titleText = null;
@@ -60,7 +62,7 @@ public class DialogManager : MonoSingleTon<DialogManager>
     {
         if (_dialogLock)
             return false;
-
+        _nextText.SetText($"{KeyManager.keys[InputType.Interact]} 키를 눌러 다음으로");
         if (npcData != null)
         {
             _nameText.SetText(npcData.npcName);
@@ -169,7 +171,7 @@ public class DialogManager : MonoSingleTon<DialogManager>
     {
         if (_excuting == false || _input)
             return;
-        if (Input.GetKeyDown(KeyCode.F))
+        if (Input.GetKeyDown(KeyManager.keys[InputType.Interact]))
         {
             _input = true;
         }

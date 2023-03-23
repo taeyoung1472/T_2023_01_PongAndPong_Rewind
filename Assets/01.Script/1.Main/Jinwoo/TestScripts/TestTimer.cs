@@ -42,12 +42,12 @@ public class TestTimer : MonoBehaviour
         isRewindStart = false;
         defaultVolume.SetActive(true);
         rewindVolume.SetActive(false);
-        timerDefault = StageTestManager.Instance.curArea.PlayTime;
+        timerDefault = StageManager.Instance.CurStage.curArea.stagePlayTime;
     }
     void Update()                               
     {
-        if (!StageTestManager.Instance.isStageAreaPlayStart)                       //되감기에서 FixedUpdate로 업데이트 싸움을 해결하는 간단한 솔루션
-            return;
+        //if (!StageTestManager.Instance.isStageAreaPlayStart)                       //되감기에서 FixedUpdate로 업데이트 싸움을 해결하는 간단한 솔루션
+        //    return;
 
         CurrentTimer += Time.deltaTime;
 
@@ -62,7 +62,7 @@ public class TestTimer : MonoBehaviour
         {
             defaultVolume.SetActive(false);
             rewindVolume.SetActive(true);
-            StageTestManager.Instance.curArea.Rewind();
+            StageManager.Instance.CurStage.curArea.Rewind();
             if (isRewinding)
                 isRewindStart = false;
             else

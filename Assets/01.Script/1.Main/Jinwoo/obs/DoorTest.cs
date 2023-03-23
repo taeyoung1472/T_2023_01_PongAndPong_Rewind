@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DoorTest : MonoBehaviour, IFunctionalObject
+public class DoorTest : MonoBehaviour//, IFunctionalObject
 {
     [SerializeField] private Vector3 moveValue;
     [SerializeField] private float speed = 1;
@@ -23,7 +23,7 @@ public class DoorTest : MonoBehaviour, IFunctionalObject
 
     public void Update()
     {
-        if(!RewindTestManager.Instance.IsBeingRewinded)
+        if(!TimerManager.Instance.isRewinding)
             transform.localPosition = Vector3.Lerp(transform.localPosition, isOpen ? openPos : originPos, Time.deltaTime * speed);
     }
 }

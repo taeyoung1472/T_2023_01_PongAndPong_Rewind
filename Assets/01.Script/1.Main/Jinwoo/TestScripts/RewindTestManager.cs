@@ -4,32 +4,18 @@ using UnityEngine.Events;
 
 public class RewindTestManager : MonoSingleTon<RewindTestManager>
 {
-    /// <summary>
-    /// 이 액션은 사용자가 사용하기 위한 것이 아님 
-    /// 클래스 간에 데이터를 공유함
-    /// RewindTimeBySeconds(), StartRewindTimeBySeconds(),
-    /// SetTimeSecondsInRewind(), StopRewindTimeBySeconds()와 같은 준비된 메서드를 사용하고 싶을 것 같아서 만듦
-    /// </summary>
     public Action<float> RewindTimeCall { get; set; }
-    /// <summary>
-    /// 이 액션은 사용자가 사용하기 위한 것이 아님 
-    /// 클래스 간에 데이터를 공유함
-    /// RewindTimeBySeconds(), StartRewindTimeBySeconds(),
-    /// SetTimeSecondsInRewind(), StopRewindTimeBySeconds()와 같은 준비된 메서드를 사용하고 싶을 것 같아서 만듦
-    /// </summary>
     public Action<bool> TrackingStateCall { get; set; }
-    /// <summary>
-    /// 이 액션은 사용자가 사용하기 위한 것이 아님 
-    /// 클래스 간에 데이터를 공유함
-    /// RewindTimeBySeconds(), StartRewindTimeBySeconds(),
-    /// SetTimeSecondsInRewind(), StopRewindTimeBySeconds()와 같은 준비된 메서드를 사용하고 싶을 것 같아서 만듦
-    /// </summary>
     public Action<float> RestoreBuffers { get; set; }
-    public Action InitRewind { get; set; }
-    public Action InitPlay { get; set; }
 
-    public UnityEvent ReTimeStart;
-    public UnityEvent ReTimeStop;
+    /// <summary>
+    /// 리와인드 될때 한 번 호출
+    /// </summary>
+    public Action InitRewind { get; set; }
+    /// <summary>
+    /// 순행 될때 한 번 호출
+    /// </summary>
+    public Action InitPlay { get; set; }
 
     /// <summary>
     /// 과거까지 얼마나 추적해야 하는지를 정의하는 변수, 설정된 한계에 도달한 후 순환 버퍼에서 이전 값을 덮어씀
@@ -50,26 +36,13 @@ public class RewindTestManager : MonoSingleTon<RewindTestManager>
 
     private float rewindSeconds = 0;
 
-    private void OnEnable()
-    {
-        HowManySecondsAvailableForRewind = 0;
-    }
-    private void Awake()
-    {
-        //RewindManager[] managers= FindObjectsOfType<RewindManager>();
-
-        ////RewindManager를 사용하여 각 씬에 하나의 스크립트만 포함되어 있는지 확인
-        //if (managers.Length>1)                                               
-        //{
-        //    Debug.LogError("RewindManager는 각 씬에서 두 번 이상 사용할 수 없습니다. 다른 RewindManager 제거 바람!!!");
-        //}
-    }
-
-    private void Start()
-    {
-        InitPlay?.Invoke();
+    //private void Start()
+    //{
+    //    //HowManySecondsAvailableForRewind = 0;
         
-    }
+    //    //Debug.Log("InitPlay");
+    //}
+
 
     /// <summary>
     /// 이 메서드를 호출하여 스냅샷 미리보기 없이 즉시 지정된 초만큼 시간을 되감음
@@ -89,8 +62,10 @@ public class RewindTestManager : MonoSingleTon<RewindTestManager>
         }
         InitRewind?.Invoke();
         TrackingStateCall?.Invoke(false);
+
         RewindTimeCall?.Invoke(seconds);
         RestoreBuffers?.Invoke(seconds);
+
         TrackingStateCall?.Invoke(true);
         IsBeingRewinded = true;
     }
@@ -115,7 +90,7 @@ public class RewindTestManager : MonoSingleTon<RewindTestManager>
         }
 
         InitRewind?.Invoke();
-        ReTimeStart?.Invoke();
+        //ReTimeStart?.Invoke();
         rewindSeconds = seconds;
         TrackingStateCall?.Invoke(false);
         IsBeingRewinded = true;
@@ -163,10 +138,20 @@ public class RewindTestManager : MonoSingleTon<RewindTestManager>
     {
         HowManySecondsAvailableForRewind -= rewindSeconds;
         IsBeingRewinded = false;
+
         RestoreBuffers?.Invoke(rewindSeconds);
         TrackingStateCall?.Invoke(true);
-        InitPlay?.Invoke();
-        ReTimeStop?.Invoke();
+
+        //InitPlay?.Invoke();
+        //ReTimeStop?.Invoke();
+
         Debug.Log("리와인드 끝남");
+    }
+
+    public void StartAreaPlay()
+    {
+        HowManySecondsAvailableForRewind = 0;
+        InitPlay?.Invoke();
+
     }
 }

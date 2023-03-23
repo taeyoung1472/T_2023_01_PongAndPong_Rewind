@@ -1,12 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "SO/Stage")]
+[CreateAssetMenu(menuName = "SO/Stage/InGameInfo")]
 public class StageDataSO : ScriptableObject
 {
-    public List<StageAreaT> StageAreaList;
-    //public StageT stagePrefab;
+    public string stageName;
+    public int stageNumber;
     public bool isClear = false;
+    public Stage stagePrefab;
+
     public string stageInfo;
+
+    public Sprite stageSprite;
+    public string stageSubTitle;
+    public string stageExplain;
+    public int stageIndex;
 }
