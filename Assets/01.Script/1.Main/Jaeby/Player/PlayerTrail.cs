@@ -82,7 +82,6 @@ public class PlayerTrail : MonoBehaviour
         _spawnTimer += Time.deltaTime;
         if (_spawnTimer >= _trailSpawnTime) // 소환띠
         {
-            Debug.Log("디버그");
             _spawnTimer = 0f;
             PopTrail();
         }

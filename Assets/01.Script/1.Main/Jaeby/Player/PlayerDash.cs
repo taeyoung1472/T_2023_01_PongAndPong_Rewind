@@ -25,7 +25,7 @@ public class PlayerDash : PlayerAction
             StopCoroutine(_dashCoroutine);
             DashExit();
         }
-        bool slide = _player.IsGrounded;
+        bool slide = _player.IsGrounded && (_player.PlayerInput.InputVector.y > 0f == false);
         _dashCoroutine = StartCoroutine(DashCoroutine(slide));
         if (slide)
             _player.PlayerAnimation.SlideAnimation();
