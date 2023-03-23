@@ -46,6 +46,7 @@ public class PlayerAnimation : MonoBehaviour
 
     public void JumpAnimation()
     {
+        _animator.Rebind();
         _animator.Play("PlayerJump");
         _animator.Update(0);
     }
