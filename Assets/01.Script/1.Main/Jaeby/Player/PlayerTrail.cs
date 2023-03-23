@@ -10,10 +10,14 @@ public class PlayerTrail : MonoBehaviour
 
     [SerializeField]
     private Material _trailMaterial = null;
-    [SerializeField]
-    private Color _startColor = Color.white;
-    [SerializeField]
-    private Color _endColor = Color.white;
+    [SerializeField, ColorUsage(true, true)]
+    private Color _startFresnelColor = Color.white;
+    [SerializeField, ColorUsage(true, true)]
+    private Color _startBaseColor = Color.white;
+    [SerializeField, ColorUsage(true, true)]
+    private Color _endFresnelColor = Color.white;
+    [SerializeField, ColorUsage(true, true)]
+    private Color _endBaseColor = Color.white;
     [SerializeField]
     private GameObject _meshTrailPrefab = null;
     [SerializeField]
@@ -67,7 +71,7 @@ public class PlayerTrail : MonoBehaviour
         for (int i = 0; i < _skinnedMeshRenderer.materials.Length; i++)
             materials.Add(_trailMaterial);
         renderer.materials = materials.ToArray();
-        materialUpdate(renderer, 1f, _startColor, _startColor);
+        materialUpdate(renderer, 1f, _startFresnelColor, _startBaseColor);
     }
 
     private void Update()
@@ -119,8 +123,9 @@ public class PlayerTrail : MonoBehaviour
         while (time >= 0f)
         {
             MeshRenderer renderer = trail.BodyMeshFilter.GetComponent<MeshRenderer>();
-            Color color = Color.Lerp(_endColor, _startColor, time);
-            materialUpdate(renderer, time, color, color);
+            Color fresnelColor = Color.Lerp(_endFresnelColor, _startFresnelColor, time);
+            Color baseColor = Color.Lerp(_endBaseColor, _startBaseColor, time);
+            materialUpdate(renderer, time, fresnelColor, baseColor);
             time -= Time.deltaTime * (1 / _fadeDuration);
             yield return null;
         }
@@ -133,8 +138,11 @@ public class PlayerTrail : MonoBehaviour
 
     private void materialUpdate(MeshRenderer renderer, float alpha, Color fresnelColor, Color baselColor)
     {
-        renderer.materials[0].SetFloat("_Alpha", alpha);
-        renderer.materials[0].SetColor("_FresnelColor", fresnelColor);
-        renderer.materials[0].SetColor("_BaselColor", baselColor);
+        for (int i = 0; i < renderer.materials.Length; i++)
+        {
+            renderer.materials[i].SetFloat("_Alpha", alpha);
+            renderer.materials[i].SetColor("_FresnelColor", fresnelColor);
+            renderer.materials[i].SetColor("_BaseColor", baselColor);
+        }
     }
 }
