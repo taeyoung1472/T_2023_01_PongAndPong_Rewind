@@ -6,7 +6,7 @@ public class StageEndPoint : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            StageManager.Instance.currentStage.curArea.isAreaClear= true;
+            StageManager.Instance.CurStage.curArea.isAreaClear= true;
             other.GetComponent<Player>().enabled = false;
             other.GetComponent<PlayerInput>().enabled = false;
             other.GetComponent<CharacterController>().enabled = false;

@@ -106,7 +106,7 @@ public class TimerManager : MonoSingleTon<TimerManager>
             }
             else
             {
-                StageManager.Instance.currentStage.curArea.Rewind();
+                StageManager.Instance.CurStage.curArea.Rewind();
                 UpdateVolume(false);
                 isRewindStart = true;
             }
@@ -150,7 +150,7 @@ public class TimerManager : MonoSingleTon<TimerManager>
     {
         Debug.Log("되감기 종료");
         RewindTestManager.Instance.StopRewindTimeBySeconds();
-        StageManager.Instance.currentStage.curArea.ExitArea();
+        StageManager.Instance.CurStage.curArea.ExitArea();
     }
     
 }

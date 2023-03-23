@@ -6,6 +6,12 @@ public class StageDataSO : ScriptableObject
     public string stageName;
     public int stageNumber;
     public bool isClear = false;
+    public Stage stagePrefab;
 
     public string stageInfo;
+
+    public Sprite stageSprite;
+    public string stageSubTitle;
+    public string stageExplain;
+    public int stageIndex;
 }
