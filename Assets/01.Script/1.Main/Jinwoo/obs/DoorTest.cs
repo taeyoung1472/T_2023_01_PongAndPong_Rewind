@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DoorTest : MonoBehaviour, IFunctionalObject
+public class DoorTest : MonoBehaviour//, IFunctionalObject
 {
     [SerializeField] private Vector3 moveValue;
     [SerializeField] private float speed = 1;
