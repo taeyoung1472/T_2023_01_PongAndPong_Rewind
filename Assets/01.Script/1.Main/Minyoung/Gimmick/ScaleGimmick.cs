@@ -15,8 +15,6 @@ public class ScaleGimmick : MonoBehaviour
     public int leftWeight = 0;
     public int rightWeight = 0;
 
-    //private float[] downValue = new float[3] { 5, 10, 15 };
-    //private float[] downTimeValue = new float[3] { 3, 2, 1 };
 
     public bool isDowning;
     private float preLeftWeight;
