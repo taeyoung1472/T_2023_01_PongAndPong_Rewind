@@ -5,7 +5,7 @@ using UnityEngine;
 public class TimerRewind : RewindAbstract
 {
     CircularBuffer<float> trackedTime;     //데이터를 저장하려면 이 CircularBuffer 클래스를 사용해라.
-    [SerializeField] TestTimer testTimer;
+    //[SerializeField] TestTimer testTimer;
     
     [SerializeField] ParticlesSetting particleSettings;
 
@@ -42,7 +42,7 @@ public class TimerRewind : RewindAbstract
     // 커스텀 변수 추적의 예
     public void TrackTimer()
     {
-        trackedTime.WriteLastValue(testTimer.CurrentTimer);
+        //trackedTime.WriteLastValue(testTimer.CurrentTimer);
     }
 
 

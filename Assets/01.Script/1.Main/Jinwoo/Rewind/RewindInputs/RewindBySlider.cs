@@ -11,7 +11,7 @@ public class RewindBySlider : MonoBehaviour,IPointerDownHandler, IPointerUpHandl
     //원인 TimeManager 시간 단계가 Time.FixedDeltaTime으로 설정되고 슬라이더의 애니메이터도 동일한 시간 단계로 설정
 
     [SerializeField] Slider slider;
-    [SerializeField] RewindTestManager rewindManager;
+    [SerializeField] RewindManager rewindManager;
     [SerializeField] AudioSource rewindSound;
     Animator sliderAnimator;
     private int howManyFingersTouching = 0;
@@ -65,7 +65,7 @@ public class RewindBySlider : MonoBehaviour,IPointerDownHandler, IPointerUpHandl
     }
     public void RestoreSliderAnimation()                                //슬라이더 복원으로 사용 후 해제하면 올바른 값으로 되돌아감
     {
-        float animationTimeStartFrom = (slider.value - slider.minValue) / RewindTestManager.Instance.howManySecondsToTrack;
+        float animationTimeStartFrom = (slider.value - slider.minValue) / RewindManager.Instance.howManySecondsToTrack;
         sliderAnimator.Play("AutoResizeAnim", 0, animationTimeStartFrom);
         sliderAnimator.SetFloat("TimeRewindSpeed", 1);
         StartCoroutine(ResetSliderValue());

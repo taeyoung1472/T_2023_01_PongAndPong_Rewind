@@ -22,10 +22,10 @@ public class CircularBuffer<T>
         try
         {
             howManyRecordsPerSecond = Time.timeScale / Time.fixedDeltaTime;
-            bufferCapacity = (int)(RewindTestManager.Instance.howManySecondsToTrack * howManyRecordsPerSecond);
+            bufferCapacity = (int)(RewindManager.Instance.howManySecondsToTrack * howManyRecordsPerSecond);
             dataArray = new T[bufferCapacity];
             //Debug.Log(dataArray.Length);
-            RewindTestManager.Instance.RestoreBuffers += OnBuffersRestore;
+            RewindManager.Instance.RestoreBuffers += OnBuffersRestore;
         }
         catch
         {

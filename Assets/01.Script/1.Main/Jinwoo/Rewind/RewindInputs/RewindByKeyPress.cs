@@ -8,10 +8,12 @@ public class RewindByKeyPress : MonoBehaviour
     bool isRewinding = false;
     [SerializeField] float rewindIntensity = 0.01f;          //되감기 속도를 변경하는 변수
     //[SerializeField] RewindTestManager rewindManager;
-    [SerializeField] AudioSource rewindSound;
     float rewindValue = 0;
 
-
+    private void Start()
+    {
+        RewindManager.Instance.StartAreaPlay();
+    }
     void FixedUpdate()
     {
         if(Input.GetKey(KeyCode.Y))                     //원하는 키의 키코드로 변경하삼
@@ -20,13 +22,12 @@ public class RewindByKeyPress : MonoBehaviour
 
             if (!isRewinding)
             {
-                RewindTestManager.Instance.StartRewindTimeBySeconds(rewindValue);
-                rewindSound.Play();
+                RewindManager.Instance.StartRewindTimeBySeconds(rewindValue);
             }
             else
             {
-                if(RewindTestManager.Instance.HowManySecondsAvailableForRewind>rewindValue)      //범위를 벗어난 값을 가져오지 않도록 안전 확인
-                    RewindTestManager.Instance.SetTimeSecondsInRewind(rewindValue);
+                if(RewindManager.Instance.HowManySecondsAvailableForRewind>rewindValue)      //범위를 벗어난 값을 가져오지 않도록 안전 확인
+                    RewindManager.Instance.SetTimeSecondsInRewind(rewindValue);
             }
             isRewinding = true;
         }
@@ -34,8 +35,7 @@ public class RewindByKeyPress : MonoBehaviour
         {
             if(isRewinding)
             {
-                RewindTestManager.Instance.StopRewindTimeBySeconds();
-                rewindSound.Stop();
+                RewindManager.Instance.StopRewindTimeBySeconds();
                 rewindValue = 0;
                 isRewinding = false;
             }

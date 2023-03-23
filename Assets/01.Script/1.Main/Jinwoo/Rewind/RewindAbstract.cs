@@ -21,7 +21,7 @@ public abstract class RewindAbstract : MonoBehaviour
 
     protected virtual void Init()
     {
-        if (RewindTestManager.Instance != null)
+        if (RewindManager.Instance != null)
         {
             body = GetComponent<Rigidbody>();
             body2 = GetComponent<Rigidbody2D>();
@@ -260,8 +260,8 @@ public abstract class RewindAbstract : MonoBehaviour
     #endregion
 
     #region Particles
-    private float particleTimeLimiter;
-    private float particleResetTimeTo;
+    //private float particleTimeLimiter;
+    //private float particleResetTimeTo;
     List<CircularBuffer<ParticleTrackedData>> trackedParticleTimes = new List<CircularBuffer<ParticleTrackedData>>();
     public struct ParticleTrackedData
     {
@@ -290,11 +290,11 @@ public abstract class RewindAbstract : MonoBehaviour
     [Serializable]
     public struct ParticlesSetting
     {
-        [Tooltip("오래 지속되는 파티클 시스템의 경우 시간 추적 제한기를 설정하여 성능을 대폭 향상 ")]
-        public float particleLimiter;
-        [Tooltip("파티클 추적 한계에 도달한 후 추적이 반환되어야 하는 초를 정의하는 변수" +
-            " 이 변수를 사용하여 더 나은 결과를 얻으면 추적 재설정이 크게 눈에 띄지 않음.")]
-        public float particleResetTo;
+        //[Tooltip("오래 지속되는 파티클 시스템의 경우 시간 추적 제한기를 설정하여 성능을 대폭 향상 ")]
+        //public float particleLimiter;
+        //[Tooltip("파티클 추적 한계에 도달한 후 추적이 반환되어야 하는 초를 정의하는 변수" +
+        //    " 이 변수를 사용하여 더 나은 결과를 얻으면 추적 재설정이 크게 눈에 띄지 않음.")]
+        //public float particleResetTo;
         public List<ParticleData> particlesData;
     }
 
@@ -302,9 +302,6 @@ public abstract class RewindAbstract : MonoBehaviour
     /// 파티클 되감기 구현을 사용할 때 이 함수를 먼저 사용하삼.
     /// </summary>
     /// <param name="particleDataList">추적할 입자를 정의하는 데이터</param>
-    /// <param name="particleTimeLimiter">오래 지속되는 파티클 시스템의 경우 시간 추적 제한기를 설정하여 성능을 대폭 향상 </param>
-    /// <param name="resetParticleTo">입자 추적 한계에 도달한 후 추적이 반환되어야 하는 초를 정의하는 변수임
-    /// 이 변수를 사용하여 더 나은 결과를 얻으면 추적 재설정이 크게 눈에 띄지 않음.</param>
     protected void InitializeParticles(ParticlesSetting particleSettings)
     {
         if(particleSettings.particlesData.Any(x=>x.particleSystemEnabler==null||x.particleSystem==null))
@@ -312,11 +309,13 @@ public abstract class RewindAbstract : MonoBehaviour
             Debug.LogError("초기화된 파티클 시스템에 데이터가 없음. 일부 값에 대해 파티클 시스템 또는 파티클 시스템 인에이블러가 채워지지 않음");
         }
         particleSystemsData = particleSettings.particlesData;
-        particleTimeLimiter = particleSettings.particleLimiter;
-        particleResetTimeTo = particleSettings.particleResetTo;
+        //particleTimeLimiter = particleSettings.particleLimiter;
+        //particleResetTimeTo = particleSettings.particleResetTo;
         particleSystemsData.ForEach(x => trackedParticleTimes.Add(new CircularBuffer<ParticleTrackedData>()));
+
         foreach (CircularBuffer<ParticleTrackedData> i in trackedParticleTimes)
         {
+            i.InitBuffer();
             ParticleTrackedData trackedData;
             trackedData.particleTime = 0;
             trackedData.isActive = false;
@@ -350,17 +349,26 @@ public abstract class RewindAbstract : MonoBehaviour
                 particleData.isActive = particleSystemsData[i].particleSystemEnabler.activeInHierarchy;
 
                 if ((!lastValue.isActive) && (particleData.isActive))
+                {
                     particleData.particleTime = 0;
-                else if (!particleData.isActive)
-                    particleData.particleTime = 0;
-                else
-                    particleData.particleTime = (addTime > particleTimeLimiter) ? particleResetTimeTo : addTime;
 
+                }
+                else if (!particleData.isActive)
+                {
+
+                    particleData.particleTime = 0;
+                }
+                else
+                {
+
+                    particleData.particleTime = addTime;
+                    //Debug.Log(particleData.particleTime+ " : " + addTime);
+                }
                 trackedParticleTimes[i].WriteLastValue(particleData);
             }
         }
         catch
-        {
+        {     
             Debug.LogError("파티클 데이터가 제대로 채워지지 않았음" +
                 " 각 요소에 대해 파티클 시스템 및 파티클 시스템 인에이블러 필드를 모두 채워");
         }
@@ -384,7 +392,8 @@ public abstract class RewindAbstract : MonoBehaviour
                 if (!particleEnabler.activeSelf)
                     particleEnabler.SetActive(true);
 
-                particleSystemsData[i].particleSystem.Simulate(particleTracked.particleTime, false, true, false);
+                //Debug.Log("alkdfjklasf: "+particleTracked.particleTime);
+                particleSystemsData[i].particleSystem.Simulate(particleTracked.particleTime, true, true, true);
             }
             else
             {
@@ -402,19 +411,19 @@ public abstract class RewindAbstract : MonoBehaviour
     }
     protected void OnEnable()
     {
-        RewindTestManager.Instance.RewindTimeCall += Rewind;
-        RewindTestManager.Instance.TrackingStateCall += OnTrackingChange;
-        RewindTestManager.Instance.InitPlay += InitOnPlay;
-        RewindTestManager.Instance.InitRewind += InitOnRewind;
+        RewindManager.Instance.RewindTimeCall += Rewind;
+        RewindManager.Instance.TrackingStateCall += OnTrackingChange;
+        RewindManager.Instance.InitPlay += InitOnPlay;
+        RewindManager.Instance.InitRewind += InitOnRewind;
     }
     protected void OnDisable()
     {
-        if (RewindTestManager.Instance != null)
+        if (RewindManager.Instance != null)
         {
-            RewindTestManager.Instance.RewindTimeCall -= Rewind;
-            RewindTestManager.Instance.TrackingStateCall -= OnTrackingChange;
-            RewindTestManager.Instance.InitPlay -= InitOnPlay;
-            RewindTestManager.Instance.InitRewind -= InitOnRewind;
+            RewindManager.Instance.RewindTimeCall -= Rewind;
+            RewindManager.Instance.TrackingStateCall -= OnTrackingChange;
+            RewindManager.Instance.InitPlay -= InitOnPlay;
+            RewindManager.Instance.InitRewind -= InitOnRewind;
         }
         
     }

@@ -28,7 +28,17 @@ public class StageManager : MonoSingleTon<StageManager>
     {
         SpawnStage();
     }
-    
+    public StageArea GetCurArea()
+    {
+        if (CurStage == null)
+        {
+            return null;
+        }
+        else
+        {
+            return CurStage.curArea;
+        }
+    }
     public void SpawnStage()
     {
         curStageDataSO = stageDataSO;

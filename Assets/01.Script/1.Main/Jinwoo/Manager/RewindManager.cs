@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class RewindTestManager : MonoSingleTon<RewindTestManager>
+public class RewindManager : MonoSingleTon<RewindManager>
 {
     public Action<float> RewindTimeCall { get; set; }
     public Action<bool> TrackingStateCall { get; set; }
