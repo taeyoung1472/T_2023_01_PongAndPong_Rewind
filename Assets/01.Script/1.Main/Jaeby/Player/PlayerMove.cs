@@ -9,6 +9,9 @@ public class PlayerMove : PlayerAction
     public bool isSlow = false;
     [SerializeField]
     private ParticleSystem _dustParticle = null;
+    [SerializeField]
+    private float _moveAudioCooltime = 0.1f;
+    private Coroutine _moveAudioCoroutine = null;
 
     private void Update()
     {
@@ -32,6 +35,7 @@ public class PlayerMove : PlayerAction
             if (_dustParticle.isPlaying == false)
             {
                 _dustParticle.Play();
+                _moveAudioCoroutine = StartCoroutine(MoveAudioCoroutine());
             }
         }
         else
@@ -39,6 +43,8 @@ public class PlayerMove : PlayerAction
             if (_dustParticle.isPlaying)
             {
                 _dustParticle.Stop();
+                if (_moveAudioCoroutine != null)
+                    StopCoroutine(_moveAudioCoroutine);
             }
         }
     }
@@ -49,6 +55,16 @@ public class PlayerMove : PlayerAction
         _excuting = false;
         _dustParticle.Stop();
         _player.VelocitySetMove(x: 0f);
+        if (_moveAudioCoroutine != null)
+            StopCoroutine(_moveAudioCoroutine);
     }
 
+    private IEnumerator MoveAudioCoroutine()
+    {
+        while(true)
+        {
+            _player.playerAudio.MoveAudio();
+            yield return new WaitForSeconds(_moveAudioCooltime);
+        }
+    }
 }

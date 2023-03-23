@@ -29,7 +29,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6691628707489746809}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &95066359
 GameObject:
@@ -61,7 +61,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6691628707489746809}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &95066361
 BoxCollider:
@@ -106,7 +106,7 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 6691628707489746809}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &196536015
 MeshRenderer:
@@ -179,7 +179,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6691628707489746809}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!135 &251378861
 SphereCollider:
@@ -225,7 +225,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6691628707489746809}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!198 &1138794599
 ParticleSystem:
@@ -5082,7 +5082,6 @@ Transform:
   - {fileID: 6691628707631861921}
   - {fileID: 6691628707846597018}
   - {fileID: 6691628707561677046}
-  - {fileID: 5534487466801674329}
   - {fileID: 251378860}
   - {fileID: 95066360}
   - {fileID: 196536014}
@@ -5215,6 +5214,7 @@ MonoBehaviour:
   _actionType: 1
   isSlow: 0
   _dustParticle: {fileID: 1138794599}
+  _moveAudioCooltime: 0.3
 --- !u!114 &6691628707489746804
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5491,10 +5491,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _spawnTrm: {fileID: 64421404}
   _trailMaterial: {fileID: 2100000, guid: 87a8e7835a48e984caf2614f59fbd386, type: 2}
-  _startFresnelColor: {r: 1, g: 1, b: 1, a: 1}
-  _startBaseColor: {r: 1, g: 1, b: 1, a: 1}
-  _endFresnelColor: {r: 1, g: 1, b: 1, a: 1}
-  _endBaseColor: {r: 1, g: 1, b: 1, a: 1}
+  _startFresnelColor: {r: 0.7058824, g: 0.08627451, b: 2, a: 1}
+  _startBaseColor: {r: 0.28798994, g: 0.20854434, b: 2.1053047, a: 1}
+  _endFresnelColor: {r: 0.44869074, g: 0, b: 0.745283, a: 1}
+  _endBaseColor: {r: 0.013665216, g: 0, b: 0.33962262, a: 1}
   _meshTrailPrefab: {fileID: 4867553156401008734, guid: 82c8866aba5457b4283e92a329e38fbb, type: 3}
   _trailParentTrm: {fileID: 0}
   _skinnedMeshRenderer: {fileID: 112894375679413401}
@@ -5658,6 +5658,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6691628707846597018}
   - component: {fileID: 6691628707846597017}
+  - component: {fileID: 1372441657}
   m_Layer: 0
   m_Name: AgentSound
   m_TagString: Untagged
@@ -5776,6 +5777,19 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1372441657
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6691628707846597019}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e246f064f9133c448a28974657abcf3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _moveClip: {fileID: 8300000, guid: 8acfa21e5ee13fe469f0b88f836f98b0, type: 3}
 --- !u!1 &6691628708557688618
 GameObject:
   m_ObjectHideFlags: 0
@@ -5837,37 +5851,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6691628707561677046}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &6851188669866524884
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5534487466801674329}
-  m_Layer: 0
-  m_Name: AgentAudio
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5534487466801674329
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6851188669866524884}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 6691628707489746809}
-  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &3772694320589681502
 PrefabInstance:
