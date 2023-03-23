@@ -25,7 +25,7 @@ public class Player : MonoBehaviour
     private GravityModule _gravityModule = null;
     private PlayerInput _playerInput = null;
     private CharacterController _characterController = null;
-    private MotionTrail _motionTrail = null;
+    private PlayerTrail _playerTrail = null;
     #endregion
 
     #region 프로퍼티
@@ -78,9 +78,7 @@ public class Player : MonoBehaviour
         _playerRenderer = _playerAnimation.GetComponent<PlayerRenderer>();
         _gravityModule = GetComponent<GravityModule>();
         _col = GetComponent<Collider>();
-        _motionTrail = GetComponent<MotionTrail>();
-        if (_motionTrail != null)
-            _motionTrail.Init();
+        _playerTrail = GetComponent<PlayerTrail>();
     }
 
     private void LoadJson()
@@ -264,13 +262,13 @@ public class Player : MonoBehaviour
 
     public void AfterImageEnable(bool value)
     {
-        if (_motionTrail == null)
+        if (_playerTrail == null)
             return;
 
         if (value)
-            _motionTrail.StartTrail();
+            _playerTrail.StartTrail();
         else
-            _motionTrail.StopTrail();
+            _playerTrail.EndTrail();
     }
 
     private void OnControllerColliderHit(ControllerColliderHit hit)

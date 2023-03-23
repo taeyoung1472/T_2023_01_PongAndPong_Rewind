@@ -11,6 +11,10 @@ public class PlayerTrail : MonoBehaviour
     [SerializeField]
     private Material _trailMaterial = null;
     [SerializeField]
+    private Color _startColor = Color.white;
+    [SerializeField]
+    private Color _endColor = Color.white;
+    [SerializeField]
     private GameObject _meshTrailPrefab = null;
     [SerializeField]
     private Transform _trailParentTrm = null; // 트레일 부모
@@ -60,13 +64,10 @@ public class PlayerTrail : MonoBehaviour
 
         MeshRenderer renderer = pss.BodyMeshFilter.GetComponent<MeshRenderer>();
         List<Material> materials = new List<Material>();
-        for(int i = 0; i < _skinnedMeshRenderer.materials.Length; i++)
+        for (int i = 0; i < _skinnedMeshRenderer.materials.Length; i++)
             materials.Add(_trailMaterial);
         renderer.materials = materials.ToArray();
-        materialUpdate(renderer, 1f, Color.white, Color.white);
-        //float alphaVal = (1f - (float)i / TrailCount) * 0.5f;
-        //Color tmpColor = Color.Lerp(frontColor, backColor, (float)i / TrailCount);
-        //Color tmpColor_Inner = Color.Lerp(frontColor_Inner, backColor_Inner, (float)i / TrailCount);
+        materialUpdate(renderer, 1f, _startColor, _startColor);
     }
 
     private void Update()
@@ -102,21 +103,24 @@ public class PlayerTrail : MonoBehaviour
     public void StartTrail()
     {
         _isMotionTrail = true;
+        _spawnTimer = 0f;
     }
 
     public void EndTrail()
     {
         _isMotionTrail = false;
+        _spawnTimer = 0f;
     }
 
     private IEnumerator FadeCoroutine(MeshTrailStruct trail)
     {
         _enalbeTrails.Enqueue(trail);
         float time = 1f;
-        while(time >= 0f)
+        while (time >= 0f)
         {
             MeshRenderer renderer = trail.BodyMeshFilter.GetComponent<MeshRenderer>();
-            materialUpdate(renderer, time, Color.white, Color.white);
+            Color color = Color.Lerp(_endColor, _startColor, time);
+            materialUpdate(renderer, time, color, color);
             time -= Time.deltaTime * (1 / _fadeDuration);
             yield return null;
         }
