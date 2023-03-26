@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerGimmickObject : GimmickObject
+public class PlayerGimmickObject : RigidbodyGimmickObject
 {
     private Player _player = null;
     [SerializeField]
@@ -22,13 +20,6 @@ public class PlayerGimmickObject : GimmickObject
     public override void Init()
     {
         _player.ForceStop();
-    }
-
-    public override bool IsGimmickable(GameObject gimmickObj)
-    {
-        if (_player.transform.position.y < gimmickObj.transform.position.y) // 플레이어가 만약 스프링 밑에 있다면
-            return false;
-        return true;
     }
 
     public override void RecordTopPosition()
