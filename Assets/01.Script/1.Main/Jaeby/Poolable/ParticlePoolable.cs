@@ -17,8 +17,9 @@ public class ParticlePoolable : PoolAbleObject
     {
     }
 
-    private void OnParticleSystemStopped()
+    private void LateUpdate()
     {
-        PoolManager.Push(poolType, gameObject);
+        if(_particleSystem.particleCount == 0)
+            PoolManager.Push(poolType, gameObject);
     }
 }

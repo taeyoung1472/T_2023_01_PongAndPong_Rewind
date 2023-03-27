@@ -23,6 +23,7 @@ public class PortalTelepote : MonoBehaviour
 
     public List<Material> playerSkinedMatList = new List<Material>();
 
+    Sequence _seq = null;
 
 
     private void Awake()
@@ -62,10 +63,7 @@ public class PortalTelepote : MonoBehaviour
             if (dotProduct > 0f)
             {
 
-                foreach (var mat in playerSkinedMatList)
-                {
-                    mat.SetFloat("_Dissolve", 1f);
-                }
+
 
                 float rotationDiff = -Quaternion.Angle(transform.rotation, reciverTrm.rotation);
                 rotationDiff += 180;
@@ -74,7 +72,7 @@ public class PortalTelepote : MonoBehaviour
                 Vector3 positionOffset = Quaternion.Euler(0f, rotationDiff, 0f) * portalToPlayer;
                 playerTrm.position = reciverTrm.position + positionOffset + (Vector3.right * (positionOffset.x * 0.5f));
 
-                StartCoroutine(Fade());
+                DissolveSeq();
 
                 isPlayerOverlapping = false;
             }
@@ -84,20 +82,20 @@ public class PortalTelepote : MonoBehaviour
             playerTrm.GetComponent<CharacterController>().enabled = true;
         }
     }
-    IEnumerator Fade()
-    {
-       
-        yield return new WaitForSeconds(0.5f);
 
-        foreach (var mat in playerSkinedMatList)
-        {
-            DoFade(0.5f, 0, 1f, mat);
-        }
+    private void DissolveSeq()
+    {
+        if (_seq != null)
+            _seq.Kill();
+        _seq = DOTween.Sequence();
+        //_seq.Append(DoFade(1f, 0f, 2f, playerSkinedMatList[0]));
+        for(int i = 0; i < playerSkinedMatList.Count; i++)
+            _seq.Join(DoFade(1f, 0f, 2f, playerSkinedMatList[i]));
     }
 
-    public void DoFade(float start, float dest, float time, Material dissolveMat)
+    public Tween DoFade(float start, float dest, float time, Material dissolveMat)
     {
-        DOTween.To(() => start, x => { start = x; dissolveMat.SetFloat("_Dissolve", start); }, dest, time).SetUpdate(true);
+        return DOTween.To(() => start, x => { start = x; dissolveMat.SetFloat("_Dissolve", start); }, dest, time);
     }
     private void OnTriggerEnter(Collider other)
     {

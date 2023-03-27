@@ -26,6 +26,7 @@ public class Player : MonoBehaviour
     private PlayerInput _playerInput = null;
     private CharacterController _characterController = null;
     private PlayerTrail _playerTrail = null;
+    private PlayerAudio _playerAudio = null;
     #endregion
 
     #region 프로퍼티
@@ -36,6 +37,7 @@ public class Player : MonoBehaviour
     public PlayerMovementSO playerMovementSO => _playerMovementSO;
     public PlayerAttackSO playerAttackSO => _playerAttackSO;
     public CharacterController characterController => _characterController;
+    public PlayerAudio playerAudio => _playerAudio; 
     #endregion
 
     #region Json 저장 데이터
@@ -79,6 +81,7 @@ public class Player : MonoBehaviour
         _gravityModule = GetComponent<GravityModule>();
         _col = GetComponent<Collider>();
         _playerTrail = GetComponent<PlayerTrail>();
+        _playerAudio = transform.Find("AgentSound").GetComponent<PlayerAudio>();
     }
 
     private void LoadJson()
