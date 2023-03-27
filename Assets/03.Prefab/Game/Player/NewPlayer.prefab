@@ -5214,7 +5214,7 @@ MonoBehaviour:
   _actionType: 1
   isSlow: 0
   _dustParticle: {fileID: 1138794599}
-  _moveAudioCooltime: 0.3
+  _moveAudioCooltime: 0.25
 --- !u!114 &6691628707489746804
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5228,12 +5228,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _actionType: 2
+  _jumpEffectPos: {fileID: 64421404}
   OnJump:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 6691628707631861949}
         m_TargetAssemblyTypeName: PlayerAnimation, Assembly-CSharp
         m_MethodName: JumpAnimation
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 6691628707489746804}
+        m_TargetAssemblyTypeName: PlayerJump, Assembly-CSharp
+        m_MethodName: SpawnJumpEffect
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5789,7 +5802,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e246f064f9133c448a28974657abcf3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _moveClip: {fileID: 8300000, guid: 8acfa21e5ee13fe469f0b88f836f98b0, type: 3}
+  _moveClips:
+  - {fileID: 8300000, guid: 63665ce7b59ca4640914559a7689b291, type: 3}
+  - {fileID: 8300000, guid: 5e7ff10fb473bb64f9913bf25b0d8045, type: 3}
 --- !u!1 &6691628708557688618
 GameObject:
   m_ObjectHideFlags: 0
