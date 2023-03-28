@@ -23,11 +23,13 @@ public class PlayerRewind : RewindAbstract
         base.Init();
         characterController = GetComponent<CharacterController>();
 
+        InitializeParticles(particleSettings);
     }
 
     protected override void InitOnPlay()
     {
         InitBuffer();
+
 
         foreach (var item in enableList)
         {
@@ -77,6 +79,6 @@ public class PlayerRewind : RewindAbstract
     }
     private void Start()
     {
-        InitializeParticles(particleSettings);
+        
     }
 }

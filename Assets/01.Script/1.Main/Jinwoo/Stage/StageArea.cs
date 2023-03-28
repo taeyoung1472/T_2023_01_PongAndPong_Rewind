@@ -23,7 +23,7 @@ public class StageArea : MonoBehaviour
         InitArea();
         StageManager.Instance.SpawnPlayer(defaultPlayerSpawn, true);
 
-        RewindTestManager.Instance.StartAreaPlay();
+        RewindManager.Instance.StartAreaPlay();
     }
 
     public void Rewind()
