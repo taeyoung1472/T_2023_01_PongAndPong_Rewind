@@ -5,8 +5,11 @@ using UnityEngine.Events;
 
 public class PlayerMove : PlayerAction
 {
-    private float slowSpeed = 0.5f;
-    public bool isSlow = false;
+    [SerializeField]
+    private float _slowSpeed = 0.5f;
+    [SerializeField]
+    private float _pushSlowSpeed = 0.3f;
+
     [SerializeField]
     private ParticleSystem _dustParticle = null;
     [SerializeField]
@@ -20,17 +23,20 @@ public class PlayerMove : PlayerAction
             return;
         }
         Vector2 moveInputVector = _player.PlayerInput.InputVector;
-        if (isSlow)
-            moveInputVector *= slowSpeed;
 
         Move(moveInputVector);
     }
 
     public void Move(Vector2 dir)
     {
+        if (_player.playerBuff.BuffCheck(PlayerBuffType.PushSlow))
+            dir *= _pushSlowSpeed;
+        if (_player.playerBuff.BuffCheck(PlayerBuffType.Slow))
+            dir *= _slowSpeed;
+
         _player.VelocitySetMove(x: dir.x * _player.playerMovementSO.speed);
         _excuting = Mathf.Abs(dir.x) > 0f;
-        if (_excuting && _player.IsGrounded)
+        if (_excuting && _player.IsGrounded && _player.playerBuff.BuffCheck(PlayerBuffType.PushSlow) == false && _player.playerBuff.BuffCheck(PlayerBuffType.Slow) == false)
         {
             if (_dustParticle.isPlaying == false)
             {
@@ -61,7 +67,7 @@ public class PlayerMove : PlayerAction
 
     private IEnumerator MoveAudioCoroutine()
     {
-        while(true)
+        while (true)
         {
             _player.playerAudio.MoveAudio();
             yield return new WaitForSeconds(_moveAudioCooltime);

@@ -14538,7 +14538,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2687664122374465103, guid: 18f205ab32cd84a4898ba28bf639789b, type: 3}
       propertyPath: OnExitCollider.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
-      value: 1
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 2687664122374465103, guid: 18f205ab32cd84a4898ba28bf639789b, type: 3}
       propertyPath: OnEnterCollider.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
@@ -14546,7 +14546,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2687664122374465103, guid: 18f205ab32cd84a4898ba28bf639789b, type: 3}
       propertyPath: OnEnterCollider.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
-      value: 1
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 2687664122374465103, guid: 18f205ab32cd84a4898ba28bf639789b, type: 3}
       propertyPath: OnExitCollider.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -14585,8 +14585,16 @@ PrefabInstance:
       value: ObjectPushAnimation
       objectReference: {fileID: 0}
     - target: {fileID: 2687664122374465103, guid: 18f205ab32cd84a4898ba28bf639789b, type: 3}
+      propertyPath: OnExitCollider.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: PushSlowBuff
+      objectReference: {fileID: 0}
+    - target: {fileID: 2687664122374465103, guid: 18f205ab32cd84a4898ba28bf639789b, type: 3}
       propertyPath: OnEnterCollider.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: ObjectPushAnimation
+      objectReference: {fileID: 0}
+    - target: {fileID: 2687664122374465103, guid: 18f205ab32cd84a4898ba28bf639789b, type: 3}
+      propertyPath: OnEnterCollider.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: PushSlowBuff
       objectReference: {fileID: 0}
     - target: {fileID: 2687664122374465103, guid: 18f205ab32cd84a4898ba28bf639789b, type: 3}
       propertyPath: OnExitCollider.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
@@ -14594,7 +14602,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2687664122374465103, guid: 18f205ab32cd84a4898ba28bf639789b, type: 3}
       propertyPath: OnExitCollider.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
-      value: PlayerAnimation, Assembly-CSharp
+      value: PlayerObjectPush, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 2687664122374465103, guid: 18f205ab32cd84a4898ba28bf639789b, type: 3}
       propertyPath: OnEnterCollider.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
@@ -14602,7 +14610,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2687664122374465103, guid: 18f205ab32cd84a4898ba28bf639789b, type: 3}
       propertyPath: OnEnterCollider.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
-      value: PlayerAnimation, Assembly-CSharp
+      value: PlayerObjectPush, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 2687664122374465103, guid: 18f205ab32cd84a4898ba28bf639789b, type: 3}
       propertyPath: OnEnterCollider.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_BoolArgument
@@ -14617,7 +14625,15 @@ PrefabInstance:
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 2687664122374465103, guid: 18f205ab32cd84a4898ba28bf639789b, type: 3}
+      propertyPath: OnExitCollider.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 2687664122374465103, guid: 18f205ab32cd84a4898ba28bf639789b, type: 3}
       propertyPath: OnEnterCollider.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 2687664122374465103, guid: 18f205ab32cd84a4898ba28bf639789b, type: 3}
+      propertyPath: OnEnterCollider.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 6691628707489746809, guid: 18f205ab32cd84a4898ba28bf639789b, type: 3}
@@ -20735,6 +20751,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5458762998963852002, guid: d475bff2886c1d44a8772a0dff3ce8a5, type: 3}
   m_PrefabInstance: {fileID: 1901368829}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1920015026 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6691628707489746810, guid: 18f205ab32cd84a4898ba28bf639789b, type: 3}
+  m_PrefabInstance: {fileID: 1372441655}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1924606371
 GameObject:
   m_ObjectHideFlags: 0
@@ -23370,7 +23391,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6691628707489746805, guid: 18f205ab32cd84a4898ba28bf639789b, type: 3}
   m_PrefabInstance: {fileID: 1372441655}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1920015026}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 37e4f44bf7499b645b5dcfe572673577, type: 3}
@@ -23381,10 +23402,22 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2687664122374465103, guid: 18f205ab32cd84a4898ba28bf639789b, type: 3}
   m_PrefabInstance: {fileID: 1372441655}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1920015026}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 67a62c76066d25c4193c2e42e2fb4253, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2107113395
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1920015026}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 409877c71fd668948a6b376e31ff696d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &2107602956

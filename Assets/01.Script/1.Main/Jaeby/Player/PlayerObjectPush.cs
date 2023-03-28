@@ -80,4 +80,12 @@ public class PlayerObjectPush : PlayerAction
             OnEnterCollider?.Invoke(_hits);
         }
     }
+
+    public void PushSlowBuff(bool val)
+    {
+        if (val)
+            _player.playerBuff.AddBuff(PlayerBuffType.PushSlow);
+        else
+            _player.playerBuff.DeleteBuff(PlayerBuffType.PushSlow);
+    }
 }
