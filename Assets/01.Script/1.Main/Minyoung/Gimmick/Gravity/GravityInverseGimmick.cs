@@ -13,11 +13,17 @@ public class GravityInverseGimmick : GimmickObject
     {
         if (other.CompareTag("GimmickPlayerCol"))
         {
-            player = other.GetComponentInParent<Player>();
             player.GravityModule.GravityZoneScale();
         }
     }
-   
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(player == null)
+            player = other.GetComponentInParent<Player>();
+        player.playerBuff.AddBuff(PlayerBuffType.Reverse);
+    }
+
     private void OnTriggerExit(Collider other)
     {
         if (module == null)
@@ -25,5 +31,6 @@ public class GravityInverseGimmick : GimmickObject
             return;
         }
         module.GravityScale = module.OriginGravityScale;
+        player.playerBuff.DeleteBuff(PlayerBuffType.Reverse);
     }
 }
