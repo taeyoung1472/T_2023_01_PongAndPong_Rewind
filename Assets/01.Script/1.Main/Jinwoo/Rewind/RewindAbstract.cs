@@ -33,7 +33,7 @@ public abstract class RewindAbstract : MonoBehaviour
         }
         else
         {
-            Debug.LogError("씬에서 TimeManager 스크립트를 찾을 수 없음. 시간 추적을 시작할 수 없습니다. 씬에 넣는 거 까먹었니 빠가야??");
+            Debug.LogError("씬에서 RewindManager 스크립트를 찾을 수 없음. 시간 추적을 시작할 수 없습니다. 씬에 넣는 거 까먹었니 빠가야??");
         }
 
         trackedPositionsAndRotation = new CircularBuffer<PositionAndRotationValues>();
@@ -417,6 +417,7 @@ public abstract class RewindAbstract : MonoBehaviour
             RewindManager.Instance.TrackingStateCall += OnTrackingChange;
             RewindManager.Instance.InitPlay += InitOnPlay;
             RewindManager.Instance.InitRewind += InitOnRewind;
+            RewindManager.Instance.RestartPlay += RestartObj;
         }
             
     }
@@ -428,10 +429,14 @@ public abstract class RewindAbstract : MonoBehaviour
             RewindManager.Instance.TrackingStateCall -= OnTrackingChange;
             RewindManager.Instance.InitPlay -= InitOnPlay;
             RewindManager.Instance.InitRewind -= InitOnRewind;
+            RewindManager.Instance.RestartPlay -= RestartObj;
         }
         
     }
-
+    /// <summary>
+    /// R키 눌러서 다시하기 했을 때 한번 호출됨()
+    /// </summary>
+    protected abstract void RestartObj();
     /// <summary>
     /// 모든 추적이 채워지는 기본 함수, 여기에서 특정 객체에 대해 추적할 항목을 선택할 수 있음
     /// </summary>

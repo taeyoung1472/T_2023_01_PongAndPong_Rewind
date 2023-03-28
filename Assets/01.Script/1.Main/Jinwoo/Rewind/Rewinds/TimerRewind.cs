@@ -64,4 +64,9 @@ public class TimerRewind : RewindAbstract
     {
 
     }
+
+    protected override void RestartObj()
+    {
+
+    }
 }

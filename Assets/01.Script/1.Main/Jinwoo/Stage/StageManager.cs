@@ -24,9 +24,19 @@ public class StageManager : MonoSingleTon<StageManager>
     private GameObject rePlayerObj;
 
     public Image fadeImg;
+
     private void Awake()
     {
         SpawnStage();
+    }
+    public void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            RewindManager.Instance.RestartPlay?.Invoke();
+            curStage.ReStartArea();
+        }
+
     }
     public StageArea GetCurArea()
     {
@@ -39,6 +49,7 @@ public class StageManager : MonoSingleTon<StageManager>
             return CurStage.curArea;
         }
     }
+
     public void SpawnStage()
     {
         curStageDataSO = stageDataSO;

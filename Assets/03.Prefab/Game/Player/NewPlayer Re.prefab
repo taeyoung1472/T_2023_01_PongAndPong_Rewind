@@ -251,6 +251,7 @@ GameObject:
   - component: {fileID: 7546760520365547287}
   - component: {fileID: 2767613541025049830}
   - component: {fileID: -4843872241935706440}
+  - component: {fileID: 4754589452099634291}
   m_Layer: 0
   m_Name: NewPlayer Re
   m_TagString: Player
@@ -749,6 +750,75 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 409877c71fd668948a6b376e31ff696d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4754589452099634291
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6691628707489746810}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67a62c76066d25c4193c2e42e2fb4253, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _actionType: 7
+  OnEnterCollider:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6691628707631861949}
+        m_TargetAssemblyTypeName: PlayerAnimation, Assembly-CSharp
+        m_MethodName: ObjectPushAnimation
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 4754589452099634291}
+        m_TargetAssemblyTypeName: PlayerObjectPush, Assembly-CSharp
+        m_MethodName: PushSlowBuff
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+  OnExitCollider:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6691628707631861949}
+        m_TargetAssemblyTypeName: PlayerAnimation, Assembly-CSharp
+        m_MethodName: ObjectPushAnimation
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 4754589452099634291}
+        m_TargetAssemblyTypeName: PlayerObjectPush, Assembly-CSharp
+        m_MethodName: PushSlowBuff
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  _pushPower: 2
+  _littleBitMore: 0.8
 --- !u!1 &6691628707561677047
 GameObject:
   m_ObjectHideFlags: 0

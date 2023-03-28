@@ -23,18 +23,11 @@ public class Stage : MonoBehaviour
         StartCoroutine(StageCycle());
     }
 
-    public void Update()
-    {
-        if (Input.GetKey(KeyCode.R))
-        {
-            ReStartArea();
-        }
-
-    }
-    private void ReStartArea()
+    public void ReStartArea()
     {
         if (!UIManager.Instance.IsPause)
         {
+            //여기에 코루틴 넣은뒤 먼가 다시하기 연출 살짝 넣으면 좋을 지도...(추후 예정임)
             if (TimerManager.Instance.isRewinding)
             {
                 TimerManager.Instance.EndRewind();
