@@ -37,7 +37,6 @@ public class PlayerObjectPush : PlayerAction
         foreach (var hit in _hits)
         {
             Vector3 distanceDir = (hit.transform.position - _player.transform.position).normalized;
-            distanceDir.y = 0f;
             Vector3 dir;
             float distance;
             if (Physics.ComputePenetration(_player.characterController, _player.transform.position + (distanceDir * _littleBitMore), _player.transform.rotation,
