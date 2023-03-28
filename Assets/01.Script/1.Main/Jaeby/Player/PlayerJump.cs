@@ -11,6 +11,8 @@ public class PlayerJump : PlayerAction
     private bool _jumpEndCheck = false; // 점프를 한 뒤 시간이 지난 것과 바닥에 닿았을 때 둘 중 체크되면 하나가 안 되게
 
     [SerializeField]
+    private Transform _jumpEffectPos = null;
+    [SerializeField]
     private UnityEvent OnJump = null;
     [SerializeField]
     private UnityEvent OnWallGrabJump = null;
@@ -18,13 +20,13 @@ public class PlayerJump : PlayerAction
     private Coroutine _moveLockCoroutine = null;
 
     private float _jumpInputTime = 0f;
-    private bool _jumpKeyUped = false;  
+    private bool _jumpKeyUped = false;
 
     private void Update()
     {
         if (_excuting)
             _jumpInputTime += Time.deltaTime;
-        if(_jumpKeyUped && _jumpInputTime >= _player.playerMovementSO.jumpHoldTime * 0.5f)
+        if (_jumpKeyUped && _jumpInputTime >= _player.playerMovementSO.jumpHoldTime * 0.5f)
         {
             _jumpKeyUped = false;
             _jumpInputTime = 0f;
@@ -81,6 +83,7 @@ public class PlayerJump : PlayerAction
             _player.PlayerActionLock(false, PlayerActionType.Move);
         }
 
+        OnJump?.Invoke();
         if (_player.PlayeActionCheck(PlayerActionType.WallGrab)) // 월점프!!
         {
             _player.PlayerActionExit(PlayerActionType.WallGrab);
@@ -94,7 +97,6 @@ public class PlayerJump : PlayerAction
             _player.VeloCityResetImm(y: true);
             _jumpCoroutine = StartCoroutine(JumpCoroutine(Vector2.up, _player.playerMovementSO.jumpPower));
         }
-        OnJump?.Invoke();
     }
 
     private IEnumerator MoveLockCoroutine()
@@ -165,5 +167,21 @@ public class PlayerJump : PlayerAction
         JumpEnd();
         if (_player.PlayeActionCheck(PlayerActionType.WallGrab))
             JumpCountUp();
+    }
+
+    public void SpawnJumpEffect()
+    {
+        //flip이면 x -90
+
+        Vector3 pos = _jumpEffectPos.position;
+        Quaternion rot = Quaternion.identity;
+        Transform trm = PoolManager.Pop(PoolType.JumpEffect).transform;
+        if (_player.PlayeActionCheck(PlayerActionType.WallGrab))
+        {
+            rot = _player.PlayerRenderer.GetFlipedRotation(DirType.Forward, RotAxis.Z);
+            pos += Vector3.up * 0.5f;
+        }
+        Debug.Log(rot.eulerAngles);
+        trm.SetPositionAndRotation(pos, rot);
     }
 }

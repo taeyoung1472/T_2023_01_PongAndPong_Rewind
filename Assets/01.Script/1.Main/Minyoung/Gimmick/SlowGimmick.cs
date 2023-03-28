@@ -11,7 +11,7 @@ public class SlowGimmick : MonoBehaviour
     [SerializeField] private float slowSpeed = 0.5f;
 
     public bool isSlow = false;
-    PlayerMove playerMove =  null;
+    Player player =  null;
 
     private void Awake()
     {
@@ -33,18 +33,17 @@ public class SlowGimmick : MonoBehaviour
         if (isSlow)
         {
             Debug.Log(hit.transform.name);
-            playerMove = hit.transform.GetComponent<PlayerMove>();
-            playerMove.isSlow = true; 
-
+            player = hit.transform.GetComponent<Player>();
+            player.playerBuff.AddBuff(PlayerBuffType.Slow);
             //Gizmos.DrawRay(transform.position, transform.up * hit.distance);
             Debug.Log("슬로우");
         }
         else
         {
-            if (playerMove != null)
+            if (player != null)
             {
-                playerMove.isSlow = false;
-                playerMove = null;
+                player.playerBuff.DeleteBuff(PlayerBuffType.Slow);
+                player = null;
             }
             Debug.Log("충돌 x"); 
         } 

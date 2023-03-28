@@ -26,6 +26,8 @@ public class Player : MonoBehaviour
     private PlayerInput _playerInput = null;
     private CharacterController _characterController = null;
     private PlayerTrail _playerTrail = null;
+    private PlayerAudio _playerAudio = null;
+    private PlayerBuff _playerBuff = null;
     #endregion
 
     #region 프로퍼티
@@ -36,6 +38,8 @@ public class Player : MonoBehaviour
     public PlayerMovementSO playerMovementSO => _playerMovementSO;
     public PlayerAttackSO playerAttackSO => _playerAttackSO;
     public CharacterController characterController => _characterController;
+    public PlayerAudio playerAudio => _playerAudio;
+    public PlayerBuff playerBuff => _playerBuff;
     #endregion
 
     #region Json 저장 데이터
@@ -72,6 +76,7 @@ public class Player : MonoBehaviour
         List<PlayerAction> tempActions = new List<PlayerAction>(GetComponents<PlayerAction>());
         _playerActions = (from action in tempActions orderby action.ActionType ascending select action).ToList();
         //캐싱
+        _playerBuff = GetComponent<PlayerBuff>();
         _characterController = GetComponent<CharacterController>();
         _playerInput = GetComponent<PlayerInput>();
         _playerAnimation = transform.Find("AgentRenderer").GetComponent<PlayerAnimation>();
@@ -79,6 +84,7 @@ public class Player : MonoBehaviour
         _gravityModule = GetComponent<GravityModule>();
         _col = GetComponent<Collider>();
         _playerTrail = GetComponent<PlayerTrail>();
+        _playerAudio = transform.Find("AgentSound").GetComponent<PlayerAudio>();
     }
 
     private void LoadJson()
@@ -269,14 +275,5 @@ public class Player : MonoBehaviour
             _playerTrail.StartTrail();
         else
             _playerTrail.EndTrail();
-    }
-
-    private void OnControllerColliderHit(ControllerColliderHit hit)
-    {
-        Rigidbody rb = hit.collider.GetComponent<Rigidbody>();
-        if (rb == null)
-            return;
-        Vector3 forceDir = hit.gameObject.transform.position - transform.position;
-        rb.AddForceAtPosition(forceDir, transform.position, ForceMode.Impulse);
     }
 }

@@ -46,7 +46,14 @@ public class PlayerAnimation : MonoBehaviour
 
     public void JumpAnimation()
     {
+        _animator.Rebind();
         _animator.Play("PlayerJump");
+        _animator.Update(0);
+    }
+
+    public void ObjectPushAnimation(bool value)
+    {
+        _animator.SetBool("ObjectPush", value);
         _animator.Update(0);
     }
 
