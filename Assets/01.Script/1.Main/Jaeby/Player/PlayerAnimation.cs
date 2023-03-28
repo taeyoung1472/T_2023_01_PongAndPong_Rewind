@@ -35,9 +35,9 @@ public class PlayerAnimation : MonoBehaviour
 
     public void DashAnimation(Vector2 input)
     {
-        if (input.y > 0f)
-            _animator.Play("PlayerDashJump");
-        else if (input.y < 0f)
+        //if (input.y > 0f)
+        //    _animator.Play("PlayerDashJump");
+        if (input.y < 0f)
             _animator.Play("PlayerFall");
         else
             _animator.SetTrigger("Dash");

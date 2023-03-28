@@ -3,6 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
+public class MeshTrailStruct
+{
+    public GameObject myObj;
+
+    public MeshFilter BodyMeshFilter;
+
+    public Mesh bodyMesh;
+}
+
 public class PlayerTrail : MonoBehaviour
 {
     [SerializeField]
