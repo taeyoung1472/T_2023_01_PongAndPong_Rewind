@@ -112,9 +112,3 @@ public class PlayerAttack : PlayerAction
         _excuting = false;
     }
 }
-
-public enum AttackState
-{
-    Melee,
-    Range
-}

@@ -51,6 +51,12 @@ public class PlayerAnimation : MonoBehaviour
         _animator.Update(0);
     }
 
+    public void ObjectPushAnimation(bool value)
+    {
+        _animator.SetBool("ObjectPush", value);
+        _animator.Update(0);
+    }
+
     public void WallGrabAnimation(bool val)
     {
         if (val == false)
