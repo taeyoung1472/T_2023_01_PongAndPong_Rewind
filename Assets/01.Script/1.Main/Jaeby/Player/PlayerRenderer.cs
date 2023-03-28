@@ -48,14 +48,6 @@ public class PlayerRenderer : MonoBehaviour
         return rot;
     }
 
-    private void Update()
-    {
-        if(_player.PlayerActionLockCheck(PlayerActionType.Move) == false)
-        {
-            Flip(_player.PlayerInput.InputVectorNorm);
-        }
-    }
-
     public void Flip(Vector2 dir)
     {
         if (dir.x == 0f)
