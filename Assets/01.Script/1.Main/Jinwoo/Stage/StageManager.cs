@@ -55,7 +55,10 @@ public class StageManager : MonoSingleTon<StageManager>
     {
 
         if (isDefaultPlayer)
+        {
             playerObj = Instantiate(playerPrefab, spawnPos.position, Quaternion.identity);
+            TestParticleSpawn.Instance.playerPos = playerObj.transform;
+        }
         else
             rePlayerObj = Instantiate(rewindPlayerPrefab, spawnPos.position, Quaternion.identity);
 

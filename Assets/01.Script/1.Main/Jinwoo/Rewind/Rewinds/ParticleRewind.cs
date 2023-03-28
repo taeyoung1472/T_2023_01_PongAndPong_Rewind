@@ -11,15 +11,19 @@ public class ParticleRewind : RewindAbstract
     [SerializeField] private bool trackParticles;
 
     [Tooltip("파티클 추적을 선택한 경우에만 파티클 설정 채우기")]
-    [SerializeField] ParticlesSetting particleSettings;
+    public ParticlesSetting particleSettings;
 
     protected override void Init()
     {
         base.Init();
 
-        InitializeParticles(particleSettings);
+        //InitializeParticles(particleSettings);
     }
-
+    public void InitParticle(ParticlesSetting setting)
+    {
+        InitializeParticles(setting);
+        trackParticles = true;
+    }
     protected override void InitOnPlay()
     {
 

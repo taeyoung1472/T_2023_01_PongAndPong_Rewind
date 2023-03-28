@@ -71,7 +71,6 @@ public class CircularBuffer<T>
         if ((bufferCurrentPosition - howManyBeforeLast) < 0)
         {
             int showingIndex = bufferCapacity - (howManyBeforeLast - bufferCurrentPosition);
-            //Debug.Log(showingIndex + "이새끼 말이 안되" + howManyBeforeLast);
             return dataArray[showingIndex];
         }
         else
