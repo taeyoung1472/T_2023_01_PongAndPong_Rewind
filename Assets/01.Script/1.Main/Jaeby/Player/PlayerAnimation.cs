@@ -25,6 +25,7 @@ public class PlayerAnimation : MonoBehaviour
     public void MoveAnimation(Vector2 input)
     {
         _animator.SetBool("Move", Mathf.Abs(input.x) > 0f);
+        _player.PlayerRenderer.Flip(input);
     }
 
     public void SlideAnimation()

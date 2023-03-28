@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GravityModule : MonoBehaviour
@@ -67,4 +66,9 @@ public class GravityModule : MonoBehaviour
         }
         _curGravityAcceleration = _maxGravityAcceleration;
     }
+    public void GravityZoneScale()
+    {
+        _gravityScale = 0.2f;
+    }
+
 }
