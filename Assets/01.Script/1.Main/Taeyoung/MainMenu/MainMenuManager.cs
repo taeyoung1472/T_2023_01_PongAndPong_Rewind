@@ -16,6 +16,9 @@ public class MainMenuManager : MonoSingleTon<MainMenuManager>
     [SerializeField] private CinemachineVirtualCamera menuCam;
     [SerializeField] private CinemachineVirtualCamera playerCam;
 
+    [Header("[Player]")]
+    [SerializeField] private GameObject player;
+
     public void Awake()
     {
         GameObject mainWindow;
@@ -23,6 +26,11 @@ public class MainMenuManager : MonoSingleTon<MainMenuManager>
         mainWindow.SetActive(true);
         content.sizeDelta = new Vector2(content.sizeDelta.x, mainWindow.GetComponent<RectTransform>().sizeDelta.y);
         curDisplayingWindow = mainWindow;
+    }
+
+    public void Start()
+    {
+        player.SetActive(false);
     }
 
     public void ActiveWindow(GameObject targetWindow)
@@ -51,5 +59,6 @@ public class MainMenuManager : MonoSingleTon<MainMenuManager>
     {
         menuCam.Priority = 0;
         playerCam.Priority = 1;
+        player.SetActive(true);
     }
 }
