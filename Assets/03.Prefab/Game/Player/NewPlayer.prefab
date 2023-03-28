@@ -5054,6 +5054,7 @@ GameObject:
   - component: {fileID: 2107113395}
   - component: {fileID: 6691628707489746803}
   - component: {fileID: 2107113391}
+  - component: {fileID: 4173287881949798369}
   - component: {fileID: 3324924150839670046}
   - component: {fileID: 6036129167968237303}
   - component: {fileID: 6691628707489746807}
@@ -5137,6 +5138,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37e4f44bf7499b645b5dcfe572673577, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playerHealthSO: {fileID: 11400000, guid: 0120c06f938158d4793af03701226169, type: 2}
   _playerMovementSO: {fileID: 11400000, guid: 7b340fc37eed2244bb3a508fc629a727, type: 2}
   _playerAttackSO: {fileID: 11400000, guid: 9c0314343253bb54a9880059056c3f23, type: 2}
   OnIsGrounded:
@@ -5282,6 +5284,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _springAmplification: 5
   _minSpringForce: 3
+--- !u!114 &4173287881949798369
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6691628707489746810}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5959a356deb4abd468a4352dbbf35307, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _hpSlider: {fileID: 0}
+  OnDie:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &3324924150839670046
 MonoBehaviour:
   m_ObjectHideFlags: 0

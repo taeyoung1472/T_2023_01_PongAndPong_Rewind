@@ -37,15 +37,16 @@ public class PlayerObjectPush : PlayerAction
         foreach (var hit in _hits)
         {
             Vector3 distanceDir = (hit.transform.position - _player.transform.position).normalized;
-            Vector3 dir;
-            float distance;
-            if (Physics.ComputePenetration(_player.characterController, _player.transform.position + (distanceDir * _littleBitMore), _player.transform.rotation,
-                hit.collider, hit.transform.position, hit.transform.rotation, out dir, out distance) == false) // 충돌 끝
+            Vector3 dir = Vector3.zero;
+            float distance = 0f;
+            bool result = Physics.ComputePenetration(_player.characterController, _player.transform.position + (distanceDir * _littleBitMore), _player.transform.rotation,
+                hit.collider, hit.transform.position, hit.transform.rotation, out dir, out distance);
+            if (result == false || Vector3.Dot(_player.PlayerRenderer.Forward, hit.transform.position - _player.transform.position) < 0f) // 충돌 끝
             {
                 if (removeList == null)
                     removeList = new List<ControllerColliderHit>();
                 removeList.Add(hit);
-                Debug.Log("Collder Exit");
+                Debug.Log("오브젝트 밀기 빠져나감");
                 OnExitCollider?.Invoke(_hits);
             }
         }
@@ -68,12 +69,11 @@ public class PlayerObjectPush : PlayerAction
         if (rb == null)
             return;
         Vector3 forceDir = (hit.gameObject.transform.position - transform.position).normalized;
-        rb.AddForce(forceDir * _pushPower, ForceMode.Force);
-        //rb.AddForceAtPosition(forceDir, transform.position, ForceMode.Impulse);
+        rb.AddForceAtPosition(forceDir * _pushPower, transform.position, ForceMode.Force);
         if (_hitsHashs.Contains(hit.gameObject.GetHashCode()) == false)
         {
             _hitsHashs.Add(hit.gameObject.GetHashCode());
-            Debug.Log("Collder Enter");
+            Debug.Log("오브젝트 밀기 시작");
             _excuting = true;
             _hits.Add(hit);
             OnEnterCollider?.Invoke(_hits);
