@@ -31,8 +31,6 @@ public class PlayerTrail : MonoBehaviour
     [SerializeField]
     private GameObject _meshTrailPrefab = null;
     [SerializeField]
-    private Transform _trailParentTrm = null; // 트레일 부모
-    [SerializeField]
     private SkinnedMeshRenderer _skinnedMeshRenderer = null; // ㅎㅎ
 
     private Queue<MeshTrailStruct> _readyTrails = new Queue<MeshTrailStruct>(); // 나올 수 있는 애들
@@ -50,6 +48,8 @@ public class PlayerTrail : MonoBehaviour
     private bool _isMotionTrail = false;
     public bool IsMotionTrail { get => _isMotionTrail; set => _isMotionTrail = value; }
 
+    private Transform _trailParentTrm = null;
+
     private void Awake()
     {
         Init();
@@ -57,6 +57,7 @@ public class PlayerTrail : MonoBehaviour
 
     private void Init()
     {
+        _trailParentTrm = new GameObject("TrailParentTrm").transform;
         for (int i = 0; i < _spawnCount; i++)
         {
             SpawnTrail();
