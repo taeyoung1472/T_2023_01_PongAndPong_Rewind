@@ -6,6 +6,7 @@ using UnityEditor;
 
 namespace Highlighters
 {
+#if UNITY_EDITOR
     [CustomEditor(typeof(HighlightsManager))]
     public class HighlightsManagerEditor : Editor
     {
@@ -14,4 +15,5 @@ namespace Highlighters
             DrawDefaultInspector();
         }
     }
+#endif
 }

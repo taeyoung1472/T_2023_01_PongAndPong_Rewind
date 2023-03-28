@@ -26,6 +26,7 @@ public class DeployHandler : MonoBehaviour
 
     private Vector2 size;
 
+#if UNITY_EDITR
     public void OnDrawGizmos()
     {
         if (drawMode == DrawMode.None)
@@ -165,6 +166,7 @@ public class DeployHandler : MonoBehaviour
                 break;
         }
     }
+#endif
 
     public void Generate()
     {

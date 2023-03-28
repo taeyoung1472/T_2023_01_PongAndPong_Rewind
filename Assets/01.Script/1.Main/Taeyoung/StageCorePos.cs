@@ -7,6 +7,7 @@ public class StageCorePos : MonoBehaviour
 {
     [SerializeField] private CoreType playerType;
 
+#if UNITY_EDITOR
     private void OnDrawGizmos()
     {
         GUIStyle labelStyle = new();
@@ -35,6 +36,7 @@ public class StageCorePos : MonoBehaviour
         Gizmos.DrawWireCube(transform.position + Vector3.up, new Vector3(1, 2, 1));
         Handles.Label(transform.position + Vector3.up * 2.5f, labelString, labelStyle);
     }
+#endif
 
     enum CoreType
     {
