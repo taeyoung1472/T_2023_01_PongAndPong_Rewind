@@ -127,18 +127,3 @@ public class PlayerRenderer : MonoBehaviour
         Down
     }
 }
-
-public enum DirType
-{
-    None,
-    Forward,
-    Back
-}
-
-public enum RotAxis
-{
-    None,
-    X,
-    Y,
-    Z
-}

@@ -12,6 +12,8 @@ public class Player : MonoBehaviour
 
     #region SO
     [SerializeField]
+    private PlayerHealthSO _playerHealthSO = null;
+    [SerializeField]
     private PlayerMovementSO _playerMovementSO = null;
     [SerializeField]
     private PlayerAttackSO _playerAttackSO = null;
@@ -27,6 +29,8 @@ public class Player : MonoBehaviour
     private CharacterController _characterController = null;
     private PlayerTrail _playerTrail = null;
     private PlayerAudio _playerAudio = null;
+    private PlayerBuff _playerBuff = null;
+    private PlayerHP _playerHP = null;
     #endregion
 
     #region 프로퍼티
@@ -36,8 +40,11 @@ public class Player : MonoBehaviour
     public PlayerInput PlayerInput => _playerInput;
     public PlayerMovementSO playerMovementSO => _playerMovementSO;
     public PlayerAttackSO playerAttackSO => _playerAttackSO;
+    public PlayerHealthSO playerHealthSO => _playerHealthSO;
     public CharacterController characterController => _characterController;
-    public PlayerAudio playerAudio => _playerAudio; 
+    public PlayerAudio playerAudio => _playerAudio;
+    public PlayerBuff playerBuff => _playerBuff;
+    public PlayerHP playerHP => _playerHP;
     #endregion
 
     #region Json 저장 데이터
@@ -74,6 +81,8 @@ public class Player : MonoBehaviour
         List<PlayerAction> tempActions = new List<PlayerAction>(GetComponents<PlayerAction>());
         _playerActions = (from action in tempActions orderby action.ActionType ascending select action).ToList();
         //캐싱
+        _playerBuff = GetComponent<PlayerBuff>();
+        _playerHP = GetComponent<PlayerHP>();
         _characterController = GetComponent<CharacterController>();
         _playerInput = GetComponent<PlayerInput>();
         _playerAnimation = transform.Find("AgentRenderer").GetComponent<PlayerAnimation>();
@@ -272,14 +281,5 @@ public class Player : MonoBehaviour
             _playerTrail.StartTrail();
         else
             _playerTrail.EndTrail();
-    }
-
-    private void OnControllerColliderHit(ControllerColliderHit hit)
-    {
-        Rigidbody rb = hit.collider.GetComponent<Rigidbody>();
-        if (rb == null)
-            return;
-        Vector3 forceDir = hit.gameObject.transform.position - transform.position;
-        rb.AddForceAtPosition(forceDir, transform.position, ForceMode.Impulse);
     }
 }
