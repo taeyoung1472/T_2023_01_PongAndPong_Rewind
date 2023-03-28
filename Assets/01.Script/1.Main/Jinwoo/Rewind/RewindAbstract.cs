@@ -411,10 +411,14 @@ public abstract class RewindAbstract : MonoBehaviour
     }
     protected void OnEnable()
     {
-        RewindManager.Instance.RewindTimeCall += Rewind;
-        RewindManager.Instance.TrackingStateCall += OnTrackingChange;
-        RewindManager.Instance.InitPlay += InitOnPlay;
-        RewindManager.Instance.InitRewind += InitOnRewind;
+        if (RewindManager.Instance != null)
+        {
+            RewindManager.Instance.RewindTimeCall += Rewind;
+            RewindManager.Instance.TrackingStateCall += OnTrackingChange;
+            RewindManager.Instance.InitPlay += InitOnPlay;
+            RewindManager.Instance.InitRewind += InitOnRewind;
+        }
+            
     }
     protected void OnDisable()
     {

@@ -23,7 +23,22 @@ public class Stage : MonoBehaviour
         StartCoroutine(StageCycle());
     }
 
-
+    public void Update()
+    {
+        if (Input.GetKey(KeyCode.R))
+        {
+            if (TimerManager.Instance.isRewinding)
+            {
+                TimerManager.Instance.EndRewind();
+            }
+            else
+            {
+                StageManager.Instance.InitPlayer(false);
+                curArea.EntryArea();
+            }
+            
+        }
+    }
 
     IEnumerator StageCycle()
     {

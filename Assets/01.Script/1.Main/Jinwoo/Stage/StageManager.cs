@@ -17,10 +17,10 @@ public class StageManager : MonoSingleTon<StageManager>
     public Stage CurStage { get { return curStage; } }
 
     [Header("플레이어 관련")]
-    [SerializeField] private PlayerRewind playerPrefab;
-    [SerializeField] private GameObject rewindPlayerPrefab;
+    //[SerializeField] private PlayerRewind playerPrefab;
+    //[SerializeField] private GameObject rewindPlayerPrefab;
 
-    private PlayerRewind playerObj;
+    private GameObject playerObj;
     private GameObject rePlayerObj;
 
     public Image fadeImg;
@@ -56,39 +56,37 @@ public class StageManager : MonoSingleTon<StageManager>
 
         if (isDefaultPlayer)
         {
-            playerObj = Instantiate(playerPrefab, spawnPos.position, Quaternion.identity);
-            TestParticleSpawn.Instance.playerPos = playerObj.transform;
+            //playerObj = Instantiate(playerPrefab, spawnPos.position, Quaternion.identity);
+            playerObj = PoolManager.Pop(PoolType.Player);
+            playerObj.transform.position = spawnPos.position;
+            //TestParticleSpawn.Instance.playerPos = playerObj.transform;
         }
         else
-            rePlayerObj = Instantiate(rewindPlayerPrefab, spawnPos.position, Quaternion.identity);
-
-        //if (isFirst)
-        //{
-        //    if (isDefaultPlayer)
-        //        playerObj = Instantiate(playerPrefab, spawnPos.position, Quaternion.identity);
-        //    else
-        //        rePlayerObj = Instantiate(rewindPlayerPrefab, spawnPos.position, Quaternion.identity);
-        //}
-        //else
-        //{
-        //    if (isDefaultPlayer)
-        //    {
-        //        playerObj.gameObject.SetActive(true);
-        //        playerObj.transform.position = spawnPos.position;
-        //    }
-        //    else
-        //    {
-        //        rePlayerObj.gameObject.SetActive(true);
-        //        rePlayerObj.transform.position = spawnPos.position;
-        //    }
-        //}
-
+        {
+            rePlayerObj = PoolManager.Pop(PoolType.RewindPlayer);
+            rePlayerObj.transform.position = spawnPos.position;
+        }
+            
+            //rePlayerObj = Instantiate(rewindPlayerPrefab, spawnPos.position, Quaternion.identity);
+                    
     }
 
     public void InitPlayer(bool isClear)
     {
-        playerObj.gameObject.SetActive(false);
-        rePlayerObj.SetActive(false);
+        if(rePlayerObj != null)
+        {
+            PoolManager.Push(PoolType.RewindPlayer, rePlayerObj);
+        }
+        if (playerObj != null)
+        {
+            PoolManager.Push(PoolType.Player, playerObj);
+        }
+
+
+        //playerObj.gameObject.SetActive(false);
+        //rePlayerObj.SetActive(false);
+
+
         //if (isClear)
         //{
         //    playerObj.gameObject.SetActive(false);
