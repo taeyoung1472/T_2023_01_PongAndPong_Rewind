@@ -27,6 +27,14 @@ public class Stage : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.R))
         {
+            ReStartArea();
+        }
+
+    }
+    private void ReStartArea()
+    {
+        if (!UIManager.Instance.IsPause)
+        {
             if (TimerManager.Instance.isRewinding)
             {
                 TimerManager.Instance.EndRewind();
@@ -36,7 +44,6 @@ public class Stage : MonoBehaviour
                 StageManager.Instance.InitPlayer(false);
                 curArea.EntryArea();
             }
-            
         }
     }
 
