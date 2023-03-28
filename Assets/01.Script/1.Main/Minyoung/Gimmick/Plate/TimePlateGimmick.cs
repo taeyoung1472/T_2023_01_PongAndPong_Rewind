@@ -2,24 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TimePlateGimmick : MonoBehaviour
+public class TimePlateGimmick : GimmickObject
 {
-    private IEnumerator coroutine;
     [SerializeField] private float destroyTime = 0f;
     private float basicTime;
     private void Awake()
     {
-        coroutine = DestoryObjTime(destroyTime);
+        Init();
+    }
+    public override void Init()
+    {
         basicTime = destroyTime;
     }
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("GimmickPlayerCol"))
-        {
-            //StartCoroutine(coroutine);
-            //Debug.Log("코루틴시작");
-        }
-    }
+    
     private void OnTriggerStay(Collider other)
     {
         if (other.CompareTag("GimmickPlayerCol"))
@@ -31,24 +26,10 @@ public class TimePlateGimmick : MonoBehaviour
                 Destroy(gameObject);
             }
         }
-
-     
     }
+
     private void OnTriggerExit(Collider other)
     {
         destroyTime = basicTime;
-        if (coroutine != null)
-        {
-            //StopCoroutine(coroutine);
-            //Debug.Log("스탑코루틴");
-        }
-       // print(destroyTime);
-    }
-
-    IEnumerator DestoryObjTime(float time)
-    {
-        yield return new WaitForSeconds(time);
-        Debug.Log("삭제");
-        Destroy(gameObject);
     }
 }
