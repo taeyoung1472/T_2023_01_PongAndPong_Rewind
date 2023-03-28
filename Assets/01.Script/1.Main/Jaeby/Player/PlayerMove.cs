@@ -16,6 +16,9 @@ public class PlayerMove : PlayerAction
     private float _moveAudioCooltime = 0.1f;
     private Coroutine _moveAudioCoroutine = null;
 
+    [SerializeField]
+    private UnityEvent<Vector2> OnMove = null;
+
     private void Update()
     {
         if (_locked)
@@ -33,6 +36,8 @@ public class PlayerMove : PlayerAction
             dir *= _pushSlowSpeed;
         if (_player.playerBuff.BuffCheck(PlayerBuffType.Slow))
             dir *= _slowSpeed;
+        if (_player.playerBuff.BuffCheck(PlayerBuffType.Reverse))
+            dir.x *= -1f;
 
         _player.VelocitySetMove(x: dir.x * _player.playerMovementSO.speed);
         _excuting = Mathf.Abs(dir.x) > 0f;
@@ -53,6 +58,7 @@ public class PlayerMove : PlayerAction
                     StopCoroutine(_moveAudioCoroutine);
             }
         }
+        OnMove?.Invoke(dir);
     }
 
 

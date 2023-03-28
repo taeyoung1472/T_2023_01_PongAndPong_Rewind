@@ -23,6 +23,8 @@ public class Stage : MonoBehaviour
         StartCoroutine(StageCycle());
     }
 
+
+
     IEnumerator StageCycle()
     {
         for (int i = 0; i < stageAreaList.Count; i++)

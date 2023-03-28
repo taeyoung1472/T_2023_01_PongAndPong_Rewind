@@ -12,7 +12,7 @@ public class UIManager : MonoSingleTon<UIManager>
     [SerializeField] private Color[] clockColorArray;
 
     //private int totalTIme { get { return RewindManager.Instance.CurStageRecordCount; } }
-    private int totalTIme { get { return (int)RewindTestManager.Instance.howManySecondsToTrack -1; } }
+    private int totalTIme { get { return (int)RewindManager.Instance.howManySecondsToTrack -1; } }
 
     public void Init()
     {
