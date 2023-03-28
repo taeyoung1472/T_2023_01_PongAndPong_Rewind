@@ -5,7 +5,6 @@ using UnityEngine;
 public class PlayerBuff : MonoBehaviour
 {
     private int _buff = 0;
-    public int Buff => _buff;
 
     public void AddBuff(PlayerBuffType buffType)
     {
