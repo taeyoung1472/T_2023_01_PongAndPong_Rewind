@@ -9,5 +9,6 @@ public enum PlayerActionType
     WallGrab,
     Attack,
     Interact,
+    ObjectPush,
     Size
 }
