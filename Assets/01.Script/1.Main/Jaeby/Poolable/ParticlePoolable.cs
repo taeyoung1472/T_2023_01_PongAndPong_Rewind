@@ -13,17 +13,17 @@ public class ParticlePoolable : PoolAbleObject
         if (_particleRewind == null || _particleSystem == null)
         {
             _particleSystem = GetComponent<ParticleSystem>();
-            _particleRewind = TestParticleSpawn.Instance.particleRewind;
+            //_particleRewind = TestParticleSpawn.Instance.particleRewind;
         }
 
-        if (isfirst == false)
-        {
-            setting.particleSystem = _particleSystem;
-            setting.particleSystemEnabler = gameObject;
-            _particleRewind.particleSettings.particlesData.Add(setting);
-            _particleRewind.InitParticle(_particleRewind.particleSettings);
-            isfirst = true;
-        }
+        //if (isfirst == false)
+        //{
+        //    setting.particleSystem = _particleSystem;
+        //    setting.particleSystemEnabler = gameObject;
+        //    _particleRewind.particleSettings.particlesData.Add(setting);
+        //    _particleRewind.InitParticle(_particleRewind.particleSettings);
+        //    isfirst = true;
+        //}
         _particleSystem.Play();
     }
 
