@@ -55,6 +55,36 @@ public class PlayerTrail : MonoBehaviour
         Init();
     }
 
+    private void OnDestroy()
+    {
+        Debug.Log("트레일 스크립트 부숴짐");
+        DestroyTrailAll(true);
+    }
+
+    /// <summary>
+    /// 그냥 다 부숴버림
+    /// </summary>
+    public void DestroyTrailAll(bool smooth)
+    {
+        _isMotionTrail = false;
+        StopAllCoroutines();
+        for (int i = 0; i < _enalbeTrails.Count; i++)
+        {
+            var trail = _enalbeTrails.Dequeue();
+            if (smooth == false)
+            {
+                Destroy(trail.myObj);
+                return;
+            }
+            MeshRenderer renderer = trail.BodyMeshFilter.GetComponent<MeshRenderer>();
+            DialogManager.Instance.
+            StartCoroutine(FadeCoroutine(trail, renderer.materials[0].GetColor("_FresnelColor")
+            , renderer.materials[0].GetColor("_BaseColor"),
+            renderer.materials[0].GetFloat("_Alpha")
+            ));
+        }
+    }
+
     private void Init()
     {
         _trailParentTrm = new GameObject("TrailParentTrm").transform;
@@ -135,6 +165,27 @@ public class PlayerTrail : MonoBehaviour
             MeshRenderer renderer = trail.BodyMeshFilter.GetComponent<MeshRenderer>();
             Color fresnelColor = Color.Lerp(_endFresnelColor, _startFresnelColor, time);
             Color baseColor = Color.Lerp(_endBaseColor, _startBaseColor, time);
+            materialUpdate(renderer, time, fresnelColor, baseColor);
+            time -= Time.deltaTime * (1 / _fadeDuration);
+            yield return null;
+        }
+
+        _enalbeTrails.Dequeue();
+        trail.myObj.SetActive(false);
+        _readyTrails.Enqueue(trail);
+        yield break;
+    }
+
+
+    private IEnumerator FadeCoroutine(MeshTrailStruct trail, Color startFresnelColor, Color startBaseColor, float startAlpha)
+    {
+        _enalbeTrails.Enqueue(trail);
+        float time = startAlpha;
+        while (time >= 0f)
+        {
+            MeshRenderer renderer = trail.BodyMeshFilter.GetComponent<MeshRenderer>();
+            Color fresnelColor = Color.Lerp(_endFresnelColor, startFresnelColor, time);
+            Color baseColor = Color.Lerp(_endBaseColor, startBaseColor, time);
             materialUpdate(renderer, time, fresnelColor, baseColor);
             time -= Time.deltaTime * (1 / _fadeDuration);
             yield return null;
