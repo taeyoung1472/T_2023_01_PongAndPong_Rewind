@@ -6,22 +6,28 @@ using UnityEngine;
 public class CamManager : MonoSingleTon<CamManager>
 {
     CinemachineTargetGroup cinemachineTargetGroup;
-
-    public void Awake()
-    {
-        cinemachineTargetGroup = FindObjectOfType<CinemachineTargetGroup>();
+    CinemachineTargetGroup CinemachineTargetGroup 
+    { 
+        get 
+        { 
+            if (cinemachineTargetGroup == null) 
+            {
+                cinemachineTargetGroup = FindObjectOfType<CinemachineTargetGroup>();
+            }
+            return cinemachineTargetGroup; 
+        } 
     }
 
     public void AddTargetGroup(Transform target, float weight = 1f, float radius = 3f)
     {
-        if (cinemachineTargetGroup.FindMember(target) > 0)
+        if (CinemachineTargetGroup.FindMember(target) > 0)
             return;
 
-        cinemachineTargetGroup.AddMember(target, weight, radius);
+        CinemachineTargetGroup.AddMember(target, weight, radius);
     }
 
     public void RemoveTargetGroup(Transform target)
     {
-        cinemachineTargetGroup.RemoveMember(target);
+        CinemachineTargetGroup.RemoveMember(target);
     }
 }
