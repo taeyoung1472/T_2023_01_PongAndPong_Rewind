@@ -87,6 +87,13 @@ public class StageSelectUI : MonoBehaviour
         _curStageWorld.gameObject.SetActive(true);
         _scrollRect.content = _curStageWorld.GetComponent<RectTransform>();
         _worldNameText.SetText(_curStageWorld.WorldType.ToString());
+
+        _curStage = _curStageWorld.GetStage(0);
+        float target = _curStage.GetComponent<RectTransform>().anchoredPosition.x * -1f;
+        RectTransform trm = _curStageWorld.GetComponent<RectTransform>();
+        Vector2 anPos = trm.anchoredPosition;
+        anPos.x = target;
+        trm.anchoredPosition = anPos;
     }
 
     public void StageChange()
