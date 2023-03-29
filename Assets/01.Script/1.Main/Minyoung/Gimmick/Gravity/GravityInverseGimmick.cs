@@ -7,30 +7,26 @@ public class GravityInverseGimmick : GimmickObject
     }
     Player player = null;
     GravityModule module;
+    [SerializeField]
+    private float gravityZoneScale = 0.2f;
     //dlwoqud¿Ã¿Áø±
-
-    private void OnTriggerStay(Collider other)
-    {
-        if (other.CompareTag("GimmickPlayerCol"))
-        {
-            player.GravityModule.GravityZoneScale();
-        }
-    }
 
     private void OnTriggerEnter(Collider other)
     {
         if(player == null)
             player = other.GetComponentInParent<Player>();
+        if (player == null)
+            return;
+
         player.playerBuff.AddBuff(PlayerBuffType.Reverse);
+        player.GravityModule.GravityScale = gravityZoneScale;
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (module == null)
-        {
+        if (player == null)
             return;
-        }
-        module.GravityScale = module.OriginGravityScale;
         player.playerBuff.DeleteBuff(PlayerBuffType.Reverse);
+        player.GravityModule.GravityScale = player.GravityModule.OriginGravityScale;
     }
 }

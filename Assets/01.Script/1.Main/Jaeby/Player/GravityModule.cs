@@ -66,9 +66,4 @@ public class GravityModule : MonoBehaviour
         }
         _curGravityAcceleration = _maxGravityAcceleration;
     }
-    public void GravityZoneScale()
-    {
-        _gravityScale = 0.2f;
-    }
-
 }

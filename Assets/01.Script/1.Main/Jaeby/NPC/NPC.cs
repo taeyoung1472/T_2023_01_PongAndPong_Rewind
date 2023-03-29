@@ -34,4 +34,14 @@ public class NPC : MonoBehaviour
         if (_iconImage != null)
             _iconImage.sprite = _designDataSO.GetIcon(_npcData.iconType);
     }
+
+    public void CameraTargetAdd()
+    {
+        CamManager.Instance.AddTargetGroup(transform, 3f, 2.5f);
+    }
+
+    public void CameraTargetRemove()
+    {
+        CamManager.Instance.RemoveTargetGroup(transform);
+    }
 }
