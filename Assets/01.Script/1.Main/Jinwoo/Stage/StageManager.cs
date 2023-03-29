@@ -25,16 +25,31 @@ public class StageManager : MonoSingleTon<StageManager>
 
     public Image fadeImg;
 
+    private float reStartCoolTime = 1f;
+    private bool isRestartPossible = false;
+
     private void Awake()
     {
         SpawnStage();
+        isRestartPossible = false;
     }
     public void Update()
     {
-        if (Input.GetKeyDown(KeyCode.R))
+        if (!isRestartPossible)
+        {
+            reStartCoolTime -= Time.deltaTime;
+            if (reStartCoolTime < 0f)
+            {
+                isRestartPossible = true;
+            }
+        }
+        
+        if (Input.GetKeyDown(KeyCode.R) && isRestartPossible)
         {
             RewindManager.Instance.RestartPlay?.Invoke();
             curStage.ReStartArea();
+            isRestartPossible = false;
+            reStartCoolTime = 1f;
         }
 
     }
@@ -69,13 +84,17 @@ public class StageManager : MonoSingleTon<StageManager>
         {
             //playerObj = Instantiate(playerPrefab, spawnPos.position, Quaternion.identity);
             playerObj = PoolManager.Pop(PoolType.Player);
+            playerObj.GetComponent<CharacterController>().enabled = false;
             playerObj.transform.position = spawnPos.position;
+            playerObj.GetComponent<CharacterController>().enabled = true;
             //TestParticleSpawn.Instance.playerPos = playerObj.transform;
         }
         else
         {
             rePlayerObj = PoolManager.Pop(PoolType.RewindPlayer);
+            rePlayerObj.GetComponent<CharacterController>().enabled = false;
             rePlayerObj.transform.position = spawnPos.position;
+            rePlayerObj.GetComponent<CharacterController>().enabled = true;
         }
             
             //rePlayerObj = Instantiate(rewindPlayerPrefab, spawnPos.position, Quaternion.identity);
