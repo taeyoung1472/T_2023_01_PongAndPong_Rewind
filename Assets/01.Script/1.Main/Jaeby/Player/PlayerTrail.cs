@@ -77,7 +77,7 @@ public class PlayerTrail : MonoBehaviour
                 return;
             }
             MeshRenderer renderer = trail.BodyMeshFilter.GetComponent<MeshRenderer>();
-            DialogManager.Instance.
+            _trailParentTrm.gameObject.AddComponent<JustMono>().
             StartCoroutine(FadeCoroutine(trail, renderer.materials[0].GetColor("_FresnelColor")
             , renderer.materials[0].GetColor("_BaseColor"),
             renderer.materials[0].GetFloat("_Alpha")
