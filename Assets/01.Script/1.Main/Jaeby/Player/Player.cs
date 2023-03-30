@@ -251,7 +251,7 @@ public class Player : MonoBehaviour
         Vector3 halfExtents = _col.bounds.extents;
         halfExtents.y = _groundCheckRayLength;
         float maxDistance = _col.bounds.extents.y;
-        _isGrounded = Physics.BoxCast(boxCenter, halfExtents, Vector3.down, transform.rotation, maxDistance, _groundMask);
+        _isGrounded = Physics.BoxCast(boxCenter, halfExtents, -transform.up, transform.rotation, maxDistance, _groundMask);
         if (lastGrounded == _isGrounded)
             return;
         OnIsGrounded?.Invoke(_isGrounded);
