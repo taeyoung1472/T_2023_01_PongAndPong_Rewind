@@ -250,6 +250,8 @@ GameObject:
   - component: {fileID: 2107113398}
   - component: {fileID: 7546760520365547287}
   - component: {fileID: 589124879754571262}
+  - component: {fileID: 7541942952882201184}
+  - component: {fileID: 6615103273171162517}
   m_Layer: 0
   m_Name: NewPlayer Re
   m_TagString: Player
@@ -694,7 +696,6 @@ MonoBehaviour:
   _endFresnelColor: {r: 1, g: 1, b: 1, a: 1}
   _endBaseColor: {r: 1, g: 1, b: 1, a: 1}
   _meshTrailPrefab: {fileID: 4867553156401008734, guid: 82c8866aba5457b4283e92a329e38fbb, type: 3}
-  _trailParentTrm: {fileID: 0}
   _skinnedMeshRenderer: {fileID: 112894375679413401}
   _spawnCount: 10
   _trailSpawnTime: 0.1
@@ -736,6 +737,89 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 409877c71fd668948a6b376e31ff696d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!136 &7541942952882201184
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6691628707489746810}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.35
+  m_Height: 1.45
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.725, z: 0}
+--- !u!114 &6615103273171162517
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6691628707489746810}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67a62c76066d25c4193c2e42e2fb4253, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _actionType: 7
+  OnEnterCollider:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6691628707631861949}
+        m_TargetAssemblyTypeName: PlayerAnimation, Assembly-CSharp
+        m_MethodName: ObjectPushAnimation
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 6615103273171162517}
+        m_TargetAssemblyTypeName: PlayerObjectPush, Assembly-CSharp
+        m_MethodName: PushSlowBuff
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+  OnExitCollider:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6691628707631861949}
+        m_TargetAssemblyTypeName: PlayerAnimation, Assembly-CSharp
+        m_MethodName: ObjectPushAnimation
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 6615103273171162517}
+        m_TargetAssemblyTypeName: PlayerObjectPush, Assembly-CSharp
+        m_MethodName: PushSlowBuff
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  _pushPower: 13
+  _littleBitMore: 0.8
 --- !u!1 &6691628707561677047
 GameObject:
   m_ObjectHideFlags: 0

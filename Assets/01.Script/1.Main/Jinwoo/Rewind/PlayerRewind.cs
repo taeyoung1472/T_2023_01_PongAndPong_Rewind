@@ -49,6 +49,12 @@ public class PlayerRewind : RewindAbstract
 
         characterController.enabled = false;
     }
+
+    protected override void RestartObj()
+    {
+
+    }
+
     protected override void Rewind(float seconds)
     {
 

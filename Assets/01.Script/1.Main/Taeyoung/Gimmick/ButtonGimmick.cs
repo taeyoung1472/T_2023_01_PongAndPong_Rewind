@@ -14,6 +14,25 @@ public class ButtonGimmick : MonoBehaviour
     public void Update()
     {
         CheckPlayer();
+
+        //if (isTogle)
+        //{
+        //    if (toggleFlag)
+        //    {
+        //        foreach (var control in controlDataArr)
+        //        {
+        //            CamManager.Instance.AddTargetGroup(control.target.transform);
+        //        }
+        //    }
+        //    else
+        //    {
+
+        //        foreach (var control in controlDataArr)
+        //        {
+        //            CamManager.Instance.RemoveTargetGroup(control.target.transform);
+        //        }
+        //    }
+        //}
     }
 
     private void CheckPlayer()
@@ -45,7 +64,6 @@ public class ButtonGimmick : MonoBehaviour
         toggleFlag = !toggleFlag;
         if (other.TryGetComponent<GimmickObject>(out GimmickObject gimmickObject))
         {
-            Debug.Log("Enter");
             foreach (var control in controlDataArr)
             {
                 if(!toggleFlag)
@@ -66,10 +84,11 @@ public class ButtonGimmick : MonoBehaviour
 
         if (other.TryGetComponent<GimmickObject>(out GimmickObject gimmickObject))
         {
-            Debug.Log("Enter");
             foreach (var control in controlDataArr)
             {
                 control.target.Control(control.isReverse ? ControlType.ReberseControl : ControlType.Control);
+                CamManager.Instance.AddTargetGroup(control.target.transform);
+                Debug.Log("Add");
             }
         }
     }
@@ -82,6 +101,8 @@ public class ButtonGimmick : MonoBehaviour
             foreach (var control in controlDataArr)
             {
                 control.target.Control(ControlType.None);
+                CamManager.Instance.RemoveTargetGroup(control.target.transform);
+                Debug.Log("Remove");
             }
         }
     }

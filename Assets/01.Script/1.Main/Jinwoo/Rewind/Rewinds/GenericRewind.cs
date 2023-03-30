@@ -11,14 +11,23 @@ public class GenericRewind : RewindAbstract
     [Tooltip("파티클 추적을 선택한 경우에만 파티클 설정 채우기")]
     [SerializeField] ParticlesSetting particleSettings;
 
+    private Vector3 originalPos;
+    private Quaternion originalRot;
+
     protected override void InitOnPlay()
     {
         InitBuffer();
+        
     }
 
     protected override void InitOnRewind()
     {
 
+    }
+
+    protected override void RestartObj()
+    {
+        transform.SetPositionAndRotation(originalPos, originalRot);
     }
 
     protected override void Rewind(float seconds)
@@ -49,9 +58,14 @@ public class GenericRewind : RewindAbstract
         if (trackAudio)
             TrackAudio();
     }
+
+
+
     private void Start()
     {
         InitializeParticles(particleSettings);
+        originalPos = transform.position;
+        originalRot = transform.rotation;
     }
 
 }

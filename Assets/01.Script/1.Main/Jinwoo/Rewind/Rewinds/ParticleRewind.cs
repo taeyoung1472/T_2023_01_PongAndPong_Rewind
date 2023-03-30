@@ -62,5 +62,8 @@ public class ParticleRewind : RewindAbstract
             TrackAudio();
     }
 
+    protected override void RestartObj()
+    {
 
+    }
 }
