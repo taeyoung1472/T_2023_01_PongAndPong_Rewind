@@ -181,7 +181,6 @@ public class PlayerJump : PlayerAction
             rot = _player.PlayerRenderer.GetFlipedRotation(DirType.Forward, RotAxis.Z);
             pos += Vector3.up * 0.5f;
         }
-        Debug.Log(rot.eulerAngles);
         trm.SetPositionAndRotation(pos, rot);
     }
 }
