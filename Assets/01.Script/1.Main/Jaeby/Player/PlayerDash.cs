@@ -33,7 +33,7 @@ public class PlayerDash : PlayerAction
         _dashCoroutine = StartCoroutine(DashCoroutine(slide));
 
         GameObject effectObj = PoolManager.Pop(PoolType.DashEffect);
-        effectObj.transform.SetPositionAndRotation(transform.position + Vector3.up * 0.3f + Vector3.forward * 0.15f, _player.PlayerRenderer.GetFlipedRotation(DirType.Back, RotAxis.Y));
+        effectObj.transform.SetPositionAndRotation(transform.position + transform.up * 0.3f + transform.forward * 0.15f, _player.PlayerRenderer.GetFlipedRotation(DirType.Back, RotAxis.Y));
         OnDashStarted?.Invoke(_player.PlayerInput.InputVectorNorm);
     }
 

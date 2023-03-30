@@ -36,8 +36,6 @@ public class PlayerMove : PlayerAction
             dir *= _pushSlowSpeed;
         if (_player.playerBuff.BuffCheck(PlayerBuffType.Slow))
             dir *= _slowSpeed;
-        if (_player.playerBuff.BuffCheck(PlayerBuffType.Reverse))
-            dir.x *= -1f;
 
         _player.VelocitySetMove(x: dir.x * _player.playerMovementSO.speed);
         _excuting = Mathf.Abs(dir.x) > 0f;

@@ -179,7 +179,11 @@ public class PlayerJump : PlayerAction
         if (_player.PlayeActionCheck(PlayerActionType.WallGrab))
         {
             rot = _player.PlayerRenderer.GetFlipedRotation(DirType.Forward, RotAxis.Z);
-            pos += Vector3.up * 0.5f;
+            pos += transform.up * 0.5f;
+        }
+        if (_player.PlayerRenderer.flipDirection == FlipDirection.Up)
+        {
+            rot = Quaternion.Euler(180f, 0f, 0f);
         }
         trm.SetPositionAndRotation(pos, rot);
     }

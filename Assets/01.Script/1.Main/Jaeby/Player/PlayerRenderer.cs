@@ -16,6 +16,35 @@ public class PlayerRenderer : MonoBehaviour
 
     public Vector3 Forward => transform.forward;
 
+    private FlipDirection _flipDirection = FlipDirection.Down;
+    public FlipDirection flipDirection
+    {
+        get => _flipDirection;
+        set
+        {
+            _flipDirection = value;
+            switch (_flipDirection)
+            {
+                case FlipDirection.None:
+                    break;
+                case FlipDirection.Left:
+                    _player.transform.rotation = Quaternion.Euler(_player.transform.rotation.eulerAngles.x, _player.transform.rotation.eulerAngles.y, -90f);
+                    break;
+                case FlipDirection.Right:
+                    _player.transform.rotation = Quaternion.Euler(_player.transform.rotation.eulerAngles.x, _player.transform.rotation.eulerAngles.y, 90f);
+                    break;
+                case FlipDirection.Up:
+                    _player.transform.rotation = Quaternion.Euler(180f, _player.transform.rotation.eulerAngles.y, _player.transform.rotation.eulerAngles.z);
+                    break;
+                case FlipDirection.Down:
+                    _player.transform.rotation = Quaternion.Euler(0f, _player.transform.rotation.eulerAngles.y, _player.transform.rotation.eulerAngles.z);
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
     private void Start()
     {
         _player = GetComponentInParent<Player>();
@@ -59,7 +88,15 @@ public class PlayerRenderer : MonoBehaviour
         else if (dir.x < 0f)
             flipDir = FlipDirection.Left;
 
-        Quaternion targetRotation = Quaternion.Euler(_player.transform.rotation.eulerAngles.x, (flipDir == FlipDirection.Left) ? -90f : 90f, _player.transform.rotation.eulerAngles.z); //플레이어 로테이션을 돌린다 
+        Quaternion targetRotation = Quaternion.identity;
+        if (_flipDirection == FlipDirection.Left || _flipDirection == FlipDirection.Right)
+        {
+            targetRotation = Quaternion.Euler((flipDir == FlipDirection.Left) ? -90f : 90f, _player.transform.rotation.eulerAngles.y, _player.transform.rotation.eulerAngles.z); //플레이어 로테이션을 돌린다 
+        }
+        else
+        {
+            targetRotation = Quaternion.Euler(_player.transform.rotation.eulerAngles.x, (flipDir == FlipDirection.Left) ? -90f : 90f, _player.transform.rotation.eulerAngles.z); //플레이어 로테이션을 돌린다 
+        }
         _player.transform.rotation = targetRotation;
         //_player.transform.rotation = Quaternion.Slerp(_player.transform.rotation, targetRotation, _rotationSpeed * Time.deltaTime);
 
@@ -110,12 +147,14 @@ public class PlayerRenderer : MonoBehaviour
         return Vector2.zero;
     }
 
-    enum FlipDirection
-    {
-        None,
-        Left,
-        Right,
-        Up,
-        Down
-    }
+
+}
+
+public enum FlipDirection
+{
+    None,
+    Left,
+    Right,
+    Up,
+    Down
 }
