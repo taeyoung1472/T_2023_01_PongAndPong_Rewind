@@ -28,16 +28,16 @@ public abstract class Interact : MonoBehaviour
         if (_interactable == false)
             return;
         _player = player;
-        ChildInteractStart();
         OnInteractStart?.Invoke();
+        ChildInteractStart();
     }
 
     public void InteractEnd(bool interactExit)
     {
-        ChildInteractEnd();
         if(interactExit)
             _player.PlayerActionExit(PlayerActionType.Interact);
         OnInteractEnd?.Invoke();
+        ChildInteractEnd();
     }
 
     protected abstract void ChildInteractEnd();
