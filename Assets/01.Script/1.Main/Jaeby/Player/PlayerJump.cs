@@ -95,7 +95,7 @@ public class PlayerJump : PlayerAction
         else
         {
             _player.VeloCityResetImm(y: true);
-            _jumpCoroutine = StartCoroutine(JumpCoroutine(Vector2.up, _player.playerMovementSO.jumpPower));
+            _jumpCoroutine = StartCoroutine(JumpCoroutine(transform.up, _player.playerMovementSO.jumpPower));
         }
     }
 
