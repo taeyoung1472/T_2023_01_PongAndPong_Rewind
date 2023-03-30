@@ -9,6 +9,8 @@ public class ButtonGimmick : MonoBehaviour
     [SerializeField] private bool isTogle;
     private bool toggleFlag = false;
 
+    bool isActive = false;
+
     [SerializeField] private ControlData[] controlDataArr;
 
     public void Update()
@@ -37,6 +39,9 @@ public class ButtonGimmick : MonoBehaviour
 
     private void CheckPlayer()
     {
+        if (isActive)
+            return;
+
         foreach (var col in Physics.OverlapBox(transform.position, Vector3.one * 2.5f))
         {
             if (col.gameObject.TryGetComponent<Player>(out Player player))
@@ -88,7 +93,7 @@ public class ButtonGimmick : MonoBehaviour
             {
                 control.target.Control(control.isReverse ? ControlType.ReberseControl : ControlType.Control);
                 CamManager.Instance.AddTargetGroup(control.target.transform);
-                Debug.Log("Add");
+                isActive = true;
             }
         }
     }
@@ -102,7 +107,7 @@ public class ButtonGimmick : MonoBehaviour
             {
                 control.target.Control(ControlType.None);
                 CamManager.Instance.RemoveTargetGroup(control.target.transform);
-                Debug.Log("Remove");
+                isActive = false;
             }
         }
     }

@@ -87,6 +87,7 @@ public class StageManager : MonoSingleTon<StageManager>
 
     public void InitPlayer(bool isClear)
     {
+        
         playerObj.gameObject.SetActive(false);
         rePlayerObj.SetActive(false);
         //if (isClear)
