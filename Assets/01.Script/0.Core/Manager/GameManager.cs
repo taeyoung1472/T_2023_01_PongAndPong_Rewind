@@ -33,17 +33,16 @@ public class GameManager : MonoSingleTon<GameManager>
 
     public void ClosePausePanel()
     {
-        //pauseUi.SetActive(false);
-        //Time.timeScale = 1;
+
     }
 
-    public void GameClear()
+    public void LoadMenu()
     {
-        LoadingSceneManager.LoadScene(1);
+        SceneManager.LoadScene(0);//LoadingSceneManager.LoadScene(0);
     }
 
-    public void ReplayGame()
+    public void LoadGame()
     {
-        LoadingSceneManager.LoadScene(2);
+        SceneManager.LoadScene(1);
     }
 }
