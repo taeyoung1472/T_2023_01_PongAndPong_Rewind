@@ -123,7 +123,7 @@ public class Player : MonoBehaviour
         _playerInventory.SaveInventory();
     }
 
-    private void Update()
+    private void LateUpdate()
     {
         Move();
     }
