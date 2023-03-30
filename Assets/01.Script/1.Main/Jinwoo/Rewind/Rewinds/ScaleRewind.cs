@@ -49,12 +49,17 @@ public class ScaleRewind : RewindAbstract
 
     protected override void InitOnPlay()
     {
-        throw new System.NotImplementedException();
+
     }
 
     protected override void InitOnRewind()
     {
-        throw new System.NotImplementedException();
+
+    }
+
+    protected override void RestartObj()
+    {
+
     }
 
     //데모 개체 스케일 조정이 선택된 경우에만 하는 것이 좋을 듯

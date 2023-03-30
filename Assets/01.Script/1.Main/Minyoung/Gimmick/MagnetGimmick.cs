@@ -9,6 +9,9 @@ public class MagnetGimmick : MonoBehaviour
     private Vector3 lookMagnetVec = Vector3.zero;
 
     private float radius;
+
+ 
+
     private void Awake()
     {
         radius = GetComponent<SphereCollider>().radius;
@@ -27,7 +30,7 @@ public class MagnetGimmick : MonoBehaviour
             Debug.Log(magent);
             lookMagnetVec = transform.position - other.transform.position;
             float ratio = (1 - (lookMagnetVec.magnitude / radius)) * speed;
-            Debug.Log(ratio);
+            //Debug.Log(ratio);
             Rigidbody rid = magent.GetComponent<Rigidbody>();
             rid.velocity = lookMagnetVec * ratio;
         }   

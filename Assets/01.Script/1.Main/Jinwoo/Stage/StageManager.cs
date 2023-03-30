@@ -17,16 +17,41 @@ public class StageManager : MonoSingleTon<StageManager>
     public Stage CurStage { get { return curStage; } }
 
     [Header("플레이어 관련")]
-    [SerializeField] private PlayerRewind playerPrefab;
-    [SerializeField] private GameObject rewindPlayerPrefab;
+    //[SerializeField] private PlayerRewind playerPrefab;
+    //[SerializeField] private GameObject rewindPlayerPrefab;
 
-    private PlayerRewind playerObj;
+    private GameObject playerObj;
     private GameObject rePlayerObj;
 
     public Image fadeImg;
+
+    private float reStartCoolTime = 1f;
+    private bool isRestartPossible = false;
+
     private void Awake()
     {
         SpawnStage();
+        isRestartPossible = false;
+    }
+    public void Update()
+    {
+        if (!isRestartPossible)
+        {
+            reStartCoolTime -= Time.deltaTime;
+            if (reStartCoolTime < 0f)
+            {
+                isRestartPossible = true;
+            }
+        }
+        
+        if (Input.GetKeyDown(KeyCode.R) && isRestartPossible)
+        {
+            RewindManager.Instance.RestartPlay?.Invoke();
+            curStage.ReStartArea();
+            isRestartPossible = false;
+            reStartCoolTime = 1f;
+        }
+
     }
     public StageArea GetCurArea()
     {
@@ -39,6 +64,7 @@ public class StageManager : MonoSingleTon<StageManager>
             return CurStage.curArea;
         }
     }
+
     public void SpawnStage()
     {
         curStageDataSO = stageDataSO;
@@ -56,40 +82,41 @@ public class StageManager : MonoSingleTon<StageManager>
 
         if (isDefaultPlayer)
         {
-            playerObj = Instantiate(playerPrefab, spawnPos.position, Quaternion.identity);
-            TestParticleSpawn.Instance.playerPos = playerObj.transform;
+            //playerObj = Instantiate(playerPrefab, spawnPos.position, Quaternion.identity);
+            playerObj = PoolManager.Pop(PoolType.Player);
+            playerObj.GetComponent<CharacterController>().enabled = false;
+            playerObj.transform.position = spawnPos.position;
+            playerObj.GetComponent<CharacterController>().enabled = true;
+            //TestParticleSpawn.Instance.playerPos = playerObj.transform;
         }
         else
-            rePlayerObj = Instantiate(rewindPlayerPrefab, spawnPos.position, Quaternion.identity);
-
-        //if (isFirst)
-        //{
-        //    if (isDefaultPlayer)
-        //        playerObj = Instantiate(playerPrefab, spawnPos.position, Quaternion.identity);
-        //    else
-        //        rePlayerObj = Instantiate(rewindPlayerPrefab, spawnPos.position, Quaternion.identity);
-        //}
-        //else
-        //{
-        //    if (isDefaultPlayer)
-        //    {
-        //        playerObj.gameObject.SetActive(true);
-        //        playerObj.transform.position = spawnPos.position;
-        //    }
-        //    else
-        //    {
-        //        rePlayerObj.gameObject.SetActive(true);
-        //        rePlayerObj.transform.position = spawnPos.position;
-        //    }
-        //}
-
+        {
+            rePlayerObj = PoolManager.Pop(PoolType.RewindPlayer);
+            rePlayerObj.GetComponent<CharacterController>().enabled = false;
+            rePlayerObj.transform.position = spawnPos.position;
+            rePlayerObj.GetComponent<CharacterController>().enabled = true;
+        }
+            
+            //rePlayerObj = Instantiate(rewindPlayerPrefab, spawnPos.position, Quaternion.identity);
+                    
     }
 
     public void InitPlayer(bool isClear)
     {
-        
-        playerObj.gameObject.SetActive(false);
-        rePlayerObj.SetActive(false);
+        if(rePlayerObj != null)
+        {
+            PoolManager.Push(PoolType.RewindPlayer, rePlayerObj);
+        }
+        if (playerObj != null)
+        {
+            PoolManager.Push(PoolType.Player, playerObj);
+        }
+
+
+        //playerObj.gameObject.SetActive(false);
+        //rePlayerObj.SetActive(false);
+
+
         //if (isClear)
         //{
         //    playerObj.gameObject.SetActive(false);

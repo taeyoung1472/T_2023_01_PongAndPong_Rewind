@@ -14,6 +14,12 @@ public class UIManager : MonoSingleTon<UIManager>
     //private int totalTIme { get { return RewindManager.Instance.CurStageRecordCount; } }
     private int totalTIme { get { return (int)RewindManager.Instance.howManySecondsToTrack -1; } }
 
+    private bool isPause = false;
+
+    public bool IsPause => isPause;
+
+    [SerializeField] private Image pauseImg;
+
     public void Init()
     {
         //RewindManager.Instance.OnTimeChanging += OnTimeChange;
@@ -54,5 +60,40 @@ public class UIManager : MonoSingleTon<UIManager>
             }
             tempTime -= clockTime;
         }
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (!isPause)
+            {
+                isPause = true;
+                TimerManager.Instance.ChangeOnTimer(false);
+                pauseImg.gameObject.SetActive(true);
+                Time.timeScale = 0f;
+            }
+            else
+            {
+                PauseResume();
+            }
+        }
+    }
+
+    public void PauseResume()
+    {
+        Debug.Log("Å¬¸¯");
+        isPause = false;
+        TimerManager.Instance.ChangeOnTimer(true);
+        pauseImg.gameObject.SetActive(false);
+        Time.timeScale = 1f;
+    }
+    public void PauseSetting()
+    {
+
+    }
+    public void PauseMenu()
+    {
+
     }
 }

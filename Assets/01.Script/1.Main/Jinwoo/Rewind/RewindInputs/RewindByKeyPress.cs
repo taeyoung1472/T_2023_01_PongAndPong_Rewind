@@ -12,7 +12,7 @@ public class RewindByKeyPress : MonoBehaviour
 
     private void Start()
     {
-        RewindManager.Instance.StartAreaPlay();
+        //RewindManager.Instance.StartAreaPlay();
     }
     void FixedUpdate()
     {
