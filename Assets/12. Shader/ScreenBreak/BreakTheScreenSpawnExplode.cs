@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Highlighters;
 
 public class BreakTheScreenSpawnExplode : MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class BreakTheScreenSpawnExplode : MonoBehaviour
     public Transform spawntrm;
 
     private GameObject obj;
+
+    public Highlighter h;
 
     private void Update()
     {
@@ -37,6 +40,7 @@ public class BreakTheScreenSpawnExplode : MonoBehaviour
 
         shatterMaterial.SetTexture("_BaseMap", screenshotTexture2D);
 
+        h.enabled = false;
         foreach (Transform child in obj.transform)
         {
             if (child.GetComponent<Transform>())
@@ -51,9 +55,10 @@ public class BreakTheScreenSpawnExplode : MonoBehaviour
         yield return new WaitForSeconds(1f);
         ScreenBreak sr= obj.GetComponent<ScreenBreak>();
         sr.BreakScreen(obj.transform);
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(0.5f);
         sr.InitPos();
         obj.gameObject.SetActive(false);
+        h.enabled = true;
     }
 
 }

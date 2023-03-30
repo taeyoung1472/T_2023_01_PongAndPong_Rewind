@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class UIManager : MonoSingleTon<UIManager>
 {
@@ -94,6 +95,6 @@ public class UIManager : MonoSingleTon<UIManager>
     }
     public void PauseMenu()
     {
-
+        SceneManager.LoadScene(0);
     }
 }
