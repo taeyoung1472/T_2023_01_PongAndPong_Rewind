@@ -22,6 +22,9 @@ public class GravityModule : MonoBehaviour
     public float CurGravityAcceleration => _curGravityAcceleration;
     private Coroutine _accelCo = null;
 
+    private Vector3 _gravityDir;
+    public Vector3 GravityDir { get => _gravityDir; set => _gravityDir = value; }
+
     private void Start()
     {
         _gravityScale = _originGravity;
@@ -31,7 +34,7 @@ public class GravityModule : MonoBehaviour
     {
         if (_useGravity)
         {
-            return Physics.gravity * (_gravityScale + _curGravityAcceleration);
+            return _gravityDir * (_gravityScale + _curGravityAcceleration);
         }
         else
         {
@@ -66,9 +69,4 @@ public class GravityModule : MonoBehaviour
         }
         _curGravityAcceleration = _maxGravityAcceleration;
     }
-    public void GravityZoneScale()
-    {
-        _gravityScale = 0.2f;
-    }
-
 }
