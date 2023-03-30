@@ -17,14 +17,14 @@ public class ScreenBreak : MonoBehaviour
         }
 
     }
-    public void BreakScreen()
+    public void BreakScreen(Transform trm)
     {
         foreach (Transform child in transform)
         {
             if (child.TryGetComponent<Rigidbody>(out Rigidbody childRigidbody))
             {
                 childRigidbody.isKinematic = false;
-                childRigidbody.AddExplosionForce(10f, transform.position, 10f);
+                childRigidbody.AddExplosionForce(70f, trm.position, 15f);
                
             }
         }

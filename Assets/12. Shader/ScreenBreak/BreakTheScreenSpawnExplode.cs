@@ -11,11 +11,13 @@ public class BreakTheScreenSpawnExplode : MonoBehaviour
 
     public Transform spawntrm;
 
+    private GameObject obj;
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.T))
         {
-            //Instantiate(screenBreak, spawntrm);
+            obj = Instantiate(screenBreak, spawntrm);
             //Debug.Log("?");
             //obj.SetActive(false);
             StartCoroutine(CourtineScreenShot());    
@@ -35,14 +37,23 @@ public class BreakTheScreenSpawnExplode : MonoBehaviour
 
         shatterMaterial.SetTexture("_BaseMap", screenshotTexture2D);
 
-        explodeTransform.gameObject.SetActive(true);
-        explodeTransform.transform.position = spawntrm.position;
+        foreach (Transform child in obj.transform)
+        {
+            if (child.GetComponent<Transform>())
+            {
+                if(child.gameObject.GetComponent<MeshRenderer>())
+                child.gameObject.GetComponent<MeshRenderer>().material = shatterMaterial;
+            }
+        }
+
+        obj.gameObject.SetActive(true);
+        obj.transform.position = spawntrm.position;
         yield return new WaitForSeconds(1f);
-        ScreenBreak sr= explodeTransform.transform.GetChild(0).GetComponent<ScreenBreak>();
-        sr.BreakScreen();
-        yield return new WaitForSeconds(1f);
+        ScreenBreak sr= obj.GetComponent<ScreenBreak>();
+        sr.BreakScreen(obj.transform);
+        yield return new WaitForSeconds(2f);
         sr.InitPos();
-        explodeTransform.gameObject.SetActive(false);
+        obj.gameObject.SetActive(false);
     }
 
 }
