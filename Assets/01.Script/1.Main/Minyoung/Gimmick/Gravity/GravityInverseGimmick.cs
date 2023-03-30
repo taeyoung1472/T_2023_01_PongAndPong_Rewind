@@ -79,7 +79,8 @@ public class GravityInverseGimmick : GimmickObject
                 module = other.GetComponentInParent<GravityModule>();
             if (player == null)
                 player = other.GetComponentInParent<Player>();
-            player.transform.rotation = Quaternion.Euler(180f, player.transform.rotation.y, player.transform.rotation.z);
+
+            player.PlayerRenderer.flipDirection = FlipDirection.Up;
             module.GravityScale = 0.8f;
             module.GravityDir = new Vector3(0f, 9.8f, 0f);
         }
@@ -93,7 +94,7 @@ public class GravityInverseGimmick : GimmickObject
         }
         module.GravityScale = module.OriginGravityScale;
         module.GravityDir = new Vector3(0f, -9.8f, 0f);
-        player.transform.rotation = Quaternion.Euler(0f, player.transform.rotation.y, player.transform.rotation.z);
+        player.PlayerRenderer.flipDirection = FlipDirection.Down;
 
 
     }
