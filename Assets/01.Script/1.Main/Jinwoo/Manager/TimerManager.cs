@@ -72,7 +72,7 @@ public class TimerManager : MonoSingleTon<TimerManager>
     public void SetRewindTime(float rewindTime)
     {
         RewindingTime = rewindTime;
-        RewindTestManager.Instance.howManySecondsToTrack = RewindingTime;
+        RewindManager.Instance.howManySecondsToTrack = RewindingTime;
     }
     private void UpdateVolume(bool isDefault)
     {
@@ -136,20 +136,20 @@ public class TimerManager : MonoSingleTon<TimerManager>
 
         if (!isRewinding)
         {
-            RewindTestManager.Instance.StartRewindTimeBySeconds(rewindValue);
+            RewindManager.Instance.StartRewindTimeBySeconds(rewindValue);
             //rewindSound.Play();
         }
         else
         {
-            if (RewindTestManager.Instance.HowManySecondsAvailableForRewind > rewindValue)      //범위를 벗어난 값을 가져오지 않도록 안전 확인
-                RewindTestManager.Instance.SetTimeSecondsInRewind(rewindValue);
+            if (RewindManager.Instance.HowManySecondsAvailableForRewind > rewindValue)      //범위를 벗어난 값을 가져오지 않도록 안전 확인
+                RewindManager.Instance.SetTimeSecondsInRewind(rewindValue);
         }
         isRewinding = true;
     }
     public void EndRewind()
     {
         Debug.Log("되감기 종료");
-        RewindTestManager.Instance.StopRewindTimeBySeconds();
+        RewindManager.Instance.StopRewindTimeBySeconds();
         StageManager.Instance.CurStage.curArea.ExitArea();
     }
     

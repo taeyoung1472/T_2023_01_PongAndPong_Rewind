@@ -30,7 +30,7 @@ public class MainMenuManager : MonoSingleTon<MainMenuManager>
 
     public void Start()
     {
-        player.SetActive(false);
+        //player.SetActive(false);
     }
 
     public void ActiveWindow(GameObject targetWindow)

@@ -22,16 +22,16 @@ public class Shop : MonoSingleTon<Shop>
         _originWidth = _content.rect.width;
     }
 
-    public void ShopInit(List<string> itemKeys)
+    public void ShopInit(List<ItemData> itemDatas)
     {
         for (int i = 0; i < _children.Count; i++)
         {
             Destroy(_children[i]);
         }
         _content.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, _originWidth);
-        for (int i = 0; i < itemKeys.Count; i++)
+        for (int i = 0; i < itemDatas.Count; i++)
         {
-            ItemData data = ItemDB.Instance.TryGetItem(itemKeys[i]);
+            ItemData data = ItemDB.Instance.TryGetItem(itemDatas[i].itemKey);
             if (data != null)
             {
                 ItemSlot slot = Instantiate(_slotPrefab);
