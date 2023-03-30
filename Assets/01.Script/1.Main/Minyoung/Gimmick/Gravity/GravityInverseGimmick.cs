@@ -22,6 +22,7 @@ public class GravityInverseGimmick : GimmickObject
 
     private void OnTriggerStay(Collider other)
     {
+        /*
         if (other.CompareTag("GimmickPlayerCol"))
         {
             player.GravityModule.GravityScale = 0.2f;
@@ -67,7 +68,7 @@ public class GravityInverseGimmick : GimmickObject
                     break;
             }
         }
-
+        */
     }
 
     private void OnTriggerEnter(Collider other)
@@ -78,6 +79,9 @@ public class GravityInverseGimmick : GimmickObject
                 module = other.GetComponentInParent<GravityModule>();
             if (player == null)
                 player = other.GetComponentInParent<Player>();
+            player.transform.rotation = Quaternion.Euler(180f, player.transform.rotation.y, player.transform.rotation.z);
+            module.GravityScale = 0.8f;
+            module.GravityDir = new Vector3(0f, 9.8f, 0f);
         }
     }
 
@@ -91,6 +95,6 @@ public class GravityInverseGimmick : GimmickObject
         module.GravityDir = new Vector3(0f, -9.8f, 0f);
         player.transform.rotation = Quaternion.Euler(0f, player.transform.rotation.y, player.transform.rotation.z);
 
-        
+
     }
 }
