@@ -16,21 +16,21 @@ public class PlayerDash : PlayerAction
 
     public void Dash()
     {
-        if (_locked || _curDashCount >= _player.playerMovementSO.dashCount || _player.PlayerInput.InputVectorNorm.sqrMagnitude == 0f)
+        if (_locked || _curDashCount >= _player.playerMovementSO.dashCount || _player.PlayerInput.InputVectorNorm.sqrMagnitude == 0f || (Mathf.Abs(_player.PlayerInput.InputVector.x) > 0f == false))
             return;
+        bool slide = _player.IsGrounded;
+
         if (_dashChargeCoroutine != null)
+        {
             StopCoroutine(_dashChargeCoroutine);
+        }
         if (_dashCoroutine != null)
         {
             StopCoroutine(_dashCoroutine);
             DashExit();
         }
-        bool slide = _player.IsGrounded && (_player.PlayerInput.InputVector.y > 0f == false);
+
         _dashCoroutine = StartCoroutine(DashCoroutine(slide));
-        if (slide)
-            _player.PlayerAnimation.SlideAnimation();
-        else
-            _player.PlayerAnimation.DashAnimation(_player.PlayerInput.InputVectorNorm);
 
         GameObject effectObj = PoolManager.Pop(PoolType.DashEffect);
         effectObj.transform.SetPositionAndRotation(transform.position + Vector3.up * 0.3f + Vector3.forward * 0.15f, _player.PlayerRenderer.GetFlipedRotation(DirType.Back, RotAxis.Y));
@@ -47,16 +47,18 @@ public class PlayerDash : PlayerAction
         _curDashCount++;
         if (slide)
         {
+            _player.PlayerAnimation.SlideAnimation();
             _player.GravityModule.UseGravity = true;
             dashVector = _player.PlayerInput.InputVector * _player.playerMovementSO.dashPower;
             dashVector.y = 0f;
         }
         else
         {
+            _player.PlayerAnimation.DashAnimation(_player.PlayerInput.InputVectorNorm);
             _player.GravityModule.UseGravity = false;
             dashVector = _player.PlayerInput.InputVectorNorm * _player.playerMovementSO.dashPower;
         }
-        _player.VelocitySetExtra(dashVector.x, dashVector.y);
+        _player.VelocitySetExtra(dashVector.x);
         _player.AfterImageEnable(true);
         yield return new WaitForSeconds(_player.playerMovementSO.dashContinueTime);
         DashExit();
@@ -76,10 +78,14 @@ public class PlayerDash : PlayerAction
         _player.GravityModule.UseGravity = true;
         _player.VelocitySetExtra(0f, 0f);
         if (_player.PlayeActionCheck(PlayerActionType.WallGrab) == false)
+        {
             _player.PlayerAnimation.FallOrIdleAnimation(_player.IsGrounded);
+        }
         OnDashEnded?.Invoke(_player.IsGrounded);
         if (_player.IsGrounded)
+        {
             DashCharge();
+        }
     }
 
     public void OnGrounded(bool value)
@@ -101,7 +107,9 @@ public class PlayerDash : PlayerAction
     {
         _excuting = false;
         if (_dashCoroutine != null)
+        {
             StopCoroutine(_dashCoroutine);
+        }
         DashExit();
     }
 }

@@ -40,6 +40,12 @@ public class StageWorldUI : MonoBehaviour
         _stages[index].gameObject.AddComponent<Button>().onClick.AddListener(() => ui.StageSelect(_stages[index]));
     }
 
+    public StageUnitUI GetStage(int index)
+    {
+        index = Mathf.Clamp(index, 0, _stages.Count - 1);
+        return _stages[index];
+    }
+
     public void ResetWorld()
     {
         for(int i = 0; i < _stages.Count; i++)

@@ -5,7 +5,7 @@ using UnityEngine;
 public class Trader : MonoBehaviour
 {
     [SerializeField]
-    private List<string> _haveItems = new List<string>();
+    private List<ItemData> _haveItems = new List<ItemData>();
 
     public void ShopInit()
     {

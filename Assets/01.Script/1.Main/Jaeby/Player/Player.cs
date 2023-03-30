@@ -8,6 +8,16 @@ using System.IO;
 
 public class Player : MonoBehaviour
 {
+    private void OnEnable()
+    {
+        CamManager.Instance.AddTargetGroup(transform);
+    }
+
+    private void OnDisable()
+    {
+        CamManager.Instance.RemoveTargetGroup(transform);
+    }
+
     private List<PlayerAction> _playerActions = new List<PlayerAction>();
 
     #region SO
@@ -113,7 +123,7 @@ public class Player : MonoBehaviour
         _playerInventory.SaveInventory();
     }
 
-    private void Update()
+    private void LateUpdate()
     {
         Move();
     }
@@ -241,7 +251,7 @@ public class Player : MonoBehaviour
         Vector3 halfExtents = _col.bounds.extents;
         halfExtents.y = _groundCheckRayLength;
         float maxDistance = _col.bounds.extents.y;
-        _isGrounded = Physics.BoxCast(boxCenter, halfExtents, Vector3.down, transform.rotation, maxDistance, _groundMask);
+        _isGrounded = Physics.BoxCast(boxCenter, halfExtents, -transform.up, transform.rotation, maxDistance, _groundMask);
         if (lastGrounded == _isGrounded)
             return;
         OnIsGrounded?.Invoke(_isGrounded);
