@@ -23,7 +23,7 @@ RenderSettings:
   m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
-  m_AmbientIntensity: 2
+  m_AmbientIntensity: 3
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
   m_SkyboxMaterial: {fileID: 2100000, guid: c1c961cbd00909b45b34d97fd7df5cbf, type: 2}
@@ -29508,6 +29508,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bcb7f0142571ff949a6d8ecfa47809e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lightningBolts:
+  - {fileID: 772790949}
+  - {fileID: 748188251}
+  - {fileID: 1347507262}
+  - {fileID: 567918924}
   timeText: {fileID: 1488215576}
   isOnTimer: 0
   isRewinding: 0
@@ -29527,6 +29532,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1470028809}
   - component: {fileID: 1470028810}
+  - component: {fileID: 1470028811}
   m_Layer: 0
   m_Name: RewindVolume
   m_TagString: Untagged
@@ -29566,6 +29572,18 @@ MonoBehaviour:
   blendDistance: 0
   weight: 1
   sharedProfile: {fileID: 11400000, guid: 5178b8821e3fd5c418b512e16c2bae89, type: 2}
+--- !u!114 &1470028811
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1470028808}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a08014f091f32b04a9474b386e691c85, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1486028782
 GameObject:
   m_ObjectHideFlags: 0

@@ -10,8 +10,6 @@ public class GimmickVisualLink : MonoBehaviour
     [SerializeField] private LightningBoltPathScript lightning;
     [SerializeField] private Transform[] pathArr;
 
-    Highlighter h1;
-
     float linkTimer = 0.1f;
 
     Transform start, end;
@@ -32,6 +30,38 @@ public class GimmickVisualLink : MonoBehaviour
 
         lightning.gameObject.SetActive(true);
         lightning.LightningTintColor = color;
+
+        if(start.GetComponent<Highlighter>() == null)
+        {
+            Highlighter highlighter = start.AddComponent<Highlighter>();
+            highlighter.GetRenderers();
+            highlighter.Settings.DepthMask = DepthMask.Both;
+            highlighter.Settings.UseMeshOutline = true;
+            highlighter.Settings.MeshOutlineThickness = 0.02f;
+            highlighter.Settings.MeshOutlineFront.Color = color;
+
+            highlighter.Settings.UseOverlay = true;
+            highlighter.Settings.UseSingleOverlay = false;
+            highlighter.Settings.OverlayFront.Color = new Color(1, 1, 1, 0);
+            highlighter.Settings.OverlayBack.Color = color * new Color(1, 1, 1, 0.2f);
+        }
+
+
+        if (end.GetComponent<Highlighter>() == null)
+        {
+            Highlighter highlighter = end.AddComponent<Highlighter>();
+            highlighter.GetRenderers();
+            highlighter.Settings.DepthMask = DepthMask.Both;
+            highlighter.Settings.UseMeshOutline = true;
+            highlighter.Settings.MeshOutlineThickness = 0.02f;
+            highlighter.Settings.MeshOutlineFront.Color = color;
+
+            highlighter.Settings.UseOverlay = true;
+            highlighter.Settings.UseSingleOverlay = false;
+            highlighter.Settings.OverlayFront.Color = new Color(1, 1, 1, 0);
+            highlighter.Settings.OverlayBack.Color = color * new Color(1, 1, 1, 0.2f);
+        }
+        Highlighter.HighlightersNeedReset();
 
         isLinked = true;
     }
