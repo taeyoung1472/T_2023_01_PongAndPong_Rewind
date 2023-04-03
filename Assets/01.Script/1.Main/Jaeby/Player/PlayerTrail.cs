@@ -50,7 +50,7 @@ public class PlayerTrail : MonoBehaviour
 
     private Transform _trailParentTrm = null;
 
-    private void Awake()
+    private void Start()
     {
         Init();
     }
@@ -87,6 +87,7 @@ public class PlayerTrail : MonoBehaviour
 
     private void Init()
     {
+        Debug.Log("TrailInit");
         _trailParentTrm = new GameObject("TrailParentTrm").transform;
         for (int i = 0; i < _spawnCount; i++)
         {
