@@ -37,6 +37,8 @@ public class PlayerObjectPush : PlayerAction
         foreach (var hit in _hits)
         {
             Vector3 distanceDir = (hit.transform.position - _player.transform.position).normalized;
+            distanceDir.y = 0f;
+            distanceDir.z = 0f;
             Vector3 dir = Vector3.zero;
             float distance = 0f;
             bool result = Physics.ComputePenetration(_player.characterController, _player.transform.position + (distanceDir * _littleBitMore), _player.transform.rotation,
@@ -69,7 +71,9 @@ public class PlayerObjectPush : PlayerAction
         if (rb == null)
             return;
         Vector3 forceDir = (hit.gameObject.transform.position - transform.position).normalized;
-        rb.AddForceAtPosition(forceDir * _pushPower, transform.position, ForceMode.Force);
+        forceDir.z = 0f;
+        rb.AddForce(forceDir * _pushPower, ForceMode.Force);
+        //rb.AddForceAtPosition(forceDir * _pushPower, transform.position + transform.up, ForceMode.Force);
         if (_hitsHashs.Contains(hit.gameObject.GetHashCode()) == false)
         {
             _hitsHashs.Add(hit.gameObject.GetHashCode());
