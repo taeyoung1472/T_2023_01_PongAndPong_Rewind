@@ -88,7 +88,9 @@ public class EditorObjectManager : MonoBehaviour
 
         if(curSelectingData != null) 
         {
-            CreateObjCommanad cmd = new CreateObjCommanad(curSelectingData, virtualDrawObject.transform.position, virtualDrawObject.transform.rotation);
+            CreateObjCommanad cmd = new CreateObjCommanad(curSelectingData, 
+                virtualDrawObject.transform.position, 
+                virtualDrawObject.transform.rotation);
             CommandManager.Instance.ExcuteCommand(cmd);
         }
 
@@ -131,3 +133,4 @@ public class EditorObjectManager : MonoBehaviour
         }
     }
 }
+

@@ -29,7 +29,7 @@ public class PortalTelepote : MonoBehaviour
     private void Awake()
     {
         _col = GetComponent<Collider>();
-        playerSkinedMatList.AddRange(playerTrm.Find("AgentRenderer/Model/man-mafia_Rig/man-mafia_Rig").GetComponentInChildren<SkinnedMeshRenderer>().materials);
+        //playerSkinedMatList.AddRange(playerTrm.Find("AgentRenderer/Model/man-mafia_Rig/man-mafia_Rig").GetComponentInChildren<SkinnedMeshRenderer>().materials);
     }
     private void Update()
     {
@@ -57,14 +57,8 @@ public class PortalTelepote : MonoBehaviour
                     mat.SetVector("_DissolveDirection", new Vector3(-1, 0, 0));
                 }
             }
-
-
-            Debug.Log(dotProduct);
             if (dotProduct > 0f)
             {
-
-
-
                 float rotationDiff = -Quaternion.Angle(transform.rotation, reciverTrm.rotation);
                 rotationDiff += 180;
                 playerTrm.Rotate(Vector3.up, rotationDiff);
@@ -99,7 +93,6 @@ public class PortalTelepote : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("잉이이");
         if (other.CompareTag("GimmickPlayerCol"))
         {
             Debug.Log("플레이어와 충돌함");
