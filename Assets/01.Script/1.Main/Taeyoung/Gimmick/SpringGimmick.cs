@@ -10,6 +10,12 @@ public class SpringGimmick : MonoBehaviour
         ColliderEnter(collision.collider);
     }
 
+    public void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        ColliderEnter(hit.collider);
+        Debug.Log("¤©¤©¤©¤©");
+    }
+
     private void ColliderEnter(Collider target)
     {
         if (target.transform.root.TryGetComponent<RigidbodyGimmickObject>(out RigidbodyGimmickObject obj))
@@ -19,6 +25,7 @@ public class SpringGimmick : MonoBehaviour
 
             obj.Init();
             obj.AddForce(Vector3.up, recordPosY, ForceMode.VelocityChange);
+            Debug.Log("¤·¤·¤·¤·");
         }
     }
 }

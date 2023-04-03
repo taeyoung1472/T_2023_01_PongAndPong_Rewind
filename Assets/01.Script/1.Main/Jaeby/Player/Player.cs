@@ -15,6 +15,9 @@ public class Player : MonoBehaviour
 
     private void OnDisable()
     {
+        if (CamManager.Instance == null)
+            return;
+
         CamManager.Instance.RemoveTargetGroup(transform);
     }
 
