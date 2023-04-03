@@ -5270,7 +5270,19 @@ MonoBehaviour:
   _actionType: 3
   OnDashStarted:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 6691628707631861890}
+        m_TargetAssemblyTypeName: PlayerRenderer, Assembly-CSharp
+        m_MethodName: Flip
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnDashEnded:
     m_PersistentCalls:
       m_Calls: []
@@ -5343,19 +5355,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OnMoveInput:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 6691628707631861949}
-        m_TargetAssemblyTypeName: PlayerAnimation, Assembly-CSharp
-        m_MethodName: MoveAnimation
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   OnJumpStart:
     m_PersistentCalls:
       m_Calls:
@@ -5497,7 +5497,19 @@ MonoBehaviour:
   _moveAudioCooltime: 0.25
   OnMove:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 6691628707631861949}
+        m_TargetAssemblyTypeName: PlayerAnimation, Assembly-CSharp
+        m_MethodName: MoveAnimation
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2687664122374465103
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5565,7 +5577,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  _pushPower: 2
+  _pushPower: 10
   _littleBitMore: 0.8
 --- !u!114 &6691628707489746800
 MonoBehaviour:
@@ -5666,7 +5678,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   highlighterSettings:
-    depthMask: 3
+    depthMask: 0
     infoRenderScale: 1
     useOuterGlow: 0
     useSingleOuterGlow: 1
@@ -5701,7 +5713,7 @@ MonoBehaviour:
     useOverlay: 1
     useSingleOverlay: 1
     overlayFront:
-      color: {r: 0.9628415, g: 1, b: 0, a: 0.29411766}
+      color: {r: 0, g: 1, b: 1, a: 0.19607843}
       useTexture: 0
       texture: {fileID: 0}
       background: 0
@@ -5720,14 +5732,14 @@ MonoBehaviour:
     RenderingBoundsMinDistanceFix: 0
   findRenderers: 0
   renderers:
-  - renderer: {fileID: 0}
+  - renderer: {fileID: 112894375679413401}
     useCutout: 0
     clippingThreshold: 0
     clippingSource: 0
     clipTexture: {fileID: 0}
     submeshIndexes: 0000000001000000020000000300000004000000
     cullMode: 2
-  - renderer: {fileID: 0}
+  - renderer: {fileID: 196536015}
     useCutout: 0
     clippingThreshold: 0
     clippingSource: 0
