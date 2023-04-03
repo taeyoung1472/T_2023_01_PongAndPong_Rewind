@@ -25,7 +25,7 @@ public class PlayerAttack : PlayerAction
 
     public void Attack()
     {
-        if (_locked || _delayLock)
+        if (_locked || _delayLock || _player.PlayeActionCheck(PlayerActionType.Dash, PlayerActionType.Jump, PlayerActionType.ObjectPush, PlayerActionType.WallGrab))
             return;
 
         if (_attackState == AttackState.Melee)
@@ -71,7 +71,7 @@ public class PlayerAttack : PlayerAction
 
     private IEnumerator SwitchingCoroutine()
     {
-        _switchingable = false; 
+        _switchingable = false;
         yield return new WaitForSeconds(_player.playerAttackSO.weaponSwitchingDelay);
         _switchingable = true;
     }
@@ -92,6 +92,7 @@ public class PlayerAttack : PlayerAction
     {
         _excuting = true;
         _player.VeloCityResetImm(true, true);
+        _player.PlayerActionExit(PlayerActionType.Move, PlayerActionType.Jump, PlayerActionType.Dash);
         _player.PlayerActionLock(true, PlayerActionType.Move, PlayerActionType.Jump, PlayerActionType.Dash);
     }
 
