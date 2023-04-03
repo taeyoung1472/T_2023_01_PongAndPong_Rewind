@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using TMPro;
+using DigitalRuby.ThunderAndLightning;
 
 public class TimerManager : MonoSingleTon<TimerManager>
 {
     #region º¯¼öµé
+    [SerializeField] private LightningBoltPrefabScript[] lightningBolts;
     [SerializeField] private TextMeshProUGUI timeText;
     public float CurrentTimer { get; set; }
 
@@ -78,7 +80,24 @@ public class TimerManager : MonoSingleTon<TimerManager>
     {
         defaultVolume.SetActive(isDefault);
         rewindVolume.SetActive(!isDefault);
-
+        if (isDefault)
+        {
+            //Camera.main.backgroundColor = Color.black;
+            foreach (var bolt in lightningBolts)
+            {
+                bolt.LightningTintColor = new Color(0.5f, 0f, 0.5f);
+                bolt.GlowTintColor = new Color(0.5f, 0f, 0.5f);
+            }
+        }
+        else
+        {
+            //Camera.main.backgroundColor = new Color(0.5f, 0f, 0.5f);
+            foreach (var bolt in lightningBolts)
+            {
+                bolt.LightningTintColor = Color.yellow;
+                bolt.GlowTintColor = Color.yellow;
+            }
+        }
     }
     public void UpdateText()
     {

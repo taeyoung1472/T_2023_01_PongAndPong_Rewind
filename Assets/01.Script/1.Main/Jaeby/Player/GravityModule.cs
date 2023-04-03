@@ -22,7 +22,7 @@ public class GravityModule : MonoBehaviour
     public float CurGravityAcceleration => _curGravityAcceleration;
     private Coroutine _accelCo = null;
 
-    private Vector3 _gravityDir;
+    private Vector3 _gravityDir = new Vector3(0, -9.8f, 0);
     public Vector3 GravityDir { get => _gravityDir; set => _gravityDir = value; }
 
     private void Start()

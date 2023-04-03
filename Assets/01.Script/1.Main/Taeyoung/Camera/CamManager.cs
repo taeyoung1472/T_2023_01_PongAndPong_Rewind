@@ -28,6 +28,9 @@ public class CamManager : MonoSingleTon<CamManager>
 
     public void RemoveTargetGroup(Transform target)
     {
+        if (CinemachineTargetGroup == null)
+            return;
+
         CinemachineTargetGroup.RemoveMember(target);
     }
 }

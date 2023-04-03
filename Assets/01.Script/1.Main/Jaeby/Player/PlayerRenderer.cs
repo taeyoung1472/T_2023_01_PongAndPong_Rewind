@@ -15,6 +15,7 @@ public class PlayerRenderer : MonoBehaviour
     private Player _player = null;
 
     public Vector3 Forward => transform.forward;
+    public Vector3 Down => -transform.up;
 
     private FlipDirection _flipDirection = FlipDirection.Down;
     public FlipDirection flipDirection
