@@ -6,8 +6,9 @@ using UnityEngine;
 public class VoidController : MonoBehaviour
 {
     [SerializeField] private LightningBoltPrefabScript[] voids;
-    [SerializeField, Range(0.0f, 1.0f)] private float intencity;
 
+    [SerializeField, Range(0.0f, 1.0f)] private float intencity;
+    
     private void Update()
     {
         Set(intencity);

@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class RewindManager : MonoSingleTon<RewindManager>
 {
@@ -16,6 +15,10 @@ public class RewindManager : MonoSingleTon<RewindManager>
     /// 순행 될때 한 번 호출
     /// </summary>
     public Action InitPlay { get; set; }
+    /// <summary>
+    /// R키로 다시하기 할 때 한 번 호출
+    /// </summary>
+    public Action RestartPlay { get; set; }
 
     /// <summary>
     /// 과거까지 얼마나 추적해야 하는지를 정의하는 변수, 설정된 한계에 도달한 후 순환 버퍼에서 이전 값을 덮어씀

@@ -52,6 +52,23 @@ public class PlayerInput : MonoBehaviour
             y++;
         if (Input.GetKey(KeyManager.keys[InputType.Down]))
             y--;
+        if (_player.playerBuff.BuffCheck(PlayerBuffType.Reverse))
+        {
+            x *= -1;
+        }
+        /*if (_player.PlayerRenderer.flipDirection == FlipDirection.Left)
+        {
+            int temp = x;
+            x = y;
+            y = temp;
+        }
+        else if (_player.PlayerRenderer.flipDirection == FlipDirection.Right)
+        {
+            int temp = x;
+            x = y;
+            y = temp;
+            x *= -1;
+        }*/
         _inputVector = new Vector2(x, y);
         OnMoveInput?.Invoke(new Vector2(x, y));
 

@@ -13,14 +13,34 @@ public class PlayerWallGrab : PlayerAction
     [SerializeField]
     private UnityEvent<bool> OnWallGrabed = null;
 
-    private void FixedUpdate()
-    {
-        WallCheck();
-    }
+    private GameObject _prevGrabObject;
+    private float _prevCheckTimer;
 
     private void Update()
     {
-        Ray ray = new Ray(_player.transform.position + _player.characterController.center, _player.PlayerRenderer.Forward);
+        WallCheck();
+        DrawDebugRay();
+        CheckPrevGameObjcet();
+    }
+
+    private void CheckPrevGameObjcet()
+    {
+        if (_prevGrabObject)
+        {
+            _prevCheckTimer -= Time.deltaTime;
+            if (_prevCheckTimer < 0)
+            {
+                _prevCheckTimer = 0.1f;
+                _prevGrabObject = null;
+            }
+        }
+    }
+
+    private void DrawDebugRay()
+    {
+        Vector3 footPos = _player.transform.position + _player.characterController.center + Vector3.down * _player.characterController.bounds.size.y * 0.5f;
+
+        Ray ray = new Ray(footPos, _player.PlayerRenderer.Down);
         Debug.DrawRay(ray.origin, ray.direction * ((_player.characterController.radius) + _rayLength + _player.characterController.contactOffset), Color.red);
     }
 
@@ -37,9 +57,18 @@ public class PlayerWallGrab : PlayerAction
             return;
         }
 
+        Vector3 footPos = _player.transform.position + _player.characterController.center + Vector3.down * _player.characterController.bounds.size.y * 0.5f;
         bool lastCheck = _excuting;
-        Ray ray = new Ray(_player.transform.position + _player.characterController.center, _player.PlayerRenderer.Forward);
-        _excuting = (Physics.Raycast(ray, _player.characterController.radius + _rayLength + _player.characterController.contactOffset, _wallMask)) && (_player.IsGrounded == false);
+        Ray ray = new Ray(footPos, _player.PlayerRenderer.Down);
+        if(Physics.Raycast(ray, out RaycastHit hit, _rayLength + _player.characterController.contactOffset, _wallMask))
+        {
+            if (!_player.IsGrounded && _prevGrabObject != hit.transform.gameObject)
+            {
+                _excuting = true;
+                _prevGrabObject = hit.transform.gameObject;
+                _prevCheckTimer = 0.1f;
+            }
+        }
         if (lastCheck == _excuting) return;
 
         if (_excuting)

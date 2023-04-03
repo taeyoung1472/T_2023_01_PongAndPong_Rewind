@@ -1,5 +1,5 @@
 Procedural Lightning for Unity 3D
-© 2015 Digital Ruby, LLC – Created by Jeff Johnson – jeff@digitalruby.com
+?2015 Digital Ruby, LLC ?Created by Jeff Johnson ?jeff@digitalruby.com
 http://www.digitalruby.com
 
 --------------------------------------------------
