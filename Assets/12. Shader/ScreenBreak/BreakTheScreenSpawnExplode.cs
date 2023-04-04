@@ -5,22 +5,17 @@ using Highlighters;
 
 public class BreakTheScreenSpawnExplode : MonoBehaviour
 {
-    [SerializeField] private Transform explodeTransform;
     [SerializeField] private Material shatterMaterial;
 
-    [SerializeField] private GameObject screenBreak;
+    [SerializeField] private GameObject slicesPrefabs;
 
-    public Transform spawntrm;
-
-    private GameObject obj;
-
-    public Highlighter h;
+    private GameObject slices;
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.T))
+        if (Input.GetKeyDown(KeyCode.O))
         {
-            obj = Instantiate(screenBreak, spawntrm);
+            //slices = Instantiate(slicesPrefabs, spawntrm);
             //Debug.Log("?");
             //obj.SetActive(false);
             StartCoroutine(CourtineScreenShot());    
@@ -30,6 +25,7 @@ public class BreakTheScreenSpawnExplode : MonoBehaviour
     private IEnumerator CourtineScreenShot()
     {
         yield return new WaitForEndOfFrame();
+        slicesPrefabs.gameObject.SetActive(true);
 
         int width = Screen.width;
         int height = Screen.height;
@@ -40,25 +36,13 @@ public class BreakTheScreenSpawnExplode : MonoBehaviour
 
         shatterMaterial.SetTexture("_BaseMap", screenshotTexture2D);
 
-        h.enabled = false;
-        foreach (Transform child in obj.transform)
-        {
-            if (child.GetComponent<Transform>())
-            {
-                if(child.gameObject.GetComponent<MeshRenderer>())
-                child.gameObject.GetComponent<MeshRenderer>().material = shatterMaterial;
-            }
-        }
-
-        obj.gameObject.SetActive(true);
-        obj.transform.position = spawntrm.position;
         yield return new WaitForSeconds(1f);
-        ScreenBreak sr= obj.GetComponent<ScreenBreak>();
-        sr.BreakScreen(obj.transform);
-        yield return new WaitForSeconds(0.5f);
+        ScreenBreak sr= slicesPrefabs.GetComponent<ScreenBreak>();
+        sr.BreakScreen(slicesPrefabs.transform);
+        yield return new WaitForSeconds(4f);
         sr.InitPos();
-        obj.gameObject.SetActive(false);
-        h.enabled = true;
+        yield return new WaitForSeconds(.5f);
+        slicesPrefabs.gameObject.SetActive(false);
     }
 
 }
