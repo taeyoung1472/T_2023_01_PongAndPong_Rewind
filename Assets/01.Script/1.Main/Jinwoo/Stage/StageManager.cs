@@ -30,6 +30,9 @@ public class StageManager : MonoSingleTon<StageManager>
     private float reStartCoolTime = 1f;
     private bool isRestartPossible = false;
 
+    [Header("카메라 관련")]
+    [SerializeField]
+    private FreeLookCamera freeLookCam;
     private void Awake()
     {
         SpawnStage();
@@ -37,6 +40,9 @@ public class StageManager : MonoSingleTon<StageManager>
     }
     public void Update()
     {
+        if (UIManager.Instance.IsPause)
+            return;
+
         if (!isRestartPossible)
         {
             reStartCoolTime -= Time.deltaTime;
@@ -46,14 +52,50 @@ public class StageManager : MonoSingleTon<StageManager>
             }
         }
         
-        if (Input.GetKeyDown(KeyCode.R) && isRestartPossible)
+        if (Input.GetKeyDown(KeyCode.R) && isRestartPossible && !freeLookCam._isActivated)
         {
-            RewindManager.Instance.RestartPlay?.Invoke();
-            curStage.ReStartArea();
-            isRestartPossible = false;
-            reStartCoolTime = 1f;
+            OnReStartArea();
         }
 
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            OnFreeLookCam(!freeLookCam._isActivated);
+        }
+
+    }
+    public void OnReStartArea()
+    {
+        RewindManager.Instance.RestartPlay?.Invoke();
+        curStage.ReStartArea(true);
+        isRestartPossible = false;
+        reStartCoolTime = 1f;
+    }
+    public void OnFreeLookCam(bool isOn)
+    {
+        if (isOn) //자유시점 온
+        {
+            freeLookCam.gameObject.SetActive(true);
+            freeLookCam.Activate(true);
+            if (TimerManager.Instance.isRewinding)
+            {
+                RewindManager.Instance.StopRewindTimeBySeconds();
+            }
+                InitPlayer(false);
+
+            TimerManager.Instance.InitTimer();
+            TimerManager.Instance.ChangeOnTimer(false);
+            TimerManager.Instance.UpdateText();
+
+            RewindManager.Instance.RestartPlay?.Invoke();
+        }
+        else //자유 시점 오프
+        {
+            freeLookCam.gameObject.SetActive(false);
+            freeLookCam.Activate(false);
+
+            curStage.ReStartArea(false);
+        }
+        
     }
     public StageArea GetCurArea()
     {
@@ -73,6 +115,8 @@ public class StageManager : MonoSingleTon<StageManager>
 
         curStage = Instantiate(curStageDataSO.stagePrefab, Vector3.zero, Quaternion.identity);
         curStage.Init();
+
+        OnFreeLookCam(true);
     }
     public void NextStage()
     {

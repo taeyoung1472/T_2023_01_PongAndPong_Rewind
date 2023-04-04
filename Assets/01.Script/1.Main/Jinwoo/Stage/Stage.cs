@@ -23,21 +23,29 @@ public class Stage : MonoBehaviour
         StartCoroutine(StageCycle());
     }
 
-    public void ReStartArea()
+    public void ReStartArea(bool isReStart)
     {
-        if (!UIManager.Instance.IsPause)
+        //여기에 코루틴 넣은뒤 먼가 다시하기 연출 살짝 넣으면 좋을 지도...(추후 예정임)]
+
+        if (isReStart) //만약 리스타트면 연출 넣고 
         {
-            //여기에 코루틴 넣은뒤 먼가 다시하기 연출 살짝 넣으면 좋을 지도...(추후 예정임)
-            if (TimerManager.Instance.isRewinding)
-            {
-                TimerManager.Instance.EndRewind();
-            }
-            else
-            {
-                StageManager.Instance.InitPlayer(false);
-                curArea.EntryArea();
-            }
+
         }
+        else //그냥 자유시점이면 연출 다른거나 안넣고
+        {
+
+        }
+
+        if (TimerManager.Instance.isRewinding) //만약 리와인드 상태에서 재시작할때
+        {
+            TimerManager.Instance.EndRewind();
+        }
+        else // 일반 순행 시간에 재시작 할때
+        {
+            StageManager.Instance.InitPlayer(false);
+            curArea.EntryArea();
+        }
+
     }
 
     IEnumerator StageCycle()
