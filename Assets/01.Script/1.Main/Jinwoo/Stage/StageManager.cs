@@ -1,6 +1,8 @@
+using Highlighters;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UniRx.Triggers;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -91,14 +93,29 @@ public class StageManager : MonoSingleTon<StageManager>
         }
         else
         {
+            Highlighter highlighter = playerObj.AddComponent<Highlighter>();
+            highlighter.GetRenderers();
+            highlighter.Renderers.RemoveAt(highlighter.Renderers.Count - 1);
+            highlighter.Settings.UseMeshOutline = true;
+            highlighter.Settings.MeshOutlineThickness = 0.01f;
+            highlighter.Settings.MeshOutlineFront.Color = Color.white;
+            
             rePlayerObj = PoolManager.Pop(PoolType.RewindPlayer);
             rePlayerObj.GetComponent<CharacterController>().enabled = false;
             rePlayerObj.transform.position = spawnPos.position;
             rePlayerObj.GetComponent<CharacterController>().enabled = true;
+
+            highlighter = rePlayerObj.AddComponent<Highlighter>();
+            highlighter.GetRenderers();
+            highlighter.Renderers.RemoveAt(highlighter.Renderers.Count - 1);
+            highlighter.Settings.UseMeshOutline = true;
+            highlighter.Settings.MeshOutlineThickness = 0.01f;
+            highlighter.Settings.MeshOutlineFront.Color = Color.yellow;
         }
-            
-            //rePlayerObj = Instantiate(rewindPlayerPrefab, spawnPos.position, Quaternion.identity);
-                    
+        Highlighter.HighlightersNeedReset();
+
+        //rePlayerObj = Instantiate(rewindPlayerPrefab, spawnPos.position, Quaternion.identity);
+
     }
 
     public void InitPlayer(bool isClear)
