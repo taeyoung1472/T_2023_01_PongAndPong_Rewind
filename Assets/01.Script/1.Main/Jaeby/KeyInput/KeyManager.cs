@@ -7,8 +7,6 @@ public static class KeyManager
 {
     public static KeyCode[] defaultKeys = new KeyCode[]
     {
-        KeyCode.W,
-        KeyCode.S,
         KeyCode.A,
         KeyCode.D,
         KeyCode.Space,
