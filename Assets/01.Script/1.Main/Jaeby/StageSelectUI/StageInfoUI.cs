@@ -8,27 +8,44 @@ public class StageInfoUI : MonoBehaviour
 {
     [SerializeField]
     private StageSelectUI _stageSelectUI = null;
+
     [SerializeField]
     private TextMeshProUGUI _stageNameText = null;
     [SerializeField]
-    private TextMeshProUGUI _stageSubTitleText = null;
+    private TextMeshProUGUI _chapterNameText = null;
     [SerializeField]
-    private TextMeshProUGUI _stageExplainText = null;
+    private TextMeshProUGUI _worldNameText = null;
     [SerializeField]
     private Image _stageImage = null;
 
-    public void UISet(StageUnitUI ui)
+    private Animator _animator = null;
+
+    public void UIOn(StageDataSO data)
     {
-        _stageSelectUI.Lock = true;
-        if (ui.StageDataSO == null)
+        if (data == null)
             return;
-        _stageNameText.SetText(ui.StageDataSO.stageName);
-        _stageSubTitleText.SetText(ui.StageDataSO.stageSubTitle);
-        _stageExplainText.SetText(ui.StageDataSO.stageExplain);
-        _stageImage.sprite = ui.StageDataSO.stageSprite;
+        _stageSelectUI.Lock = true;
+        _chapterNameText.SetText($"ц╘ем {_stageSelectUI.WorldIndex}");
+        _worldNameText.SetText(_stageSelectUI.CurStageWorld.WorldType.ToString());
+        _stageImage.sprite = data.stageSprite;
+        _stageNameText.SetText(data.stageName);
+
+        if (_animator == null)
+            _animator = GetComponent<Animator>();
+        _animator.Play("Enable");
     }
 
     public void UIDown()
+    {
+        _animator.Play("Disable");
+    }
+
+    public void GameObjectEnable()
+    {
+        gameObject.SetActive(true);
+    }
+
+    public void GameObjectDisable()
     {
         _stageSelectUI.Lock = false;
         gameObject.SetActive(false);
