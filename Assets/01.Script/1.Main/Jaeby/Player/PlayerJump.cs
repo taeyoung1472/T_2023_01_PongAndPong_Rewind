@@ -84,12 +84,14 @@ public class PlayerJump : PlayerAction
         }
 
         OnJump?.Invoke();
-        if (_player.PlayeActionCheck(PlayerActionType.WallGrab)) // 월점프!!
+        if (_player.PlayerActionCheck(PlayerActionType.WallGrab)) // 월점프!!
         {
             _player.PlayerActionExit(PlayerActionType.WallGrab);
             _player.VeloCityResetImm(x: true, y: true);
             _player.PlayerRenderer.ForceFlip();
-            _jumpCoroutine = StartCoroutine(JumpCoroutine(_player.playerMovementSO.wallJumpPower * _player.PlayerRenderer.Forward.x, _player.playerMovementSO.wallGrabJumpPower));
+            Vector2 jumpDir = _player.playerMovementSO.wallJumpPower;
+            jumpDir.x *= _player.PlayerRenderer.Forward.x;
+            _jumpCoroutine = StartCoroutine(JumpCoroutine(jumpDir, _player.playerMovementSO.wallGrabJumpPower));
             _moveLockCoroutine = StartCoroutine(MoveLockCoroutine());
         }
         else
@@ -154,7 +156,7 @@ public class PlayerJump : PlayerAction
 
     public void TryGravityUp(Vector2 input)
     {
-        if (_player.IsGrounded || input.y > -0.1f || _player.PlayeActionCheck(PlayerActionType.WallGrab))
+        if (_player.IsGrounded || input.y > -0.1f || _player.PlayerActionCheck(PlayerActionType.WallGrab))
             return;
         _player.GravityModule.GravityScale = _player.playerMovementSO.downGravityScale;
     }
@@ -165,7 +167,7 @@ public class PlayerJump : PlayerAction
         _jumpInputTime = 0f;
         _jumpKeyUped = false;
         JumpEnd();
-        if (_player.PlayeActionCheck(PlayerActionType.WallGrab))
+        if (_player.PlayerActionCheck(PlayerActionType.WallGrab))
             JumpCountUp();
     }
 
@@ -176,7 +178,7 @@ public class PlayerJump : PlayerAction
         Vector3 pos = _jumpEffectPos.position;
         Quaternion rot = Quaternion.identity;
         Transform trm = PoolManager.Pop(PoolType.JumpEffect).transform;
-        if (_player.PlayeActionCheck(PlayerActionType.WallGrab))
+        if (_player.PlayerActionCheck(PlayerActionType.WallGrab))
         {
             rot = _player.PlayerRenderer.GetFlipedRotation(DirType.Forward, RotAxis.Z);
             pos += transform.up * 0.5f;

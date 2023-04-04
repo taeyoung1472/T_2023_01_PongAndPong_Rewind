@@ -57,7 +57,7 @@ public class PlayerAnimation : MonoBehaviour
     {
         if (val == false)
             return;
-        if (_player.PlayeActionCheck(PlayerActionType.Attack))
+        if (_player.PlayerActionCheck(PlayerActionType.Attack))
         {
             _player.PlayerActionExit(PlayerActionType.Attack);
             _animator.SetTrigger("AttackForceExit");

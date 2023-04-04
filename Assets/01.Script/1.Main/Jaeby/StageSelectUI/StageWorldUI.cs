@@ -7,6 +7,8 @@ using UnityEngine.UI;
 
 public class StageWorldUI : MonoBehaviour
 {
+    private StageSelectUI _stageSelectUI = null;
+
     private List<StageUnitUI> _stages = new List<StageUnitUI>();
     private List<RectTransform> _stageTrms = new List<RectTransform>();
     private RectTransform _thisTrm = null;
@@ -17,11 +19,19 @@ public class StageWorldUI : MonoBehaviour
     private WorldType _worldType;
     public WorldType WorldType => _worldType;
 
+    public void UISet()
+    {
+        if (_stageSelectUI == null)
+            return;
+        _stageSelectUI.WorldChange(this);
+    }
+
     public void Init(StageSelectUI ui)
     {
+        _stageSelectUI = ui;
         _stages.AddRange(GetComponentsInChildren<StageUnitUI>());
         for (int i = 0; i < _stages.Count; i++)
-            Lis(ui, i);
+            Lis(_stageSelectUI, i);
         TrmSet();
     }
 
@@ -37,7 +47,7 @@ public class StageWorldUI : MonoBehaviour
 
     private void Lis(StageSelectUI ui, int index)
     {
-        _stages[index].gameObject.AddComponent<Button>().onClick.AddListener(() => ui.StageSelect(_stages[index]));
+        _stages[index].GetComponentInChildren<Button>().onClick.AddListener(() => ui.StageSelect(_stages[index]));
     }
 
     public StageUnitUI GetStage(int index)
@@ -48,13 +58,13 @@ public class StageWorldUI : MonoBehaviour
 
     public void ResetWorld()
     {
-        for(int i = 0; i < _stages.Count; i++)
+        for (int i = 0; i < _stages.Count; i++)
         {
             _stages[i].AccectReset();
         }
     }
 
-    public StageUnitUI MouseUp(Color deAccentColor, float sizeDownAmount, float sizeChangeDuration, Color accentColor, float sizeUpAmount, StageUnitUI ui = null)
+    public StageUnitUI MouseUp(Color accentColor, Color subAccentColor, Color deAccentColor, float sizeUpAmount, float sizeSubAmount, float sizeDownAmount, float sizeChangeDuration, StageUnitUI ui = null)
     {
         int minIndex = 0;
         if (ui == null)
@@ -72,23 +82,22 @@ public class StageWorldUI : MonoBehaviour
         }
         else
         {
-            for(int i = 0; i < _stages.Count; i++)
+            for (int i = 0; i < _stages.Count; i++)
             {
-                if(ui == _stages[i])
+                if (ui == _stages[i])
                 {
                     minIndex = i;
                     break;
-                }    
+                }
             }
         }
 
-        StageUnitUI targetUI = _stages[minIndex];
         for (int i = 0; i < _stages.Count; i++)
             _stages[i].UIAccent(deAccentColor, sizeDownAmount, sizeChangeDuration);
-        _stages[GetIndex(minIndex - 1)].UIAccent(Color.white, 1f, sizeChangeDuration);
-        _stages[GetIndex(minIndex + 1)].UIAccent(Color.white, 1f, sizeChangeDuration);
-        targetUI.UIAccent(accentColor, sizeUpAmount, sizeChangeDuration);
-        return targetUI;
+        _stages[GetIndex(minIndex - 1)].UIAccent(subAccentColor, sizeSubAmount, sizeChangeDuration);
+        _stages[GetIndex(minIndex + 1)].UIAccent(subAccentColor, sizeSubAmount, sizeChangeDuration);
+        _stages[minIndex].UIAccent(accentColor, sizeUpAmount, sizeChangeDuration, true);
+        return _stages[minIndex];
     }
 
     private int GetIndex(int value)
