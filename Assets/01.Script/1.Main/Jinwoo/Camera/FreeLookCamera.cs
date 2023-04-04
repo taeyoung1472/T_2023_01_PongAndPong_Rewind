@@ -60,7 +60,7 @@ public class FreeLookCamera : MonoBehaviour
 
         _deltaTime = Time.deltaTime;
         GetInputs();
-        Rotate();
+        //Rotate();
         Move();
     }
 
