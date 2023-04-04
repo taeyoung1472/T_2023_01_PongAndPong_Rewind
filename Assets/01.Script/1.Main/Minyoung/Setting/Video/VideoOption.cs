@@ -25,30 +25,30 @@ public class VideoOption : MonoBehaviour
     }
     void Start()
     {
-        preBtn.onClick.AddListener(() =>
-        {
-            if (resolutionsIndex != 0)
-            {
-                resolutionsIndex--;
-                string str = resolutions[resolutionsIndex].ToString();
-                string str1 = str.Substring(0, str.LastIndexOf('@'));
-                CurrentResolutionTextText.text = str1;
-            }
-        });
-        nexteBtn.onClick.AddListener(() =>
-        {
-            if (resolutionsIndex == resolutions.Count - 1)
-            {
-                resolutionsIndex = resolutions.Count - 1;
-            }
-            else
-            {
-                resolutionsIndex++;
-            }
-            string str = resolutions[resolutionsIndex].ToString();
-            string str1 = str.Substring(0, str.LastIndexOf('@'));
-            CurrentResolutionTextText.text = str1;
-        });
+        //preBtn.onClick.AddListener(() =>
+        //{
+        //    if (resolutionsIndex != 0)
+        //    {
+        //        resolutionsIndex--;
+        //        string str = resolutions[resolutionsIndex].ToString();
+        //        string str1 = str.Substring(0, str.LastIndexOf('@'));
+        //        CurrentResolutionTextText.text = str1;
+        //    }
+        //});
+        //nexteBtn.onClick.AddListener(() =>
+        //{
+        //    if (resolutionsIndex == resolutions.Count - 1)
+        //    {
+        //        resolutionsIndex = resolutions.Count - 1;
+        //    }
+        //    else
+        //    {
+        //        resolutionsIndex++;
+        //    }
+        //    string str = resolutions[resolutionsIndex].ToString();
+        //    string str1 = str.Substring(0, str.LastIndexOf('@'));
+        //    CurrentResolutionTextText.text = str1;
+        //});
     }
 
     void InitUI()
