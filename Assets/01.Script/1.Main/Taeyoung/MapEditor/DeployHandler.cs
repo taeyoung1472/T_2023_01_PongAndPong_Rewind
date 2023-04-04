@@ -26,7 +26,9 @@ public class DeployHandler : MonoBehaviour
 
     private Vector2 size;
 
-#if UNITY_EDITR
+    private BoxCollider boxCollider;
+
+    //#if UNITY_EDITR
     public void OnDrawGizmos()
     {
         if (drawMode == DrawMode.None)
@@ -166,7 +168,7 @@ public class DeployHandler : MonoBehaviour
                 break;
         }
     }
-#endif
+//#endif
 
     public void Generate()
     {
@@ -199,6 +201,23 @@ public class DeployHandler : MonoBehaviour
 
                 minY = Mathf.Min(firstAxis.z, secondAxis.z);
                 maxY = Mathf.Max(firstAxis.z, secondAxis.z);
+                break;
+        }
+        foreach (var collider in transform.GetComponents<BoxCollider>())
+        {
+            DestroyImmediate(collider);
+        }
+        boxCollider = transform.AddComponent<BoxCollider>();
+        switch (deployType)
+        {
+            case DeployType.XY:
+                boxCollider.size = new Vector3(maxX - minX, maxY - minY, 0);
+                break;
+            case DeployType.XZ:
+                boxCollider.size = new Vector3(maxX - minX, 0f, maxY - minY);
+                break;
+            case DeployType.YZ:
+                boxCollider.size = new Vector3(0f, maxX - minX, maxY - minY);
                 break;
         }
 
@@ -299,6 +318,10 @@ public class DeployHandler : MonoBehaviour
     }
     public void Clear()
     {
+        foreach (var collider in transform.GetComponents<BoxCollider>())
+        {
+            DestroyImmediate(collider);
+        }
         while (transform.childCount > 0)
         {
             DestroyImmediate(transform.GetChild(0).gameObject);
