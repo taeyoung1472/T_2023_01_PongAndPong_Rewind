@@ -8,19 +8,6 @@ using System.IO;
 
 public class Player : MonoBehaviour
 {
-    private void OnEnable()
-    {
-        CamManager.Instance.AddTargetGroup(transform);
-    }
-
-    private void OnDisable()
-    {
-        if (CamManager.Instance == null)
-            return;
-
-        CamManager.Instance.RemoveTargetGroup(transform);
-    }
-
     private List<PlayerAction> _playerActions = new List<PlayerAction>();
 
     #region SO
