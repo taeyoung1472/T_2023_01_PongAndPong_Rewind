@@ -27,7 +27,9 @@ public class StageManager : MonoSingleTon<StageManager>
 
     public Image fadeImg;
 
+    public bool isDownButton = false;
     private float reStartCoolTime = 1f;
+    private float freelookCoolTime = 2f;
     private bool isRestartPossible = false;
 
     [Header("카메라 관련")]
@@ -51,15 +53,25 @@ public class StageManager : MonoSingleTon<StageManager>
                 isRestartPossible = true;
             }
         }
-        
+        if (isDownButton)
+        {
+            freelookCoolTime -= Time.deltaTime;
+            if (freelookCoolTime < 0f)
+            {
+                isDownButton = false;
+            }
+        }
+
         if (Input.GetKeyDown(KeyCode.R) && isRestartPossible && !freeLookCam._isActivated&&
             !BreakScreenController.Instance.isBreaking)
         {
             OnReStartArea();
         }
 
-        if (Input.GetKeyDown(KeyCode.T) && isRestartPossible)
+        if (Input.GetKeyDown(KeyCode.T) && isRestartPossible && !isDownButton)
         {
+            isDownButton = true;
+            GlitchManager.Instance.CoroutineColorDrift();
             OnFreeLookCam(!freeLookCam._isActivated);
         }
 
@@ -96,7 +108,7 @@ public class StageManager : MonoSingleTon<StageManager>
 
             curStage.ReStartArea(false);
         }
-        
+
     }
     public StageArea GetCurArea()
     {
