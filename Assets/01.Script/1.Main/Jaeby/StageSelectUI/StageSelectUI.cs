@@ -120,6 +120,7 @@ public class StageSelectUI : MonoBehaviour
     public void WorldChange(StageWorldUI ui)
     {
         int index = _stageWorlds.FindIndex(x => x == ui);
+        Debug.Log(index);
         WorldChange(index);
     }
 

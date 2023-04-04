@@ -28,7 +28,7 @@ public class DeployHandler : MonoBehaviour
 
     private BoxCollider boxCollider;
 
-    //#if UNITY_EDITR
+    #if UNITY_EDITOR
     public void OnDrawGizmos()
     {
         if (drawMode == DrawMode.None)
@@ -168,7 +168,7 @@ public class DeployHandler : MonoBehaviour
                 break;
         }
     }
-//#endif
+#endif
 
     public void Generate()
     {
