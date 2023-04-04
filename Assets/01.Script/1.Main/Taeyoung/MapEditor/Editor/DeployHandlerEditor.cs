@@ -69,11 +69,23 @@ public class DeployHandlerEditor : Editor
 
         if (GUILayout.Button("Generate"))
         {
-            myScript.Generate();
+            foreach (var obj in Selection.gameObjects)
+            {
+                if (obj.TryGetComponent<DeployHandler>(out DeployHandler handler))
+                {
+                    handler.Generate();
+                }
+            }
         }
         if (GUILayout.Button("Clear"))
         {
-            myScript.Clear();
+            foreach (var obj in Selection.gameObjects)
+            {
+                if(obj.TryGetComponent<DeployHandler>(out DeployHandler handler))
+                {
+                    handler.Clear();
+                }
+            }
         }
         if (GUILayout.Button("ChangeDrawMode"))
         {
