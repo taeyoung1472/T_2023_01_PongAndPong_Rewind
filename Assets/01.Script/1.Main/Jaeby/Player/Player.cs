@@ -205,7 +205,7 @@ public class Player : MonoBehaviour
     /// </summary>
     /// <param name="types"></param>
     /// <returns></returns>
-    public bool PlayeActionCheck(params PlayerActionType[] types)
+    public bool PlayerActionCheck(params PlayerActionType[] types)
     {
         for (int i = 0; i < types.Length; i++)
             if (GetPlayerAction(types[i]).Excuting)

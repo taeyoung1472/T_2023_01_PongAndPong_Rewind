@@ -25,7 +25,7 @@ public class PlayerAttack : PlayerAction
 
     public void Attack()
     {
-        if (_locked || _delayLock || _player.PlayeActionCheck(PlayerActionType.Dash, PlayerActionType.Jump, PlayerActionType.ObjectPush, PlayerActionType.WallGrab))
+        if (_locked || _delayLock || _player.PlayerActionCheck(PlayerActionType.Dash, PlayerActionType.Jump, PlayerActionType.ObjectPush, PlayerActionType.WallGrab))
             return;
 
         if (_attackState == AttackState.Melee)

@@ -16,8 +16,12 @@ public class PlayerDash : PlayerAction
 
     public void Dash()
     {
-        if (_locked || _curDashCount >= _player.playerMovementSO.dashCount || _player.PlayerInput.InputVectorNorm.sqrMagnitude == 0f || (Mathf.Abs(_player.PlayerInput.InputVector.x) > 0f == false))
+        if (_locked || _curDashCount >= _player.playerMovementSO.dashCount ||
+            _player.PlayerInput.InputVectorNorm.sqrMagnitude == 0f ||
+            (Mathf.Abs(_player.PlayerInput.InputVector.x) > 0f == false) ||
+            _player.PlayerActionCheck(PlayerActionType.ObjectPush))
             return;
+
         bool slide = _player.IsGrounded;
 
         if (_dashChargeCoroutine != null)
@@ -77,7 +81,7 @@ public class PlayerDash : PlayerAction
         _player.PlayerActionLock(false, PlayerActionType.Jump, PlayerActionType.Move);
         _player.GravityModule.UseGravity = true;
         _player.VelocitySetExtra(0f, 0f);
-        if (_player.PlayeActionCheck(PlayerActionType.WallGrab) == false)
+        if (_player.PlayerActionCheck(PlayerActionType.WallGrab) == false)
         {
             _player.PlayerAnimation.FallOrIdleAnimation(_player.IsGrounded);
         }
