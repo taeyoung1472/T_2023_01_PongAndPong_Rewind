@@ -10,10 +10,7 @@ public class ScreenBreak : MonoBehaviour
         //Vector3 explosionPosition = new Vector3(45.833f, 0f, 0f);
         foreach (Transform child in transform)
         {
-            if (child.GetComponent<Transform>())
-            {
-                childTrm.Add(child.transform.position);
-            }
+            childTrm.Add(child.transform.localPosition);
         }
 
     }
@@ -40,12 +37,9 @@ public class ScreenBreak : MonoBehaviour
             if (child.TryGetComponent<Rigidbody>(out Rigidbody childRigidbody))
             {
                 childRigidbody.isKinematic = true;
-
-            }
-            if (child.GetComponent<Transform>())
-            {
-                child.position = childTrm[i];
+                child.localPosition = childTrm[i];
                 child.rotation = Quaternion.identity;
+
                 i++;
             }
         }

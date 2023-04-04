@@ -52,12 +52,13 @@ public class StageManager : MonoSingleTon<StageManager>
             }
         }
         
-        if (Input.GetKeyDown(KeyCode.R) && isRestartPossible && !freeLookCam._isActivated)
+        if (Input.GetKeyDown(KeyCode.R) && isRestartPossible && !freeLookCam._isActivated&&
+            !BreakScreenController.Instance.isBreaking)
         {
             OnReStartArea();
         }
 
-        if (Input.GetKeyDown(KeyCode.T))
+        if (Input.GetKeyDown(KeyCode.T) && isRestartPossible)
         {
             OnFreeLookCam(!freeLookCam._isActivated);
         }

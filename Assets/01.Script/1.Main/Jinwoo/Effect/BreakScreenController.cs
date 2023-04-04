@@ -3,30 +3,37 @@ using System.Collections.Generic;
 using UnityEngine;
 using Highlighters;
 
-public class BreakTheScreenSpawnExplode : MonoBehaviour
+public class BreakScreenController : MonoSingleTon<BreakScreenController>
 {
     [SerializeField] private Material shatterMaterial;
 
-    [SerializeField] private GameObject slicesPrefabs;
+    [SerializeField] private ScreenBreak slicesPrefabs;
 
-    private GameObject slices;
+    public bool isBreaking = false;
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.O))
         {
             //slices = Instantiate(slicesPrefabs, spawntrm);
-            //Debug.Log("?");
             //obj.SetActive(false);
             StartCoroutine(CourtineScreenShot());    
         }
     }
-
+    public void StartBreakScreen()
+    {
+        StartCoroutine(CourtineScreenShot());    
+    }
     private IEnumerator CourtineScreenShot()
     {
         yield return new WaitForEndOfFrame();
+
+        Debug.Log("연출 스타또");
         slicesPrefabs.gameObject.SetActive(true);
 
+        isBreaking = true;
+
+        //현재 스크린 찍어놓는거
         int width = Screen.width;
         int height = Screen.height;
         Texture2D screenshotTexture2D = new Texture2D(width, height, TextureFormat.ARGB32, false);
@@ -36,12 +43,12 @@ public class BreakTheScreenSpawnExplode : MonoBehaviour
 
         shatterMaterial.SetTexture("_BaseMap", screenshotTexture2D);
 
+        //블럭들 설정
         yield return new WaitForSeconds(1f);
-        ScreenBreak sr= slicesPrefabs.GetComponent<ScreenBreak>();
-        sr.BreakScreen(slicesPrefabs.transform);
-        yield return new WaitForSeconds(4f);
-        sr.InitPos();
-        yield return new WaitForSeconds(.5f);
+        slicesPrefabs.BreakScreen(slicesPrefabs.transform);
+        yield return new WaitForSeconds(1.5f);
+        slicesPrefabs.InitPos();
+        isBreaking = false;
         slicesPrefabs.gameObject.SetActive(false);
     }
 

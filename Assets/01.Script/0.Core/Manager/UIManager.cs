@@ -65,7 +65,7 @@ public class UIManager : MonoSingleTon<UIManager>
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) && !BreakScreenController.Instance.isBreaking)
         {
             if (!isPause)
             {

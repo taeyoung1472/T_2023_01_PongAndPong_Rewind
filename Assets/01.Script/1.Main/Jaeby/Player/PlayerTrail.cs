@@ -61,11 +61,13 @@ public class PlayerTrail : MonoBehaviour
         DestroyTrailAll(true);
     }
 
+    
     /// <summary>
     /// 그냥 다 부숴버림
     /// </summary>
     public void DestroyTrailAll(bool smooth)
     {
+        Debug.Log("잔상 다 지움");
         _isMotionTrail = false;
         StopAllCoroutines();
         for (int i = 0; i < _enalbeTrails.Count; i++)
@@ -82,6 +84,11 @@ public class PlayerTrail : MonoBehaviour
             , renderer.materials[0].GetColor("_BaseColor"),
             renderer.materials[0].GetFloat("_Alpha")
             ));
+        }
+        for(int i = 0; i < _readyTrails.Count; i++)
+        {
+            var trail = _enalbeTrails.Dequeue();
+            Destroy(trail.myObj);
         }
     }
 
@@ -126,6 +133,10 @@ public class PlayerTrail : MonoBehaviour
         {
             _spawnTimer = 0f;
             PopTrail();
+        }
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            DestroyTrailAll(false);
         }
     }
 

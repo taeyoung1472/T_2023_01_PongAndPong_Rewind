@@ -25,16 +25,22 @@ public class Stage : MonoBehaviour
 
     public void ReStartArea(bool isReStart)
     {
-        //여기에 코루틴 넣은뒤 먼가 다시하기 연출 살짝 넣으면 좋을 지도...(추후 예정임)]
+        StartCoroutine(StartReStart(isReStart));
 
+    }
+    public IEnumerator StartReStart(bool isReStart)
+    {
         if (isReStart) //만약 리스타트면 연출 넣고 
         {
-
+            BreakScreenController.Instance.StartBreakScreen();
         }
         else //그냥 자유시점이면 연출 다른거나 안넣고
         {
 
         }
+        yield return new WaitUntil(()=> !BreakScreenController.Instance.isBreaking);
+
+        yield return new WaitForSeconds(0.5f);
 
         if (TimerManager.Instance.isRewinding) //만약 리와인드 상태에서 재시작할때
         {
@@ -42,6 +48,7 @@ public class Stage : MonoBehaviour
         }
         else // 일반 순행 시간에 재시작 할때
         {
+            Debug.Log("리스타또");
             StageManager.Instance.InitPlayer(false);
             curArea.EntryArea();
         }
