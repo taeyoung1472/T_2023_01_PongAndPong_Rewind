@@ -7,6 +7,8 @@ using UnityEngine;
 
 public class MainMenuManager : MonoSingleTon<MainMenuManager>
 {
+    static bool isOpend;
+
     [Header("[RectTrans]")]
     [SerializeField] private RectTransform window;
     [SerializeField] private RectTransform content;
@@ -28,13 +30,23 @@ public class MainMenuManager : MonoSingleTon<MainMenuManager>
         curDisplayingWindow = mainWindow;
     }
 
-    public void Start()
+    public IEnumerator Start()
     {
-        //player.SetActive(false);
+        if (isOpend)
+        {
+            PlayGame();
+            yield break;
+        }
+        isOpend = true;
+
+        yield return null;
+
+        player.gameObject.SetActive(false);
     }
 
-    public void ActiveWindow(GameObject targetWindow)
+    public void WindowActive(GameObject targetWindow)
     {
+        curDisplayingWindow?.SetActive(false);
         content.sizeDelta = new Vector2(content.sizeDelta.x, targetWindow.GetComponent<RectTransform>().sizeDelta.y);
         content.DOAnchorPos(Vector2.zero, 0.1f);
         targetWindow.SetActive(true);
@@ -42,7 +54,16 @@ public class MainMenuManager : MonoSingleTon<MainMenuManager>
         curDisplayingWindow = targetWindow;
     }
 
-    public void CloseWindow()
+    public void WindowChange(GameObject targetWindow)
+    {
+        curDisplayingWindow?.SetActive(false);
+        content.sizeDelta = new Vector2(content.sizeDelta.x, targetWindow.GetComponent<RectTransform>().sizeDelta.y);
+        content.DOAnchorPos(Vector2.zero, 0.1f);
+        targetWindow.SetActive(true);
+        curDisplayingWindow = targetWindow;
+    }
+
+    public void WindowClose()
     {
         window.DOScale(Vector3.zero, 0.1f).OnComplete(() =>
         {
