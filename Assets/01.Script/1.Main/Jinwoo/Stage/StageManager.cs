@@ -108,7 +108,7 @@ public class StageManager : MonoSingleTon<StageManager>
 
             curStage.ReStartArea(false);
         }
-
+        freelookCoolTime = 2f;
     }
     public StageArea GetCurArea()
     {
