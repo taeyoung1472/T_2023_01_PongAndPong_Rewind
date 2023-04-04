@@ -10,7 +10,8 @@ public class CreateObjCommanad : Command
     Quaternion rot;
     GameObject inst = null;
 
-    public CreateObjCommanad(EditorObjectData data, Vector3 pos, Quaternion rot)
+    public CreateObjCommanad(EditorObjectData data, Vector3 pos, 
+        Quaternion rot)
     {
         this.data = data;
         this.pos = pos;
