@@ -25,7 +25,7 @@ public class StageInfoUI : MonoBehaviour
         if (data == null)
             return;
         _stageSelectUI.Lock = true;
-        _chapterNameText.SetText($"ц╘ем {_stageSelectUI.WorldIndex}");
+        _chapterNameText.SetText($"ц╘ем {_stageSelectUI.WorldIndex + 1}");
         _worldNameText.SetText(_stageSelectUI.CurStageWorld.WorldType.ToString());
         _stageImage.sprite = data.stageSprite;
         _stageNameText.SetText(data.stageName);
