@@ -33,7 +33,7 @@ public abstract class RewindAbstract : MonoBehaviour
         }
         else
         {
-            Debug.LogError("씬에서 RewindManager 스크립트를 찾을 수 없음. 시간 추적을 시작할 수 없습니다. 씬에 넣는 거 까먹었니 빠가야??");
+            //Debug.LogError("씬에서 RewindManager 스크립트를 찾을 수 없음. 시간 추적을 시작할 수 없습니다. 씬에 넣는 거 까먹었니 빠가야??");
         }
 
         trackedPositionsAndRotation = new CircularBuffer<PositionAndRotationValues>();
