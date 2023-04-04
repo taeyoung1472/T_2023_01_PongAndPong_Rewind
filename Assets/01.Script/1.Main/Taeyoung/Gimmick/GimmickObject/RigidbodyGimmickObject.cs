@@ -28,10 +28,16 @@ public class RigidbodyGimmickObject : GimmickObject
     public void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        RewindManager.Instance.InitRewind += InitOnRewind;
     }
 
     public void FixedUpdate()
     {
         RecordTopPosition();
+    }
+
+    public override void InitOnRewind()
+    {
+        rb.constraints = RigidbodyConstraints.FreezeAll;
     }
 }
