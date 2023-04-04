@@ -49,6 +49,9 @@ public class PlayerTrail : MonoBehaviour
     public bool IsMotionTrail { get => _isMotionTrail; set => _isMotionTrail = value; }
 
     private Transform _trailParentTrm = null;
+    JustMono _mono = null;
+
+    private bool _died = false;
 
     private void Start()
     {
@@ -61,7 +64,7 @@ public class PlayerTrail : MonoBehaviour
         DestroyTrailAll(true);
     }
 
-    
+
     /// <summary>
     /// 그냥 다 부숴버림
     /// </summary>
@@ -70,25 +73,38 @@ public class PlayerTrail : MonoBehaviour
         Debug.Log("잔상 다 지움");
         _isMotionTrail = false;
         StopAllCoroutines();
-        for (int i = 0; i < _enalbeTrails.Count; i++)
+        if (_mono == null)
+            return;
+
+        while (_enalbeTrails.Count > 0)
         {
             var trail = _enalbeTrails.Dequeue();
             if (smooth == false)
             {
-                Destroy(trail.myObj);
-                return;
+                trail.myObj.SetActive(false);
             }
-            MeshRenderer renderer = trail.BodyMeshFilter.GetComponent<MeshRenderer>();
-            _trailParentTrm.gameObject.AddComponent<JustMono>().
-            StartCoroutine(FadeCoroutine(trail, renderer.materials[0].GetColor("_FresnelColor")
-            , renderer.materials[0].GetColor("_BaseColor"),
-            renderer.materials[0].GetFloat("_Alpha")
-            ));
-        }
-        for(int i = 0; i < _readyTrails.Count; i++)
-        {
-            var trail = _enalbeTrails.Dequeue();
-            Destroy(trail.myObj);
+            else
+            {
+                MeshRenderer renderer = trail.BodyMeshFilter.GetComponent<MeshRenderer>();
+                Action action = null;
+                if (_enalbeTrails.Count == 0)
+                {
+                    action = () =>
+                        {
+                            _died = true;
+                            for(int i = 0; i < _trailParentTrm.childCount; i++)
+                            {
+                                Destroy(_trailParentTrm.GetChild(i).gameObject);
+                            }
+                            Destroy(_trailParentTrm.gameObject);
+                        };
+                }
+                _mono.
+                StartCoroutine(FadeCoroutine(trail, renderer.materials[0].GetColor("_FresnelColor")
+                , renderer.materials[0].GetColor("_BaseColor"),
+                renderer.materials[0].GetFloat("_Alpha"), false, action));
+            }
+
         }
     }
 
@@ -96,6 +112,7 @@ public class PlayerTrail : MonoBehaviour
     {
         Debug.Log("TrailInit");
         _trailParentTrm = new GameObject("TrailParentTrm").transform;
+        _mono = _trailParentTrm.gameObject.AddComponent<JustMono>();
         for (int i = 0; i < _spawnCount; i++)
         {
             SpawnTrail();
@@ -125,7 +142,7 @@ public class PlayerTrail : MonoBehaviour
 
     private void Update()
     {
-        if (_isMotionTrail == false)
+        if (_isMotionTrail == false || _died)
             return;
 
         _spawnTimer += Time.deltaTime;
@@ -133,10 +150,6 @@ public class PlayerTrail : MonoBehaviour
         {
             _spawnTimer = 0f;
             PopTrail();
-        }
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            DestroyTrailAll(false);
         }
     }
 
@@ -189,9 +202,12 @@ public class PlayerTrail : MonoBehaviour
     }
 
 
-    private IEnumerator FadeCoroutine(MeshTrailStruct trail, Color startFresnelColor, Color startBaseColor, float startAlpha)
+    private IEnumerator FadeCoroutine(MeshTrailStruct trail, Color startFresnelColor, Color startBaseColor, float startAlpha, bool queueSetting, Action Callback = null)
     {
-        _enalbeTrails.Enqueue(trail);
+        if (queueSetting)
+        {
+            _enalbeTrails.Enqueue(trail);
+        }
         float time = startAlpha;
         while (time >= 0f)
         {
@@ -203,9 +219,13 @@ public class PlayerTrail : MonoBehaviour
             yield return null;
         }
 
-        _enalbeTrails.Dequeue();
+        if (queueSetting)
+        {
+            _enalbeTrails.Dequeue();
+            _readyTrails.Enqueue(trail);
+        }
         trail.myObj.SetActive(false);
-        _readyTrails.Enqueue(trail);
+        Callback?.Invoke();
         yield break;
     }
 
