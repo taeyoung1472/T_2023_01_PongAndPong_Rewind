@@ -27,6 +27,7 @@ public class GenericRewind : RewindAbstract
 
     protected override void RestartObj()
     {
+        Debug.Log("오브젝트 리셋");
         transform.SetPositionAndRotation(originalPos, originalRot);
     }
 

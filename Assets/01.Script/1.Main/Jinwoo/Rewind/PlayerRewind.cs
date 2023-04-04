@@ -17,8 +17,11 @@ public class PlayerRewind : RewindAbstract
     [SerializeField] private List<MonoBehaviour> enableList;
 
     [SerializeField] private CharacterController characterController;
+
+    private Player player;
     protected override void Init()
     {
+        player = GetComponent<Player>();
         animator = transform.GetChild(0).GetComponent<Animator>();
         base.Init();
         characterController = GetComponent<CharacterController>();
@@ -52,7 +55,7 @@ public class PlayerRewind : RewindAbstract
 
     protected override void RestartObj()
     {
-
+        //player.playerTrail.DestroyTrailAll(false);
     }
 
     protected override void Rewind(float seconds)

@@ -4,19 +4,17 @@ using UnityEngine;
 
 public class ScreenBreak : MonoBehaviour
 {
-    private List<Transform> childTrm = new List<Transform>();
+    [SerializeField]private List<Vector3> childTrm = new List<Vector3>();
     private void Awake()
     {
         //Vector3 explosionPosition = new Vector3(45.833f, 0f, 0f);
         foreach (Transform child in transform)
         {
-            if (child.GetComponent<Transform>())
-            {
-                childTrm.Add(child.transform);
-            }
+            childTrm.Add(child.transform.localPosition);
         }
 
     }
+    
     public void BreakScreen(Transform trm)
     {
         foreach (Transform child in transform)
@@ -24,7 +22,8 @@ public class ScreenBreak : MonoBehaviour
             if (child.TryGetComponent<Rigidbody>(out Rigidbody childRigidbody))
             {
                 childRigidbody.isKinematic = false;
-                childRigidbody.AddExplosionForce(70f, trm.position, 15f);
+                //AddExplosionForce(Æø¹ß·Â, Æø¹ßÀ§Ä¡, ¹Ý°æ, À§·Î ¼Ú±¸ÃÄ¿Ã¸®´Â Èû)
+                childRigidbody.AddExplosionForce(120f, trm.position, 7f);
                
             }
         }
@@ -35,9 +34,12 @@ public class ScreenBreak : MonoBehaviour
         int i = 0;
         foreach (Transform child in transform)
         {
-            if (child.GetComponent<Transform>())
+            if (child.TryGetComponent<Rigidbody>(out Rigidbody childRigidbody))
             {
-                child.position = childTrm[i].position;
+                childRigidbody.isKinematic = true;
+                child.localPosition = childTrm[i];
+                child.rotation = Quaternion.identity;
+
                 i++;
             }
         }
