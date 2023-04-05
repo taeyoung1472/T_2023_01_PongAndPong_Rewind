@@ -51,7 +51,24 @@ public class RigidbodyGimmickObject : GimmickObject
 
     public override void InitOnPlay()
     {
+        DisFreeze();
+    }
+
+    public void DisFreeze()
+    {
         if (rb != null)
             rb.constraints = constraints;
+    }
+    private void OnEnable()
+    {
+        if (RewindManager.Instance != null)
+            RewindManager.Instance.RestartPlay += DisFreeze;
+    }
+
+    private void OnDisable()
+    {
+        if (RewindManager.Instance != null)
+            RewindManager.Instance.RestartPlay -= DisFreeze;
+        
     }
 }

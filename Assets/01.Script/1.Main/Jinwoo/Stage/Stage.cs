@@ -52,6 +52,8 @@ public class Stage : MonoBehaviour
             StageManager.Instance.InitPlayer(false);
             curArea.EntryArea();
         }
+
+        RewindManager.Instance.RestartPlay?.Invoke();
     }
 
     IEnumerator StageCycle()

@@ -78,8 +78,8 @@ public class StageManager : MonoSingleTon<StageManager>
     }
     public void OnReStartArea()
     {
-        RewindManager.Instance.RestartPlay?.Invoke();
         curStage.ReStartArea(true);
+        
         isRestartPossible = false;
         reStartCoolTime = 1f;
     }
