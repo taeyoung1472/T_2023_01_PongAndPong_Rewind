@@ -20,7 +20,6 @@ public class LocalPoolManager : MonoBehaviour
         poolTarget = targetObj;
         for (int i = 0; i < count; i++)
         {
-            Debug.Log(PoolTarget);
             PoolAbleObject obj = Instantiate(PoolTarget, transform);
             obj.name = obj.name.Replace("(Clone)", "");
             obj.gameObject.SetActive(false);

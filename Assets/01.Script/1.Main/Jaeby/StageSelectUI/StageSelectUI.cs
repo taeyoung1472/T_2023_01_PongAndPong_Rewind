@@ -223,6 +223,6 @@ public class StageSelectUI : MonoBehaviour
     public void RoadGameScene()
     {
         _curStage.SetStageData();
-        SceneManager.LoadScene(1);
+        LoadingSceneManager.LoadScene(1);
     }
 }
