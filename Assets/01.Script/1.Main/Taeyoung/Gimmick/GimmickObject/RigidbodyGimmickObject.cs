@@ -6,6 +6,7 @@ public class RigidbodyGimmickObject : GimmickObject
     public float RecordPosY { get { return recordPosY; } }
 
     Rigidbody rb;
+    RigidbodyConstraints constraints;
 
     public override void Init()
     {
@@ -28,10 +29,46 @@ public class RigidbodyGimmickObject : GimmickObject
     public void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        if(rb != null)
+            constraints = rb.constraints;
+        if (RewindManager.Instance)
+        {
+            RewindManager.Instance.InitRewind += InitOnRewind;
+            RewindManager.Instance.InitPlay += InitOnPlay;
+        }
     }
 
     public void FixedUpdate()
     {
         RecordTopPosition();
+    }
+
+    public override void InitOnRewind()
+    {
+        if (rb != null)
+            rb.constraints = RigidbodyConstraints.FreezeAll;
+    }
+
+    public override void InitOnPlay()
+    {
+        DisFreeze();
+    }
+
+    public void DisFreeze()
+    {
+        if (rb != null)
+            rb.constraints = constraints;
+    }
+    private void OnEnable()
+    {
+        if (RewindManager.Instance != null)
+            RewindManager.Instance.RestartPlay += DisFreeze;
+    }
+
+    private void OnDisable()
+    {
+        if (RewindManager.Instance != null)
+            RewindManager.Instance.RestartPlay -= DisFreeze;
+        
     }
 }

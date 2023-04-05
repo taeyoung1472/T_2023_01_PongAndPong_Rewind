@@ -42,6 +42,7 @@ public class Player : MonoBehaviour
     public PlayerAttackSO playerAttackSO => _playerAttackSO;
     public PlayerHealthSO playerHealthSO => _playerHealthSO;
     public CharacterController characterController => _characterController;
+    public PlayerTrail playerTrail => _playerTrail;
     public PlayerAudio playerAudio => _playerAudio;
     public PlayerBuff playerBuff => _playerBuff;
     public PlayerHP playerHP => _playerHP;

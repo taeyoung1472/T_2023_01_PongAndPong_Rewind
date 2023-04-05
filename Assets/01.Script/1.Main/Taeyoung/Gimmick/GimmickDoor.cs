@@ -17,6 +17,8 @@ public class GimmickDoor : ControlAbleObjcet
     private void Awake()
     {
         originPos = transform.position;
+        RewindManager.Instance.InitPlay += () => this.enabled = true;
+        RewindManager.Instance.InitRewind += () => this.enabled = false;
     }
 
     private void Update()

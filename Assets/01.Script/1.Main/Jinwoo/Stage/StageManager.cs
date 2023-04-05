@@ -27,9 +27,18 @@ public class StageManager : MonoSingleTon<StageManager>
 
     public Image fadeImg;
 
+    public bool isDownButton = false;
     private float reStartCoolTime = 1f;
+    private float freelookCoolTime = 2f;
     private bool isRestartPossible = false;
 
+    [Header("카메라 관련")]
+    [SerializeField]
+    private FreeLookCamera freeLookCam;
+
+    [Header("효과 관련")]
+    [SerializeField]
+    private ShockWaveController shockWave;
     private void Awake()
     {
         SpawnStage();
@@ -37,6 +46,9 @@ public class StageManager : MonoSingleTon<StageManager>
     }
     public void Update()
     {
+        if (UIManager.Instance.IsPause)
+            return;
+
         if (!isRestartPossible)
         {
             reStartCoolTime -= Time.deltaTime;
@@ -45,15 +57,66 @@ public class StageManager : MonoSingleTon<StageManager>
                 isRestartPossible = true;
             }
         }
-        
-        if (Input.GetKeyDown(KeyCode.R) && isRestartPossible)
+        if (isDownButton)
         {
-            RewindManager.Instance.RestartPlay?.Invoke();
-            curStage.ReStartArea();
-            isRestartPossible = false;
-            reStartCoolTime = 1f;
+            freelookCoolTime -= Time.deltaTime;
+            if (freelookCoolTime < 0f)
+            {
+                isDownButton = false;
+            }
         }
 
+        if (Input.GetKeyDown(KeyCode.R) && isRestartPossible && !freeLookCam._isActivated&&
+            !BreakScreenController.Instance.isBreaking)
+        {
+            OnReStartArea();
+        }
+
+        if (Input.GetKeyDown(KeyCode.T) && isRestartPossible && !isDownButton)
+        {
+            isDownButton = true;
+            GlitchManager.Instance.CoroutineColorDrift();
+            OnFreeLookCam(!freeLookCam._isActivated);
+        }
+
+    }
+    public void PlayShockWave()
+    {
+        shockWave.StartShockWave();
+    }
+    public void OnReStartArea()
+    {
+        curStage.ReStartArea(true);
+        
+        isRestartPossible = false;
+        reStartCoolTime = 1f;
+    }
+    public void OnFreeLookCam(bool isOn)
+    {
+        if (isOn) //자유시점 온
+        {
+            freeLookCam.gameObject.SetActive(true);
+            freeLookCam.Activate(true);
+            if (TimerManager.Instance.isRewinding)
+            {
+                RewindManager.Instance.StopRewindTimeBySeconds();
+            }
+                InitPlayer(false);
+
+            TimerManager.Instance.InitTimer();
+            TimerManager.Instance.ChangeOnTimer(false);
+            TimerManager.Instance.UpdateText();
+
+            RewindManager.Instance.RestartPlay?.Invoke();
+        }
+        else //자유 시점 오프
+        {
+            freeLookCam.gameObject.SetActive(false);
+            freeLookCam.Activate(false);
+
+            curStage.ReStartArea(false);
+        }
+        freelookCoolTime = 2f;
     }
     public StageArea GetCurArea()
     {
@@ -73,6 +136,8 @@ public class StageManager : MonoSingleTon<StageManager>
 
         curStage = Instantiate(curStageDataSO.stagePrefab, Vector3.zero, Quaternion.identity);
         curStage.Init();
+
+        OnFreeLookCam(true);
     }
     public void NextStage()
     {

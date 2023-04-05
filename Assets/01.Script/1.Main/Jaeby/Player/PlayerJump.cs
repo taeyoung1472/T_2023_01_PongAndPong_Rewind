@@ -89,7 +89,9 @@ public class PlayerJump : PlayerAction
             _player.PlayerActionExit(PlayerActionType.WallGrab);
             _player.VeloCityResetImm(x: true, y: true);
             _player.PlayerRenderer.ForceFlip();
-            _jumpCoroutine = StartCoroutine(JumpCoroutine(_player.playerMovementSO.wallJumpPower * _player.PlayerRenderer.Forward.x, _player.playerMovementSO.wallGrabJumpPower));
+            Vector2 jumpDir = _player.playerMovementSO.wallJumpPower;
+            jumpDir.x *= _player.PlayerRenderer.Forward.x;
+            _jumpCoroutine = StartCoroutine(JumpCoroutine(jumpDir, _player.playerMovementSO.wallGrabJumpPower));
             _moveLockCoroutine = StartCoroutine(MoveLockCoroutine());
         }
         else
