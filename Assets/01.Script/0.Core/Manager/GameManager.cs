@@ -38,13 +38,13 @@ public class GameManager : MonoSingleTon<GameManager>
 
     public void LoadMenu()
     {
-        SceneManager.LoadScene(0);//LoadingSceneManager.LoadScene(0);
+        LoadingSceneManager.LoadScene(0);//LoadingSceneManager.LoadScene(0);
         Debug.Log("いい");
     }
 
     public void LoadGame()
     {
-        SceneManager.LoadScene(1);
+        LoadingSceneManager.LoadScene(1);
         Debug.Log("しし");
     }
 }
