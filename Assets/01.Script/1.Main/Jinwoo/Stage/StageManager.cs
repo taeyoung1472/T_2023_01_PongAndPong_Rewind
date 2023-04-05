@@ -35,6 +35,10 @@ public class StageManager : MonoSingleTon<StageManager>
     [Header("카메라 관련")]
     [SerializeField]
     private FreeLookCamera freeLookCam;
+
+    [Header("효과 관련")]
+    [SerializeField]
+    private ShockWaveController shockWave;
     private void Awake()
     {
         SpawnStage();
@@ -75,6 +79,10 @@ public class StageManager : MonoSingleTon<StageManager>
             OnFreeLookCam(!freeLookCam._isActivated);
         }
 
+    }
+    public void PlayShockWave()
+    {
+        shockWave.StartShockWave();
     }
     public void OnReStartArea()
     {
