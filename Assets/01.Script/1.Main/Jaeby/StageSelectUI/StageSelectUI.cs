@@ -1,10 +1,7 @@
 using DG.Tweening;
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using static Define;
 
@@ -17,8 +14,6 @@ public class StageSelectUI : MonoBehaviour
 
     [SerializeField]
     private StageInfoUI _stageInfoUI = null;
-    [SerializeField]
-    private GameObject _marker = null;
 
     [SerializeField]
     private ScrollRect _scrollRect = null;

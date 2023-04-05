@@ -1,7 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 [CreateAssetMenu (menuName = "SO/DialogOption/Data")]
 public class DialogOptionDataSO : ScriptableObject

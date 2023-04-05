@@ -1,11 +1,9 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using DG.Tweening;
 
 public class KeyMappingUI : MonoBehaviour
 {
@@ -20,8 +18,6 @@ public class KeyMappingUI : MonoBehaviour
     private GameObject _mainPanel = null;
     [SerializeField]
     private GameObject _keyMappingPanel = null;
-    [SerializeField]
-    private GameObject _startButton = null;
     [SerializeField]
     private GameObject _mappingStartUI = null;
 

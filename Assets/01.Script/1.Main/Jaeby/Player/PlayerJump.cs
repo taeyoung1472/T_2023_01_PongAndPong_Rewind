@@ -1,7 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -93,6 +91,7 @@ public class PlayerJump : PlayerAction
             jumpDir.x *= _player.PlayerRenderer.Forward.x;
             _jumpCoroutine = StartCoroutine(JumpCoroutine(jumpDir, _player.playerMovementSO.wallGrabJumpPower));
             _moveLockCoroutine = StartCoroutine(MoveLockCoroutine());
+            OnWallGrabJump?.Invoke();
         }
         else
         {
