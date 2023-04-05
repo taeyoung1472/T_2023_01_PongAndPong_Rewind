@@ -6,6 +6,9 @@ public class FocusObject : MonoBehaviour
 {
     private void OnEnable()
     {
+        if (CamManager.Instance == null)
+            return;
+
         CamManager.Instance.AddTargetGroup(transform);
     }
 
