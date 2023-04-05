@@ -14,8 +14,9 @@ public abstract class RewindAbstract : MonoBehaviour
     protected AudioSource audioSource;
 
 
-    protected void Awake()
+    protected virtual void Awake()
     {
+        Debug.Log(transform.position + name + "1");
         Init();
     }
 
@@ -45,6 +46,7 @@ public abstract class RewindAbstract : MonoBehaviour
                 trackedAnimationTimes.Add(new CircularBuffer<AnimationValues>());
         }
         trackedAudioTimes = new CircularBuffer<AudioTrackedData>();
+        Debug.Log(transform.position + name + "2");
     }
     public void InitBuffer()
     {
@@ -419,7 +421,7 @@ public abstract class RewindAbstract : MonoBehaviour
             RewindManager.Instance.InitRewind += InitOnRewind;
             RewindManager.Instance.RestartPlay += RestartObj;
         }
-            
+        Debug.Log(transform.position + name + "?");
     }
     protected void OnDisable()
     {
