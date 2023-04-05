@@ -36,7 +36,7 @@ public class Stage : MonoBehaviour
         }
         else //그냥 자유시점이면 연출 다른거나 안넣고
         {
-
+            
         }
         yield return new WaitUntil(()=> !BreakScreenController.Instance.isBreaking);
 
@@ -52,7 +52,6 @@ public class Stage : MonoBehaviour
             StageManager.Instance.InitPlayer(false);
             curArea.EntryArea();
         }
-
     }
 
     IEnumerator StageCycle()

@@ -96,5 +96,6 @@ public class UIManager : MonoSingleTon<UIManager>
     public void PauseMenu()
     {
         SceneManager.LoadScene(0);
+        Time.timeScale = 1;
     }
 }
