@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -7,8 +5,6 @@ public class PlayerRenderer : MonoBehaviour
 {
     private bool _fliped = false;
     public bool Fliped => _fliped;
-    [SerializeField]
-    private float _rotationSpeed = 1000f;
     [SerializeField]
     private UnityEvent<bool> OnFliped = null;
 
