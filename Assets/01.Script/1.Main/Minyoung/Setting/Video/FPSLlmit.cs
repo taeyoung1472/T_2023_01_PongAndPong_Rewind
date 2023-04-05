@@ -5,8 +5,6 @@ using UnityEngine.UI;
 using TMPro;
 public class FPSLlmit : MonoBehaviour
 {
-    public Dropdown fpsDroptown;
-
     [SerializeField] private List<int> fpsList = new List<int>();
 
     public Button preBtn;
@@ -15,10 +13,12 @@ public class FPSLlmit : MonoBehaviour
     public int index = 0;
 
     public TextMeshProUGUI fpsText;
-    public void Awake()
+
+    private void Awake()
     {
-        InitUI();
+        Application.targetFrameRate = fpsList[index];
     }
+
     public void Start()
     {
         preBtn.onClick.AddListener(() =>
@@ -27,6 +27,7 @@ public class FPSLlmit : MonoBehaviour
             {
                 index--;
                 fpsText.text = fpsList[index].ToString();
+                ApplyFPS();
             }
         });
         nextBtn.onClick.AddListener(() =>
@@ -39,29 +40,12 @@ public class FPSLlmit : MonoBehaviour
             {
                 index++;
             }
-
-            //index = index % fpsList.Count;
             fpsText.text = fpsList[index].ToString();
+            ApplyFPS();
         });
     }
-    private void InitUI()
-    {
-        //fpsDroptown.options.Clear();
-
-        //for (int i = 0; i < fpsList.Count; i++)
-        //{
-        //    Dropdown.OptionData option = new Dropdown.OptionData();
-
-        //    option.text = fpsList[i].ToString();
-        //    fpsDroptown.options.Add(option);
-        //}
-        //fpsDroptown.RefreshShownValue();
-
-    }
-
     public void ApplyFPS()
     {
-        // Application.targetFrameRate = fpsDroptown.value;
         Application.targetFrameRate = int.Parse(fpsText.text);
         Debug.Log(Application.targetFrameRate);
     }

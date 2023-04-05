@@ -48,10 +48,10 @@ public class PlayerInput : MonoBehaviour
             x++;
         if (Input.GetKey(KeyManager.keys[InputType.Left]))
             x--;
-        if (Input.GetKey(KeyManager.keys[InputType.Up]))
-            y++;
-        if (Input.GetKey(KeyManager.keys[InputType.Down]))
-            y--;
+        //if (Input.GetKey(KeyManager.keys[InputType.Up]))
+        //    y++;
+        //if (Input.GetKey(KeyManager.keys[InputType.Down]))
+        //    y--;
         if (_player.playerBuff.BuffCheck(PlayerBuffType.Reverse))
         {
             x *= -1;
