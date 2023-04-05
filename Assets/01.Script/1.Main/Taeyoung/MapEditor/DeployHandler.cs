@@ -28,7 +28,7 @@ public class DeployHandler : MonoBehaviour
 
     private BoxCollider boxCollider;
 
-    #if UNITY_EDITOR
+#if UNITY_EDITOR
     public void OnDrawGizmos()
     {
         if (drawMode == DrawMode.None)
@@ -223,7 +223,7 @@ public class DeployHandler : MonoBehaviour
 
         float curX = minX;
         float curY = minY;
-        if(prefab != null)
+        if (prefab != null)
         {
             while (curX < maxX)
             {
@@ -264,7 +264,7 @@ public class DeployHandler : MonoBehaviour
                 }
             }
         }
-        if(decalPrefab != null)
+        if (decalPrefab != null)
         {
             curX = minX;
             curY = minY;

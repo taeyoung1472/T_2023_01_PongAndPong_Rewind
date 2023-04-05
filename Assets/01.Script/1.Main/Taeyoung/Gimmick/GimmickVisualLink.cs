@@ -1,7 +1,5 @@
 using DigitalRuby.ThunderAndLightning;
 using Highlighters;
-using System.Collections;
-using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -31,7 +29,7 @@ public class GimmickVisualLink : MonoBehaviour
         lightning.gameObject.SetActive(true);
         lightning.LightningTintColor = color;
 
-        if(start.GetComponent<Highlighter>() == null)
+        if (start.GetComponent<Highlighter>() == null)
         {
             Highlighter highlighter = start.AddComponent<Highlighter>();
             highlighter.GetRenderers();
@@ -72,7 +70,7 @@ public class GimmickVisualLink : MonoBehaviour
             return;
 
         linkTimer -= Time.deltaTime;
-        if(linkTimer < 0)
+        if (linkTimer < 0)
         {
             linkTimer = 0.1f;
             float depth = Mathf.Log10(Vector3.Distance(start.position, end.position)) * 2.5f;

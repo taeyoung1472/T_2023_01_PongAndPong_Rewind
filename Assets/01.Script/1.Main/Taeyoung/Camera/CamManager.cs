@@ -1,21 +1,19 @@
 using Cinemachine;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CamManager : MonoSingleTon<CamManager>
 {
     CinemachineTargetGroup cinemachineTargetGroup;
-    CinemachineTargetGroup CinemachineTargetGroup 
-    { 
-        get 
-        { 
-            if (cinemachineTargetGroup == null) 
+    CinemachineTargetGroup CinemachineTargetGroup
+    {
+        get
+        {
+            if (cinemachineTargetGroup == null)
             {
                 cinemachineTargetGroup = FindObjectOfType<CinemachineTargetGroup>();
             }
-            return cinemachineTargetGroup; 
-        } 
+            return cinemachineTargetGroup;
+        }
     }
 
     public void AddTargetGroup(Transform target, float weight = 1f, float radius = 3f)
