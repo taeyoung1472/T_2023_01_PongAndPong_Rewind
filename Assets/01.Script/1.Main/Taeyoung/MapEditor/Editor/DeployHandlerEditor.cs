@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -18,7 +16,7 @@ public class DeployHandlerEditor : Editor
     //SerializedProperty decalRotXProperty;
     //SerializedProperty decalRotYProperty;
     //SerializedProperty decalRotZProperty;
-    
+
     private void OnEnable()
     {
         myScript = target as DeployHandler;
@@ -81,7 +79,7 @@ public class DeployHandlerEditor : Editor
         {
             foreach (var obj in Selection.gameObjects)
             {
-                if(obj.TryGetComponent<DeployHandler>(out DeployHandler handler))
+                if (obj.TryGetComponent<DeployHandler>(out DeployHandler handler))
                 {
                     handler.Clear();
                 }
