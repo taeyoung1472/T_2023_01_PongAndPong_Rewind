@@ -74,14 +74,14 @@ public class KeyMappingUI : MonoBehaviour
             keyUI[(InputType)i].DisplayData((InputType)i, KeyManager.keys[(InputType)i]);
         }
         _mainPanel.SetActive(true);
-        _startButton.SetActive(false);
+        //_startButton.SetActive(false);
     }
 
     public void UIOff()
     {
         _saveKeys.Clear();
         _mainPanel.SetActive(false);
-        _startButton.SetActive(true);
+       // _startButton.SetActive(true);
     }
 
     public void KeyMappingStart(InputType type)
