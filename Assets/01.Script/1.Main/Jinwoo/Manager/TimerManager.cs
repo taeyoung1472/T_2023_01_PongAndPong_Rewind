@@ -114,7 +114,10 @@ public class TimerManager : MonoSingleTon<TimerManager>
         CurrentTimer += Time.deltaTime;
 
         UpdateText();
-
+        //if (CurrentTimer > RewindingTime - 0.5f)
+        //{
+        //    StageManager.Instance.PlayShockWave();
+        //}
         if (CurrentTimer > RewindingTime) //시간이 다 달음
         {
             //StageTestManager.Instance.curArea.Rewind();

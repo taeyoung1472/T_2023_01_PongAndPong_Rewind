@@ -29,7 +29,6 @@ public class StageArea : MonoBehaviour
     public void Rewind()
     {
         StageManager.Instance.SpawnPlayer(rewindPlayerSpawn, false);
-
     }
 
     public void ExitArea()
