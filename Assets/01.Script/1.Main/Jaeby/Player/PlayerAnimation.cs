@@ -127,4 +127,26 @@ public class PlayerAnimation : MonoBehaviour
     {
         _animator.SetFloat("VelocityY", _player.characterController.velocity.y);
     }
+
+    #region Event
+    float landedTime = 0.0f;
+    public void OnLanded()
+    {
+        if (Time.time < landedTime + 0.2f)
+            return;
+
+        landedTime = Time.time;
+        _player.playerAudio.OnGroundedAudio();
+    }
+
+    float jumpTime = 0.0f;
+    public void OnJump()
+    {
+        if (Time.time < jumpTime + 0.2f)
+            return;
+
+        jumpTime = Time.time;
+        _player.playerAudio.JumpAudio();
+    }
+    #endregion
 }
