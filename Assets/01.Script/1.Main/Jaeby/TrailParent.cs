@@ -18,6 +18,8 @@ public class TrailParent : MonoBehaviour
     public float SpawnTimer { get => _spawnTimer; set => _spawnTimer = value; }
     private float _trailSpawnTime = 0f;
 
+    private MeshFilter _meshFilter = null;
+
     public void Init(TrailableObject obj)
     {
         _trailableObject = obj;
@@ -28,7 +30,7 @@ public class TrailParent : MonoBehaviour
     public void ForceDeleteTrail()
     {
         StopAllCoroutines();
-        while(_enalbeTrails.Count != 0)
+        while (_enalbeTrails.Count != 0)
         {
             MeshTrailStruct trail = _enalbeTrails.Dequeue();
             trail.myObj.SetActive(false);
@@ -40,11 +42,22 @@ public class TrailParent : MonoBehaviour
     {
         MeshTrailStruct trail = TrailManager.Instance.SpawnTrail(this);
         _readyTrails.Enqueue(trail);
+        trail.BodyMeshFilter = trail.myObj.transform.GetChild(0).GetComponent<MeshFilter>();
+        trail.bodyMesh = new Mesh();
+        MeshSet(trail);
 
         MeshRenderer renderer = trail.BodyMeshFilter.GetComponent<MeshRenderer>();
         List<Material> materials = new List<Material>();
-        for (int i = 0; i < _data._skinnedMeshRenderers[0].materials.Length; i++)
-            materials.Add(_data.trailMaterial);
+        if (_data._skinnedMeshRenderer != null)
+        {
+            for (int i = 0; i < _data._skinnedMeshRenderer.materials.Length; i++)
+                materials.Add(_data.trailMaterial);
+        }
+        else if (_data._meshRenderer != null)
+        {
+            for (int i = 0; i < _data._meshRenderer.materials.Length; i++)
+                materials.Add(_data.trailMaterial);
+        }
         renderer.materials = materials.ToArray();
         materialUpdate(renderer, 1f, _data.startFresnelColor, _data.startBaseColor);
     }
@@ -58,11 +71,25 @@ public class TrailParent : MonoBehaviour
 
         MeshTrailStruct trail = _readyTrails.Dequeue();
         trail.bodyMesh = new Mesh();
-        _data._skinnedMeshRenderers[0].BakeMesh(trail.bodyMesh);
-        trail.BodyMeshFilter.mesh = trail.bodyMesh;
+        MeshSet(trail);
         trail.myObj.SetActive(true);
         trail.myObj.transform.SetPositionAndRotation(_data.spawnTrm.position, _data.spawnTrm.rotation);
         StartCoroutine(FadeCoroutine(trail));
+    }
+
+    private void MeshSet(MeshTrailStruct trail)
+    {
+        if (_data._skinnedMeshRenderer != null)
+        {
+            _data._skinnedMeshRenderer.BakeMesh(trail.bodyMesh);
+            trail.BodyMeshFilter.mesh = trail.bodyMesh;
+        }
+        else if (_data._meshRenderer != null)
+        {
+            if (_meshFilter == null)
+                _meshFilter = _data._meshRenderer.GetComponent<MeshFilter>();
+            trail.BodyMeshFilter.mesh = _meshFilter.mesh;
+        }
     }
 
     private IEnumerator FadeCoroutine(MeshTrailStruct trail)

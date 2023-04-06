@@ -40,11 +40,6 @@ public class TrailManager : MonoSingleTon<TrailManager>
     {
         MeshTrailStruct pss = new MeshTrailStruct();
         pss.myObj = Instantiate(_meshTrailPrefab, parent.transform);
-        pss.BodyMeshFilter = pss.myObj.transform.GetChild(0).GetComponent<MeshFilter>();
-
-        pss.bodyMesh = new Mesh();
-        parent.Data._skinnedMeshRenderers[0].BakeMesh(pss.bodyMesh);
-        pss.BodyMeshFilter.mesh = pss.bodyMesh;
         pss.myObj.SetActive(false);
         return pss;
     }
@@ -88,6 +83,6 @@ public class TrailableData
     public Color endBaseColor = Color.white;
     public float trailSpawnTime = 0.2f; // 持失 爽奄
     public float fadeDuration = 0.5f;
-    public List<SkinnedMeshRenderer> _skinnedMeshRenderers = new(); // ぞぞ
-    public List<MeshRenderer> _meshRenderers = new();
+    public SkinnedMeshRenderer _skinnedMeshRenderer = new(); // ぞぞ
+    public MeshRenderer _meshRenderer = new();
 }
