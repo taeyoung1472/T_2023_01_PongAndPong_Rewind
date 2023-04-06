@@ -29,7 +29,7 @@ public class RigidbodyGimmickObject : GimmickObject
     public void Awake()
     {
         rb = GetComponent<Rigidbody>();
-        if(rb != null)
+        if (rb != null)
             constraints = rb.constraints;
         if (RewindManager.Instance)
         {
@@ -69,6 +69,6 @@ public class RigidbodyGimmickObject : GimmickObject
     {
         if (RewindManager.Instance != null)
             RewindManager.Instance.RestartPlay -= DisFreeze;
-        
+
     }
 }

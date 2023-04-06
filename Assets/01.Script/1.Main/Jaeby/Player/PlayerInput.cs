@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -40,7 +38,10 @@ public class PlayerInput : MonoBehaviour
         {
             PlayerInteract playerInteract = _player.GetPlayerAction(PlayerActionType.Interact) as PlayerInteract;
             if (playerInteract.TryInteract())
+            {
+                OnInteract?.Invoke();
                 return;
+            }
         }
 
         int x = 0, y = 0;

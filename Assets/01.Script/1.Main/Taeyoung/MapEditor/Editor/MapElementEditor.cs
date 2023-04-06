@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -28,10 +26,10 @@ public class MapElementEditor : Editor
                 break;
         }
 
-        if(GUILayout.Button("Collider 기준으로"))
+        if (GUILayout.Button("Collider 기준으로"))
         {
             Collider col = myScript.GetComponent<Collider>();
-            if(col == null)
+            if (col == null)
             {
                 Debug.LogWarning("콜라이더가 없는데?");
                 return;

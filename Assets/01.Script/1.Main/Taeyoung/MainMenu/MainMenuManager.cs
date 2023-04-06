@@ -1,8 +1,6 @@
 using Cinemachine;
 using DG.Tweening;
 using System.Collections;
-using System.Collections.Generic;
-using System.Net.Mime;
 using UnityEngine;
 
 public class MainMenuManager : MonoSingleTon<MainMenuManager>

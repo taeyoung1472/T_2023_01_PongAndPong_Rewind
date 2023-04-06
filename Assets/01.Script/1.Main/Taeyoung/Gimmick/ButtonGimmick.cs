@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -8,13 +6,13 @@ using Random = UnityEngine.Random;
 public class ButtonGimmick : MonoBehaviour
 {
     [SerializeField] private bool isTogle;
-    private bool toggleFlag = false;
+    //private bool toggleFlag = false;
 
     bool isActive = false;
 
     [SerializeField] private ControlData[] controlDataArr;
     [SerializeField] private GimmickVisualLink visualLinkPrefab;
-    [SerializeField] private Color color =  Color.white;
+    [SerializeField] private Color color = Color.white;
 
     [ContextMenu("Gen Color")]
     public void GenColor()
@@ -112,7 +110,7 @@ public class ButtonGimmick : MonoBehaviour
         {
             isActive = true;
         }
-        
+
         //if (!isTogle) return;
         //toggleFlag = !toggleFlag;
         //if (other.TryGetComponent<GimmickObject>(out GimmickObject gimmickObject))
@@ -166,7 +164,7 @@ public class ButtonGimmick : MonoBehaviour
 
     //private void OnControllerColliderHit(ControllerColliderHit hit)
     //{
-        
+
     //}
 
 #if UNITY_EDITOR
