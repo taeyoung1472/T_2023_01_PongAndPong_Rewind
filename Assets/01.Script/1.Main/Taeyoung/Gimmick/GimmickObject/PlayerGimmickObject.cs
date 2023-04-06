@@ -5,8 +5,6 @@ public class PlayerGimmickObject : RigidbodyGimmickObject
     private Player _player = null;
     [SerializeField]
     private float _springAmplification = 5f;
-    [SerializeField]
-    private float _minSpringForce = 3f;
 
     public override void AddForce(Vector3 dir, float force, ForceMode forceMode = ForceMode.Impulse)
     {
