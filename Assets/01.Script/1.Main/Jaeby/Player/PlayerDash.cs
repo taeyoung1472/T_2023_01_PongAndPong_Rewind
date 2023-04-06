@@ -38,7 +38,6 @@ public class PlayerDash : PlayerAction
         GameObject effectObj = PoolManager.Pop(PoolType.DashEffect);
         effectObj.transform.SetPositionAndRotation(transform.position + transform.up * 0.65f + transform.forward * 0.15f, _player.PlayerRenderer.GetFlipedRotation(DirType.Back, RotAxis.Y));
         OnDashStarted?.Invoke(_player.PlayerInput.InputVectorNorm);
-        _player.playerAudio.DashAudio();
     }
 
     private IEnumerator DashCoroutine(bool slide)

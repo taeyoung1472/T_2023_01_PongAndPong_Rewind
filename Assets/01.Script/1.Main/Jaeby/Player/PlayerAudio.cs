@@ -21,8 +21,12 @@ public class PlayerAudio : MonoBehaviour
     {
         AudioManager.PlayAudioRandPitch(SoundType.Jump);
     }
-    public void DashAudio()
+    public void DashAirAudio()
     {
-        AudioManager.PlayAudioRandPitch(SoundType.Dash);
+        AudioManager.PlayAudioRandPitch(SoundType.DashAir);
+    }
+    public void DashGroundAudio()
+    {
+        AudioManager.PlayAudioRandPitch(SoundType.DashGround);
     }
 }

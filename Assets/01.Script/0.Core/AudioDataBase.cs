@@ -33,7 +33,8 @@ public class AudioDataBase : ScriptableObject
 public enum SoundType
 {
     Footstep,
-    Dash,
+    DashAir,
+    DashGround,
     Attack,
     Jump,
     OnGrounded
