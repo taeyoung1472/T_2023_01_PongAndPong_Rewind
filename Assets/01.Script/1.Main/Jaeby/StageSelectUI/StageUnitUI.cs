@@ -1,10 +1,13 @@
 using UnityEngine;
 using DG.Tweening;
 using UnityEngine.UI;
+using TMPro;
 
 public class StageUnitUI : MonoBehaviour
 {
     private Sequence _seq = null;
+    [SerializeField]
+    private TextMeshProUGUI _stageIndexText = null;
     [SerializeField]
     private Image _iconImage = null;
     [SerializeField]
@@ -18,6 +21,13 @@ public class StageUnitUI : MonoBehaviour
     private void Awake()
     {
         _animator = _iconImage.GetComponent<Animator>();
+        StageIndexTextSet();
+    }
+
+    private void StageIndexTextSet()
+    {
+        string[] names = _stageDataSO.name.Split('_');
+        _stageIndexText.SetText(names[1]);
     }
 
     public void UIAccent(Color endColor, float endSize, float duration, bool animationLoop = false)
