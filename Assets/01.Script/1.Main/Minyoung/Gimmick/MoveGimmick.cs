@@ -4,8 +4,8 @@ using UnityEngine;
 using DG.Tweening;
 public class MoveGimmick : GimmickObject
 {
-    [SerializeField] private Vector3 firstmovePos;
-    [SerializeField] private Vector3 secondmovePos;
+    private Vector3 firstmovePos;
+    private Vector3 secondmovePos;
     [SerializeField] private float waitTime = 2f;
     [SerializeField] private float moveTime = 3f;
     [SerializeField] private float moveDistance = 5f;
@@ -55,5 +55,4 @@ public class MoveGimmick : GimmickObject
     public override void Init()
     {
     }
-
 }

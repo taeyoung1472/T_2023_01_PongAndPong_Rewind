@@ -73,15 +73,21 @@ public class GravityInverseGimmick : GimmickObject
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("GimmickPlayerCol"))
+        if (other.CompareTag("Player"))
         {
             if (module == null)
-                module = other.GetComponentInParent<GravityModule>();
+                module = other.GetComponent<GravityModule>();
             if (player == null)
-                player = other.GetComponentInParent<Player>();
+                player = other.GetComponent<Player>();
+
+
+            //player.transform.rotation = Quaternion.Euler(180f, player.transform.rotation.eulerAngles.y, 0f);
+
 
             player.PlayerRenderer.flipDirection = FlipDirection.Up;
-            module.GravityScale = 0.8f;
+            module.GravityScale = 0.4f;
+            Debug.Log(module.GravityScale);
+
             module.GravityDir = new Vector3(0f, 9.8f, 0f);
         }
     }
@@ -93,9 +99,8 @@ public class GravityInverseGimmick : GimmickObject
             return;
         }
         module.GravityScale = module.OriginGravityScale;
-        module.GravityDir = new Vector3(0f, -9.8f, 0f);
         player.PlayerRenderer.flipDirection = FlipDirection.Down;
 
-
+        module.GravityDir = new Vector3(0f, -9.8f, 0f);
     }
 }
