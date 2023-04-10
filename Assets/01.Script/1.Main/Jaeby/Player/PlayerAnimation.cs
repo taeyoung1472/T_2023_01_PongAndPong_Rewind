@@ -127,4 +127,46 @@ public class PlayerAnimation : MonoBehaviour
     {
         _animator.SetFloat("VelocityY", _player.characterController.velocity.y);
     }
+
+    #region Event
+    float landedTime = 0.0f;
+    public void OnLanded()
+    {
+        if (Time.time < landedTime + 0.2f)
+            return;
+
+        landedTime = Time.time;
+        _player.playerAudio.OnGroundedAudio();
+    }
+
+    float jumpTime = 0.0f;
+    public void OnJump()
+    {
+        if (Time.time < jumpTime + 0.2f)
+            return;
+
+        jumpTime = Time.time;
+        _player.playerAudio.JumpAudio();
+    }
+
+    float dashAirTime = 0.0f;
+    public void OnDashAir()
+    {
+        if (Time.time < dashAirTime + 0.2f)
+            return;
+
+        dashAirTime = Time.time;
+        _player.playerAudio.DashAirAudio();
+    }
+
+    float dashGroundTime = 0.0f;
+    public void OnDashGround()
+    {
+        if (Time.time < dashGroundTime + 0.2f)
+            return;
+
+        dashGroundTime = Time.time;
+        _player.playerAudio.DashGroundAudio();
+    }
+    #endregion
 }
