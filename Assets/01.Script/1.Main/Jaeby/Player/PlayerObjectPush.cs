@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using static Highlighters.HighlighterTrigger;
@@ -47,7 +48,7 @@ public class PlayerObjectPush : PlayerAction
         }
     }
 
-    private void OnCollisionExit(Collision collision)
+    private void Update()
     {
         if (_pushingCollider.Count == 0)
         {
@@ -55,12 +56,32 @@ public class PlayerObjectPush : PlayerAction
             return;
         }
 
-        if (_pushingCollider.Contains(collision))
+        List<Collision> removeList = null;
+
+        for (int i = 0; i < _pushingCollider.Count; i++)
         {
-            _pushingCollider.Remove(collision);
-            _pushingHashs.Remove(collision.gameObject.GetHashCode());
-            Debug.Log("오브젝트 밀기 빠져나감");
-            OnExitCollider?.Invoke();
+            Vector3 distanceDir = (_pushingCollider[i].transform.position.x > transform.position.x) ? Vector3.right : Vector2.left;
+            Vector3 dir = Vector3.zero;
+            float distance = 0f;
+            bool result = Physics.ComputePenetration(_player.Col, _player.transform.position + (distanceDir * _littleBitMore), _player.transform.rotation,
+                _pushingCollider[i].collider, _pushingCollider[i].transform.position, _pushingCollider[i].transform.rotation, out dir, out distance);
+
+            if (result == false || Vector3.Dot(_player.PlayerRenderer.Forward, _pushingCollider[i].transform.position - _player.transform.position) < 0f)
+            {
+                if (removeList == null)
+                    removeList = new List<Collision>();
+                removeList.Add(_pushingCollider[i]);
+                Debug.Log("오브젝트 밀기 빠져나감");
+                OnExitCollider?.Invoke();
+            }
+        }
+        if(removeList != null)
+        {
+            for(int i = 0; i < removeList.Count; i++)
+            {
+                _pushingHashs.Remove(removeList[i].gameObject.GetHashCode());
+                _pushingCollider.Remove(removeList[i]);
+            }
         }
     }
 
