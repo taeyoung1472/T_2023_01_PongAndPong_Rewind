@@ -5062,12 +5062,15 @@ GameObject:
   - component: {fileID: 6691628707489746808}
   - component: {fileID: 2687664122374465103}
   - component: {fileID: 6691628707489746800}
-  - component: {fileID: 2107113398}
-  - component: {fileID: 4411050099202322467}
-  - component: {fileID: 7983978119289550001}
-  - component: {fileID: 8146940646692169744}
   - component: {fileID: -6009568936688706850}
   - component: {fileID: 1809753180866780131}
+  - component: {fileID: 532921133}
+  - component: {fileID: 532921131}
+  - component: {fileID: 532921132}
+  - component: {fileID: 5299624515096083458}
+  - component: {fileID: 925379553289085783}
+  - component: {fileID: 3274698464770673063}
+  - component: {fileID: 7175846074376687810}
   m_Layer: 0
   m_Name: NewPlayer
   m_TagString: Player
@@ -5299,7 +5302,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f682116768904464f9af8873b541908e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _springAmplification: 5
+  _springAmplification: 20
   _minSpringForce: 3
 --- !u!114 &4173287881949798369
 MonoBehaviour:
@@ -5422,19 +5425,7 @@ MonoBehaviour:
         m_CallState: 2
   OnInteract:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 6036129167968237303}
-        m_TargetAssemblyTypeName: PlayerInteract, Assembly-CSharp
-        m_MethodName: TryInteract
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &6691628707489746804
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5612,7 +5603,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &2107113398
+--- !u!114 &-6009568936688706850
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5621,22 +5612,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 6691628707489746810}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 081a2843c2d59294e85c01ab952a6b22, type: 3}
+  m_Script: {fileID: 11500000, guid: c746129da25b5564cbe4e8f063ce4547, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spawnTrm: {fileID: 64421404}
-  _trailMaterial: {fileID: 2100000, guid: 87a8e7835a48e984caf2614f59fbd386, type: 2}
-  _startFresnelColor: {r: 0.7058824, g: 0.08627451, b: 2, a: 1}
-  _startBaseColor: {r: 0.28798994, g: 0.20854434, b: 2.1053047, a: 1}
-  _endFresnelColor: {r: 0.44869074, g: 0, b: 0.745283, a: 1}
-  _endBaseColor: {r: 0.013665216, g: 0, b: 0.33962262, a: 1}
-  _meshTrailPrefab: {fileID: 4867553156401008734, guid: 82c8866aba5457b4283e92a329e38fbb, type: 3}
-  _skinnedMeshRenderer: {fileID: 112894375679413401}
-  _spawnCount: 10
-  _trailSpawnTime: 0.06
-  _fadeDuration: 0.5
-  _isMotionTrail: 0
---- !u!136 &4411050099202322467
+--- !u!114 &1809753180866780131
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6691628707489746810}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcc49bd7f04dd7b4b9d023d360f8cd7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!136 &532921133
 CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5647,26 +5638,138 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.35
-  m_Height: 1.65
+  m_Height: 1.45
   m_Direction: 1
-  m_Center: {x: 0, y: 0.725, z: 0}
---- !u!54 &7983978119289550001
-Rigidbody:
+  m_Center: {x: 0, y: 0.3, z: 0}
+--- !u!114 &532921131
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6691628707489746810}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 126
-  m_CollisionDetection: 0
---- !u!114 &8146940646692169744
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ca797615ce5c344e9edd1be69f89403, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefix: '@'
+  backColor: {r: 0.7810386, g: 0.7783019, b: 1, a: 1}
+  fontColor: {r: 0, g: 0, b: 0, a: 1}
+--- !u!114 &532921132
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6691628707489746810}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0970a923eff145744a66a980e20b235c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  highlighterSettings:
+    depthMask: 0
+    infoRenderScale: 1
+    useOuterGlow: 0
+    useSingleOuterGlow: 1
+    outerGlowColorFront: {r: 0, g: 0, b: 0, a: 1}
+    outerGlowColorBack: {r: 0, g: 0, b: 0, a: 1}
+    outlineVisibleBeforeObject: 1
+    blurType: 1
+    blendType: 0
+    boxBlurSize: 0.04
+    blurIterations: 40
+    blurRenderScale: 1
+    blurIntensity: 1
+    blurIntensityMultiplier: 1
+    blurAdaptiveThickness: 0
+    cameraDistanceMultiplier: 1
+    useMeshOutline: 1
+    useSingleMeshOutline: 1
+    meshOutlineFront:
+      color: {r: 1, g: 1, b: 1, a: 1}
+    meshOutlineBack:
+      color: {r: 1, g: 1, b: 1, a: 1}
+    meshOutlineThickness: 0.015
+    meshOutlineAdaptiveThickness: 0
+    useInnerGlow: 0
+    useSingleInnerGlow: 1
+    innerGlowFront:
+      color: {r: 0, g: 1, b: 1, a: 1}
+      power: 4
+    innerGlowBack:
+      color: {r: 0, g: 1, b: 1, a: 1}
+      power: 4
+    useOverlay: 1
+    useSingleOverlay: 1
+    overlayFront:
+      color: {r: 0, g: 1, b: 1, a: 0.19607843}
+      useTexture: 0
+      texture: {fileID: 0}
+      background: 0
+      tilling: 60
+      rotation: 0
+    overlayBack:
+      color: {r: 0, g: 1, b: 1, a: 0.19607843}
+      useTexture: 0
+      texture: {fileID: 0}
+      background: 0
+      tilling: 60
+      rotation: 0
+    RenderingBoundsSizeIncrease: 0.2
+    RenderingBoundsDistanceFix: 0
+    RenderingBoundsMaxDistanceFix: 1
+    RenderingBoundsMinDistanceFix: 0
+  findRenderers: 0
+  renderers:
+  - renderer: {fileID: 112894375679413401}
+    useCutout: 0
+    clippingThreshold: 0
+    clippingSource: 0
+    clipTexture: {fileID: 0}
+    submeshIndexes: 0000000001000000020000000300000004000000
+    cullMode: 2
+  - renderer: {fileID: 196536015}
+    useCutout: 0
+    clippingThreshold: 0
+    clippingSource: 0
+    clipTexture: {fileID: 0}
+    submeshIndexes: 
+    cullMode: 2
+  id: 2
+  showRenderBounds: 0
+  showScreenAdjustedRenderBounds: 0
+--- !u!136 &5299624515096083458
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6691628707489746810}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.35
+  m_Height: 1.45
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.3, z: 0}
+--- !u!114 &925379553289085783
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6691628707489746810}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ca797615ce5c344e9edd1be69f89403, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefix: '@'
+  backColor: {r: 0.7810386, g: 0.7783019, b: 1, a: 1}
+  fontColor: {r: 0, g: 0, b: 0, a: 1}
+--- !u!114 &3274698464770673063
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5750,7 +5853,7 @@ MonoBehaviour:
   id: 1
   showRenderBounds: 0
   showScreenAdjustedRenderBounds: 0
---- !u!114 &-6009568936688706850
+--- !u!114 &7175846074376687810
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5759,21 +5862,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 6691628707489746810}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c746129da25b5564cbe4e8f063ce4547, type: 3}
+  m_Script: {fileID: 11500000, guid: c7c7fb883d9728c45837d83064b2afba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1809753180866780131
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6691628707489746810}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dcc49bd7f04dd7b4b9d023d360f8cd7a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  _trailData:
+    spawnTrm: {fileID: 64421404}
+    trailMaterial: {fileID: 2100000, guid: 87a8e7835a48e984caf2614f59fbd386, type: 2}
+    startFresnelColor: {r: 0.70373756, g: 0.093141735, b: 1.9766746, a: 1}
+    startBaseColor: {r: 0.29948053, g: 0.21074556, b: 2.1185474, a: 1}
+    endFresnelColor: {r: 0.44705883, g: 0, b: 0.74509805, a: 1}
+    endBaseColor: {r: 0.011764706, g: 0, b: 0.34117648, a: 1}
+    trailSpawnTime: 0.06
+    fadeDuration: 0.5
+    _skinnedMeshRenderer: {fileID: 112894375679413401}
+    _meshRenderer: {fileID: 0}
+  _isMotionTrail: 0
 --- !u!1 &6691628707561677047
 GameObject:
   m_ObjectHideFlags: 0
@@ -5896,7 +5999,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 828fe12625591ea4d9de71b786ff4c67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _rotationSpeed: 1000
   OnFliped:
     m_PersistentCalls:
       m_Calls: []

@@ -25,7 +25,7 @@ public class Player : MonoBehaviour
     private GravityModule _gravityModule = null;
     private PlayerInput _playerInput = null;
     private CharacterController _characterController = null;
-    private PlayerTrail _playerTrail = null;
+    private TrailableObject _playerTrail = null;
     private PlayerAudio _playerAudio = null;
     private PlayerBuff _playerBuff = null;
     private PlayerHP _playerHP = null;
@@ -40,7 +40,7 @@ public class Player : MonoBehaviour
     public PlayerAttackSO playerAttackSO => _playerAttackSO;
     public PlayerHealthSO playerHealthSO => _playerHealthSO;
     public CharacterController characterController => _characterController;
-    public PlayerTrail playerTrail => _playerTrail;
+    public TrailableObject playerTrail => _playerTrail;
     public PlayerAudio playerAudio => _playerAudio;
     public PlayerBuff playerBuff => _playerBuff;
     public PlayerHP playerHP => _playerHP;
@@ -88,7 +88,7 @@ public class Player : MonoBehaviour
         _playerRenderer = _playerAnimation.GetComponent<PlayerRenderer>();
         _gravityModule = GetComponent<GravityModule>();
         _col = GetComponent<Collider>();
-        _playerTrail = GetComponent<PlayerTrail>();
+        _playerTrail = GetComponent<TrailableObject>();
         _playerAudio = transform.Find("AgentSound").GetComponent<PlayerAudio>();
     }
 
@@ -276,9 +276,6 @@ public class Player : MonoBehaviour
         if (_playerTrail == null)
             return;
 
-        if (value)
-            _playerTrail.StartTrail();
-        else
-            _playerTrail.EndTrail();
+        _playerTrail.IsMotionTrail = value;
     }
 }

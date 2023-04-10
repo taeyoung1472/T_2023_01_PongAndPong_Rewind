@@ -212,6 +212,8 @@ public class StageSelectUI : MonoBehaviour
         }
         else
         {
+            if(_stageInfoUI.IsEnable)
+                _stageInfoUI.UIDown();
             WorldUISet(ui);
         }
     }
