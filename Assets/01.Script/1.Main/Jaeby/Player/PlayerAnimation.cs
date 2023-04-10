@@ -148,5 +148,25 @@ public class PlayerAnimation : MonoBehaviour
         jumpTime = Time.time;
         _player.playerAudio.JumpAudio();
     }
+
+    float dashAirTime = 0.0f;
+    public void OnDashAir()
+    {
+        if (Time.time < dashAirTime + 0.2f)
+            return;
+
+        dashAirTime = Time.time;
+        _player.playerAudio.DashAirAudio();
+    }
+
+    float dashGroundTime = 0.0f;
+    public void OnDashGround()
+    {
+        if (Time.time < dashGroundTime + 0.2f)
+            return;
+
+        dashGroundTime = Time.time;
+        _player.playerAudio.DashGroundAudio();
+    }
     #endregion
 }
