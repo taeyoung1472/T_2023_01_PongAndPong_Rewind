@@ -24,11 +24,12 @@ public class Player : MonoBehaviour
     private PlayerRenderer _playerRenderer = null;
     private GravityModule _gravityModule = null;
     private PlayerInput _playerInput = null;
-    private CharacterController _characterController = null;
     private TrailableObject _playerTrail = null;
+    private Rigidbody _rigid = null;
     private PlayerAudio _playerAudio = null;
     private PlayerBuff _playerBuff = null;
     private PlayerHP _playerHP = null;
+    private CapsuleCollider _col = null;
     #endregion
 
     #region 프로퍼티
@@ -39,11 +40,12 @@ public class Player : MonoBehaviour
     public PlayerMovementSO playerMovementSO => _playerMovementSO;
     public PlayerAttackSO playerAttackSO => _playerAttackSO;
     public PlayerHealthSO playerHealthSO => _playerHealthSO;
-    public CharacterController characterController => _characterController;
+    public Rigidbody Rigid => _rigid;
     public TrailableObject playerTrail => _playerTrail;
     public PlayerAudio playerAudio => _playerAudio;
     public PlayerBuff playerBuff => _playerBuff;
     public PlayerHP playerHP => _playerHP;
+    public CapsuleCollider Col => _col;
     #endregion
 
     #region Json 저장 데이터
@@ -60,7 +62,6 @@ public class Player : MonoBehaviour
     public Vector3 ExtraMoveAmount => _extraMoveAmount;
     private Vector3 _characterMoveAmount = Vector3.zero;
     public Vector3 CharacterMoveAmount => _characterMoveAmount;
-    private CollisionFlags _collisionFlag = CollisionFlags.None;
     #endregion
 
     #region 바닥 체크용 박스캐스트 관련
@@ -68,10 +69,12 @@ public class Player : MonoBehaviour
     private float _groundCheckRayLength = 0.225f;
     [SerializeField]
     private LayerMask _groundMask = 0;
-    private Collider _col = null;
     private bool _isGrounded = false;
     public bool IsGrounded => _isGrounded;
     #endregion
+    [SerializeField]
+    private float maxSlopeAngle = 10f;
+    RaycastHit slopeHit;
 
     private void Awake()
     {
@@ -82,12 +85,12 @@ public class Player : MonoBehaviour
         //캐싱
         _playerBuff = GetComponent<PlayerBuff>();
         _playerHP = GetComponent<PlayerHP>();
-        _characterController = GetComponent<CharacterController>();
+        _rigid = GetComponent<Rigidbody>();
         _playerInput = GetComponent<PlayerInput>();
         _playerAnimation = transform.Find("AgentRenderer").GetComponent<PlayerAnimation>();
         _playerRenderer = _playerAnimation.GetComponent<PlayerRenderer>();
         _gravityModule = GetComponent<GravityModule>();
-        _col = GetComponent<Collider>();
+        _col = GetComponent<CapsuleCollider>();
         _playerTrail = GetComponent<TrailableObject>();
         _playerAudio = transform.Find("AgentSound").GetComponent<PlayerAudio>();
     }
@@ -114,12 +117,13 @@ public class Player : MonoBehaviour
 
     private void LateUpdate()
     {
-        Move();
     }
 
     private void FixedUpdate()
     {
         GroundCheck();
+        Move();
+        _rigid.velocity = _characterMoveAmount;
     }
 
     public void VelocitySetMove(float? x = null, float? y = null)
@@ -240,10 +244,26 @@ public class Player : MonoBehaviour
         Vector3 halfExtents = _col.bounds.extents;
         halfExtents.y = _groundCheckRayLength;
         float maxDistance = _col.bounds.extents.y;
-        _isGrounded = Physics.BoxCast(boxCenter, halfExtents, -transform.up, transform.rotation, maxDistance, _groundMask);
+        _isGrounded = Physics.BoxCast(boxCenter, halfExtents, -transform.up, out slopeHit, transform.rotation, maxDistance, _groundMask);
+
         if (lastGrounded == _isGrounded)
             return;
         OnIsGrounded?.Invoke(_isGrounded);
+    }
+
+    private bool OnSlope()
+    {
+        if (slopeHit.collider != null)
+        {
+            float angle = Vector3.Angle(Vector3.up, slopeHit.normal);
+            return angle < maxSlopeAngle && angle != 0;
+        }
+        return false;
+    }
+
+    private Vector3 GetSlopeMoveDirection()
+    {
+        return Vector3.ProjectOnPlane(_moveAmount, slopeHit.normal).normalized;
     }
 
     private void Move()
@@ -251,11 +271,14 @@ public class Player : MonoBehaviour
         _characterMoveAmount = ((_moveAmount + _extraMoveAmount) +
             ((_isGrounded == false && _gravityModule.UseGravity) ? _gravityModule.GetGravity() : Vector3.zero))
             ;
-        if (_characterController.velocity.y < 0f)
+        if (_rigid.velocity.y < 0f)
         {
             _characterMoveAmount += Vector3.up * GravityModule.GetGravity().y * (_playerMovementSO.fallMultiplier - 1) * Time.deltaTime;
         }
-        _collisionFlag = _characterController.Move(_characterMoveAmount * Time.deltaTime);
+        if(OnSlope())
+        {
+            _rigid.AddForce(GetSlopeMoveDirection() * 10f);
+        }
     }
 
     public void PlayerInteractActionExit()

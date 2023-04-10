@@ -1,15 +1,18 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
+using static Highlighters.HighlighterTrigger;
 
 public class PlayerObjectPush : PlayerAction
 {
-    private List<ControllerColliderHit> _hits = new List<ControllerColliderHit>();
-    private List<int> _hitsHashs = new List<int>();
     [SerializeField]
-    private UnityEvent<List<ControllerColliderHit>> OnEnterCollider = null;
+    private UnityEvent OnEnterCollider = null;
     [SerializeField]
-    private UnityEvent<List<ControllerColliderHit>> OnExitCollider = null;
+    private UnityEvent OnExitCollider = null;
+
+    private List<Collision> _pushingCollider = new List<Collision>();
+    private List<int> _pushingHashs = new List<int>();
 
     [SerializeField]
     private float _pushPower = 2f;
@@ -19,65 +22,45 @@ public class PlayerObjectPush : PlayerAction
     public override void ActionExit()
     {
         _excuting = false;
-        _hits.Clear();
-        _hitsHashs.Clear();
-        OnExitCollider?.Invoke(_hits);
+        _pushingCollider.Clear();
+        _pushingHashs.Clear();
+        OnExitCollider?.Invoke();
     }
 
-    private void Update()
+    private void OnCollisionEnter(Collision collision)
     {
-        if (_hits.Count == 0)
+        if (_locked)
+            return;
+        Rigidbody rb = collision.collider.GetComponent<Rigidbody>();
+        if (rb == null)
+            return;
+        Vector3 forceDir = (collision.gameObject.transform.position.x > transform.position.x) ? Vector3.right : Vector2.left;
+        rb.AddForce(forceDir * _pushPower, ForceMode.Force);
+
+        if (_pushingHashs.Contains(collision.GetHashCode()) == false)
+        {
+            _excuting = true;
+            _pushingHashs.Add(collision.gameObject.GetHashCode());
+            Debug.Log("오브젝트 밀기 시작");
+            _pushingCollider.Add(collision);
+            OnEnterCollider?.Invoke();
+        }
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        if (_pushingCollider.Count == 0)
         {
             _excuting = false;
             return;
         }
 
-        List<ControllerColliderHit> removeList = null;
-        foreach (var hit in _hits)
+        if (_pushingCollider.Contains(collision))
         {
-            Vector3 distanceDir = (hit.gameObject.transform.position.x > transform.position.x) ? Vector3.right : Vector2.left;
-            Vector3 dir = Vector3.zero;
-            float distance = 0f;
-            bool result = Physics.ComputePenetration(_player.characterController, _player.transform.position + (distanceDir * _littleBitMore), _player.transform.rotation,
-                hit.collider, hit.transform.position, hit.transform.rotation, out dir, out distance);
-            if (result == false || Vector3.Dot(_player.PlayerRenderer.Forward, hit.transform.position - _player.transform.position) < 0f) // 충돌 끝
-            {
-                if (removeList == null)
-                    removeList = new List<ControllerColliderHit>();
-                removeList.Add(hit);
-                Debug.Log("오브젝트 밀기 빠져나감");
-                OnExitCollider?.Invoke(_hits);
-            }
-        }
-        if (removeList != null)
-        {
-            for (int i = 0; i < removeList.Count; i++)
-            {
-                _hitsHashs.Remove(removeList[i].gameObject.GetHashCode());
-                _hits.Remove(removeList[i]);
-            }
-        }
-    }
-
-    private void OnControllerColliderHit(ControllerColliderHit hit)
-    {
-        if (_locked)
-            return;
-
-        Rigidbody rb = hit.collider.GetComponent<Rigidbody>();
-        if (rb == null)
-            return;
-        Vector3 forceDir = (hit.gameObject.transform.position.x > transform.position.x) ? Vector3.right : Vector2.left;
-
-        rb.AddForce(forceDir * _pushPower, ForceMode.Force);
-        //rb.AddForceAtPosition(forceDir * _pushPower, transform.position + transform.up, ForceMode.Force);
-        if (_hitsHashs.Contains(hit.gameObject.GetHashCode()) == false)
-        {
-            _hitsHashs.Add(hit.gameObject.GetHashCode());
-            Debug.Log("오브젝트 밀기 시작");
-            _excuting = true;
-            _hits.Add(hit);
-            OnEnterCollider?.Invoke(_hits);
+            _pushingCollider.Remove(collision);
+            _pushingHashs.Remove(collision.gameObject.GetHashCode());
+            Debug.Log("오브젝트 밀기 빠져나감");
+            OnExitCollider?.Invoke();
         }
     }
 
