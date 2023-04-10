@@ -73,8 +73,8 @@ public class Player : MonoBehaviour
     public bool IsGrounded => _isGrounded;
     #endregion
     [SerializeField]
-    private float maxSlopeAngle = 10f;
-    RaycastHit slopeHit;
+    private float _maxSlopeAngle = 10f;
+    RaycastHit _slopeHit;
 
     private void Awake()
     {
@@ -115,15 +115,10 @@ public class Player : MonoBehaviour
         _playerInventory.SaveInventory();
     }
 
-    private void LateUpdate()
-    {
-    }
-
     private void FixedUpdate()
     {
         GroundCheck();
         Move();
-        _rigid.velocity = _characterMoveAmount;
     }
 
     public void VelocitySetMove(float? x = null, float? y = null)
@@ -244,7 +239,7 @@ public class Player : MonoBehaviour
         Vector3 halfExtents = _col.bounds.extents;
         halfExtents.y = _groundCheckRayLength;
         float maxDistance = _col.bounds.extents.y;
-        _isGrounded = Physics.BoxCast(boxCenter, halfExtents, -transform.up, out slopeHit, transform.rotation, maxDistance, _groundMask);
+        _isGrounded = Physics.BoxCast(boxCenter, halfExtents, -transform.up, out _slopeHit, transform.rotation, maxDistance, _groundMask);
 
         if (lastGrounded == _isGrounded)
             return;
@@ -253,17 +248,18 @@ public class Player : MonoBehaviour
 
     private bool OnSlope()
     {
-        if (slopeHit.collider != null)
+        if (_slopeHit.collider != null)
         {
-            float angle = Vector3.Angle(Vector3.up, slopeHit.normal);
-            return angle < maxSlopeAngle && angle != 0;
+            float angle = Vector3.Angle(transform.up, _slopeHit.normal);
+            return angle < _maxSlopeAngle && angle != 0 && _isGrounded
+                 && PlayerActionCheck(PlayerActionType.Jump, PlayerActionType.Dash) == false;
         }
         return false;
     }
 
     private Vector3 GetSlopeMoveDirection()
     {
-        return Vector3.ProjectOnPlane(_moveAmount, slopeHit.normal).normalized;
+        return Vector3.ProjectOnPlane(_moveAmount.normalized, _slopeHit.normal).normalized;
     }
 
     private void Move()
@@ -275,10 +271,12 @@ public class Player : MonoBehaviour
         {
             _characterMoveAmount += Vector3.up * GravityModule.GetGravity().y * (_playerMovementSO.fallMultiplier - 1) * Time.deltaTime;
         }
-        if(OnSlope())
+        if (OnSlope())
         {
-            _rigid.AddForce(GetSlopeMoveDirection() * 10f);
+            _characterMoveAmount = Quaternion.FromToRotation(transform.forward, GetSlopeMoveDirection()) * _characterMoveAmount;
         }
+
+        _rigid.velocity = _characterMoveAmount;
     }
 
     public void PlayerInteractActionExit()

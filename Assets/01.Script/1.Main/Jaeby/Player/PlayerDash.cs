@@ -20,6 +20,7 @@ public class PlayerDash : PlayerAction
             (Mathf.Abs(_player.PlayerInput.InputVector.x) > 0f == false) ||
             _player.PlayerActionCheck(PlayerActionType.ObjectPush))
             return;
+        _excuting = true;
 
         bool slide = _player.IsGrounded;
 
@@ -45,7 +46,6 @@ public class PlayerDash : PlayerAction
         _player.PlayerActionExit(PlayerActionType.Jump, PlayerActionType.Move, PlayerActionType.WallGrab);
         _player.PlayerActionLock(true, PlayerActionType.Jump, PlayerActionType.Move);
         _player.VeloCityResetImm(true, true);
-        _excuting = true;
         Vector2 dashVector = Vector2.zero;
         _curDashCount++;
         if (slide)
@@ -75,8 +75,8 @@ public class PlayerDash : PlayerAction
 
     public void DashExit()
     {
-        _player.AfterImageEnable(false);
         _excuting = false;
+        _player.AfterImageEnable(false);
         _player.PlayerActionLock(false, PlayerActionType.Jump, PlayerActionType.Move);
         _player.GravityModule.UseGravity = true;
         _player.VelocitySetExtra(0f, 0f);
