@@ -102,9 +102,9 @@ public class TimerManager : MonoSingleTon<TimerManager>
     public void UpdateText()
     {
         if (!isRewinding)
-            UIManager.Instance.OnPlayTimeChange((int)CurrentTimer);
+            UIManager.Instance.OnPlayTimeChange(CurrentTimer);
         else
-            UIManager.Instance.OnRewindTimeChange((int)(RewindingTime - CurrentTimer));
+            UIManager.Instance.OnRewindTimeChange((RewindingTime - CurrentTimer));
     }
     private void UpdateTime()
     {

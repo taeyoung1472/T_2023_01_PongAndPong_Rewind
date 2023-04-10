@@ -87,7 +87,9 @@ public class StageManager : MonoSingleTon<StageManager>
     public void OnReStartArea()
     {
         curStage.ReStartArea(true);
-        
+
+        TimerManager.Instance.ChangeOnTimer(false);
+
         isRestartPossible = false;
         reStartCoolTime = 1f;
     }
