@@ -7443,11 +7443,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 362011700}
   m_Mesh: {fileID: 5916565745749188939, guid: 35b361cd65c34ca459660906273b57ad, type: 3}
---- !u!23 &366875511 stripped
-MeshRenderer:
-  m_CorrespondingSourceObject: {fileID: 196536015, guid: 18f205ab32cd84a4898ba28bf639789b, type: 3}
-  m_PrefabInstance: {fileID: 410995592}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &374962225
 GameObject:
   m_ObjectHideFlags: 0
@@ -7942,18 +7937,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2107113398, guid: 18f205ab32cd84a4898ba28bf639789b, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2107113398, guid: 18f205ab32cd84a4898ba28bf639789b, type: 3}
-      propertyPath: _trailParentTrm
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 4411050099202322467, guid: 18f205ab32cd84a4898ba28bf639789b, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 6691628707489746809, guid: 18f205ab32cd84a4898ba28bf639789b, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -8002,15 +7985,7 @@ PrefabInstance:
       propertyPath: m_Name
       value: NewPlayer
       objectReference: {fileID: 0}
-    - target: {fileID: 8146940646692169744, guid: 18f205ab32cd84a4898ba28bf639789b, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 4351567464402566525, guid: 18f205ab32cd84a4898ba28bf639789b, type: 3}
-    - {fileID: 7983978119289550001, guid: 18f205ab32cd84a4898ba28bf639789b, type: 3}
-    - {fileID: 4411050099202322467, guid: 18f205ab32cd84a4898ba28bf639789b, type: 3}
-    - {fileID: 8146940646692169744, guid: 18f205ab32cd84a4898ba28bf639789b, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 18f205ab32cd84a4898ba28bf639789b, type: 3}
 --- !u!114 &410995593 stripped
 MonoBehaviour:
@@ -10572,119 +10547,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6691628707489746810, guid: 18f205ab32cd84a4898ba28bf639789b, type: 3}
   m_PrefabInstance: {fileID: 410995592}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &532921131
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 532921098}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4ca797615ce5c344e9edd1be69f89403, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefix: '@'
-  backColor: {r: 0.7810386, g: 0.7783019, b: 1, a: 1}
-  fontColor: {r: 0, g: 0, b: 0, a: 1}
---- !u!114 &532921132
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 532921098}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0970a923eff145744a66a980e20b235c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  highlighterSettings:
-    depthMask: 0
-    infoRenderScale: 1
-    useOuterGlow: 0
-    useSingleOuterGlow: 1
-    outerGlowColorFront: {r: 0, g: 0, b: 0, a: 1}
-    outerGlowColorBack: {r: 0, g: 0, b: 0, a: 1}
-    outlineVisibleBeforeObject: 1
-    blurType: 1
-    blendType: 0
-    boxBlurSize: 0.04
-    blurIterations: 40
-    blurRenderScale: 1
-    blurIntensity: 1
-    blurIntensityMultiplier: 1
-    blurAdaptiveThickness: 0
-    cameraDistanceMultiplier: 1
-    useMeshOutline: 1
-    useSingleMeshOutline: 1
-    meshOutlineFront:
-      color: {r: 1, g: 1, b: 1, a: 1}
-    meshOutlineBack:
-      color: {r: 1, g: 1, b: 1, a: 1}
-    meshOutlineThickness: 0.015
-    meshOutlineAdaptiveThickness: 0
-    useInnerGlow: 0
-    useSingleInnerGlow: 1
-    innerGlowFront:
-      color: {r: 0, g: 1, b: 1, a: 1}
-      power: 4
-    innerGlowBack:
-      color: {r: 0, g: 1, b: 1, a: 1}
-      power: 4
-    useOverlay: 1
-    useSingleOverlay: 1
-    overlayFront:
-      color: {r: 0, g: 1, b: 1, a: 0.19607843}
-      useTexture: 0
-      texture: {fileID: 0}
-      background: 0
-      tilling: 60
-      rotation: 0
-    overlayBack:
-      color: {r: 0, g: 1, b: 1, a: 0.19607843}
-      useTexture: 0
-      texture: {fileID: 0}
-      background: 0
-      tilling: 60
-      rotation: 0
-    RenderingBoundsSizeIncrease: 0.2
-    RenderingBoundsDistanceFix: 0
-    RenderingBoundsMaxDistanceFix: 1
-    RenderingBoundsMinDistanceFix: 0
-  findRenderers: 0
-  renderers:
-  - renderer: {fileID: 1804926053}
-    useCutout: 0
-    clippingThreshold: 0
-    clippingSource: 0
-    clipTexture: {fileID: 0}
-    submeshIndexes: 0000000001000000020000000300000004000000
-    cullMode: 2
-  - renderer: {fileID: 366875511}
-    useCutout: 0
-    clippingThreshold: 0
-    clippingSource: 0
-    clipTexture: {fileID: 0}
-    submeshIndexes: 
-    cullMode: 2
-  id: 1
-  showRenderBounds: 0
-  showScreenAdjustedRenderBounds: 0
---- !u!136 &532921133
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 532921098}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.35
-  m_Height: 1.45
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.3, z: 0}
 --- !u!4 &532921135 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6691628707489746809, guid: 18f205ab32cd84a4898ba28bf639789b, type: 3}
@@ -34324,11 +34186,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 39d24ee3e6bd32344b388c25354cb84a, type: 3}
---- !u!137 &1804926053 stripped
-SkinnedMeshRenderer:
-  m_CorrespondingSourceObject: {fileID: 112894375679413401, guid: 18f205ab32cd84a4898ba28bf639789b, type: 3}
-  m_PrefabInstance: {fileID: 410995592}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1808484970 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4282249898540766, guid: 7b49ae5af64e047cf9c52dffe612a365, type: 3}
