@@ -43,7 +43,6 @@ public class PlayerDash : PlayerAction
 
     public void MoreDash(int cnt)
     {
-        ActionExit();
         _curDashCount = cnt;
         if (_curDashCount < 0)
             _curDashCount = 0;
