@@ -337,4 +337,21 @@ public class Player : MonoBehaviour
         }
     }
 
+    public CapsuleCollider GetCapsuleCollider(PlayerColliderType type)
+    {
+        if (_normalCapsuleCol == null || _dashCapsuleCol == null)
+            return _col;
+        switch (type)
+        {
+            case PlayerColliderType.None:
+                break;
+            case PlayerColliderType.Normal:
+                return _normalCapsuleCol;
+            case PlayerColliderType.Dash:
+                return _dashCapsuleCol;
+            default:
+                break;
+        }
+        return _col;
+    }
 }

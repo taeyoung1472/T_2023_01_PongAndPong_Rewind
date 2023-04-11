@@ -1,4 +1,5 @@
 using UnityEngine;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class GravityInverseGimmick : GimmickObject
 {
@@ -7,56 +8,66 @@ public class GravityInverseGimmick : GimmickObject
     }
     Player player = null;
 
-    GravityModule module;
+    public FlipDirection gravityDirState;
 
-    public enum GravityDirState
-    {
-        Up,
-        Down,
-    }
-
-    public GravityDirState gravityDirState;
+    [SerializeField]
+    private float _gravityScale = 0.8f;
+    [SerializeField]
+    private float _coolTime = 0.2f;
+    private bool _locked = false;
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            if (module == null)
-                module = other.GetComponent<GravityModule>();
             if (player == null)
                 player = other.GetComponent<Player>();
 
-            player.PlayerRenderer.flipDirection = FlipDirection.Up;
-            //module.GravityScale = 0.4f;
-            module.OriginGravityScale = 0.4f;
-
-            module.GravityDir = new Vector3(0f, 9.8f, 0f);
+            player.GravityModule.GravityScale = _gravityScale;
+            PlayerGravitySet(gravityDirState);
         }
         if (other.gameObject.TryGetComponent<GravityGimmickObject>
             (out GravityGimmickObject gravityGimmick))
         {
-            gravityGimmick.GravityDir = new Vector3(0, 9.8f, 0f);
-            gravityGimmick.GravityScale = 0.4f;
+            gravityGimmick.GravityDir = Utility.GetDirToVector(gravityDirState) * 9.8f;
+            gravityGimmick.GravityScale = _gravityScale;
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (module == null)
+        if (player == null)
         {
             return;
         }
-        player.PlayerRenderer.flipDirection = FlipDirection.Down;
-        module.OriginGravityScale = 0.8f;
+        player.GravityModule.GravityScale = player.GravityModule.OriginGravityScale;
+        PlayerGravitySet(FlipDirection.Down);
         //module.GravityScale = module.OriginGravityScale;
-
-        module.GravityDir = new Vector3(0f, -9.8f, 0f);
 
         if (other.gameObject.TryGetComponent<GravityGimmickObject>
                   (out GravityGimmickObject gravityGimmick))
         {
-            gravityGimmick.GravityDir = new Vector3(0, -9.8f, 0f);
+            gravityGimmick.GravityDir = Utility.GetDirToVector(FlipDirection.Down) * 9.8f;
             gravityGimmick.GravityScale = gravityGimmick.OrignGravityScale;
         }
+    }
+
+    private void PlayerGravitySet(FlipDirection direction)
+    {
+        player.ForceStop();
+        player.PlayerRenderer.flipDirection = direction;
+        player.GravityModule.GravityDir = Utility.GetDirToVector(direction) * 9.8f;
+        CapsuleCollider col = player.GetCapsuleCollider(PlayerColliderType.Normal);
+        float height = col.height * 0.5f;
+        Vector3 newPos = Vector3.zero;
+        if (gravityDirState == FlipDirection.Left || gravityDirState == FlipDirection.Right)
+        {
+            newPos = player.transform.position;
+        }
+        else
+        {
+            newPos = player.transform.position + player.transform.up * height * -1f;
+        }
+        player.transform.position = newPos;
     }
 }

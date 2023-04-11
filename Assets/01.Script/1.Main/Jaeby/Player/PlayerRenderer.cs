@@ -25,10 +25,10 @@ public class PlayerRenderer : MonoBehaviour
                 case FlipDirection.None:
                     break;
                 case FlipDirection.Left:
-                    _player.transform.rotation = Quaternion.Euler(_player.transform.rotation.eulerAngles.x, _player.transform.rotation.eulerAngles.y, -90f);
+                    _player.transform.rotation = Quaternion.Euler(_player.transform.rotation.eulerAngles.y, 180f, 90f);
                     break;
                 case FlipDirection.Right:
-                    _player.transform.rotation = Quaternion.Euler(_player.transform.rotation.eulerAngles.x, _player.transform.rotation.eulerAngles.y, 90f);
+                    _player.transform.rotation = Quaternion.Euler(_player.transform.rotation.eulerAngles.y, 0f, 90f);
                     break;
                 case FlipDirection.Up:
                     _player.transform.rotation = Quaternion.Euler(180f, _player.transform.rotation.eulerAngles.y, 0f);
@@ -86,9 +86,13 @@ public class PlayerRenderer : MonoBehaviour
             flipDir = FlipDirection.Left;
 
         Quaternion targetRotation = Quaternion.identity;
-        if (_flipDirection == FlipDirection.Left || _flipDirection == FlipDirection.Right)
+        if (_flipDirection == FlipDirection.Left)
         {
-            targetRotation = Quaternion.Euler((flipDir == FlipDirection.Left) ? -90f : 90f, _player.transform.rotation.eulerAngles.y, _player.transform.rotation.eulerAngles.z); //플레이어 로테이션을 돌린다 
+            targetRotation = Quaternion.Euler((flipDir == FlipDirection.Left) ? -90f : 90f, 180f, 90f); //플레이어 로테이션을 돌린다 
+        }
+        else if (_flipDirection == FlipDirection.Right)
+        {
+            targetRotation = Quaternion.Euler((flipDir == FlipDirection.Left) ? -90f : 90f, 0f, 90f); //플레이어 로테이션을 돌린다 
         }
         else
         {
@@ -124,34 +128,6 @@ public class PlayerRenderer : MonoBehaviour
         OnFliped?.Invoke(_fliped);
     }
 
-    private Vector2 GetDirToVector(FlipDirection dir)
-    {
-        switch (dir)
-        {
-            case FlipDirection.None:
-                break;
-            case FlipDirection.Left:
-                return Vector2.left;
-            case FlipDirection.Right:
-                return Vector2.right;
-            case FlipDirection.Up:
-                return Vector2.up;
-            case FlipDirection.Down:
-                return Vector2.down;
-            default:
-                break;
-        }
-        return Vector2.zero;
-    }
 
 
-}
-
-public enum FlipDirection
-{
-    None,
-    Left,
-    Right,
-    Up,
-    Down
 }
