@@ -151,9 +151,7 @@ public class StageManager : MonoSingleTon<StageManager>
         {
             //playerObj = Instantiate(playerPrefab, spawnPos.position, Quaternion.identity);
             playerObj = PoolManager.Pop(PoolType.Player);
-            playerObj.GetComponent<CharacterController>().enabled = false;
             playerObj.transform.position = spawnPos.position;
-            playerObj.GetComponent<CharacterController>().enabled = true;
             //TestParticleSpawn.Instance.playerPos = playerObj.transform;
         }
         else
@@ -166,9 +164,7 @@ public class StageManager : MonoSingleTon<StageManager>
             highlighter.Settings.MeshOutlineFront.Color = Color.white;
             
             rePlayerObj = PoolManager.Pop(PoolType.RewindPlayer);
-            rePlayerObj.GetComponent<CharacterController>().enabled = false;
             rePlayerObj.transform.position = spawnPos.position;
-            rePlayerObj.GetComponent<CharacterController>().enabled = true;
 
             highlighter = rePlayerObj.AddComponent<Highlighter>();
             highlighter.GetRenderers();

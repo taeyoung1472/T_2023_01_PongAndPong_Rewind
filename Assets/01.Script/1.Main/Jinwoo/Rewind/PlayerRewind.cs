@@ -16,7 +16,6 @@ public class PlayerRewind : RewindAbstract
 
     [SerializeField] private List<MonoBehaviour> enableList;
 
-    [SerializeField] private CharacterController characterController;
 
     private Player player;
     protected override void Init()
@@ -24,7 +23,6 @@ public class PlayerRewind : RewindAbstract
         player = GetComponent<Player>();
         animator = transform.GetChild(0).GetComponent<Animator>();
         base.Init();
-        characterController = GetComponent<CharacterController>();
 
         InitializeParticles(particleSettings);
     }
@@ -39,7 +37,6 @@ public class PlayerRewind : RewindAbstract
             item.enabled = true;
         }
 
-        characterController.enabled = true;
     }
 
     protected override void InitOnRewind()
@@ -50,7 +47,6 @@ public class PlayerRewind : RewindAbstract
             item.enabled = false;
         }
 
-        characterController.enabled = false;
     }
 
     protected override void RestartObj()

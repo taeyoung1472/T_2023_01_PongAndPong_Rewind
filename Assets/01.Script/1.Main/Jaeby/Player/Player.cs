@@ -290,8 +290,8 @@ public class Player : MonoBehaviour
         {
             _characterMoveAmount = Quaternion.FromToRotation(transform.forward, GetSlopeMoveDirection()) * _characterMoveAmount;
         }
-
         _rigid.velocity = _characterMoveAmount;
+        Debug.Log(_rigid.velocity);
     }
 
     public void PlayerInteractActionExit()
