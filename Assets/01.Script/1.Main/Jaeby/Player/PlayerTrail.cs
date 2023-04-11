@@ -58,13 +58,6 @@ public class PlayerTrail : MonoBehaviour
         Init();
     }
 
-    private void OnDestroy()
-    {
-        Debug.Log("트레일 스크립트 부숴짐");
-        DestroyTrailAll(true);
-    }
-
-
     /// <summary>
     /// 그냥 다 부숴버림
     /// </summary>
@@ -81,7 +74,7 @@ public class PlayerTrail : MonoBehaviour
             var trail = _enalbeTrails.Dequeue();
             if (smooth == false)
             {
-                trail.myObj.SetActive(false);
+                Destroy(trail.myObj);
             }
             else
             {
@@ -92,7 +85,7 @@ public class PlayerTrail : MonoBehaviour
                     action = () =>
                         {
                             _died = true;
-                            for(int i = 0; i < _trailParentTrm.childCount; i++)
+                            for (int i = 0; i < _trailParentTrm.childCount; i++)
                             {
                                 Destroy(_trailParentTrm.GetChild(i).gameObject);
                             }
@@ -105,6 +98,15 @@ public class PlayerTrail : MonoBehaviour
                 renderer.materials[0].GetFloat("_Alpha"), false, action));
             }
 
+        }
+
+        if (smooth == false)
+        {
+            while (_readyTrails.Count > 0)
+            {
+                var trail = _readyTrails.Dequeue();
+                Destroy(trail.myObj);
+            }
         }
     }
 
@@ -142,6 +144,10 @@ public class PlayerTrail : MonoBehaviour
 
     private void Update()
     {
+        if(Input.GetKeyDown(KeyCode.G))
+        {
+            DestroyTrailAll(false);
+        }
         if (_isMotionTrail == false || _died)
             return;
 

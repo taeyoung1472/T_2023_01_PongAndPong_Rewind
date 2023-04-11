@@ -6,6 +6,8 @@ using UnityEngine.Events;
 public class PlayerJump : PlayerAction
 {
     private int _curJumpCount = 0; // 현재 점프 횟수
+    public int CurJumpCount { get => _curJumpCount; set => _curJumpCount = value; }
+
     private bool _jumpEndCheck = false; // 점프를 한 뒤 시간이 지난 것과 바닥에 닿았을 때 둘 중 체크되면 하나가 안 되게
 
     [SerializeField]
@@ -142,9 +144,11 @@ public class PlayerJump : PlayerAction
             OnGrounded(true);
     }
 
-    public void MoreJump()
+    public void MoreJump(int cnt)
     {
-        JumpEnd();
+        _curJumpCount = cnt;
+        if (_curJumpCount < 0)
+            _curJumpCount = 0;
     }
 
     public void JumpCountUp()

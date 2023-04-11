@@ -31,10 +31,10 @@ public class PlayerRenderer : MonoBehaviour
                     _player.transform.rotation = Quaternion.Euler(_player.transform.rotation.eulerAngles.x, _player.transform.rotation.eulerAngles.y, 90f);
                     break;
                 case FlipDirection.Up:
-                    _player.transform.rotation = Quaternion.Euler(180f, _player.transform.rotation.eulerAngles.y, _player.transform.rotation.eulerAngles.z);
+                    _player.transform.rotation = Quaternion.Euler(180f, _player.transform.rotation.eulerAngles.y, 0f);
                     break;
                 case FlipDirection.Down:
-                    _player.transform.rotation = Quaternion.Euler(0f, _player.transform.rotation.eulerAngles.y, _player.transform.rotation.eulerAngles.z);
+                    _player.transform.rotation = Quaternion.Euler(0f, _player.transform.rotation.eulerAngles.y, 0f);
                     break;
                 default:
                     break;

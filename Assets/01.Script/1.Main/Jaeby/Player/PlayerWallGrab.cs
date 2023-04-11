@@ -35,10 +35,10 @@ public class PlayerWallGrab : PlayerAction
 
     private void DrawDebugRay()
     {
-        Vector3 footPos = _player.transform.position + _player.characterController.center + Vector3.down * _player.characterController.bounds.size.y * 0.5f;
+        Vector3 footPos = _player.transform.position + _player.Col.center + Vector3.down * _player.Col.bounds.size.y * 0.5f;
 
         Ray ray = new Ray(footPos, _player.PlayerRenderer.Down);
-        Debug.DrawRay(ray.origin, ray.direction * ((_player.characterController.radius) + _rayLength + _player.characterController.contactOffset), Color.red);
+        Debug.DrawRay(ray.origin, ray.direction * ((_player.Col.radius) + _rayLength + _player.Col.contactOffset), Color.red);
     }
 
     private void WallCheck()
@@ -54,10 +54,10 @@ public class PlayerWallGrab : PlayerAction
             return;
         }
 
-        Vector3 footPos = _player.transform.position + _player.characterController.center + Vector3.down * _player.characterController.bounds.size.y * 0.5f;
+        Vector3 footPos = _player.transform.position + _player.Col.center + Vector3.down * _player.Col.bounds.size.y * 0.5f;
         bool lastCheck = _excuting;
         Ray ray = new Ray(footPos, _player.PlayerRenderer.Down);
-        if(Physics.Raycast(ray, out RaycastHit hit, _rayLength + _player.characterController.contactOffset, _wallMask))
+        if(Physics.Raycast(ray, out RaycastHit hit, _rayLength + _player.Col.contactOffset, _wallMask))
         {
             if (!_player.IsGrounded && _prevGrabObject != hit.transform.gameObject)
             {

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SlowGimmick : MonoBehaviour
+public class SlowGimmick : GimmickObject
 {
     private Collider _col = null;
 
@@ -10,13 +10,17 @@ public class SlowGimmick : MonoBehaviour
 
     [SerializeField] private float slowSpeed = 0.5f;
 
-    public bool isSlow = false;
+    public bool isCheck = false;
     Player player =  null;
 
+    RaycastHit hit;
     private void Awake()
     {
+        Init();
+    }
+    public override void Init()
+    {
         _col = GetComponent<Collider>();
-        //playerMove = FindObjectOfType<PlayerMove>();
     }
     private void FixedUpdate()
     {
@@ -24,29 +28,31 @@ public class SlowGimmick : MonoBehaviour
     }
     public void CheckObj()
     {
-        RaycastHit hit;
-        Vector3 boxCenter = _col.bounds.center;
-        Vector3 halfExtents = _col.bounds.extents;
+        Vector3 boxcenter = _col.bounds.center;
+        Vector3 halfextents = _col.bounds.extents;
 
-         isSlow = Physics.BoxCast(boxCenter, new Vector3( halfExtents.x / 2f, halfExtents.y, halfExtents.z /2f), transform.up, out hit, transform.rotation, rayDistance);
-
-        if (isSlow)
+        isCheck = Physics.BoxCast(boxcenter, halfextents, transform.up, out hit, transform.rotation, rayDistance);
+        if (isCheck)
         {
-            Debug.Log(hit.transform.name);
-            player = hit.transform.GetComponent<Player>();
-            player.playerBuff.AddBuff(PlayerBuffType.Slow);
-            //Gizmos.DrawRay(transform.position, transform.up * hit.distance);
-            Debug.Log("슬로우");
+            if (hit.collider.gameObject.layer == LayerMask.NameToLayer("GimmickPlayer"))
+            {
+                player = hit.transform.GetComponentInParent<Player>();
+                player.playerBuff.AddBuff(PlayerBuffType.Slow);
+            }
         }
         else
         {
-            if (player != null)
-            {
-                player.playerBuff.DeleteBuff(PlayerBuffType.Slow);
-                player = null;
-            }
-            Debug.Log("충돌 x"); 
+            
         } 
     }
-    
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (player != null)
+        {
+            player.playerBuff.DeleteBuff(PlayerBuffType.Slow);
+            player = null;
+        }
+    }
+
 }

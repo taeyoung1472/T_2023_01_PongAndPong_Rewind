@@ -26,7 +26,8 @@ public class ScaleGimmick : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        ShootBoxcast();
+        LeftShootBoxcast();
+        RightShootBoxcast();
     }
     private void Update()
     {
@@ -70,11 +71,6 @@ public class ScaleGimmick : MonoBehaviour
         rightScaleCol.transform.position = new Vector3(pos.x, Mathf.Lerp(pos.y, -rightLength, Time.deltaTime), pos.z);
     }
 
-    public void ShootBoxcast()
-    {
-        LeftShootBoxcast();
-        RightShootBoxcast();
-    }
     void LeftShootBoxcast()
     {
         Vector3 boxCenter = leftScaleCol.bounds.center;
@@ -118,86 +114,4 @@ public class ScaleGimmick : MonoBehaviour
             rightWeight += obj.so.weight;
         }
     }
-
-    //public void CheckDown()
-    //{
-    //    Debug.Log(leftWeight);
-    //    Debug.Log(rightWeight);
-
-    //    if (leftWeight == rightWeight)
-    //    {
-    //        return;
-    //    }
-    //    Debug.Log("안찍혀야정상");
-
-
-    //    if (leftWeight < rightWeight)
-    //    {
-    //        print("오른쪽이무거움");
-    //        WeightDownPos(false);
-    //    }
-    //    else
-    //    {
-    //        print("왼쪽이무거움");
-    //        WeightDownPos(true);
-    //    }
-    //    isDowning = true;
-    //}
-
-    //public void WeightDownPos(bool isLeft)
-    //{
-    //    if (isLeft)
-    //    {
-    //        AllLeftDown();
-    //        //transform.DOMoveY(leftScaleCol.GetComponent<Transform>().transform.position.y - downValue[0], 0.5f);
-    //    }
-    //    else
-    //    {
-    //        AllRightDown();
-    //        //transform.DOMoveY(rightScaleCol.GetComponent<Transform>().transform.position.y - downValue[0], 0.5f);
-    //    }
-    //}
-    //public void AllLeftDown()
-    //{
-    //    Vector3 boxCenter = leftScaleCol.bounds.center;
-    //    Vector3 halfExtents = leftScaleCol.bounds.extents;
-
-    //    RaycastHit[] hits = Physics.BoxCastAll(boxCenter, halfExtents, transform.up, transform.rotation, rayDistance);
-
-    //    foreach (var h in hits)
-    //    {
-    //        if (h.transform == null)
-    //            continue;
-
-    //        Vector3 vec = h.transform.position;
-    //        vec.y = vec.y - downValue[0];
-
-    //        if (isDowning)
-    //        {
-    //            h.transform.DOMoveY(vec.y, 3f).OnComplete(() => { isDowning = false; });
-    //        }
-    //    }
-    //}
-    //public void AllRightDown()
-    //{
-    //    Vector3 boxCenter = rightScaleCol.bounds.center;
-    //    Vector3 halfExtents = rightScaleCol.bounds.extents;
-
-    //    RaycastHit[] hits = Physics.BoxCastAll(boxCenter, halfExtents, transform.up, transform.rotation, rayDistance);
-
-    //    foreach (var h in hits)
-    //    {
-    //        if (h.transform == null)
-    //            continue;
-
-    //        Vector3 vec = h.transform.position;
-    //        vec.y = vec.y - downValue[0];
-
-    //        if (isDowning)
-    //        {
-    //            h.transform.DOMoveY(vec.y, 3f).OnComplete(() => { isDowning = false; });
-    //        }
-    //    }
-    //}
-
 }

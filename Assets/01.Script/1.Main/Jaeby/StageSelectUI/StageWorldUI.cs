@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.UI.Extensions;
+using System.Linq;
 
 public class StageWorldUI : MonoBehaviour
 {
@@ -9,12 +11,21 @@ public class StageWorldUI : MonoBehaviour
     private List<StageUnitUI> _stages = new List<StageUnitUI>();
     private List<RectTransform> _stageTrms = new List<RectTransform>();
     private RectTransform _thisTrm = null;
+    private UILineRenderer _uiLineRenderer = null;
 
     public StageDatabase db;
 
     [SerializeField]
     private WorldType _worldType;
     public WorldType WorldType => _worldType;
+
+    [SerializeField]
+    private string _worldName;
+    [SerializeField]
+    private string _chapterName;
+
+    public string WorldName => _worldName;
+    public string ChapterName => _chapterName;
 
     public void UISet()
     {
@@ -30,6 +41,11 @@ public class StageWorldUI : MonoBehaviour
         for (int i = 0; i < _stages.Count; i++)
             Lis(_stageSelectUI, i);
         TrmSet();
+        _uiLineRenderer = GetComponent<UILineRenderer>();
+        var anchored = from v in _stageTrms
+                       select v.anchoredPosition;
+        Vector2[] points = anchored.ToArray();
+        _uiLineRenderer.Points = points;
     }
 
     private void TrmSet()

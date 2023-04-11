@@ -18,24 +18,29 @@ public class StageInfoUI : MonoBehaviour
 
     private Animator _animator = null;
 
+    private bool _isEnable = false;
+    public bool IsEnable => _isEnable;
+
     public void UIOn(StageDataSO data)
     {
         if (data == null)
             return;
         _stageSelectUI.Lock = true;
-        _chapterNameText.SetText($"ц╘ем {_stageSelectUI.WorldIndex + 1}");
-        _worldNameText.SetText(_stageSelectUI.CurStageWorld.WorldType.ToString());
+        _chapterNameText.SetText("ц╘ем " + _stageSelectUI.CurStageWorld.ChapterName);
+        _worldNameText.SetText(_stageSelectUI.CurStageWorld.WorldName);
         _stageImage.sprite = data.stageSprite;
         _stageNameText.SetText(data.stageName);
 
         if (_animator == null)
             _animator = GetComponent<Animator>();
         _animator.Play("Enable");
+        _isEnable = true;
     }
 
     public void UIDown()
     {
         _animator.Play("Disable");
+        _isEnable = false;
     }
 
     public void GameObjectEnable()
@@ -51,7 +56,7 @@ public class StageInfoUI : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Escape))
+        if(Input.GetKeyDown(KeyCode.Escape) && _isEnable)
         {
             UIDown();
         }
