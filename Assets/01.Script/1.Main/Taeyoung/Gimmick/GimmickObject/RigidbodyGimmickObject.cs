@@ -27,16 +27,13 @@ public class RigidbodyGimmickObject : GimmickObject
         }
     }
 
-    public void Awake()
+    public override void Awake()
     {
+        base.Awake();
         rb = GetComponent<Rigidbody>();
         if (rb != null)
             constraints = rb.constraints;
-        if (RewindManager.Instance)
-        {
-            RewindManager.Instance.InitRewind += InitOnRewind;
-            RewindManager.Instance.InitPlay += InitOnPlay;
-        }
+        
     }
 
     public void FixedUpdate()

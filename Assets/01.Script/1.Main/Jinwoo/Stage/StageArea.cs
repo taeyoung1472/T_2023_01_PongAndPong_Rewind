@@ -17,13 +17,15 @@ public class StageArea : MonoBehaviour
         //여기서 순환 버퍼 거시기 해주면 될듯 (초기화)
         TimerManager.Instance.ChangeOnTimer(true);
     }
-    public void EntryArea(bool isNew = false)
+    public void EntryArea(bool isGameStart = false)
     {
         //함수 실행 순서 매우 중요;
         InitArea();
         StageManager.Instance.SpawnPlayer(defaultPlayerSpawn, true);
 
-        RewindManager.Instance.StartAreaPlay();
+        Debug.Log("아리아엔트리");
+        if(isGameStart)
+            RewindManager.Instance.StartAreaPlay();
     }
 
     public void Rewind()
@@ -36,7 +38,7 @@ public class StageArea : MonoBehaviour
         if (!isAreaClear)
         {
             StageManager.Instance.InitPlayer(isAreaClear);
-            EntryArea();
+            EntryArea(true);
         }
         else
         {

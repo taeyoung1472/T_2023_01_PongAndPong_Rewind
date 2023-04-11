@@ -42,6 +42,8 @@ public class Stage : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
 
+
+
         if (TimerManager.Instance.isRewinding) //만약 리와인드 상태에서 재시작할때
         {
             TimerManager.Instance.EndRewind();
@@ -50,7 +52,7 @@ public class Stage : MonoBehaviour
         {
             Debug.Log("리스타또");
             StageManager.Instance.InitPlayer(false);
-            curArea.EntryArea();
+            curArea.EntryArea(true);
         }
 
         RewindManager.Instance.RestartPlay?.Invoke();
