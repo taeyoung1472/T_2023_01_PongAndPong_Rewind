@@ -293,6 +293,7 @@ GameObject:
   - component: {fileID: 1262395316360919856}
   - component: {fileID: 1262395316360919863}
   - component: {fileID: 1262395316360919857}
+  - component: {fileID: 6136319133893209008}
   m_Layer: 5
   m_Name: Chapter Button
   m_TagString: Untagged
@@ -366,19 +367,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 0}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: StageSelectUI, Assembly-CSharp
-        m_MethodName: WorldChange
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: StageWorldUI, Assembly-CSharp
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!95 &1262395316360919857
 Animator:
   serializedVersion: 5
@@ -399,6 +388,20 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
+--- !u!114 &6136319133893209008
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1262395316360919859}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18d21e0ab75e8b74f8d5ee2a88c443ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _worldNameText: {fileID: 1262395316247586827}
+  _chapterNameText: {fileID: 1262395317512274882}
 --- !u!1 &1262395316371652487
 GameObject:
   m_ObjectHideFlags: 0

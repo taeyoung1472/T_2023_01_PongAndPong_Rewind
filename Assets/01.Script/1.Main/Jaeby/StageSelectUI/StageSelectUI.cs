@@ -86,6 +86,7 @@ public class StageSelectUI : MonoBehaviour
             ui.gameObject.SetActive(false);
             Button chapter = Instantiate(_chapterButtonPrefab, _chapterTrm).GetComponent<Button>();
             chapter.onClick.AddListener(() => { WorldChange(ui); });
+            chapter.GetComponent<ChapterButtonUI>().NameSet(ui);
             _chapterButtons.Add(chapter.gameObject);
         }
         _stageWorlds = newWorlds;
@@ -120,7 +121,7 @@ public class StageSelectUI : MonoBehaviour
         _curStageWorld = _stageWorlds[_worldIndex];
         _curStageWorld.gameObject.SetActive(true);
         _worldScrollRect.content = _curStageWorld.GetComponent<RectTransform>();
-        _worldNameText.SetText(_curStageWorld.WorldType.ToString());
+        _worldNameText.SetText(_curStageWorld.WorldName);
 
         _curStage = _curStageWorld.GetStage(0);
         float target = _curStage.GetComponent<RectTransform>().anchoredPosition.x * -1f;
