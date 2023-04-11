@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlateGimmick : GimmickObject
 {
+    [SerializeField] private int originCnt;
     [SerializeField] private int cnt = 0;
 
     private Collider _col;
@@ -16,15 +17,26 @@ public class PlateGimmick : GimmickObject
 
     RaycastHit hit;
 
-    private void Awake()
+    public override void Awake()
     {
+        base.Awake();
         Init();
     }
     public override void Init()
     {
         _col = GetComponent<BoxCollider>();
+        cnt = originCnt;
     }
 
+    public override void InitOnPlay()
+    {
+        cnt = originCnt;
+    }
+    public override void InitOnRewind()
+    {
+        cnt = originCnt;
+    }
+    
     private void FixedUpdate()
     {
         Vector3 boxCenter = _col.bounds.center;
@@ -34,7 +46,7 @@ public class PlateGimmick : GimmickObject
 
         if (isCheck)
         {
-            if (hit.collider.gameObject.layer == LayerMask.NameToLayer("GimmickPlayer"))
+            if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Player"))
             {
                 if (isCol)
                     return;
@@ -43,7 +55,7 @@ public class PlateGimmick : GimmickObject
                 cnt--;
                 if (cnt <= 0)
                 {
-                    Destroy(gameObject);
+                    gameObject.SetActive(false);
                 }
             }
         }
@@ -52,17 +64,17 @@ public class PlateGimmick : GimmickObject
             isCol = false;
         }
     }
-    private void OnDrawGizmos()
-    {
-        if (isCheck)
-        {
-            Gizmos.DrawRay(transform.position, transform.up * hit.distance);
-            Gizmos.DrawWireCube(transform.position + transform.up * hit.distance, transform.localScale);
-        }
-        else
-        {
-            Gizmos.DrawRay(transform.position, transform.up * rayDistance);
-            Gizmos.DrawWireCube(transform.position + transform.up * rayDistance, transform.localScale);
-        }
-    }
+    //private void OnDrawGizmos()
+    //{
+    //    if (isCheck)
+    //    {
+    //        Gizmos.DrawRay(transform.position, transform.up * hit.distance);
+    //        Gizmos.DrawWireCube(transform.position + transform.up * hit.distance, transform.localScale);
+    //    }
+    //    else
+    //    {
+    //        Gizmos.DrawRay(transform.position, transform.up * rayDistance);
+    //        Gizmos.DrawWireCube(transform.position + transform.up * rayDistance, transform.localScale);
+    //    }
+    //}
 }
