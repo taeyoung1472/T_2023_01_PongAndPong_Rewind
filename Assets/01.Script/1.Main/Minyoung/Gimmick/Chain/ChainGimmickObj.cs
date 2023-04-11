@@ -21,25 +21,14 @@ public class ChainGimmickObj : GimmickObject
         {
             int index = chainGimmick.chainList.FindIndex(x => x == this);
             Debug.Log(index);
-            //if (index == chainGimmick.chainList.Count - 2)
-            //{
-            //    chainGimmick.chainList[index].GetComponent<Rigidbody>().useGravity = true;
-            //    chainGimmick.chainList[index].GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
-            //}
-            //else
-            //{
             for (int i = index; i < chainGimmick.chainList.Count; i++)
             {
                 chainGimmick.chainList[i].GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
                 chainGimmick.chainList[i].GetComponent<Rigidbody>().freezeRotation = true;
-                //chainGimmick.chainList[i].GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
                 chainGimmick.chainList[i].GetComponent<Rigidbody>().useGravity = true;
             }
-        //}
-          
-            chainGimmick.chainList.Remove(this);
-
-            Destroy(gameObject);
+            //chainGimmick.chainList.Remove(this);
+           // Destroy(gameObject);
         }
         //ºÒ·¿°ú¸ÂÀ¸¸é »ç¶óÁü       
     }
