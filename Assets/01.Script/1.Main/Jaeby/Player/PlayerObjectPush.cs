@@ -20,19 +20,13 @@ public class PlayerObjectPush : PlayerAction
     [SerializeField]
     private UnityEvent OnExitCollider = null;
 
-    private List<Collision> _pushingColliders = new List<Collision>();
-    private List<int> _pushingHashs = new List<int>();
-
     [SerializeField]
     private float _pushPower = 2f;
-    [SerializeField]
-    private float _littleBitMore = 0.2f;
 
     public override void ActionExit()
     {
         _excuting = false;
-        _pushingColliders.Clear();
-        _pushingHashs.Clear();
+        _pushingCollider = null;
         OnExitCollider?.Invoke();
     }
 
