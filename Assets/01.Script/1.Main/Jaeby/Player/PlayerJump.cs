@@ -146,7 +146,6 @@ public class PlayerJump : PlayerAction
 
     public void MoreJump(int cnt)
     {
-        ActionExit();
         _curJumpCount = cnt;
         if (_curJumpCount < 0)
             _curJumpCount = 0;
