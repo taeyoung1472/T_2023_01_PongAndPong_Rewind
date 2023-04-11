@@ -42,6 +42,7 @@ public class PlayerAttack : PlayerAction
         // 타격 처리
         _attackIndex = (_attackIndex + 1) % _maxAttackIndex;
         OnMeleeAttack?.Invoke(_attackIndex);
+        player.playerAudio.AttackAudio();
     }
 
     private void RangeAttack()

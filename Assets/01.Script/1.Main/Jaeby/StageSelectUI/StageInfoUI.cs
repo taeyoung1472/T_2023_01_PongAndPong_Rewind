@@ -18,6 +18,9 @@ public class StageInfoUI : MonoBehaviour
 
     private Animator _animator = null;
 
+    private bool _isEnable = false;
+    public bool IsEnable => _isEnable;
+
     public void UIOn(StageDataSO data)
     {
         if (data == null)
@@ -31,11 +34,13 @@ public class StageInfoUI : MonoBehaviour
         if (_animator == null)
             _animator = GetComponent<Animator>();
         _animator.Play("Enable");
+        _isEnable = true;
     }
 
     public void UIDown()
     {
         _animator.Play("Disable");
+        _isEnable = false;
     }
 
     public void GameObjectEnable()
@@ -51,7 +56,7 @@ public class StageInfoUI : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Escape))
+        if(Input.GetKeyDown(KeyCode.Escape) && _isEnable)
         {
             UIDown();
         }
