@@ -6,7 +6,6 @@ using UnityEngine;
 public class LabtopStart : MonoBehaviour
 {
     [Header("Loading")]
-    [SerializeField] private CanvasGroup loadingGroup;
     [SerializeField] private Disc loadingDisc;
     [SerializeField] private float loadingSpeed = 10;
     [SerializeField] private AnimationCurve loadingSpeedCurve;
@@ -17,9 +16,12 @@ public class LabtopStart : MonoBehaviour
         {   
             yield return null;
             loadingDisc.DashOffset += Time.deltaTime * loadingSpeed * loadingSpeedCurve.Evaluate(Time.time % 1);
-            if (loadingDisc.DashOffset > 6)
+            if (loadingDisc.DashOffset > 4)
+            {
+                DOTween.To(() => loadingDisc.Color, x => loadingDisc.Color = x, new Color(1, 1, 1, 0), 1f);
                 break;
+            }
         }
-        //DOTween.To(x );
+        yield return new WaitForSeconds(1.5f);
     }
 }
