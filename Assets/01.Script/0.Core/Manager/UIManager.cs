@@ -8,12 +8,13 @@ using UnityEngine.SceneManagement;
 public class UIManager : MonoSingleTon<UIManager>
 {
     [Header("[Clock]")]
-    [SerializeField] private Image clockFill;
+    [SerializeField] private Slider clockFill;
+    [SerializeField] private Image barColor;
     [SerializeField] private TextMeshProUGUI clockTimeText;
     [SerializeField] private Color[] clockColorArray;
 
     //private int totalTIme { get { return RewindManager.Instance.CurStageRecordCount; } }
-    private int totalTIme { get { return (int)RewindManager.Instance.howManySecondsToTrack -1; } }
+    private float totalTIme { get { return RewindManager.Instance.howManySecondsToTrack; } }
 
     private bool isPause = false;
 
@@ -27,35 +28,35 @@ public class UIManager : MonoSingleTon<UIManager>
         
     }
 
-    public void OnPlayTimeChange(int time)
+    public void OnPlayTimeChange(float time)
     {
-        clockFill.fillAmount = time / (float)(totalTIme);
-        clockTimeText.SetText($"{time}");
+        clockFill.value = time / totalTIme;
+        clockTimeText.SetText($"{(int)time}");
 
-        int clockTime = totalTIme / clockColorArray.Length;
-        int tempTime = 0;
+        float clockTime = totalTIme / clockColorArray.Length;
+        float tempTime = 0;
         for (int i = 0; i < clockColorArray.Length; i++)
         {
             if (time >= tempTime)
             {
-                clockFill.color = Color.Lerp(clockColorArray[i], clockColorArray[Mathf.Clamp(i + 1, 0, clockColorArray.Length - 1)], (float)(time % clockTime) / (float)clockTime);
+                barColor.color = Color.Lerp(clockColorArray[i], clockColorArray[Mathf.Clamp(i + 1, 0, clockColorArray.Length - 1)], (float)(time % clockTime) / (float)clockTime);
             }
             tempTime += clockTime;
         }
     }
 
-    public void OnRewindTimeChange(int time)
+    public void OnRewindTimeChange(float time)
     {
-        clockFill.fillAmount = (time / (float)(totalTIme));
-        clockTimeText.SetText($"{time}");
+        clockFill.value = (time / totalTIme);
+        clockTimeText.SetText($"{(int)time}");
 
-        int clockTime = totalTIme / clockColorArray.Length;
-        int tempTime = totalTIme;
-        for (int i = clockColorArray.Length -1; i > 0; i--)
+        float clockTime = totalTIme / clockColorArray.Length;
+        float tempTime = totalTIme;
+        for (int i = clockColorArray.Length-1; i > 0; i--)
         {
-            if (time <= tempTime)
+            if (time < tempTime)
             {
-                clockFill.color =
+                barColor.color =
                     Color.Lerp(clockColorArray[i], clockColorArray[Mathf.Clamp(i - 1, 0, clockColorArray.Length - 1)], 
                     (float)(time % clockTime) / (float)clockTime);
             }
