@@ -15,11 +15,12 @@ public class PlayerDash : PlayerAction
 
     public void Dash()
     {
-        if (_locked || _curDashCount >= _player.playerMovementSO.dashCount ||
+        if (_locked || _excuting || _curDashCount >= _player.playerMovementSO.dashCount ||
             _player.PlayerInput.InputVectorNorm.sqrMagnitude == 0f ||
             (Mathf.Abs(_player.PlayerInput.InputVector.x) > 0f == false) ||
             _player.PlayerActionCheck(PlayerActionType.ObjectPush))
             return;
+        _excuting = true;
 
         bool slide = _player.IsGrounded;
 
@@ -40,16 +41,23 @@ public class PlayerDash : PlayerAction
         OnDashStarted?.Invoke(_player.PlayerInput.InputVectorNorm);
     }
 
+    public void MoreDash(int cnt)
+    {
+        _curDashCount = cnt;
+        if (_curDashCount < 0)
+            _curDashCount = 0;
+    }
+
     private IEnumerator DashCoroutine(bool slide)
     {
         _player.PlayerActionExit(PlayerActionType.Jump, PlayerActionType.Move, PlayerActionType.WallGrab);
         _player.PlayerActionLock(true, PlayerActionType.Jump, PlayerActionType.Move);
         _player.VeloCityResetImm(true, true);
-        _excuting = true;
         Vector2 dashVector = Vector2.zero;
         _curDashCount++;
         if (slide)
         {
+            _player.ColliderSet(PlayerColliderType.Dash);
             _player.PlayerAnimation.SlideAnimation();
             _player.GravityModule.UseGravity = true;
             dashVector = _player.PlayerInput.InputVector * _player.playerMovementSO.dashPower;
@@ -75,8 +83,9 @@ public class PlayerDash : PlayerAction
 
     public void DashExit()
     {
-        _player.AfterImageEnable(false);
         _excuting = false;
+        _player.ColliderSet(PlayerColliderType.Normal);
+        _player.AfterImageEnable(false);
         _player.PlayerActionLock(false, PlayerActionType.Jump, PlayerActionType.Move);
         _player.GravityModule.UseGravity = true;
         _player.VelocitySetExtra(0f, 0f);

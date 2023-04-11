@@ -1,4 +1,5 @@
 using DG.Tweening;
+using Michsky.UI.Shift;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -16,7 +17,9 @@ public class StageSelectUI : MonoBehaviour
     private StageInfoUI _stageInfoUI = null;
 
     [SerializeField]
-    private ScrollRect _scrollRect = null;
+    private ScrollRect _worldScrollRect = null;
+    [SerializeField]
+    private ScrollRect _chapterScrollRect = null;
     [SerializeField]
     private TextMeshProUGUI _worldNameText = null;
     private StageWorldUI _curStageWorld = null;
@@ -24,7 +27,13 @@ public class StageSelectUI : MonoBehaviour
 
     [SerializeField]
     private Transform _worldTrm = null;
+    [SerializeField]
+    private Transform _chapterTrm = null;
+    [SerializeField]
+    private GameObject _chapterButtonPrefab = null;
+
     private List<StageWorldUI> _stageWorlds = new List<StageWorldUI>();
+    private List<GameObject> _chapterButtons = new List<GameObject>();
 
     private StageUnitUI _curStage = null;
     private StageUnitUI _prevStage = null;
@@ -52,22 +61,35 @@ public class StageSelectUI : MonoBehaviour
     [SerializeField]
     private float _sizeDownAmount = 0.8f;
 
-    private void Awake()
+    public void Init(List<GameObject> worlds)
     {
-        Init();
-    }
-
-    private void Init()
-    {
-        _stageWorlds.AddRange(_worldTrm.GetComponentsInChildren<StageWorldUI>());
+        _worldIndex = 0;
         for (int i = 0; i < _stageWorlds.Count; i++)
         {
-            _stageWorlds[i].Init(this);
-            _stageWorlds[i].gameObject.SetActive(false);
+            Destroy(_stageWorlds[i].gameObject);
+            Destroy(_chapterButtons[i].gameObject);
         }
-        //_curStageWorld = _stageWorlds[0];
-        //WorldChange(0);
-        //WorldUISet();
+        _stageWorlds.Clear();
+        _chapterButtons.Clear();
+
+        GridLayoutGroup gridGroup = _chapterScrollRect.content.GetComponent<GridLayoutGroup>();
+        float padding = gridGroup.padding.left + gridGroup.spacing.x;
+        float width = padding * 2 + gridGroup.cellSize.x * worlds.Count;
+        _chapterScrollRect.content.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, width);
+
+        List<StageWorldUI> newWorlds = new List<StageWorldUI>();
+        for (int i = 0; i < worlds.Count; i++)
+        {
+            StageWorldUI ui = Instantiate(worlds[i], _worldTrm).GetComponent<StageWorldUI>();
+            newWorlds.Add(ui);
+            ui.Init(this);
+            ui.gameObject.SetActive(false);
+            Button chapter = Instantiate(_chapterButtonPrefab, _chapterTrm).GetComponent<Button>();
+            chapter.onClick.AddListener(() => { WorldChange(ui); });
+            chapter.GetComponent<ChapterButtonUI>().NameSet(ui);
+            _chapterButtons.Add(chapter.gameObject);
+        }
+        _stageWorlds = newWorlds;
     }
 
     public void WorldUp()
@@ -90,15 +112,16 @@ public class StageSelectUI : MonoBehaviour
             _curStageWorld.ResetWorld();
             _curStageWorld.gameObject.SetActive(false);
         }
-        _scrollRect.content.anchoredPosition = Vector3.zero;
+        if(_worldScrollRect.content != null)
+            _worldScrollRect.content.anchoredPosition = Vector3.zero;
         _curStage = _prevStage = null;
 
         _worldIndex = value;
         _worldIndex = Mathf.Clamp(_worldIndex, 0, _stageWorlds.Count - 1);
         _curStageWorld = _stageWorlds[_worldIndex];
         _curStageWorld.gameObject.SetActive(true);
-        _scrollRect.content = _curStageWorld.GetComponent<RectTransform>();
-        _worldNameText.SetText(_curStageWorld.WorldType.ToString());
+        _worldScrollRect.content = _curStageWorld.GetComponent<RectTransform>();
+        _worldNameText.SetText(_curStageWorld.WorldName);
 
         _curStage = _curStageWorld.GetStage(0);
         float target = _curStage.GetComponent<RectTransform>().anchoredPosition.x * -1f;
@@ -212,7 +235,7 @@ public class StageSelectUI : MonoBehaviour
         }
         else
         {
-            if(_stageInfoUI.IsEnable)
+            if (_stageInfoUI.IsEnable)
                 _stageInfoUI.UIDown();
             WorldUISet(ui);
         }

@@ -125,7 +125,7 @@ public class PlayerAnimation : MonoBehaviour
 
     private void Update()
     {
-        _animator.SetFloat("VelocityY", _player.characterController.velocity.y);
+        _animator.SetFloat("VelocityY", _player.Rigid.velocity.y);
     }
 
     #region Event

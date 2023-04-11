@@ -10,8 +10,6 @@ public class MagnetGimmick : MonoBehaviour
 
     private float radius;
 
- 
-
     private void Awake()
     {
         radius = GetComponent<SphereCollider>().radius;
@@ -21,7 +19,6 @@ public class MagnetGimmick : MonoBehaviour
         if (other.gameObject.TryGetComponent<MagnetGimmickObject>(out MagnetGimmickObject magent))
         {
         }
-    
     }
     private void OnTriggerStay(Collider other)
     {

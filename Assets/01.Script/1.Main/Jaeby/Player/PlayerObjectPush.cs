@@ -1,83 +1,84 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
+using static Highlighters.HighlighterTrigger;
 
 public class PlayerObjectPush : PlayerAction
 {
-    private List<ControllerColliderHit> _hits = new List<ControllerColliderHit>();
-    private List<int> _hitsHashs = new List<int>();
     [SerializeField]
-    private UnityEvent<List<ControllerColliderHit>> OnEnterCollider = null;
+    private LayerMask _pushMask = 0;
     [SerializeField]
-    private UnityEvent<List<ControllerColliderHit>> OnExitCollider = null;
+    private float _rayLength = 1f;
+
+    private Collider _pushingCollider = null;
+
+    [SerializeField]
+    private UnityEvent OnEnterCollider = null;
+    [SerializeField]
+    private UnityEvent OnExitCollider = null;
 
     [SerializeField]
     private float _pushPower = 2f;
-    [SerializeField]
-    private float _littleBitMore = 0.2f;
 
     public override void ActionExit()
     {
         _excuting = false;
-        _hits.Clear();
-        _hitsHashs.Clear();
-        OnExitCollider?.Invoke(_hits);
+        _pushingCollider = null;
+        OnExitCollider?.Invoke();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
-        if (_hits.Count == 0)
-        {
-            _excuting = false;
-            return;
-        }
-
-        List<ControllerColliderHit> removeList = null;
-        foreach (var hit in _hits)
-        {
-            Vector3 distanceDir = (hit.gameObject.transform.position.x > transform.position.x) ? Vector3.right : Vector2.left;
-            Vector3 dir = Vector3.zero;
-            float distance = 0f;
-            bool result = Physics.ComputePenetration(_player.characterController, _player.transform.position + (distanceDir * _littleBitMore), _player.transform.rotation,
-                hit.collider, hit.transform.position, hit.transform.rotation, out dir, out distance);
-            if (result == false || Vector3.Dot(_player.PlayerRenderer.Forward, hit.transform.position - _player.transform.position) < 0f) // 충돌 끝
-            {
-                if (removeList == null)
-                    removeList = new List<ControllerColliderHit>();
-                removeList.Add(hit);
-                Debug.Log("오브젝트 밀기 빠져나감");
-                OnExitCollider?.Invoke(_hits);
-            }
-        }
-        if (removeList != null)
-        {
-            for (int i = 0; i < removeList.Count; i++)
-            {
-                _hitsHashs.Remove(removeList[i].gameObject.GetHashCode());
-                _hits.Remove(removeList[i]);
-            }
-        }
+        CollisionCheck();
+        PushObj();
     }
 
-    private void OnControllerColliderHit(ControllerColliderHit hit)
+    private void PushObj()
     {
-        if (_locked)
+        if (_pushingCollider == null || _locked)
             return;
 
-        Rigidbody rb = hit.collider.GetComponent<Rigidbody>();
+        Vector3 distanceDir = (_pushingCollider.transform.position.x > transform.position.x) ? Vector3.right : Vector2.left;
+        Rigidbody rb = _pushingCollider.GetComponent<Rigidbody>();
         if (rb == null)
             return;
-        Vector3 forceDir = (hit.gameObject.transform.position.x > transform.position.x) ? Vector3.right : Vector2.left;
+        rb.AddForce(distanceDir * _pushPower, ForceMode.Force);
+    }
 
-        rb.AddForce(forceDir * _pushPower, ForceMode.Force);
-        //rb.AddForceAtPosition(forceDir * _pushPower, transform.position + transform.up, ForceMode.Force);
-        if (_hitsHashs.Contains(hit.gameObject.GetHashCode()) == false)
+    private void CollisionCheck()
+    {
+        if (_locked)
         {
-            _hitsHashs.Add(hit.gameObject.GetHashCode());
-            Debug.Log("오브젝트 밀기 시작");
+            _pushingCollider = null;
+            return;
+        }
+
+        RaycastHit hit;
+        bool result = Physics.Raycast(transform.position, _player.PlayerRenderer.Forward, out hit, _rayLength, _pushMask);
+        if(result)
+        {
+            if(_pushingCollider != null)
+            {
+                if (_pushingCollider == hit.collider)
+                    return;
+            }
+
+            _pushingCollider = hit.collider;
             _excuting = true;
-            _hits.Add(hit);
-            OnEnterCollider?.Invoke(_hits);
+            Debug.Log("오브젝트 밀기 시작");
+            OnEnterCollider?.Invoke();
+        }
+        else
+        {
+            if(_pushingCollider != null)
+            {
+                _pushingCollider = null;
+                Debug.Log("오브젝트 밀기 빠져나감");
+                OnExitCollider?.Invoke();
+            }
         }
     }
 
