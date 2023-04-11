@@ -142,9 +142,12 @@ public class PlayerJump : PlayerAction
             OnGrounded(true);
     }
 
-    public void MoreJump()
+    public void MoreJump(int cnt)
     {
-        JumpEnd();
+        ActionExit();
+        _curJumpCount = cnt;
+        if (_curJumpCount < 0)
+            _curJumpCount = 0;
     }
 
     public void JumpCountUp()

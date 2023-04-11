@@ -15,7 +15,7 @@ public class PlayerDash : PlayerAction
 
     public void Dash()
     {
-        if (_locked || _curDashCount >= _player.playerMovementSO.dashCount ||
+        if (_locked || _excuting || _curDashCount >= _player.playerMovementSO.dashCount ||
             _player.PlayerInput.InputVectorNorm.sqrMagnitude == 0f ||
             (Mathf.Abs(_player.PlayerInput.InputVector.x) > 0f == false) ||
             _player.PlayerActionCheck(PlayerActionType.ObjectPush))
@@ -39,6 +39,14 @@ public class PlayerDash : PlayerAction
         GameObject effectObj = PoolManager.Pop(PoolType.DashEffect);
         effectObj.transform.SetPositionAndRotation(transform.position + transform.up * 0.65f + transform.forward * 0.15f, _player.PlayerRenderer.GetFlipedRotation(DirType.Back, RotAxis.Y));
         OnDashStarted?.Invoke(_player.PlayerInput.InputVectorNorm);
+    }
+
+    public void MoreDash(int cnt)
+    {
+        ActionExit();
+        _curDashCount = cnt;
+        if (_curDashCount < 0)
+            _curDashCount = 0;
     }
 
     private IEnumerator DashCoroutine(bool slide)
