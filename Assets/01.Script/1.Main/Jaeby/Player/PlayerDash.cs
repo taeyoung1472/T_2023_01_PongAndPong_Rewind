@@ -57,6 +57,7 @@ public class PlayerDash : PlayerAction
         _curDashCount++;
         if (slide)
         {
+            _player.ColliderSet(PlayerColliderType.Dash);
             _player.PlayerAnimation.SlideAnimation();
             _player.GravityModule.UseGravity = true;
             dashVector = _player.PlayerInput.InputVector * _player.playerMovementSO.dashPower;
@@ -83,6 +84,7 @@ public class PlayerDash : PlayerAction
     public void DashExit()
     {
         _excuting = false;
+        _player.ColliderSet(PlayerColliderType.Normal);
         _player.AfterImageEnable(false);
         _player.PlayerActionLock(false, PlayerActionType.Jump, PlayerActionType.Move);
         _player.GravityModule.UseGravity = true;

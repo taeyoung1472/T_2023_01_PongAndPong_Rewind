@@ -19,6 +19,14 @@ public class StageWorldUI : MonoBehaviour
     private WorldType _worldType;
     public WorldType WorldType => _worldType;
 
+    [SerializeField]
+    private string _worldName;
+    [SerializeField]
+    private string _chapterName;
+
+    public string WorldName => _worldName;
+    public string ChapterName => _chapterName;
+
     public void UISet()
     {
         if (_stageSelectUI == null)

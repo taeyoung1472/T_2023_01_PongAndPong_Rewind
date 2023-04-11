@@ -7,6 +7,7 @@ public class RigidbodyGimmickObject : GimmickObject
 
     Rigidbody rb;
     RigidbodyConstraints constraints;
+    [SerializeField] private bool isRewindPlayer = false;
 
     public override void Init()
     {
@@ -45,7 +46,7 @@ public class RigidbodyGimmickObject : GimmickObject
 
     public override void InitOnRewind()
     {
-        if (rb != null)
+        if (rb != null && isRewindPlayer)
             rb.constraints = RigidbodyConstraints.FreezeAll;
     }
 
