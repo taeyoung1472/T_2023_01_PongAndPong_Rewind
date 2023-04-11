@@ -9,7 +9,6 @@ public class PlayerInteract : PlayerAction
         if(other.CompareTag("Interact"))
         {
 
-            Debug.Log("상호작용 가능");
             _curInteract = other.GetComponentInParent<Interact>();
             _curInteract.InteractEnter();
         }
@@ -17,7 +16,6 @@ public class PlayerInteract : PlayerAction
 
     private void OnTriggerExit(Collider other)
     {
-        Debug.Log("상호작용 불가");
         _curInteract?.InteractExit();
         _curInteract = null;
     }
