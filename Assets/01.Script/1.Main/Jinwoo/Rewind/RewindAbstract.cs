@@ -421,7 +421,7 @@ public abstract class RewindAbstract : MonoBehaviour
             RewindManager.Instance.InitRewind += InitOnRewind;
             RewindManager.Instance.RestartPlay += RestartObj;
         }
-        Debug.Log(transform.position + name + "?");
+        //Debug.Log(transform.position + name + "?");
     }
     protected void OnDisable()
     {
