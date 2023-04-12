@@ -34,7 +34,8 @@ public class TimePlateGimmick : GimmickObject
             destroyTime -= Time.deltaTime;
             if(destroyTime <= 0.0f)
             {
-                Destroy(gameObject);
+                gameObject.SetActive(false);
+                //Destroy(gameObject);
             }
         }
     }
@@ -48,7 +49,7 @@ public class TimePlateGimmick : GimmickObject
 
         if (isCheck)
         {
-            if (hit.collider.gameObject.layer == LayerMask.NameToLayer("GimmickPlayer"))
+            if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Player"))
             {
                 Debug.Log("발판 충돌");
                 isEnter = true;
@@ -56,19 +57,19 @@ public class TimePlateGimmick : GimmickObject
         }
     }
 
-    private void OnDrawGizmos()
-    {
-        if (isCheck)
-        {
-            Gizmos.DrawRay(transform.position, transform.up * hit.distance);
-            Gizmos.DrawWireCube(transform.position + transform.up * hit.distance, transform.localScale);
-        }
-        else
-        {
-            Gizmos.DrawRay(transform.position, transform.up * rayDistance);
-            Gizmos.DrawWireCube(transform.position + transform.up * rayDistance, transform.localScale);
-        }
-    }
+    //private void OnDrawGizmos()
+    //{
+    //    if (isCheck)
+    //    {
+    //        Gizmos.DrawRay(transform.position, transform.up * hit.distance);
+    //        Gizmos.DrawWireCube(transform.position + transform.up * hit.distance, transform.localScale);
+    //    }
+    //    else
+    //    {
+    //        Gizmos.DrawRay(transform.position, transform.up * rayDistance);
+    //        Gizmos.DrawWireCube(transform.position + transform.up * rayDistance, transform.localScale);
+    //    }
+    //}
  
  
 

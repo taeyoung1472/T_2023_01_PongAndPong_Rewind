@@ -13,12 +13,16 @@ public class PortalTelepote : MonoBehaviour
 
     public bool isRight = false;
     float dotProduct = 0f;
+
     void Update()
+    {
+        PlayerTelPo();
+    }
+    void PlayerTelPo()
     {
         if (playerIsOverlapping)
         {
             Vector3 portalToPlayer = player.position - transform.position;
-            //float dotProduct = Vector3.Dot(transform.up, portalToPlayer);
             if (isRight)
             {
                 dotProduct = Vector3.Dot(transform.right, portalToPlayer);
@@ -32,19 +36,11 @@ public class PortalTelepote : MonoBehaviour
 
             if (dotProduct > 0f)
             {
-                //float rotationDiff = -Quaternion.Angle(transform.rotation, reciever.rotation);
-                //rotationDiff += 180;
-                //player.Rotate(Vector3.up, rotationDiff);
-
-                //Vector3 positionOffset = Quaternion.Euler(0f, rotationDiff, 0f) * portalToPlayer;
-                //player.position = reciever.position + positionOffset;
                 player.position = reciever.position;
-                Debug.Log(reciever.position);
-                Debug.Log(player.position);
-                //playerIsOverlapping = false;
+                playerIsOverlapping = false;
             }
         }
-    }
+    }    
 
     void OnTriggerEnter(Collider other)
     {
@@ -52,6 +48,7 @@ public class PortalTelepote : MonoBehaviour
         {
             playerIsOverlapping = true;
         }
+     
     }
 
     void OnTriggerExit(Collider other)
@@ -60,6 +57,7 @@ public class PortalTelepote : MonoBehaviour
         {
             playerIsOverlapping = false;
         }
+   
     }
     //public Transform playerTrm;
     //public Transform reciverTrm;

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlateGimmick : GimmickObject
 {
+    [SerializeField] private int originCnt;
     [SerializeField] private int cnt = 0;
 
     private Collider _col;
@@ -16,15 +17,26 @@ public class PlateGimmick : GimmickObject
 
     RaycastHit hit;
 
-    private void Awake()
+    public override void Awake()
     {
         Init();
+        base.Awake();
     }
     public override void Init()
     {
         _col = GetComponent<BoxCollider>();
+        cnt = originCnt;
     }
 
+    public override void InitOnPlay()
+    {
+        cnt = originCnt;
+    }
+    public override void InitOnRewind()
+    {
+        cnt = originCnt;
+    }
+    
     private void FixedUpdate()
     {
         Vector3 boxCenter = _col.bounds.center;
@@ -34,22 +46,27 @@ public class PlateGimmick : GimmickObject
 
         if (isCheck)
         {
-            if (hit.collider.gameObject.layer == LayerMask.NameToLayer("GimmickPlayer"))
+            if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Player"))
             {
                 if (isCol)
                     return;
                 isCol = true;
+                Debug.Log(hit.collider);
                 Debug.Log("발판 충돌");
                 cnt--;
                 if (cnt <= 0)
                 {
-                    Destroy(gameObject);
+                    gameObject.SetActive(false);
                 }
+            }
+            else
+            {
+
             }
         }
         else
         {
-            isCol = false;
+                isCol = false;
         }
     }
     private void OnDrawGizmos()
