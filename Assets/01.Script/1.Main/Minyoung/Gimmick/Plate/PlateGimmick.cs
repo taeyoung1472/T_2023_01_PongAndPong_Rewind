@@ -17,10 +17,11 @@ public class PlateGimmick : GimmickObject
 
     RaycastHit hit;
 
+
     public override void Awake()
     {
-        Init();
         base.Awake();
+        Init();
     }
     public override void Init()
     {
@@ -30,15 +31,22 @@ public class PlateGimmick : GimmickObject
 
     public override void InitOnPlay()
     {
+        base.InitOnPlay();
         cnt = originCnt;
     }
     public override void InitOnRewind()
     {
+        base.InitOnRewind();
         cnt = originCnt;
     }
     
     private void FixedUpdate()
     {
+        if (isRewind)
+        {
+            return;
+        }
+
         Vector3 boxCenter = _col.bounds.center;
         Vector3 halfExtents = _col.bounds.extents;
 
