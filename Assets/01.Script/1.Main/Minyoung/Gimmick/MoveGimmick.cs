@@ -9,49 +9,40 @@ public class MoveGimmick : GimmickObject
     [SerializeField] private float waitTime = 2f;
     [SerializeField] private float moveTime = 3f;
     [SerializeField] private float moveDistance = 5f;
-    public enum DirState
+
+    public DirectionType dirState;
+    public override void InitOnRewind()
     {
-        Up,
-        Left,
-        LeftCross,
-        RightCross,
+        base.InitOnRewind();
+        transform.DOKill();
     }
-    public DirState dirState;
 
     private void Start()
     {
-        secondmovePos = transform.position;
-        switch (dirState)
-        {
-            case DirState.Up:
-                firstmovePos = new Vector3(transform.position.x, transform.position.y + moveDistance, transform.position.z);
-                StartCoroutine(Move());
-                break;
+        MoveSet();
+    }
 
-            case DirState.Left:
-                firstmovePos = new Vector3(transform.position.x - moveDistance, transform.position.y, transform.position.z);
-                StartCoroutine(Move());
-                break;
-            case DirState.LeftCross:
-                firstmovePos = new Vector3(transform.position.x - moveDistance, transform.position.y - moveDistance, transform.position.z);
-                StartCoroutine(Move());
-                break;
-            case DirState.RightCross:
-                firstmovePos = new Vector3(transform.position.x - moveDistance, transform.position.y + moveDistance, transform.position.z);
-                StartCoroutine(Move());
-                break;
-        }
-    }
-    IEnumerator Move()
+    public void DirChange(DirectionType dirState)
     {
-        while(true)
-        {
-            transform.DOMove(firstmovePos, moveTime);
-            yield return new WaitForSeconds(waitTime);
-            transform.DOMove(secondmovePos, moveTime);
-            yield return new WaitForSeconds(waitTime);
-        }
+        this.dirState = dirState;
+        MoveSet();
     }
+
+    private void MoveSet()
+    {
+        transform.DOKill();
+        firstmovePos = transform.position + (Vector3)Utility.GetDirToVector(dirState) * moveDistance;
+        transform.DOMove(firstmovePos, moveTime).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.Linear);
+    }
+
+    private void Update()
+    {
+        //if (Input.GetKeyDown(KeyCode.Y))
+        //{
+        //    DirChange((DirectionType)Random.Range(0, (int)DirectionType.RightDown + 1));
+        //}
+    }
+
     public override void Init()
     {
     }

@@ -8,7 +8,7 @@ public class GravityInverseGimmick : GimmickObject
     }
     Player player = null;
 
-    public FlipDirection gravityDirState;
+    public DirectionType gravityDirState;
 
     [SerializeField]
     private float _gravityScale = 0.8f;
@@ -43,7 +43,7 @@ public class GravityInverseGimmick : GimmickObject
             return;
         }
         player.GravityModule.GravityScale = player.GravityModule.OriginGravityScale;
-        PlayerGravitySet(FlipDirection.Down);
+        PlayerGravitySet(DirectionType.Down);
         player = null;
         //module.GravityScale = module.OriginGravityScale;
 
@@ -55,7 +55,7 @@ public class GravityInverseGimmick : GimmickObject
         }*/
     }
 
-    private void PlayerGravitySet(FlipDirection direction)
+    private void PlayerGravitySet(DirectionType direction)
     {
         player.ForceStop();
         CapsuleCollider col = player.Col;
@@ -64,15 +64,15 @@ public class GravityInverseGimmick : GimmickObject
         if(result)
         {
         }
-        if (gravityDirState == FlipDirection.Left || gravityDirState == FlipDirection.Right)
+        if (gravityDirState == DirectionType.Left || gravityDirState == DirectionType.Right)
         {
         }
         else
         {
+            Vector3 newPos = Vector3.zero;
+            newPos = player.transform.position + player.transform.up * col.height;
+            player.transform.position = newPos;
         }
-        Vector3 newPos = Vector3.zero;
-        newPos = player.transform.position + player.transform.up * col.height;
-        player.transform.position = newPos;
         player.PlayerRenderer.flipDirection = direction;
         player.GravityModule.GravityDir = Utility.GetDirToVector(direction) * 9.8f;
     }

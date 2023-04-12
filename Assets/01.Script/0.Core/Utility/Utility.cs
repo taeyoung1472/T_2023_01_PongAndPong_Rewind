@@ -75,20 +75,28 @@ public static class Utility
         return new Vector3(Mathf.Sin(degrees * Mathf.Deg2Rad), 0, Mathf.Cos(degrees * Mathf.Deg2Rad));
     }
 
-    public static Vector2 GetDirToVector(FlipDirection dir)
+    public static Vector2 GetDirToVector(DirectionType dir)
     {
         switch (dir)
         {
-            case FlipDirection.None:
+            case DirectionType.None:
                 break;
-            case FlipDirection.Left:
+            case DirectionType.Left:
                 return Vector2.left;
-            case FlipDirection.Right:
+            case DirectionType.Right:
                 return Vector2.right;
-            case FlipDirection.Up:
+            case DirectionType.Up:
                 return Vector2.up;
-            case FlipDirection.Down:
+            case DirectionType.Down:
                 return Vector2.down;
+            case DirectionType.LeftUp:
+                return new Vector2(-1, 1);
+            case DirectionType.RightUp:
+                return new Vector2(1, 1);
+            case DirectionType.LeftDown:
+                return new Vector2(-1, -1);
+            case DirectionType.RightDown:
+                return new Vector2(1, -1);
             default:
                 break;
         }

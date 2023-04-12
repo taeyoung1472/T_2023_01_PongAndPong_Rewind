@@ -98,7 +98,7 @@ public class PlayerJump : PlayerAction
         else
         {
             _player.VeloCityResetImm(y: true);
-            _jumpCoroutine = StartCoroutine(JumpCoroutine(transform.up, _player.playerMovementSO.jumpPower));
+            _jumpCoroutine = StartCoroutine(JumpCoroutine(_player.transform.up, _player.playerMovementSO.jumpPower));
         }
     }
 
@@ -186,7 +186,7 @@ public class PlayerJump : PlayerAction
             rot = _player.PlayerRenderer.GetFlipedRotation(DirType.Forward, RotAxis.Z);
             pos += transform.up * 0.5f;
         }
-        if (_player.PlayerRenderer.flipDirection == FlipDirection.Up)
+        if (_player.PlayerRenderer.flipDirection == DirectionType.Up)
         {
             rot = Quaternion.Euler(180f, 0f, 0f);
         }
