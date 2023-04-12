@@ -154,6 +154,8 @@ public class StageSelectUI : MonoBehaviour
 
     public void UIOn()
     {
+        GetComponent<MenuUIElement>().Open();
+
         _worldUI.SetActive(false);
         _chapterSelectUI.SetActive(true);
         _worldNameText.gameObject.SetActive(false);
@@ -175,6 +177,7 @@ public class StageSelectUI : MonoBehaviour
             }
             _curStage = _prevStage = null;
             _curStageWorld = null;
+            GetComponent<MenuUIElement>().Close();
             gameObject.SetActive(false);
         }
         else if (_worldUI.activeSelf)

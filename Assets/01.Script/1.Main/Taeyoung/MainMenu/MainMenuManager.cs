@@ -27,14 +27,14 @@ public class MainMenuManager : MonoSingleTon<MainMenuManager>
     [SerializeField] private PlayerInput playerInput;
     [SerializeField] private Animator playerAnimator;
 
-    public void Awake()
-    {
-        GameObject mainWindow;
-        mainWindow = content.transform.Find("MainWindow").gameObject;
-        mainWindow.SetActive(true);
-        content.sizeDelta = new Vector2(content.sizeDelta.x, mainWindow.GetComponent<RectTransform>().sizeDelta.y);
-        curDisplayingWindow = mainWindow;
-    }
+    //public void Awake()
+    //{
+        //GameObject mainWindow;
+        //mainWindow = content.transform.Find("MainWindow").gameObject;
+        //mainWindow.SetActive(true);
+        //content.sizeDelta = new Vector2(content.sizeDelta.x, mainWindow.GetComponent<RectTransform>().sizeDelta.y);
+        //curDisplayingWindow = mainWindow;
+    //}
 
     public IEnumerator Start()
     {
@@ -58,7 +58,7 @@ public class MainMenuManager : MonoSingleTon<MainMenuManager>
             {
                 PlayGame();
             }
-            else
+            else if(MenuUIManager.Instance.uiStack.Count == 0)
             {
                 OpenMenu();
             }
