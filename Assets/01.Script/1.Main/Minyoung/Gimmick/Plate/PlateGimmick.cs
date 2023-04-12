@@ -19,8 +19,8 @@ public class PlateGimmick : GimmickObject
 
     public override void Awake()
     {
-        base.Awake();
         Init();
+        base.Awake();
     }
     public override void Init()
     {
@@ -51,6 +51,7 @@ public class PlateGimmick : GimmickObject
                 if (isCol)
                     return;
                 isCol = true;
+                Debug.Log(hit.collider);
                 Debug.Log("발판 충돌");
                 cnt--;
                 if (cnt <= 0)
@@ -58,23 +59,27 @@ public class PlateGimmick : GimmickObject
                     gameObject.SetActive(false);
                 }
             }
+            else
+            {
+
+            }
         }
         else
         {
-            isCol = false;
+                isCol = false;
         }
     }
-    //private void OnDrawGizmos()
-    //{
-    //    if (isCheck)
-    //    {
-    //        Gizmos.DrawRay(transform.position, transform.up * hit.distance);
-    //        Gizmos.DrawWireCube(transform.position + transform.up * hit.distance, transform.localScale);
-    //    }
-    //    else
-    //    {
-    //        Gizmos.DrawRay(transform.position, transform.up * rayDistance);
-    //        Gizmos.DrawWireCube(transform.position + transform.up * rayDistance, transform.localScale);
-    //    }
-    //}
+    private void OnDrawGizmos()
+    {
+        if (isCheck)
+        {
+            Gizmos.DrawRay(transform.position, transform.up * hit.distance);
+            Gizmos.DrawWireCube(transform.position + transform.up * hit.distance, transform.localScale);
+        }
+        else
+        {
+            Gizmos.DrawRay(transform.position, transform.up * rayDistance);
+            Gizmos.DrawWireCube(transform.position + transform.up * rayDistance, transform.localScale);
+        }
+    }
 }
