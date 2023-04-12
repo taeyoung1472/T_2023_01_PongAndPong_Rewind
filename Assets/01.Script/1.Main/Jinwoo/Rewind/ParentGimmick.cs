@@ -34,7 +34,7 @@ public class ParentGimmick : GimmickObject
         {
             isStart = false;
         }
-    }
+    }  
     IEnumerator ActiveChild(float time)
     {
         yield return new WaitForSeconds(time);
