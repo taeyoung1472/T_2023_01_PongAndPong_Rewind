@@ -15,6 +15,8 @@ public class GravityInverseGimmick : GimmickObject
     [SerializeField]
     private float _coolTime = 0.2f;
     private bool _locked = false;
+    [SerializeField]
+    private LayerMask _groundMask = 0;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -26,12 +28,12 @@ public class GravityInverseGimmick : GimmickObject
             player.GravityModule.GravityScale = _gravityScale;
             PlayerGravitySet(gravityDirState);
         }
-        if (other.gameObject.TryGetComponent<GravityGimmickObject>
+        /*if (other.gameObject.TryGetComponent<GravityGimmickObject>
             (out GravityGimmickObject gravityGimmick))
         {
             gravityGimmick.GravityDir = Utility.GetDirToVector(gravityDirState) * 9.8f;
             gravityGimmick.GravityScale = _gravityScale;
-        }
+        }*/
     }
 
     private void OnTriggerExit(Collider other)
@@ -42,32 +44,36 @@ public class GravityInverseGimmick : GimmickObject
         }
         player.GravityModule.GravityScale = player.GravityModule.OriginGravityScale;
         PlayerGravitySet(FlipDirection.Down);
+        player = null;
         //module.GravityScale = module.OriginGravityScale;
 
-        if (other.gameObject.TryGetComponent<GravityGimmickObject>
+        /*if (other.gameObject.TryGetComponent<GravityGimmickObject>
                   (out GravityGimmickObject gravityGimmick))
         {
             gravityGimmick.GravityDir = Utility.GetDirToVector(FlipDirection.Down) * 9.8f;
             gravityGimmick.GravityScale = gravityGimmick.OrignGravityScale;
-        }
+        }*/
     }
 
     private void PlayerGravitySet(FlipDirection direction)
     {
         player.ForceStop();
-        player.PlayerRenderer.flipDirection = direction;
-        player.GravityModule.GravityDir = Utility.GetDirToVector(direction) * 9.8f;
-        CapsuleCollider col = player.GetCapsuleCollider(PlayerColliderType.Normal);
-        float height = col.height * 0.5f;
-        Vector3 newPos = Vector3.zero;
+        CapsuleCollider col = player.Col;
+        RaycastHit hit;
+        bool result = Physics.Raycast(player.transform.position, player.transform.up * -1f, out hit, col.height, _groundMask);
+        if(result)
+        {
+        }
         if (gravityDirState == FlipDirection.Left || gravityDirState == FlipDirection.Right)
         {
-            newPos = player.transform.position;
         }
         else
         {
-            newPos = player.transform.position + player.transform.up * height * -1f;
         }
+        Vector3 newPos = Vector3.zero;
+        newPos = player.transform.position + player.transform.up * col.height;
         player.transform.position = newPos;
+        player.PlayerRenderer.flipDirection = direction;
+        player.GravityModule.GravityDir = Utility.GetDirToVector(direction) * 9.8f;
     }
 }

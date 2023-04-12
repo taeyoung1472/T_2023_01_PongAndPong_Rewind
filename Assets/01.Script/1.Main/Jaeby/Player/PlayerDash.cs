@@ -13,12 +13,17 @@ public class PlayerDash : PlayerAction
     private Coroutine _dashCoroutine = null; // 대시
     private Coroutine _dashChargeCoroutine = null; // 땅에 닿아있을 때 일정 시간 뒤에 대시 가능하게
 
-    public void Dash()
+    public void DashWithInput()
+    {
+        Dash(_player.PlayerInput.InputVectorNorm);
+    }
+
+    public void Dash(Vector2 dir)
     {
         if (_locked || _excuting || _curDashCount >= _player.playerMovementSO.dashCount ||
-            _player.PlayerInput.InputVectorNorm.sqrMagnitude == 0f ||
-            (Mathf.Abs(_player.PlayerInput.InputVector.x) > 0f == false) ||
-            _player.PlayerActionCheck(PlayerActionType.ObjectPush))
+            dir.sqrMagnitude == 0f ||
+            (Mathf.Abs(dir.x) > 0f == false) ||
+            _player.PlayerActionCheck(PlayerActionType.ObjectPush, PlayerActionType.WallGrab))
             return;
         _excuting = true;
 
@@ -34,11 +39,11 @@ public class PlayerDash : PlayerAction
             DashExit();
         }
 
-        _dashCoroutine = StartCoroutine(DashCoroutine(slide));
+        _dashCoroutine = StartCoroutine(DashCoroutine(slide, dir));
 
         GameObject effectObj = PoolManager.Pop(PoolType.DashEffect);
         effectObj.transform.SetPositionAndRotation(transform.position + transform.up * 0.65f + transform.forward * 0.15f, _player.PlayerRenderer.GetFlipedRotation(DirType.Back, RotAxis.Y));
-        OnDashStarted?.Invoke(_player.PlayerInput.InputVectorNorm);
+        OnDashStarted?.Invoke(dir);
     }
 
     public void MoreDash(int cnt)
@@ -48,9 +53,9 @@ public class PlayerDash : PlayerAction
             _curDashCount = 0;
     }
 
-    private IEnumerator DashCoroutine(bool slide)
+    private IEnumerator DashCoroutine(bool slide, Vector2 dir)
     {
-        _player.PlayerActionExit(PlayerActionType.Jump, PlayerActionType.Move, PlayerActionType.WallGrab);
+        _player.PlayerActionExit(PlayerActionType.Jump, PlayerActionType.Move);
         _player.PlayerActionLock(true, PlayerActionType.Jump, PlayerActionType.Move);
         _player.VeloCityResetImm(true, true);
         Vector2 dashVector = Vector2.zero;
@@ -60,14 +65,14 @@ public class PlayerDash : PlayerAction
             _player.ColliderSet(PlayerColliderType.Dash);
             _player.PlayerAnimation.SlideAnimation();
             _player.GravityModule.UseGravity = true;
-            dashVector = _player.PlayerInput.InputVector * _player.playerMovementSO.dashPower;
+            dashVector = dir * _player.playerMovementSO.dashPower;
             dashVector.y = 0f;
         }
         else
         {
-            _player.PlayerAnimation.DashAnimation(_player.PlayerInput.InputVectorNorm);
+            _player.PlayerAnimation.DashAnimation(dir);
             _player.GravityModule.UseGravity = false;
-            dashVector = _player.PlayerInput.InputVectorNorm * _player.playerMovementSO.dashPower;
+            dashVector = dir * _player.playerMovementSO.dashPower;
         }
         _player.VelocitySetExtra(dashVector.x);
         _player.AfterImageEnable(true);
