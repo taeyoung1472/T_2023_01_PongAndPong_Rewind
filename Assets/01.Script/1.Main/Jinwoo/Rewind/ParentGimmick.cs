@@ -13,10 +13,6 @@ public class ParentGimmick : GimmickObject
         base.Awake();
     }
     
-    void Start()
-    {
-        //Debug.Log(RewindManager.Instance);
-    }
     public override void InitOnPlay()
     {
         disableTime = 0f;
@@ -38,7 +34,7 @@ public class ParentGimmick : GimmickObject
         {
             isStart = false;
         }
-    }
+    }  
     IEnumerator ActiveChild(float time)
     {
         yield return new WaitForSeconds(time);

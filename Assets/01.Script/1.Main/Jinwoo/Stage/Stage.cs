@@ -19,7 +19,6 @@ public class Stage : MonoBehaviour
             area.isAreaClear = false;
         }
 
-
         StartCoroutine(StageCycle());
     }
 

@@ -5,7 +5,7 @@ using UnityEngine;
 public class TimePlateGimmick : GimmickObject
 {
     [SerializeField] private float destroyTime = 0f;
-    private float basicTime;
+    [SerializeField] private float basicTime;
 
     private Collider _col;
 
@@ -15,27 +15,41 @@ public class TimePlateGimmick : GimmickObject
 
     RaycastHit hit;
 
-    bool isEnter = false;
+   public bool isEnter = false;
 
-    private void Awake()
+    public override void Awake()
     {
+        base.Awake();
         Init();
     }
     public override void Init()
     {
         _col = GetComponent<BoxCollider>();
-        basicTime = destroyTime;
+    }
+    public override void InitOnPlay()
+    {
+        destroyTime = basicTime;
+        isEnter = false;
+        base.InitOnPlay();
+    }
+    public override void InitOnRewind()
+    {
+        base.InitOnRewind();
     }
 
     public void Update()
     {
+        if (isRewind)
+        {
+            return;
+        }
+
         if (isEnter)
         {
             destroyTime -= Time.deltaTime;
             if(destroyTime <= 0.0f)
             {
                 gameObject.SetActive(false);
-                //Destroy(gameObject);
             }
         }
     }
@@ -55,27 +69,30 @@ public class TimePlateGimmick : GimmickObject
                 isEnter = true;
             }
         }
+    
     }
 
-    //private void OnDrawGizmos()
-    //{
-    //    if (isCheck)
-    //    {
-    //        Gizmos.DrawRay(transform.position, transform.up * hit.distance);
-    //        Gizmos.DrawWireCube(transform.position + transform.up * hit.distance, transform.localScale);
-    //    }
-    //    else
-    //    {
-    //        Gizmos.DrawRay(transform.position, transform.up * rayDistance);
-    //        Gizmos.DrawWireCube(transform.position + transform.up * rayDistance, transform.localScale);
-    //    }
-    //}
- 
- 
-
-    private void OnTriggerExit(Collider other)
+    private void OnDrawGizmos()
     {
-        isEnter = false;
-        destroyTime = basicTime;
+        if (isCheck)
+        {
+            Gizmos.DrawRay(transform.position, transform.up * hit.distance);
+            Gizmos.DrawWireCube(transform.position + transform.up * hit.distance, transform.localScale);
+        }
+        else
+        {
+            Gizmos.DrawRay(transform.position, transform.up * rayDistance);
+            Gizmos.DrawWireCube(transform.position + transform.up * rayDistance, transform.localScale);
+        }
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            Debug.Log("발판에서 내려감");
+            isEnter = false;
+            destroyTime = basicTime;
+        }
     }
 }
