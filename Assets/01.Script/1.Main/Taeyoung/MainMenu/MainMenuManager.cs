@@ -26,15 +26,7 @@ public class MainMenuManager : MonoSingleTon<MainMenuManager>
     [SerializeField] private GameObject player;
     [SerializeField] private PlayerInput playerInput;
     [SerializeField] private Animator playerAnimator;
-
-    //public void Awake()
-    //{
-        //GameObject mainWindow;
-        //mainWindow = content.transform.Find("MainWindow").gameObject;
-        //mainWindow.SetActive(true);
-        //content.sizeDelta = new Vector2(content.sizeDelta.x, mainWindow.GetComponent<RectTransform>().sizeDelta.y);
-        //curDisplayingWindow = mainWindow;
-    //}
+    [SerializeField] private Animator tabletAnimator;
 
     public IEnumerator Start()
     {
@@ -62,6 +54,18 @@ public class MainMenuManager : MonoSingleTon<MainMenuManager>
             {
                 OpenMenu();
             }
+        }
+        if (isActive)
+        {
+            screen.transform.position = tabletPosition.position;
+            screen.transform.rotation = tabletPosition.rotation;
+            screen.transform.localScale = tabletPosition.localScale;
+        }
+        else
+        {
+            screen.transform.position = labtopPosition.position;
+            screen.transform.rotation = labtopPosition.rotation;
+            screen.transform.localScale = labtopPosition.localScale;
         }
     }
 
@@ -105,15 +109,13 @@ public class MainMenuManager : MonoSingleTon<MainMenuManager>
         player.GetComponent<Highlighter>().enabled = true;
         playerInput.enabled = true;
 
-        screen.transform.position = labtopPosition.position;
-        screen.transform.rotation = labtopPosition.rotation;
-        screen.transform.localScale = labtopPosition.localScale;
-
         isActive = false;
         playerAnimator.SetLayerWeight(2, 0);
         playerAnimator.GetComponent<AnimationIK>().SetIKWeightZero();
         playerAnimator.SetBool("IsHolding", false);
         WindowClose();
+
+        tabletAnimator.SetBool("IsOpen", false);
     }
 
     public void OpenMenu()
@@ -125,13 +127,11 @@ public class MainMenuManager : MonoSingleTon<MainMenuManager>
         player.GetComponent<Highlighter>().enabled = false;
         playerInput.enabled = false;
 
-        screen.transform.position = tabletPosition.position;
-        screen.transform.rotation = tabletPosition.rotation;
-        screen.transform.localScale = tabletPosition.localScale;
-
         isActive = true;
         playerAnimator.SetLayerWeight(2, 1);
         playerAnimator.GetComponent<AnimationIK>().SetIKWeightOne();
         playerAnimator.SetBool("IsHolding", true);
+
+        this.Invoke(() => tabletAnimator.SetBool("IsOpen", true), 0.5f);
     }
 }
