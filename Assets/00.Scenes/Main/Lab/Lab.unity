@@ -683,6 +683,8 @@ MonoBehaviour:
   background: {fileID: 516037623}
   fill: {fileID: 1813094495}
   outer: {fileID: 351967880}
+  inner: {fileID: 0}
+  "\uBA58\uC96C\uBC1B\uC558\uC5B4": {fileID: 0}
 --- !u!1 &27865410
 GameObject:
   m_ObjectHideFlags: 0
@@ -694,7 +696,7 @@ GameObject:
   - component: {fileID: 27865411}
   - component: {fileID: 27865413}
   - component: {fileID: 27865412}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: LabFloor_2(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -976,71 +978,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4632362098580100, guid: 7a9811a9b39200a41a3713ffe3b61fd2, type: 3}
   m_PrefabInstance: {fileID: 2016838932}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &58393348
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 6922515265029031185, guid: 4543295202c243c42a52699e5428777c, type: 3}
-      propertyPath: gravityDirState
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6922515265029031185, guid: 4543295202c243c42a52699e5428777c, type: 3}
-      propertyPath: _groundMask.m_Bits
-      value: 128
-      objectReference: {fileID: 0}
-    - target: {fileID: 6922515265029031187, guid: 4543295202c243c42a52699e5428777c, type: 3}
-      propertyPath: m_RootOrder
-      value: 11
-      objectReference: {fileID: 0}
-    - target: {fileID: 6922515265029031187, guid: 4543295202c243c42a52699e5428777c, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 26.75
-      objectReference: {fileID: 0}
-    - target: {fileID: 6922515265029031187, guid: 4543295202c243c42a52699e5428777c, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6922515265029031187, guid: 4543295202c243c42a52699e5428777c, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6922515265029031187, guid: 4543295202c243c42a52699e5428777c, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6922515265029031187, guid: 4543295202c243c42a52699e5428777c, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6922515265029031187, guid: 4543295202c243c42a52699e5428777c, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6922515265029031187, guid: 4543295202c243c42a52699e5428777c, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6922515265029031187, guid: 4543295202c243c42a52699e5428777c, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6922515265029031187, guid: 4543295202c243c42a52699e5428777c, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6922515265029031187, guid: 4543295202c243c42a52699e5428777c, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6922515265029031191, guid: 4543295202c243c42a52699e5428777c, type: 3}
-      propertyPath: m_Name
-      value: GravityZone
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 4543295202c243c42a52699e5428777c, type: 3}
 --- !u!1 &65369978
 GameObject:
   m_ObjectHideFlags: 0
@@ -2698,7 +2635,7 @@ GameObject:
   - component: {fileID: 119869495}
   - component: {fileID: 119869497}
   - component: {fileID: 119869496}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: LabFloor_2(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6297,7 +6234,7 @@ GameObject:
   - component: {fileID: 267051788}
   - component: {fileID: 267051790}
   - component: {fileID: 267051789}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: LabFloor_2(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9027,7 +8964,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 168944210, guid: 18f205ab32cd84a4898ba28bf639789b, type: 3}
       propertyPath: m_RootOrder
-      value: 8
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 532921132, guid: 18f205ab32cd84a4898ba28bf639789b, type: 3}
       propertyPath: m_Enabled
@@ -9041,9 +8978,13 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5717730646254910203, guid: 18f205ab32cd84a4898ba28bf639789b, type: 3}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 6691628707489746809, guid: 18f205ab32cd84a4898ba28bf639789b, type: 3}
       propertyPath: m_RootOrder
-      value: 12
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 6691628707489746809, guid: 18f205ab32cd84a4898ba28bf639789b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -9706,7 +9647,7 @@ GameObject:
   - component: {fileID: 447419954}
   - component: {fileID: 447419956}
   - component: {fileID: 447419955}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: LabFloor_2(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10112,25 +10053,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4181483741027380, guid: 6e49e30e88d7bdc489d2d9001d80c743, type: 3}
   m_PrefabInstance: {fileID: 1596947437}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &473979446 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3958125039221578628, guid: 8c40e98ff3577b645a65ddcd87a1bed1, type: 3}
-  m_PrefabInstance: {fileID: 1265779418}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &473979449
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 473979446}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3312d7739989d2b4e91e6319e9a96d76, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Padding: {x: 20, y: 0, z: 20, w: 0}
-  m_Softness: {x: 250, y: 0}
 --- !u!1 &474204185
 GameObject:
   m_ObjectHideFlags: 0
@@ -13959,7 +13881,7 @@ Transform:
   - {fileID: 95694073}
   - {fileID: 88394699}
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &643816832
 MonoBehaviour:
@@ -14387,7 +14309,7 @@ GameObject:
   - component: {fileID: 665341029}
   - component: {fileID: 665341031}
   - component: {fileID: 665341030}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: LabFloor_2(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17364,6 +17286,10 @@ PrefabInstance:
     - target: {fileID: 1985840463647464, guid: 1f1aba1311332314d9267bee96ed2954, type: 3}
       propertyPath: m_Name
       value: Standing Computer Desk 01
+      objectReference: {fileID: 0}
+    - target: {fileID: 1985840463647464, guid: 1f1aba1311332314d9267bee96ed2954, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 1985840463647464, guid: 1f1aba1311332314d9267bee96ed2954, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -20707,7 +20633,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &990113166
 Transform:
   m_ObjectHideFlags: 0
@@ -21614,7 +21540,7 @@ GameObject:
   - component: {fileID: 1075882347}
   - component: {fileID: 1075882349}
   - component: {fileID: 1075882348}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: LabFloor_2(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24318,7 +24244,7 @@ GameObject:
   - component: {fileID: 1195531225}
   - component: {fileID: 1195531227}
   - component: {fileID: 1195531226}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: LabFloor_2(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -25080,7 +25006,7 @@ GameObject:
   - component: {fileID: 1216109718}
   - component: {fileID: 1216109720}
   - component: {fileID: 1216109719}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: LabFloor_2(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -26161,7 +26087,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3958125040172078725, guid: 8c40e98ff3577b645a65ddcd87a1bed1, type: 3}
   m_PrefabInstance: {fileID: 1265779418}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2124808644}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5ffe36c3d7c968244a5d42b01bcd58c4, type: 3}
@@ -28155,7 +28081,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1363583565}
   - component: {fileID: 1363583564}
-  - component: {fileID: 1363583563}
   - component: {fileID: 1363583562}
   m_Layer: 0
   m_Name: VoidCamera
@@ -28197,14 +28122,6 @@ MonoBehaviour:
   m_RequiresDepthTexture: 0
   m_RequiresColorTexture: 0
   m_Version: 2
---- !u!81 &1363583563
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1363583561}
-  m_Enabled: 1
 --- !u!20 &1363583564
 Camera:
   m_ObjectHideFlags: 0
@@ -29203,7 +29120,7 @@ GameObject:
   - component: {fileID: 1430651910}
   - component: {fileID: 1430651912}
   - component: {fileID: 1430651911}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: LabFloor_2(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -31839,7 +31756,7 @@ GameObject:
   - component: {fileID: 1570350175}
   - component: {fileID: 1570350177}
   - component: {fileID: 1570350176}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: LabFloor_2(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -33473,7 +33390,7 @@ GameObject:
   - component: {fileID: 1658525079}
   - component: {fileID: 1658525081}
   - component: {fileID: 1658525080}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: LabFloor_2(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -37240,6 +37157,10 @@ PrefabInstance:
     - target: {fileID: 1039271412931102, guid: 11c30a35d06eafc4d8dcd312a784b1d0, type: 3}
       propertyPath: m_Name
       value: Energy Generator 01
+      objectReference: {fileID: 0}
+    - target: {fileID: 1039271412931102, guid: 11c30a35d06eafc4d8dcd312a784b1d0, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 1039271412931102, guid: 11c30a35d06eafc4d8dcd312a784b1d0, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -41478,23 +41399,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   deployType: 1
   size: {x: 2, y: 0.15, z: 2}
---- !u!1 &2124808644 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3958125040172078720, guid: 8c40e98ff3577b645a65ddcd87a1bed1, type: 3}
-  m_PrefabInstance: {fileID: 1265779418}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &2124808648
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2124808644}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dcddeb3764cc0d745b9841ec61837af8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &2125260516
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -41643,6 +41547,10 @@ PrefabInstance:
     - target: {fileID: 1985840463647464, guid: 1f1aba1311332314d9267bee96ed2954, type: 3}
       propertyPath: m_Name
       value: Standing Computer Desk 01 (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1985840463647464, guid: 1f1aba1311332314d9267bee96ed2954, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 1985840463647464, guid: 1f1aba1311332314d9267bee96ed2954, type: 3}
       propertyPath: m_StaticEditorFlags

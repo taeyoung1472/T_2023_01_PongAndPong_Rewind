@@ -30,11 +30,23 @@ public class TrailableObject : MonoBehaviour
         TrailDisable();
     }
 
+    private void OnEnable()
+    {
+        TrailParent parent = TrailManager.Instance.GetParent(this);
+        if (parent == null)
+            return;
+        parent.Died = false;
+    }
 
     public void TrailDisable()
     {
         Debug.Log($"TrailableObejct 제거 : 객체 이름 {gameObject.name}");
-        _isMotionTrail = false;
-        TrailManager.Instance.DeleteTrailObj(this);
+        if (TrailManager.Instance != null)
+        {
+            TrailParent parent = TrailManager.Instance.GetParent(this);
+            if (parent == null)
+                return;
+            parent.Died = true;
+        }
     }
 }
