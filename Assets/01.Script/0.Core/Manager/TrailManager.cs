@@ -53,6 +53,15 @@ public class TrailManager : MonoSingleTon<TrailManager>
         }
     }
 
+    public TrailParent GetParent(TrailableObject obj)
+    {
+        if (_trailParents.ContainsKey(obj))
+        {
+            return _trailParents[obj];
+        }
+        return null;
+    }
+
     private void Awake()
     {
         _rootTrm = new GameObject("@ROOT").transform;
