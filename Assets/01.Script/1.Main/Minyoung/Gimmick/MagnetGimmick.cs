@@ -10,6 +10,7 @@ public class MagnetGimmick : GimmickObject
 
     private float radius;
     public bool isStart = false;
+
     public override void Init()
     {
         radius = GetComponent<SphereCollider>().radius;
@@ -38,9 +39,8 @@ public class MagnetGimmick : GimmickObject
     {
         if (isRewind || !isStart)
         {
-            return;
+            return; 
         }
-
         if (other.gameObject.TryGetComponent<MagnetGimmickObject>(out MagnetGimmickObject magent))
         {
             Debug.Log(magent);
