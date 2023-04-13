@@ -4,8 +4,9 @@ using UnityEngine;
 using DG.Tweening;
 using System;
 
-public class ScaleGimmick : MonoBehaviour
+public class ScaleGimmick : GimmickObject
 {
+    [SerializeField] LayerMask scaleLayerMask;
     private Collider leftScaleCol;
     private Collider rightScaleCol;
     public float rayDistance = 5f;
@@ -15,22 +16,38 @@ public class ScaleGimmick : MonoBehaviour
     public int leftWeight = 0;
     public int rightWeight = 0;
 
-
-    public bool isDowning;
-    private float preLeftWeight;
-    private float preRightWeight;
-    private void Start()
+    public bool isStart = false;
+    public override void Init()
     {
         leftScaleCol = transform.Find("Left").GetComponent<Collider>();
         rightScaleCol = transform.Find("Right").GetComponent<Collider>();
     }
+
+    public override void Awake()
+    {
+        base.Awake();
+        Init();
+    }
+    public override void InitOnPlay()
+    {
+        base.InitOnPlay();
+        isStart = true;
+    }
     private void FixedUpdate()
     {
+        if (isRewind || !isStart)
+        {
+            return;
+        }
         LeftShootBoxcast();
         RightShootBoxcast();
     }
     private void Update()
     {
+        if (isRewind || !isStart)
+        {
+            return;
+        }
         CalculPos();
     }
 
@@ -40,11 +57,15 @@ public class ScaleGimmick : MonoBehaviour
 
         if(rightWeight == leftWeight)
         {
-            Vector3 _pos = leftScaleCol.transform.position;
-            leftScaleCol.transform.position = new Vector3(_pos.x, Mathf.Lerp(_pos.y, -totalLineLength / 1.5f, Time.deltaTime), _pos.z);
+            Vector3 _pos = leftScaleCol.transform.localPosition;
+            Debug.Log(_pos); 
+           //leftScaleCol.transform.position = new Vector3(_pos.x, Mathf.Lerp(_pos.y, -totalLineLength / 1.5f, Time.deltaTime), _pos.z);
+           leftScaleCol.transform.localPosition = new Vector3(_pos.x, Mathf.Lerp(_pos.y, 0, Time.deltaTime), _pos.z);
 
-            _pos = rightScaleCol.transform.position;
-            rightScaleCol.transform.position = new Vector3(_pos.x, Mathf.Lerp(_pos.y, -totalLineLength / 1.5f, Time.deltaTime), _pos.z);
+            _pos = rightScaleCol.transform.localPosition;
+            //rightScaleCol.transform.position = new Vector3(_pos.x, Mathf.Lerp(_pos.y, -totalLineLength / 1.5f, Time.deltaTime), _pos.z);
+            rightScaleCol.transform.localPosition = new Vector3(_pos.x, Mathf.Lerp(_pos.y, 0, Time.deltaTime), _pos.z);
+
             return;
         }
 
@@ -64,11 +85,11 @@ public class ScaleGimmick : MonoBehaviour
             ratio = leftWeight / rightWeight;
         float leftLength = ratio * totalLineLength;
 
-        Vector3 pos = leftScaleCol.transform.position;
-        leftScaleCol.transform.position = new Vector3(pos.x, Mathf.Lerp(pos.y, -leftLength, Time.deltaTime), pos.z);
+        Vector3 pos = leftScaleCol.transform.localPosition;
+        leftScaleCol.transform.localPosition = new Vector3(pos.x, Mathf.Lerp(pos.y, -leftLength, Time.deltaTime), pos.z);
 
-        pos = rightScaleCol.transform.position;
-        rightScaleCol.transform.position = new Vector3(pos.x, Mathf.Lerp(pos.y, -rightLength, Time.deltaTime), pos.z);
+        pos = rightScaleCol.transform.localPosition;
+        rightScaleCol.transform.localPosition = new Vector3(pos.x, Mathf.Lerp(pos.y, -rightLength, Time.deltaTime), pos.z);
     }
 
     void LeftShootBoxcast()
@@ -76,10 +97,9 @@ public class ScaleGimmick : MonoBehaviour
         Vector3 boxCenter = leftScaleCol.bounds.center;
         Vector3 halfExtents = leftScaleCol.bounds.extents;
 
-        RaycastHit[] hits = Physics.BoxCastAll(boxCenter, halfExtents, transform.up, transform.rotation, rayDistance);
+        RaycastHit[] hits = Physics.BoxCastAll(boxCenter, halfExtents, transform.up, transform.rotation, rayDistance, scaleLayerMask);
 
         leftWeight = 0;
-        preLeftWeight = leftWeight;
 
         foreach (var h in hits)
         {
@@ -98,9 +118,8 @@ public class ScaleGimmick : MonoBehaviour
         Vector3 boxCenter = rightScaleCol.bounds.center;
         Vector3 halfExtents = rightScaleCol.bounds.extents;
 
-        RaycastHit[] hits = Physics.BoxCastAll(boxCenter, halfExtents, transform.up, transform.rotation, rayDistance);
+        RaycastHit[] hits = Physics.BoxCastAll(boxCenter, halfExtents, transform.up, transform.rotation, rayDistance, scaleLayerMask);
         rightWeight = 0;
-        preRightWeight = rightWeight;
 
         foreach (var h in hits)
         {
@@ -114,4 +133,5 @@ public class ScaleGimmick : MonoBehaviour
             rightWeight += obj.so.weight;
         }
     }
+
 }

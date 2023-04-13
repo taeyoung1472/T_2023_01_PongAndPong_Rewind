@@ -10,6 +10,11 @@ public class RingGimmick : GimmickObject
 
     private void OnTriggerEnter(Collider other)
     {
+        if (isRewind)
+        {
+            return;
+        }
+        
         if (other.CompareTag("Player"))
         {
             Debug.Log("µð¹ö±×");
