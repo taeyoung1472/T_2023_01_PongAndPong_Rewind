@@ -15,7 +15,7 @@ public class PlayerDash : PlayerAction
 
     public void DashWithInput()
     {
-        Dash(_player.PlayerInput.InputVectorNorm);
+        Dash(_player.PlayerInput.RotatedInputVector);
     }
 
     public void Dash(Vector2 dir)
@@ -74,7 +74,7 @@ public class PlayerDash : PlayerAction
             _player.GravityModule.UseGravity = false;
             dashVector = dir * _player.playerMovementSO.dashPower;
         }
-        _player.VelocitySetExtra(dashVector.x);
+        _player.VelocitySetExtra(dashVector.x, dashVector.y);
         _player.AfterImageEnable(true);
         yield return new WaitForSeconds(_player.playerMovementSO.dashContinueTime);
         DashExit();

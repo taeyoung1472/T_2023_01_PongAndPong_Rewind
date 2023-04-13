@@ -24,8 +24,8 @@ public class PlayerMove : PlayerAction
         {
             return;
         }
-        Vector2 moveInputVector = new Vector2(_player.PlayerInput.InputVector.x, 0f);
-        moveInputVector = Quaternion.FromToRotation(Vector2.up, Utility.GetDirToVector(_player.PlayerRenderer.flipDirection)) * moveInputVector;
+        //Vector2 moveInputVector = new Vector2(_player.PlayerInput.InputVector.x, 0f);
+        Vector2 moveInputVector = _player.PlayerInput.RotatedInputVector;
         Move(moveInputVector);
     }
 

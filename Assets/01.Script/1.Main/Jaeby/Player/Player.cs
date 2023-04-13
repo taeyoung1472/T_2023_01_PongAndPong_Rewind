@@ -240,6 +240,8 @@ public class Player : MonoBehaviour
         halfExtents.y = _groundCheckRayLength;
         float maxDistance = _col.bounds.extents.y;
         _isGrounded = Physics.BoxCast(boxCenter, halfExtents, -transform.up, out _slopeHit, transform.rotation, maxDistance, _groundMask);
+        if (_slopeHit.collider != null)
+            Debug.Log(_slopeHit.collider.name);
 
         if (lastGrounded == _isGrounded)
             return;
@@ -319,7 +321,7 @@ public class Player : MonoBehaviour
             default:
                 break;
         }
-        _col.center = center; 
-        _col.height = height; 
+        _col.center = center;
+        _col.height = height;
     }
 }

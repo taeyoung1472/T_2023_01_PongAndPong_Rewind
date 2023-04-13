@@ -1,4 +1,7 @@
+using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
+using static Highlighters.HighlighterTrigger;
 using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class GravityInverseGimmick : GimmickObject
@@ -18,8 +21,13 @@ public class GravityInverseGimmick : GimmickObject
     [SerializeField]
     private LayerMask _groundMask = 0;
 
+    RaycastHit hit;
+
     private void OnTriggerEnter(Collider other)
     {
+        if (_locked)
+            return;
+
         if (other.CompareTag("Player"))
         {
             if (player == null)
@@ -38,6 +46,9 @@ public class GravityInverseGimmick : GimmickObject
 
     private void OnTriggerExit(Collider other)
     {
+        if (_locked)
+            return;
+
         if (player == null)
         {
             return;
@@ -58,14 +69,17 @@ public class GravityInverseGimmick : GimmickObject
     private void PlayerGravitySet(DirectionType direction)
     {
         player.ForceStop();
+        player.ColliderSet(PlayerColliderType.Normal);
         CapsuleCollider col = player.Col;
-        RaycastHit hit;
-        bool result = Physics.Raycast(player.transform.position, player.transform.up * -1f, out hit, col.height, _groundMask);
-        if(result)
+        if ((gravityDirState == DirectionType.Left || gravityDirState == DirectionType.Right))
         {
-        }
-        if (gravityDirState == DirectionType.Left || gravityDirState == DirectionType.Right)
-        {
+            Vector3 newPos = Vector3.zero;
+            if (RayCheck(Vector3.up, col))
+            {
+                newPos = hit.point;
+                newPos.y -= col.height * 1.1f;
+                player.transform.position = newPos;
+            }
         }
         else
         {
@@ -75,5 +89,19 @@ public class GravityInverseGimmick : GimmickObject
         }
         player.PlayerRenderer.flipDirection = direction;
         player.GravityModule.GravityDir = Utility.GetDirToVector(direction) * 9.8f;
+    }
+
+    private bool RayCheck(Vector3 dir, CapsuleCollider playerCol)
+    {
+        if (player == null)
+            return false;
+        return Physics.Raycast(player.transform.position, dir, out hit, playerCol.height, _groundMask);
+    }
+
+    private IEnumerator CooltimeCoroutine()
+    {
+        _locked = true;
+        yield return new WaitForSeconds(_coolTime);
+        _locked = false;
     }
 }

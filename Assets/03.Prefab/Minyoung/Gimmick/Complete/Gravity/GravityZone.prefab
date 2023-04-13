@@ -45,7 +45,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 13.838845, y: 6.4490557, z: 5.717006}
+  m_Size: {x: 13.838845, y: 10.98, z: 5.717006}
   m_Center: {x: -3.1581178, y: 2.7245278, z: -2.358503}
 --- !u!114 &6922515265029031185
 MonoBehaviour:
@@ -59,7 +59,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3bff74db8d5da34da357166b16b72c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gravityDirState: 0
+  gravityDirState: 3
+  _gravityScale: 0.8
+  _coolTime: 0.2
+  _groundMask:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!54 &6922515265029031184
 Rigidbody:
   m_ObjectHideFlags: 0
