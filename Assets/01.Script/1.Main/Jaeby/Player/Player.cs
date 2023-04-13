@@ -76,11 +76,6 @@ public class Player : MonoBehaviour
     private float _maxSlopeAngle = 10f;
     RaycastHit _slopeHit;
 
-    [SerializeField]
-    private CapsuleCollider _normalCapsuleCol = null;
-    [SerializeField]
-    private CapsuleCollider _dashCapsuleCol = null;
-
     private void Awake()
     {
         LoadJson();
@@ -97,17 +92,7 @@ public class Player : MonoBehaviour
         _gravityModule = GetComponent<GravityModule>();
         _playerTrail = GetComponent<TrailableObject>();
         _playerAudio = transform.Find("AgentSound").GetComponent<PlayerAudio>();
-
-        if (_normalCapsuleCol != null && _dashCapsuleCol != null)
-        {
-            _col = _normalCapsuleCol;
-            _normalCapsuleCol.enabled = true;
-            _dashCapsuleCol.enabled = false;
-        }
-        else
-        {
-            _col = GetComponent<CapsuleCollider>();
-        }
+        _col = GetComponent<CapsuleCollider>();
     }
 
     private void LoadJson()
@@ -255,7 +240,6 @@ public class Player : MonoBehaviour
         halfExtents.y = _groundCheckRayLength;
         float maxDistance = _col.bounds.extents.y;
         _isGrounded = Physics.BoxCast(boxCenter, halfExtents, -transform.up, out _slopeHit, transform.rotation, maxDistance, _groundMask);
-
         if (lastGrounded == _isGrounded)
             return;
         OnIsGrounded?.Invoke(_isGrounded);
@@ -304,6 +288,12 @@ public class Player : MonoBehaviour
         VeloCityResetImm(true, true);
         _playerInput.InputVectorReset();
         _playerAnimation.FallOrIdleAnimation(IsGrounded);
+        _characterMoveAmount = Vector3.zero;
+    }
+
+    public void TrailDisable()
+    {
+        _playerTrail.TrailDisable();
     }
 
     public void AfterImageEnable(bool value)
@@ -316,25 +306,24 @@ public class Player : MonoBehaviour
 
     public void ColliderSet(PlayerColliderType type)
     {
-        if (_normalCapsuleCol == null || _dashCapsuleCol == null)
-            return;
+        Vector3 center = Vector3.zero;
+        float height = 0f;
         switch (type)
         {
             case PlayerColliderType.None:
                 break;
             case PlayerColliderType.Normal:
-                _col = _normalCapsuleCol;
-                _normalCapsuleCol.enabled = true;
-                _dashCapsuleCol.enabled = false;
+                center.y = 0.92f;
+                height = 1.9f;
                 break;
             case PlayerColliderType.Dash:
-                _col = _dashCapsuleCol;
-                _normalCapsuleCol.enabled = false;
-                _dashCapsuleCol.enabled = true;
+                center.y = 0.3f;
+                height = 0f;
                 break;
             default:
                 break;
         }
+        _col.center = center;
+        _col.height = height;
     }
-
 }

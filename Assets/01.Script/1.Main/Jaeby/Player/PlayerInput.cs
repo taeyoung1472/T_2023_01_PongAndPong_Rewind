@@ -21,6 +21,7 @@ public class PlayerInput : MonoBehaviour
     private Vector2 _inputVector = Vector2.zero;
     public Vector2 InputVectorNorm => _inputVector.normalized;
     public Vector2 InputVector => _inputVector;
+    public Vector2 RotatedInputVector => Quaternion.FromToRotation(Vector2.up, Utility.GetDirToVector(_player.PlayerRenderer.flipDirection)) * _inputVector;
 
     private Player _player = null;
 

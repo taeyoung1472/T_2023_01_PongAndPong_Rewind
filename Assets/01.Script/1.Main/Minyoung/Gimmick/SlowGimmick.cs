@@ -14,8 +14,9 @@ public class SlowGimmick : GimmickObject
     Player player =  null;
 
     RaycastHit hit;
-    private void Awake()
+    public override void Awake()
     {
+        base.Awake();
         Init();
     }
     public override void Init()
@@ -24,6 +25,10 @@ public class SlowGimmick : GimmickObject
     }
     private void FixedUpdate()
     {
+        if (isRewind)
+        {
+            return;
+        }
         CheckObj();
     }
     public void CheckObj()
@@ -34,7 +39,7 @@ public class SlowGimmick : GimmickObject
         isCheck = Physics.BoxCast(boxcenter, halfextents, transform.up, out hit, transform.rotation, rayDistance);
         if (isCheck)
         {
-            if (hit.collider.gameObject.layer == LayerMask.NameToLayer("GimmickPlayer"))
+            if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Player"))
             {
                 player = hit.transform.GetComponentInParent<Player>();
                 player.playerBuff.AddBuff(PlayerBuffType.Slow);
@@ -46,7 +51,7 @@ public class SlowGimmick : GimmickObject
         } 
     }
 
-    private void OnTriggerExit(Collider other)
+    private void OnCollisionExit(Collision collision)
     {
         if (player != null)
         {
@@ -54,5 +59,4 @@ public class SlowGimmick : GimmickObject
             player = null;
         }
     }
-
 }
