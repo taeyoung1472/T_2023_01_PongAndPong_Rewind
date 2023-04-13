@@ -14,7 +14,7 @@ public class BeadDash : GimmickObject
         {
             Player player = other.GetComponent<Player>();
             player.GetPlayerAction<PlayerDash>().MoreDash(0);
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
     }
 }
