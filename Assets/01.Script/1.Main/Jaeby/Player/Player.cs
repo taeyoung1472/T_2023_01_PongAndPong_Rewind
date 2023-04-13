@@ -240,9 +240,6 @@ public class Player : MonoBehaviour
         halfExtents.y = _groundCheckRayLength;
         float maxDistance = _col.bounds.extents.y;
         _isGrounded = Physics.BoxCast(boxCenter, halfExtents, -transform.up, out _slopeHit, transform.rotation, maxDistance, _groundMask);
-        if (_slopeHit.collider != null)
-            Debug.Log(_slopeHit.collider.name);
-
         if (lastGrounded == _isGrounded)
             return;
         OnIsGrounded?.Invoke(_isGrounded);
@@ -292,6 +289,11 @@ public class Player : MonoBehaviour
         _playerInput.InputVectorReset();
         _playerAnimation.FallOrIdleAnimation(IsGrounded);
         _characterMoveAmount = Vector3.zero;
+    }
+
+    public void TrailDisable()
+    {
+        _playerTrail.TrailDisable();
     }
 
     public void AfterImageEnable(bool value)
