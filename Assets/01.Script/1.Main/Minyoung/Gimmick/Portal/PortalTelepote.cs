@@ -4,7 +4,7 @@ using UnityEngine;
 using Cinemachine;
 using DG.Tweening;
 
-public class PortalTelepote : MonoBehaviour
+public class PortalTelepote : GimmickObject
 {
     public Transform player;
     public Transform reciever;
@@ -14,8 +14,20 @@ public class PortalTelepote : MonoBehaviour
     public bool isRight = false;
     float dotProduct = 0f;
 
+    public override void InitOnPlay()
+    {
+        base.InitOnPlay();
+        if (player == null)
+        {
+            player = FindObjectOfType<Player>().transform;
+        }
+    }
     void Update()
     {
+        if (isRewind)
+        {
+            return;
+        }
         PlayerTelPo();
     }
     void PlayerTelPo()
@@ -58,6 +70,10 @@ public class PortalTelepote : MonoBehaviour
             playerIsOverlapping = false;
         }
    
+    }
+
+    public override void Init()
+    {
     }
     //public Transform playerTrm;
     //public Transform reciverTrm;
