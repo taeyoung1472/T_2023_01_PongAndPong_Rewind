@@ -8,6 +8,7 @@ public class MainMenuManager : MonoSingleTon<MainMenuManager>
 {
     static bool isOpend;
     bool isActive = true;
+    bool isWindowActive = false;
 
     [Header("[RectTrans]")]
     [SerializeField] private RectTransform window;
@@ -48,9 +49,16 @@ public class MainMenuManager : MonoSingleTon<MainMenuManager>
         {
             if (isActive)
             {
-                PlayGame();
+                if (isWindowActive)
+                {
+                    WindowClose();
+                }
+                else
+                {
+                    PlayGame();
+                }
             }
-            else if(MenuUIManager.Instance.uiStack.Count == 0)
+            else if(Define.player.PlayerActionCheck(PlayerActionType.Interact) == false)
             {
                 OpenMenu();
             }
@@ -77,6 +85,7 @@ public class MainMenuManager : MonoSingleTon<MainMenuManager>
         targetWindow.SetActive(true);
         window.DOScale(Vector3.one, 0.2f);
         curDisplayingWindow = targetWindow;
+        isWindowActive = true;
     }
 
     public void WindowChange(GameObject targetWindow)
@@ -95,6 +104,7 @@ public class MainMenuManager : MonoSingleTon<MainMenuManager>
             content.DOAnchorPos(Vector2.zero, 0.1f);
             curDisplayingWindow?.SetActive(false);
         });
+        isWindowActive = false;
     }
 
     public void ExitGame()
