@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerBuff : MonoBehaviour
+public class PlayerBuff : MonoBehaviour, IPlayerResetable
 {
     private int _buff = 0;
 
@@ -18,5 +18,15 @@ public class PlayerBuff : MonoBehaviour
     public bool BuffCheck(PlayerBuffType buffType)
     {
         return (_buff & (int)buffType) > 0;
+    }
+
+    public void EnableReset()
+    {
+        _buff = 0;
+    }
+
+    public void DisableReset()
+    {
+        _buff = 0;
     }
 }

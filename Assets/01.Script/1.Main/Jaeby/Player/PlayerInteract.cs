@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerInteract : PlayerAction
+public class PlayerInteract : PlayerAction, IPlayerResetable
 {
     private Interact _curInteract = null;
 
@@ -35,5 +35,14 @@ public class PlayerInteract : PlayerAction
     {
         _player.PlayerInput.enabled = true;
         _excuting = false;
+    }
+
+    public void EnableReset()
+    {
+    }
+
+    public void DisableReset()
+    {
+        _curInteract = null;
     }
 }

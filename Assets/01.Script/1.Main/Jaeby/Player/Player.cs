@@ -7,6 +7,7 @@ using System.IO;
 public class Player : MonoBehaviour
 {
     private List<PlayerAction> _playerActions = new List<PlayerAction>();
+    private List<IPlayerResetable> _resetables = new List<IPlayerResetable>();
 
     #region SO
     [SerializeField]
@@ -82,6 +83,7 @@ public class Player : MonoBehaviour
         //액션 초기화
         List<PlayerAction> tempActions = new List<PlayerAction>(GetComponents<PlayerAction>());
         _playerActions = (from action in tempActions orderby action.ActionType ascending select action).ToList();
+        _resetables = new List<IPlayerResetable>(GetComponents<IPlayerResetable>());
         //캐싱
         _playerBuff = GetComponent<PlayerBuff>();
         _playerHP = GetComponent<PlayerHP>();
@@ -113,6 +115,22 @@ public class Player : MonoBehaviour
         string json = JsonUtility.ToJson(_playerJsonData);
         File.WriteAllText(path, json);
         _playerInventory.SaveInventory();
+    }
+
+    public void EnableReset()
+    {
+        for (int i = 0; i < _playerActions.Count; i++)
+            _playerActions[i].ActionExit();
+        for (int i = 0; i < _resetables.Count; i++)
+            _resetables[i].EnableReset();
+    }
+
+    public void DisableReset()
+    {
+        for (int i = 0; i < _playerActions.Count; i++)
+            _playerActions[i].ActionExit();
+        for (int i = 0; i < _resetables.Count; i++)
+            _resetables[i].DisableReset();
     }
 
     private void FixedUpdate()
