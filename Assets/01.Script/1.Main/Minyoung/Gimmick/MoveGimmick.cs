@@ -5,7 +5,6 @@ using DG.Tweening;
 public class MoveGimmick : GimmickObject
 {
     private Vector3 firstmovePos;
-    private Vector3 secondmovePos;
     [SerializeField] private float waitTime = 2f;
     [SerializeField] private float moveTime = 3f;
     [SerializeField] private float moveDistance = 5f;
@@ -17,11 +16,11 @@ public class MoveGimmick : GimmickObject
         transform.DOKill();
     }
 
-    private void Start()
+    public override void InitOnPlay()
     {
+        base.InitOnPlay();
         MoveSet();
     }
-
     public void DirChange(DirectionType dirState)
     {
         this.dirState = dirState;
@@ -39,7 +38,7 @@ public class MoveGimmick : GimmickObject
     {
         //if (Input.GetKeyDown(KeyCode.Y))
         //{
-        //    DirChange((DirectionType)Random.Range(0, (int)DirectionType.RightDown + 1));
+        //    DirChange((DirectionType)Random.Range(0, (int)DirectionType.RightDowna  + 1));
         //}
     }
 
