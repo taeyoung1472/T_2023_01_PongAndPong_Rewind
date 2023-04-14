@@ -22,6 +22,8 @@ public class PlayerJump : PlayerAction, IPlayerResetable
     private float _jumpInputTime = 0f;
     private bool _jumpKeyUped = false;
 
+    private bool _firstJump = true;
+
     private void Update()
     {
         if (_excuting)
@@ -43,6 +45,7 @@ public class PlayerJump : PlayerAction, IPlayerResetable
     {
         if (val == false)
             return;
+        _firstJump = true;
         _jumpKeyUped = false;
         _jumpInputTime = 0f;
         _curJumpCount = 0;
@@ -66,7 +69,15 @@ public class PlayerJump : PlayerAction, IPlayerResetable
 
     public void JumpStart()
     {
-        if (_locked || _curJumpCount >= _player.playerMovementSO.jumpCount)
+        if (_locked)
+            return;
+        if (_firstJump)
+        {
+            if (_player.IsGrounded == false)
+                _curJumpCount++;
+            _firstJump = false;
+        }
+        if (_curJumpCount >= _player.playerMovementSO.jumpCount)
             return;
 
         _jumpEndCheck = false;

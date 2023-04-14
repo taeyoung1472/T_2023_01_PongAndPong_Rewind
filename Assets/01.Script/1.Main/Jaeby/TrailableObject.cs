@@ -32,10 +32,7 @@ public class TrailableObject : MonoBehaviour
 
     private void OnEnable()
     {
-        TrailParent parent = TrailManager.Instance.GetParent(this);
-        if (parent == null)
-            return;
-        parent.Died = false;
+        TrailEnable();
     }
 
     public void TrailDisable()
@@ -47,6 +44,17 @@ public class TrailableObject : MonoBehaviour
             if (parent == null)
                 return;
             parent.Died = true;
+        }
+    }
+
+    public void TrailEnable()
+    {
+        if (TrailManager.Instance != null)
+        {
+            TrailParent parent = TrailManager.Instance.GetParent(this);
+            if (parent == null)
+                return;
+            parent.Died = false;
         }
     }
 }
