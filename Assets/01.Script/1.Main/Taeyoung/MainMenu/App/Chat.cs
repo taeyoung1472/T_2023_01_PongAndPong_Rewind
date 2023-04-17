@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Android.Types;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,9 +20,27 @@ public class Chat : MonoBehaviour
     [SerializeField] private Transform chatBtnParent;
     [SerializeField] private ChatBtn chatBtnTemplate;
 
-    public void Start()
+    [Header("[ChatContent]")]
+    [SerializeField] private Transform contentParent;
+    [SerializeField] private ChatCategory contentTemplate;
+    private Dictionary<ChatTarget, ChatCategory> contentDic = new();
+    private ChatCategory prevContentObject;
+
+    public void Awake()
     {
         SetChatBtn();
+        SetContent();
+    }
+
+    private void SetContent()
+    {
+        foreach (ChatTarget target in Enum.GetValues(typeof(ChatTarget)))
+        {
+            ChatCategory category = Instantiate(contentTemplate, contentParent);
+            category.gameObject.SetActive(true);
+            category.Set(target, chatDB.GetChatData(target));
+            contentDic[target] = category;
+        }
     }
 
     private void SetChatBtn()
@@ -39,5 +58,12 @@ public class Chat : MonoBehaviour
         targetName.SetText(data.myInfo.ToString());
         targetProfileName.SetText(data.myInfo.ToString());
         targetProfile.sprite = data.profile;
+
+        if(prevContentObject != null)
+        {
+            prevContentObject.gameObject.SetActive(false);
+        }
+        prevContentObject = contentDic[data.myInfo];
+        prevContentObject.gameObject.SetActive(true);
     }
 }
