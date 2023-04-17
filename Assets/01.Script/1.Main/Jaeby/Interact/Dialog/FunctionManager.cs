@@ -2,11 +2,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class DialogOptionManager : MonoBehaviour
+public class FunctionManager : MonoSingleTon<FunctionManager>
 {
-    [SerializeField]
-    private Sprite _defaultIcon = null;
-    public Sprite DefaultIcon => _defaultIcon;
     private Dictionary<string, UnityEvent> _optionEvents = new Dictionary<string, UnityEvent>();
 
     [SerializeField]
@@ -14,6 +11,9 @@ public class DialogOptionManager : MonoBehaviour
 
     public UnityEvent GetEvent(string key)
     {
+        if (key == null)
+            return null;
+
         Debug.Log($"key : {key}");
         if (_optionEvents.ContainsKey(key))
             return _optionEvents[key];
@@ -28,6 +28,15 @@ public class DialogOptionManager : MonoBehaviour
             Debug.Log($"추가해용 key : {optionEventDatas[i].key}");
             _optionEvents.TryAdd(optionEventDatas[i].key, optionEventDatas[i].optionEvent);
         }
+    }
+
+    public void Testqq()
+    {
+        Debug.Log("테스트1");
+    }
+    public void TestWW()
+    {
+        Debug.Log("테스트2");
     }
 }
 
