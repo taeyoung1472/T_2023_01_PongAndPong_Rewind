@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class PlayerDash : PlayerAction
+public class PlayerDash : PlayerAction, IPlayerResetable
 {
     [SerializeField]
     private UnityEvent<Vector2> OnDashStarted = null;
@@ -128,5 +128,14 @@ public class PlayerDash : PlayerAction
             StopCoroutine(_dashCoroutine);
         }
         DashExit();
+    }
+
+    public void EnableReset()
+    {
+        _curDashCount = 0;
+    }
+
+    public void DisableReset()
+    {
     }
 }

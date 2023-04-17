@@ -1,11 +1,11 @@
 using System.Collections;
 using UnityEngine;
 
-public class GravityModule : MonoBehaviour
+public class GravityModule : MonoBehaviour, IPlayerResetable
 {
     [SerializeField]
     private float _originGravity = 1f;
-    public float OriginGravityScale { get => _originGravity; set => _originGravity = value; }
+    public float OriginGravityScale { get => _originGravity; }
 
     [SerializeField]
     private float _maxGravityAcceleration = 1f;
@@ -24,11 +24,6 @@ public class GravityModule : MonoBehaviour
 
     private Vector3 _gravityDir = new Vector3(0, -9.8f, 0);
     public Vector3 GravityDir { get => _gravityDir; set => _gravityDir = value; }
-
-    private void Start()
-    {
-        _gravityScale = _originGravity;
-    }
 
     public Vector3 GetGravity()
     {
@@ -68,5 +63,18 @@ public class GravityModule : MonoBehaviour
             yield return null;
         }
         _curGravityAcceleration = _maxGravityAcceleration;
+    }
+
+    public void EnableReset()
+    {
+        _gravityDir = new Vector3(0, -9.8f, 0);
+        _gravityScale = _originGravity;
+        OnGrounded(true);
+    }
+
+    public void DisableReset()
+    {
+        if (_accelCo != null)
+            StopCoroutine(_accelCo);
     }
 }

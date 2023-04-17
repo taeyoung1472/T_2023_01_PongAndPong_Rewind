@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class PlayerJump : PlayerAction
+public class PlayerJump : PlayerAction, IPlayerResetable
 {
     private int _curJumpCount = 0; // 현재 점프 횟수
     public int CurJumpCount { get => _curJumpCount; set => _curJumpCount = value; }
@@ -21,6 +21,8 @@ public class PlayerJump : PlayerAction
 
     private float _jumpInputTime = 0f;
     private bool _jumpKeyUped = false;
+
+    private bool _firstJump = true;
 
     private void Update()
     {
@@ -43,6 +45,7 @@ public class PlayerJump : PlayerAction
     {
         if (val == false)
             return;
+        _firstJump = true;
         _jumpKeyUped = false;
         _jumpInputTime = 0f;
         _curJumpCount = 0;
@@ -66,7 +69,15 @@ public class PlayerJump : PlayerAction
 
     public void JumpStart()
     {
-        if (_locked || _curJumpCount >= _player.playerMovementSO.jumpCount)
+        if (_locked)
+            return;
+        if (_firstJump)
+        {
+            if (_player.IsGrounded == false)
+                _curJumpCount++;
+            _firstJump = false;
+        }
+        if (_curJumpCount >= _player.playerMovementSO.jumpCount)
             return;
 
         _jumpEndCheck = false;
@@ -191,5 +202,14 @@ public class PlayerJump : PlayerAction
             rot = Quaternion.Euler(180f, 0f, 0f);
         }
         trm.SetPositionAndRotation(pos, rot);
+    }
+
+    public void EnableReset()
+    {
+        _curJumpCount = 0;
+    }
+
+    public void DisableReset()
+    {
     }
 }
