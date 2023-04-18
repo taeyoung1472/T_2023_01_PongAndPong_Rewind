@@ -9,6 +9,10 @@ public class WorldDataSO : ScriptableObject
     public List<StageDataSO> stageList;
 
     public int rewardCount = 8;
+    public string collectObjectName = "";
+    public GameObject collectObject = null;
+
+
     public List<RewardFunctionData> _rewardFunctionData = new List<RewardFunctionData>();
 
     public StageDataSO GetStage(int index)
