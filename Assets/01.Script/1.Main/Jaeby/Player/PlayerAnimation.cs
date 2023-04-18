@@ -71,6 +71,12 @@ public class PlayerAnimation : MonoBehaviour
         _animator.Update(0);
     }
 
+    public void Rebind()
+    {
+        if (gameObject.activeSelf)
+            _animator.Rebind();
+    }
+
     public void FallOrIdleAnimation(bool isGround)
     {
         if (isGround)

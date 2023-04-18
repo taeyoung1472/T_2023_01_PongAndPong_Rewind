@@ -74,7 +74,7 @@ public class Player : MonoBehaviour
     [SerializeField]
     private LayerMask _groundMask = 0;
     private bool _isGrounded = false;
-    public bool IsGrounded => _isGrounded;
+    public bool IsGrounded { get => _isGrounded; set => _isGrounded = value; }
     #endregion
     [SerializeField]
     private float _maxSlopeAngle = 10f;
