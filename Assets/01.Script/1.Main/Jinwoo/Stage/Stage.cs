@@ -51,6 +51,8 @@ public class Stage : MonoBehaviour
         {
             Debug.Log("리스타또");
             StageManager.Instance.InitPlayer(false);
+            transform.DOKill();
+            transform.rotation = Quaternion.Euler(0, 0, 0);
             curArea.EntryArea(true);
         }
 
@@ -72,8 +74,6 @@ public class Stage : MonoBehaviour
 
             StageManager.Instance.fadeImg.gameObject.SetActive(false);
             TimerManager.Instance.EndRewind();
-
-
         }
         EndManager.Instance.End();
     }
