@@ -24,7 +24,7 @@ public class WorldDataSO : ScriptableObject
     {
         foreach(var a in _rewardFunctionData)
         {
-            if (count == a.targetCount)
+            if (count >= a.targetCount)
                 return a.function;
         }
         return null;
