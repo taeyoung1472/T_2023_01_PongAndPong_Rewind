@@ -18,6 +18,7 @@ public class PortalCamera : GimmickObject
     }
     public override void Init()
     {
+        playerCamera = GameObject.Find("VCam").transform;
     }
 
     private void Update()
