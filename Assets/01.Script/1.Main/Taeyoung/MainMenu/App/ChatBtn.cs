@@ -8,6 +8,9 @@ public class ChatBtn : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI nameTMP;
     [SerializeField] private Image profile;
+    [SerializeField] private Image background;
+    [SerializeField] private Color focusColor;
+    [SerializeField] private Color outFocusColor;
 
     public void Set(ChatDataSO data, Chat chat)
     {
@@ -15,5 +18,15 @@ public class ChatBtn : MonoBehaviour
         profile.sprite = data.profile;
 
         GetComponent<Button>().onClick.AddListener(() => chat.ChangeTarget(data));
+    }
+
+    public void Focus()
+    {
+        background.color = focusColor;
+    }
+
+    public void OutFocus()
+    {
+        background.color = outFocusColor;
     }
 }

@@ -23,4 +23,5 @@ public class ChatContent
 {
     public string text;
     public Sprite image;
+    public bool isRead;
 }
