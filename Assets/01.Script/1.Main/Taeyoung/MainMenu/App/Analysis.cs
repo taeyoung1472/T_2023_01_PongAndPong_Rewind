@@ -19,6 +19,8 @@ public class Analysis : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _worldNameText = null;
 
     [SerializeField]
+    private DirectorContainer _directorContainer = null;
+    [SerializeField]
     private Transform _collectObjParent = null;
     [SerializeField]
     private StageDatabase _worldDatabase = null;
@@ -38,11 +40,24 @@ public class Analysis : MonoBehaviour
 
     private bool isOuterRotating;
 
+    private void Start()
+    {
+        PlayerPrefs.DeleteAll();
+    }
+
     private void OnEnable()
     {
         _curIndex = 0;
         StartingAnimation();
         SetUp();
+    }
+
+    public void HiddenStageCutScene(int index)
+    {
+        MainMenuManager.Instance.WindowClose();
+        MainMenuManager.Instance.PlayGame();
+        player.PlayerInput.enabled = false;
+        _directorContainer.PlayHiddenStage(index);
     }
 
     private void StartingAnimation()
