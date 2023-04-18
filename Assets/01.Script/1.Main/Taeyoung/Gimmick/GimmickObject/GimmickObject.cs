@@ -1,5 +1,4 @@
 using UnityEngine;
-
 public abstract class GimmickObject : MonoBehaviour
 {
     public bool isRewind = false;
