@@ -19,6 +19,8 @@ public class Chat : MonoBehaviour
     [Header("[ChatBtn]")]
     [SerializeField] private Transform chatBtnParent;
     [SerializeField] private ChatBtn chatBtnTemplate;
+    private Dictionary<ChatTarget, ChatBtn> chatDic = new();
+    private ChatBtn prevChatBtn;
 
     [Header("[ChatContent]")]
     [SerializeField] private Transform contentParent;
@@ -37,8 +39,7 @@ public class Chat : MonoBehaviour
         foreach (ChatTarget target in Enum.GetValues(typeof(ChatTarget)))
         {
             ChatCategory category = Instantiate(contentTemplate, contentParent);
-            category.gameObject.SetActive(true);
-            category.Set(target, chatDB.GetChatData(target));
+            category.Set(chatDB.GetChatData(target));
             contentDic[target] = category;
         }
     }
@@ -50,6 +51,8 @@ public class Chat : MonoBehaviour
             ChatBtn btn = Instantiate(chatBtnTemplate, chatBtnParent);
             btn.Set(chatDB.GetChatData(target), this);
             btn.gameObject.SetActive(true);
+            btn.OutFocus();
+            chatDic[target] = btn;
         }
     }
 
@@ -59,11 +62,17 @@ public class Chat : MonoBehaviour
         targetProfileName.SetText(data.myInfo.ToString());
         targetProfile.sprite = data.profile;
 
-        if(prevContentObject != null)
+        if (prevContentObject != null)
         {
             prevContentObject.gameObject.SetActive(false);
         }
+        if (prevChatBtn != null)
+        {
+            prevChatBtn.OutFocus();
+        }
         prevContentObject = contentDic[data.myInfo];
         prevContentObject.gameObject.SetActive(true);
+        prevChatBtn = chatDic[data.myInfo];
+        prevChatBtn.Focus();
     }
 }

@@ -7,12 +7,12 @@ public class ChatCategory : MonoBehaviour
 {
     [SerializeField] private ChatVisual chatTemplate;
     [SerializeField] private Transform parent;
-    public void Set(ChatTarget target, ChatDataSO data)
+    public void Set(ChatDataSO data)
     {
         foreach (var dt in data.chatDatas)
         {
             ChatVisual visual = Instantiate(chatTemplate, parent);
-            visual.Set(dt);
+            visual.Set(dt, data);
             visual.gameObject.SetActive(true);
         }
     }

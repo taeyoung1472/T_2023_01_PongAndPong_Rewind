@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,8 +14,11 @@ public class ChatVisual : MonoBehaviour
     [SerializeField] private TextMeshProUGUI textTemplate;
     [SerializeField] Image imageTemplate;
 
-    public void Set(ChatUnit unit)
+    public void Set(ChatUnit unit, ChatDataSO data)
     {
+        nicknameTMP.SetText(data.myInfo.ToString());
+        profileImage.sprite = data.profile;
+
         foreach (var content in unit.chatContents)
         {
             if(content.text != string.Empty)
