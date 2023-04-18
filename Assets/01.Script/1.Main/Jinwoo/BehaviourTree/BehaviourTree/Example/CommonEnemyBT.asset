@@ -1,0 +1,350 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d285eb63c2cdd74180de7cfceaa96ad, type: 3}
+  m_Name: CommonEnemyBT
+  m_EditorClassIdentifier: 
+  rootNode:
+    rid: 4336198205291364353
+  nodes:
+  - rid: 4336198205291364353
+  - rid: 4336198291229245457
+  - rid: 4336198291229245460
+  - rid: 4336198291229245461
+  - rid: 4336198291229245462
+  - rid: 4336198291229245463
+  - rid: 4336198291229245465
+  - rid: 4336198291229245467
+  - rid: 4336198291229245468
+  - rid: 4336198291229245469
+  - rid: 4336198291229245470
+  - rid: 4336198291229245471
+  - rid: 4336198291229245472
+  - rid: 4336198291229245473
+  - rid: 4336198291229245474
+  - rid: 4336198291229245475
+  - rid: 4336198291229245476
+  - rid: 4336198291229245478
+  - rid: 4336198291229245479
+  - rid: 4336198291229245480
+  treeState: 0
+  blackboard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    enemyData: {fileID: 0}
+    target: {fileID: 0}
+  viewPosition: {x: 989, y: 9, z: 0}
+  viewScale: {x: 1, y: 1, z: 1}
+  references:
+    version: 2
+    RefIds:
+    - rid: 4336198205291364353
+      type: {class: RootNode, ns: BehaviourTreeEditorDev, asm: Assembly-CSharp}
+      data:
+        state: 0
+        started: 0
+        guid: 4d088f59-c5e5-4583-8163-f1b940d7dd1b
+        position: {x: 0, y: -28}
+        blackboard:
+          moveToPosition: {x: 0, y: 0, z: 0}
+          enemyData: {fileID: 0}
+          target: {fileID: 0}
+        description: "\uBD80\uBAA8 \uB178\uB4DC"
+        drawGizmos: 0
+        child:
+          rid: 4336198291229245457
+    - rid: 4336198291229245457
+      type: {class: Repeat, ns: BehaviourTreeEditorDev, asm: Assembly-CSharp}
+      data:
+        state: 0
+        started: 0
+        guid: 92df608d89cfaf74f8bed6426b7164a7
+        position: {x: 0, y: 103}
+        blackboard:
+          moveToPosition: {x: 0, y: 0, z: 0}
+          enemyData: {fileID: 0}
+          target: {fileID: 0}
+        description: 
+        drawGizmos: 0
+        child:
+          rid: 4336198291229245460
+        restartOnSuccess: 1
+        restartOnFailure: 0
+    - rid: 4336198291229245460
+      type: {class: Selector, ns: BehaviourTreeEditorDev, asm: Assembly-CSharp}
+      data:
+        state: 0
+        started: 0
+        guid: 3cb74ee863b7b284ca0aade28af860a5
+        position: {x: 0, y: 222}
+        blackboard:
+          moveToPosition: {x: 0, y: 0, z: 0}
+          enemyData: {fileID: 0}
+          target: {fileID: 0}
+        description: 
+        drawGizmos: 0
+        children:
+        - rid: 4336198291229245461
+        - rid: 4336198291229245462
+        - rid: 4336198291229245463
+        - rid: 4336198291229245465
+    - rid: 4336198291229245461
+      type: {class: DieAction, ns: , asm: Assembly-CSharp}
+      data:
+        state: 0
+        started: 0
+        guid: c27a1a3c120fcf443ac4cfc7048fdaa5
+        position: {x: -805, y: 355}
+        blackboard:
+          moveToPosition: {x: 0, y: 0, z: 0}
+          enemyData: {fileID: 0}
+          target: {fileID: 0}
+        description: 
+        drawGizmos: 0
+    - rid: 4336198291229245462
+      type: {class: Sequencer, ns: BehaviourTreeEditorDev, asm: Assembly-CSharp}
+      data:
+        state: 0
+        started: 0
+        guid: 9d5efd323c4e28a49b38ae440448219c
+        position: {x: -567, y: 355}
+        blackboard:
+          moveToPosition: {x: 0, y: 0, z: 0}
+          enemyData: {fileID: 0}
+          target: {fileID: 0}
+        description: "\uCD94\uC801 \uC2DC\uD000\uC2A4"
+        drawGizmos: 0
+        children:
+        - rid: 4336198291229245474
+        - rid: 4336198291229245467
+    - rid: 4336198291229245463
+      type: {class: Sequencer, ns: BehaviourTreeEditorDev, asm: Assembly-CSharp}
+      data:
+        state: 0
+        started: 0
+        guid: 4a154fe9918204c4cae154910c126473
+        position: {x: -249, y: 355}
+        blackboard:
+          moveToPosition: {x: 0, y: 0, z: 0}
+          enemyData: {fileID: 0}
+          target: {fileID: 0}
+        description: "\uACF5\uACA9 \uC2DC\uD000\uC2A4"
+        drawGizmos: 0
+        children:
+        - rid: 4336198291229245468
+        - rid: 4336198291229245472
+    - rid: 4336198291229245465
+      type: {class: Selector, ns: BehaviourTreeEditorDev, asm: Assembly-CSharp}
+      data:
+        state: 0
+        started: 0
+        guid: 8f182ea871d192048b747e4c34ebaa62
+        position: {x: 429, y: 355}
+        blackboard:
+          moveToPosition: {x: 0, y: 0, z: 0}
+          enemyData: {fileID: 0}
+          target: {fileID: 0}
+        description: "\uD3C9\uC18C \uC0C1\uD0DC \uC2DC\uD000\uC2A4"
+        drawGizmos: 0
+        children:
+        - rid: 4336198291229245476
+        - rid: 4336198291229245470
+    - rid: 4336198291229245467
+      type: {class: ChaseAction, ns: , asm: Assembly-CSharp}
+      data:
+        state: 0
+        started: 0
+        guid: 85c141119f9f5934f9ebc753c2f9697d
+        position: {x: -513, y: 483}
+        blackboard:
+          moveToPosition: {x: 0, y: 0, z: 0}
+          enemyData: {fileID: 0}
+          target: {fileID: 0}
+        description: 
+        drawGizmos: 0
+        speed: 5
+        stoppingDistance: 0.1
+        updateRotation: 1
+        acceleration: 40
+        tolerance: 1
+    - rid: 4336198291229245468
+      type: {class: CheckSightAction, ns: , asm: Assembly-CSharp}
+      data:
+        state: 0
+        started: 0
+        guid: 2ef250e29e876ee46932764c1ef9aac4
+        position: {x: -339, y: 482}
+        blackboard:
+          moveToPosition: {x: 0, y: 0, z: 0}
+          enemyData: {fileID: 0}
+          target: {fileID: 0}
+        description: "\uD0C0\uAC9F\uC774 \uACF5\uACA9\uBC94\uC704\uC5D0 \uC788\uB294\uAC00"
+        drawGizmos: 0
+    - rid: 4336198291229245469
+      type: {class: Wait, ns: BehaviourTreeEditorDev, asm: Assembly-CSharp}
+      data:
+        state: 0
+        started: 0
+        guid: 0740856f4f698a04088176e28fb19ea7
+        position: {x: 183, y: 760}
+        blackboard:
+          moveToPosition: {x: 0, y: 0, z: 0}
+          enemyData: {fileID: 0}
+          target: {fileID: 0}
+        description: 
+        drawGizmos: 0
+        duration: 1
+    - rid: 4336198291229245470
+      type: {class: IdleAction, ns: , asm: Assembly-CSharp}
+      data:
+        state: 0
+        started: 0
+        guid: 350f03eee12d8ab4fa91f9cdfb43088c
+        position: {x: 579, y: 482}
+        blackboard:
+          moveToPosition: {x: 0, y: 0, z: 0}
+          enemyData: {fileID: 0}
+          target: {fileID: 0}
+        description: 
+        drawGizmos: 0
+    - rid: 4336198291229245471
+      type: {class: AttackAction, ns: , asm: Assembly-CSharp}
+      data:
+        state: 0
+        started: 0
+        guid: 3ff90a7227dcd52439c95e89788d9504
+        position: {x: -224, y: 618}
+        blackboard:
+          moveToPosition: {x: 0, y: 0, z: 0}
+          enemyData: {fileID: 0}
+          target: {fileID: 0}
+        description: "\uACF5\uACA9 1"
+        drawGizmos: 0
+    - rid: 4336198291229245472
+      type: {class: Selector, ns: BehaviourTreeEditorDev, asm: Assembly-CSharp}
+      data:
+        state: 0
+        started: 0
+        guid: 15a85591dd9f6dd4c9a75cd7bf82d4db
+        position: {x: -136, y: 482}
+        blackboard:
+          moveToPosition: {x: 0, y: 0, z: 0}
+          enemyData: {fileID: 0}
+          target: {fileID: 0}
+        description: 
+        drawGizmos: 0
+        children:
+        - rid: 4336198291229245471
+        - rid: 4336198291229245473
+    - rid: 4336198291229245473
+      type: {class: AttackAction, ns: , asm: Assembly-CSharp}
+      data:
+        state: 0
+        started: 0
+        guid: 89b8c8dae27f43a46a34ddf6d9a671a0
+        position: {x: -16, y: 619}
+        blackboard:
+          moveToPosition: {x: 0, y: 0, z: 0}
+          enemyData: {fileID: 0}
+          target: {fileID: 0}
+        description: "\uACF5\uACA9 2"
+        drawGizmos: 0
+    - rid: 4336198291229245474
+      type: {class: CheckSightAction, ns: , asm: Assembly-CSharp}
+      data:
+        state: 0
+        started: 0
+        guid: 1eed8fb2002b20444b0d7adcd790ae52
+        position: {x: -663, y: 482}
+        blackboard:
+          moveToPosition: {x: 0, y: 0, z: 0}
+          enemyData: {fileID: 0}
+          target: {fileID: 0}
+        description: "\uD0C0\uAC9F\uC774 \uC2DC\uC57C\uC5D0 \uC788\uB294\uAC00"
+        drawGizmos: 0
+    - rid: 4336198291229245475
+      type: {class: Sequencer, ns: BehaviourTreeEditorDev, asm: Assembly-CSharp}
+      data:
+        state: 0
+        started: 0
+        guid: 97d9754ac0139ac4787dcc886f964843
+        position: {x: 183, y: 618}
+        blackboard:
+          moveToPosition: {x: 0, y: 0, z: 0}
+          enemyData: {fileID: 0}
+          target: {fileID: 0}
+        description: 
+        drawGizmos: 0
+        children:
+        - rid: 4336198291229245480
+        - rid: 4336198291229245469
+        - rid: 4336198291229245478
+    - rid: 4336198291229245476
+      type: {class: Selector, ns: BehaviourTreeEditorDev, asm: Assembly-CSharp}
+      data:
+        state: 0
+        started: 0
+        guid: 188d6113e7f4ce84ea49b9ef9f22a0b6
+        position: {x: 333, y: 482}
+        blackboard:
+          moveToPosition: {x: 0, y: 0, z: 0}
+          enemyData: {fileID: 0}
+          target: {fileID: 0}
+        description: 
+        drawGizmos: 0
+        children:
+        - rid: 4336198291229245475
+        - rid: 4336198291229245479
+    - rid: 4336198291229245478
+      type: {class: RandomPosition, ns: , asm: Assembly-CSharp}
+      data:
+        state: 0
+        started: 0
+        guid: 82552b1eb8e750c489dc70267cd17ed1
+        position: {x: 372, y: 758}
+        blackboard:
+          moveToPosition: {x: 0, y: 0, z: 0}
+          enemyData: {fileID: 0}
+          target: {fileID: 0}
+        description: 
+        drawGizmos: 0
+        min: {x: -10, y: -10}
+        max: {x: 10, y: 10}
+    - rid: 4336198291229245479
+      type: {class: MoveToPosition, ns: , asm: Assembly-CSharp}
+      data:
+        state: 0
+        started: 0
+        guid: 15f506e84db3fc24bbb004c398f46ec2
+        position: {x: 456, y: 618}
+        blackboard:
+          moveToPosition: {x: 0, y: 0, z: 0}
+          enemyData: {fileID: 0}
+          target: {fileID: 0}
+        description: 
+        drawGizmos: 0
+        speed: 5
+        stoppingDistance: 0.1
+        updateRotation: 1
+        acceleration: 40
+        tolerance: 1
+    - rid: 4336198291229245480
+      type: {class: CheckPoint, ns: , asm: Assembly-CSharp}
+      data:
+        state: 0
+        started: 0
+        guid: 9ffd81b56594ca1479e7a12ec5f0500a
+        position: {x: -16.000057, y: 760.00006}
+        blackboard:
+          moveToPosition: {x: 0, y: 0, z: 0}
+          enemyData: {fileID: 0}
+          target: {fileID: 0}
+        description: 
+        drawGizmos: 0
