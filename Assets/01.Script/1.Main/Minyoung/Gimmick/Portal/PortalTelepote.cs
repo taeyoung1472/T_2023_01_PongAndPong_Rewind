@@ -6,59 +6,113 @@ using DG.Tweening;
 
 public class PortalTelepote : GimmickObject
 {
-    public Transform player;
+    #region Player
+    public Transform playerTrm;
+    public  bool playerIsOverlapping = false;
+    public Player player;
+    #endregion
+
+    public float cross;
     public Transform reciever;
 
-    public  bool playerIsOverlapping = false;
+    #region ¹°Ã¼
+    public bool isOverlapping = false;
+    public List<Transform> telObjList;
 
-    public bool isRight = false;
-    float dotProduct = 0f;
+    #endregion
 
+    public override void Init()
+    {
+    }
     public override void InitOnPlay()
     {
         base.InitOnPlay();
-        if (player == null)
+        if (playerTrm == null)
         {
-            player = FindObjectOfType<Player>().transform;
+            playerTrm = FindObjectOfType<Player>().transform;
         }
+    }
+    public override void InitOnRewind()
+    {
+        base.InitOnRewind();
+        player = null;
     }
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            objTrm.position += new Vector3(-1, 0, 0);
+            foreach (Transform trm in telObjList)
+            {
+                trm.position += new Vector3(-1, 0, 0);
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.J))
+        {
+            objTrm.position += new Vector3(1, 0, 0);
+
+            foreach (Transform trm in telObjList)
+            {
+                trm.position += new Vector3(1, 0, 0);
+            }
+        }
         if (isRewind)
         {
             return;
         }
         PlayerTelPo();
     }
+
+
     void PlayerTelPo()
     {
+      
         if (playerIsOverlapping)
         {
-            Vector3 portalToPlayer = player.position - transform.position;
-            if (isRight)
+            Vector3 offset = new Vector3(player.GetComponent<CapsuleCollider>().radius * 2.5f, 0, 0);
+            Debug.Log(offset);
+            playerTrm.position = reciever.position + offset;
+            playerIsOverlapping = false;
+            Invoke("DeleteBuff", 0.7f);
             {
-                dotProduct = Vector3.Dot(transform.right, portalToPlayer);
-                Debug.Log(dotProduct);
-            }
-            else
-            {
-                dotProduct = Vector3.Dot(transform.right * -1f, portalToPlayer);
-                Debug.Log(dotProduct);
-            }
+                //Vector3 portalToPlayer = player.position - transform.position;
+                //if (isRight)
+                //{
+                //    dotProduct = Vector3.Dot(transform.right, portalToPlayer);
+                //    Debug.Log(dotProduct);
+                //}
+                //else
+                //{
+                //    dotProduct = Vector3.Dot(transform.right * -1f, portalToPlayer);
+                //    Debug.Log(dotProduct);
+                //}
 
-            if (dotProduct > 0f)
-            {
-                player.position = reciever.position;
-                playerIsOverlapping = false;
+                //if (dotProduct > 0f)
+                //{
+                //}
             }
         }
-    }    
-
+    }
+    public void DeleteBuff()
+    {
+        player.playerBuff.DeleteBuff(PlayerBuffType.Reverse);
+    }
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            playerIsOverlapping = true;
+            Vector3 portalToPlayer = playerTrm.position - transform.position;
+            Vector3 crossVec = Vector3.Cross(transform.forward, portalToPlayer);
+            cross = crossVec.y;
+            if (cross > 0f)
+            {
+                playerIsOverlapping = true;
+                if (player == null)
+                {
+                    player = other.GetComponent<Player>();
+                }
+                player.playerBuff.AddBuff(PlayerBuffType.Reverse);
+            }
         }
      
     }
@@ -69,12 +123,10 @@ public class PortalTelepote : GimmickObject
         {
             playerIsOverlapping = false;
         }
-   
+
     }
 
-    public override void Init()
-    {
-    }
+  
     //public Transform playerTrm;
     //public Transform reciverTrm;
 
