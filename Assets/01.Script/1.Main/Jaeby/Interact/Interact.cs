@@ -42,13 +42,23 @@ public abstract class Interact : MonoBehaviour
 
     protected abstract void ChildInteractStart();
 
-    public virtual void InteractEnter()
+    protected virtual void ChildInteractEnter()
     {
 
     }
 
-    public virtual void InteractExit()
+    protected virtual void ChildInteractExit()
     {
 
+    }
+
+    public void InteractEnter()
+    {
+        UIGetter.Instance.GetInteractUI(_interactUIPos.position, _interactSprite, KeyManager.keys[InputType.Interact]);
+    }
+
+    public void InteractExit()
+    {
+        UIGetter.Instance.PushUIs();
     }
 }

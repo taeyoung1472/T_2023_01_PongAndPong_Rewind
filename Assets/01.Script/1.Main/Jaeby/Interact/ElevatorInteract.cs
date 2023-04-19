@@ -26,16 +26,6 @@ public class ElevatorInteract : Interact
         ElevatorManager.Instance.ElevatorInit(this);
     }
 
-    public override void InteractEnter()
-    {
-        UIGetter.Instance.GetInteractUI(_interactUIPos.position, _interactSprite, KeyManager.keys[InputType.Interact]);
-    }
-
-    public override void InteractExit()
-    {
-        UIGetter.Instance.PushUIs();
-    }
-
     private void Update()
     {
         if (_interacting == false)

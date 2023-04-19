@@ -8,7 +8,8 @@ public class PlayerInteract : PlayerAction, IPlayerResetable
     {
         if(other.CompareTag("Interact"))
         {
-
+            if(_curInteract != null)
+                _curInteract?.InteractExit();
             _curInteract = other.GetComponentInParent<Interact>();
             _curInteract.InteractEnter();
         }
