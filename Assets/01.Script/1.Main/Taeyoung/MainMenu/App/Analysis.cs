@@ -52,12 +52,19 @@ public class Analysis : MonoBehaviour
         SetUp();
     }
 
-    public void HiddenStageCutScene(int index)
+    public void HiddenStageCutSceneStarted()
     {
+        Debug.Log("start");
         MainMenuManager.Instance.WindowClose();
         MainMenuManager.Instance.PlayGame();
+        player.ForceStop();
         player.PlayerInput.enabled = false;
-        _directorContainer.PlayHiddenStage(index);
+    }
+
+    public void HiddenStageCutSceneEnded()
+    {
+        Debug.Log("ended");
+        player.PlayerInput.enabled = true;
     }
 
     private void StartingAnimation()
@@ -127,15 +134,6 @@ public class Analysis : MonoBehaviour
         _percentTextCoroutine = StartCoroutine(PercentTextCoroutine());
         UIAnimation();
 
-        string functionName = _curData.GetFunctionName(_curCount);
-        if (functionName != null)
-        {
-            if (PlayerPrefs.GetInt(functionName, 0) == 0)
-            {
-                PlayerPrefs.SetInt(functionName, 1);
-                FunctionManager.Instance.GetEvent(_curData.GetFunctionName(_curCount))?.Invoke();
-            }
-        }
     }
 
     private IEnumerator PercentTextCoroutine()
@@ -159,5 +157,18 @@ public class Analysis : MonoBehaviour
             _countUpSeq.Kill();
         _countUpSeq = DOTween.Sequence();
         _countUpSeq.Append(DOTween.To(() => fill.AngRadiansEnd, x => fill.AngRadiansEnd = x, (90f + (_curCount * (360f / _maxCount))) * Mathf.Deg2Rad, _uiAnimationTime));
+        _countUpSeq.AppendCallback(() =>
+        {
+
+            string functionName = _curData.GetFunctionName(_curCount);
+            if (functionName != null)
+            {
+                if (PlayerPrefs.GetInt(functionName, 0) == 0)
+                {
+                    PlayerPrefs.SetInt(functionName, 1);
+                    FunctionManager.Instance.GetEvent(_curData.GetFunctionName(_curCount))?.Invoke();
+                }
+            }
+        });
     }
 }
