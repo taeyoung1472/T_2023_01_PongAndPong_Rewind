@@ -8,7 +8,6 @@ public class PlayerInteract : PlayerAction, IPlayerResetable
     {
         if(other.CompareTag("Interact"))
         {
-
             _curInteract = other.GetComponentInParent<Interact>();
             _curInteract.InteractEnter();
         }
@@ -26,8 +25,9 @@ public class PlayerInteract : PlayerAction, IPlayerResetable
             return false;
         _excuting = true;
         _player.PlayerInput.enabled = false;
-        _player.ForceStop();
         _curInteract.InteractStart(_player);
+
+        _player.ForceStop();
         return true;
     }
 

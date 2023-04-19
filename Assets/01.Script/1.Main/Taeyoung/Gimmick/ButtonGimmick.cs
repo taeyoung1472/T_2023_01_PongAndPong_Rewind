@@ -3,18 +3,15 @@ using UnityEditor;
 using UnityEngine;
 using Random = UnityEngine.Random;
 using DG.Tweening;
-public class ButtonGimmick : MonoBehaviour
+public class ButtonGimmick : GimmickObject
 {
-    [SerializeField] private bool isTogle;
-    //private bool toggleFlag = false;
-
     bool isActive = false;
 
-    public bool isRewind = false;
     [SerializeField] private ControlData[] controlDataArr;
     [SerializeField] private GimmickVisualLink visualLinkPrefab;
     [SerializeField] private Color color = Color.white;
-    private Transform map;
+
+    Player player;
 
     [ContextMenu("Gen Color")]
     public void GenColor()
@@ -39,14 +36,14 @@ public class ButtonGimmick : MonoBehaviour
                 }
                 isActive = false;
             };
-            RewindManager.Instance.InitPlay += () =>
-            {
-                isRewind = false;
-            };
-            RewindManager.Instance.InitRewind += () =>
-            {
-                isRewind = true;
-            };
+            //RewindManager.Instance.InitPlay += () =>
+            //{
+            //      = false;
+            //};
+            //RewindManager.Instance.InitRewind += () =>
+            //{
+            //    isRewind = true;
+            //};
         }
         foreach (var data in controlDataArr)
         {
@@ -64,18 +61,26 @@ public class ButtonGimmick : MonoBehaviour
         }
 
         CheckPlayer();
+
         if (isActive)
         {
             foreach (var control in controlDataArr)
             {
-                control.target.Control(control.isReverse ? ControlType.ReberseControl : ControlType.Control);
+                if (control.isLever)
+                {
+                    control.target.Control(control.isReverse ? ControlType.ReberseControl : ControlType.Control, true, player);
+                }
+                else
+                {
+                    control.target.Control(control.isReverse ? ControlType.ReberseControl : ControlType.Control, false , player);
+                }
             }
         }
         else
         {
             foreach (var control in controlDataArr)
             {
-                control.target.Control(ControlType.None);
+                control.target.Control(ControlType.None, false, player);
                 CamManager.Instance.RemoveTargetGroup(control.target.transform);
             }
         }
@@ -108,6 +113,14 @@ public class ButtonGimmick : MonoBehaviour
 
     public void OnTriggerEnter(Collider other)
     {
+        if (other.gameObject.TryGetComponent<Player>(out Player player))
+        {
+            if (this.player == null)
+            {
+                this.player = player;
+                Debug.Log(player);
+            }
+        }
         if (other.TryGetComponent<GimmickObject>(out GimmickObject gimmickObject))
         {
             isActive = true;
@@ -133,13 +146,18 @@ public class ButtonGimmick : MonoBehaviour
             Handles.DrawLine(transform.position, control.target.transform.position, 10);
         }
     }
-#endif
 
-    [Serializable]
-    private class ControlData
+    public override void Init()
     {
-        public ControlAbleObjcet target;
-        public bool isReverse = true;
-        public bool isDG = true;
+        throw new NotImplementedException();
     }
+#endif
+}
+[Serializable]
+public class ControlData
+{
+    public ControlAbleObjcet target;
+    public bool isReverse = true;
+    public bool isLever = false;
+    public bool isLocked = false;
 }
