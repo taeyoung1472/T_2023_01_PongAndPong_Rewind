@@ -20,9 +20,12 @@ namespace BehaviourTreeEditorDev {
         public CapsuleCollider capsuleCollider;
         public CharacterController characterController;
 
-        public EnemyAI enemyAI;
-
         // 여기에 다른 게임별 시스템 추가
+        public EnemyAI enemyAI;
+        
+        
+
+
 
         public static Context CreateFromGameObject(GameObject gameObject) {
             // 일반적으로 사용되는 모든 컴포넌트 가져오기
@@ -55,6 +58,7 @@ namespace BehaviourTreeEditorDev {
             context.capsuleCollider = gameObject.GetComponent<CapsuleCollider>();
 
             context.enemyAI = gameObject.GetComponent<EnemyAI>();
+            context.enemyAI.eyeTransform = gameObject.transform.Find("eyeTransform").GetComponent<Transform>();
 
 
             return context;

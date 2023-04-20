@@ -7,7 +7,6 @@ public class DieAction : ActionNode
 {
     protected override void OnStart()
     {
-        
     }
 
     protected override void OnStop()

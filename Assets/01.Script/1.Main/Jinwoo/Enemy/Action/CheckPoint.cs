@@ -4,19 +4,38 @@ using UnityEngine;
 using BehaviourTreeEditorDev;
 public class CheckPoint : ActionNode
 {
+
+
     protected override void OnStart()
     {
-        throw new System.NotImplementedException();
+        
     }
 
     protected override void OnStop()
     {
-        throw new System.NotImplementedException();
     }
 
     protected override State OnUpdate()
     {
-        throw new System.NotImplementedException();
+        if (context.agent.pathPending)
+        {
+            return State.Running;
+        }
+
+        if (context.agent.remainingDistance < 1.0f)
+        {
+            return State.Success;
+        }
+        else
+        {
+            return State.Failure;
+        }
+
+        //if (context.agent.pathStatus == UnityEngine.AI.NavMeshPathStatus.PathInvalid)
+        //{
+
+        //}
+
     }
 
 }

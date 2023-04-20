@@ -6,6 +6,7 @@ using UnityEngine;
 public class EnemyDataSO : ScriptableObject
 {
     public string enemyName;
+    public LayerMask targetLayer;
     public float walkSpeed;
     public float runSpeed;
 

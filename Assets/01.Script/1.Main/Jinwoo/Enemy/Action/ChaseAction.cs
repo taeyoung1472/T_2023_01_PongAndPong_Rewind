@@ -32,6 +32,7 @@ public class ChaseAction : ActionNode
 
         if (context.agent.remainingDistance < tolerance)
         {
+
             return State.Success;
         }
 
@@ -40,7 +41,7 @@ public class ChaseAction : ActionNode
             return State.Failure;
         }
 
-        return State.Running;
+        return State.Failure;
     }
 
 }

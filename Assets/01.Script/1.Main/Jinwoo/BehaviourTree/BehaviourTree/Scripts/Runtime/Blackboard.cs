@@ -13,5 +13,10 @@ namespace BehaviourTreeEditorDev {
         public Vector3 moveToPosition;
         public EnemyDataSO enemyData;
         public GameObject target;
+        public Transform patrolPoint;
+
+        public bool isPatrol;
+        public bool isChasing;
+        public bool isAttacking;
     }
 }

@@ -5,11 +5,13 @@ using BehaviourTreeEditorDev;
 public class CheckAttackRangeAction : ActionNode
 {
     private float range;
-    private Transform target;
-    private Transform origin;
+    public Transform target;
     protected override void OnStart()
     {
         range = blackboard.enemyData.attackRange;
+        //target = StageManager.Instance.GetCurrentPlayer().transform;
+        target = context.enemyAI.target.transform;
+        blackboard.target = target.gameObject;
     }
 
     protected override void OnStop()
@@ -19,8 +21,35 @@ public class CheckAttackRangeAction : ActionNode
 
     protected override State OnUpdate()
     {
-        float distance = Vector3.Distance(target.position, origin.position);
-        return distance <= range ? State.Success : State.Failure;
+
+        //float distance = Vector3.Distance(target.position, origin.position); 
+        if (IsTargetOnSight(target))
+        {
+            Debug.Log("АјАн!!!");
+            return State.Success;
+        }
+        else
+        {
+            return State.Failure;
+        }
+    }
+    private bool IsTargetOnSight(Transform target)
+    {
+        RaycastHit hit;
+
+        Vector3 direction = target.position - context.enemyAI.eyeTransform.position;
+
+
+
+        if (Physics.Raycast(context.enemyAI.eyeTransform.position, direction, out hit, range))
+        {
+            if (hit.transform.gameObject.layer == LayerMask.NameToLayer("Player"))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
 }

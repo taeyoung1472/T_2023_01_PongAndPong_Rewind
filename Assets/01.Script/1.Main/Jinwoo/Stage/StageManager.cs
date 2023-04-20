@@ -209,4 +209,16 @@ public class StageManager : MonoSingleTon<StageManager>
 
         //}
     }
+
+    public GameObject GetCurrentPlayer()
+    {
+        if (TimerManager.Instance.isRewinding)
+        {
+            return rePlayerObj;
+        }
+        else
+        {
+            return playerObj;
+        }
+    }
 }

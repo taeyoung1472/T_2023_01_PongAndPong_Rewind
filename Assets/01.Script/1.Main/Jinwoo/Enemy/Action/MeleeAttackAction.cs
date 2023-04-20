@@ -3,21 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using BehaviourTreeEditorDev;
 
-public class AttackAction : ActionNode
+public class MeleeAttackAction : ActionNode
 {
     protected override void OnStart()
     {
-        throw new System.NotImplementedException();
+        context.agent.isStopped = true;
     }
 
     protected override void OnStop()
     {
-        throw new System.NotImplementedException();
+        context.agent.isStopped = false;
+
     }
 
     protected override State OnUpdate()
     {
-        throw new System.NotImplementedException();
+        context.animator.SetTrigger("IsAttack");
+        return State.Success;
     }
 
 }

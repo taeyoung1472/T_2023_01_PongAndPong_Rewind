@@ -7,21 +7,16 @@ public class CommonEnemyBT : MonoBehaviour
 {
     public BehaviourTree tree;
 
-    [SerializeField] private EnemyAI enemy;
-    public EnemyAI Enemy
-    {
-        get => enemy;
-        set => enemy = value;
-    }
-
     // 게임 개체 하위 시스템을 보관하는 스토리지 컨테이너 개체
     Context context;
+
 
     void Start()
     {
         context = CreateBehaviourTreeContext();
         tree = tree.Clone();
         tree.Bind(context);
+        context.enemyAI.SetUp(tree.blackboard.enemyData.health);
     }
 
     void Update()
@@ -31,6 +26,7 @@ public class CommonEnemyBT : MonoBehaviour
             tree.Update();
         }
     }
+
 
     Context CreateBehaviourTreeContext()
     {
