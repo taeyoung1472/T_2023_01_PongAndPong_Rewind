@@ -7,7 +7,7 @@ public class GimmickDoor : ControlAbleObjcet
     [SerializeField] private float speed = 1;
     private Vector3 originPos;
 
-    public override void Control(ControlType controlType)
+    public override void Control(ControlType controlType, bool isLever, Player player)
     {
         curControlType = controlType;
     }

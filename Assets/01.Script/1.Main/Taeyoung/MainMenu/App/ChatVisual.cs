@@ -9,15 +9,21 @@ public class ChatVisual : MonoBehaviour
     [SerializeField] private TextMeshProUGUI nicknameTMP;
     [SerializeField] private Image profileImage;
     [SerializeField] private Transform contentParent;
+    [SerializeField] private GameObject newBar;
 
     [Header("[Template]")]
     [SerializeField] private TextMeshProUGUI textTemplate;
     [SerializeField] Image imageTemplate;
 
-    public void Set(ChatUnit unit, ChatDataSO data)
+    public void Set(ChatUnit unit, ChatDataSO data, int index)
     {
         nicknameTMP.SetText(data.myInfo.ToString());
         profileImage.sprite = data.profile;
+
+        if(data.curChatIndex == index)
+        {
+            newBar.gameObject.SetActive(true);
+        }
 
         foreach (var content in unit.chatContents)
         {
@@ -36,5 +42,7 @@ public class ChatVisual : MonoBehaviour
                 img.gameObject.SetActive(true);
             }
         }
+        contentParent.gameObject.AddComponent<ContentSizeFitter>().verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+        gameObject.AddComponent<ContentSizeFitter>().verticalFit = ContentSizeFitter.FitMode.PreferredSize;
     }
 }
