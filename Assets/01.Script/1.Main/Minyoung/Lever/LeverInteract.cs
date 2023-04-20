@@ -30,15 +30,6 @@ public class LeverInteract : Interact
         LeverAnimation(isPush);
         LeverPullAction();
     }
-    public override void InteractEnter()
-    {
-        UIGetter.Instance.GetInteractUI(_interactUIPos.position, _interactSprite, KeyManager.keys[InputType.Interact]);
-    }
-
-    public override void InteractExit()
-    {
-        UIGetter.Instance.PushUIs();
-    }
     public void LeverPullAction()
     {
         isPush = !isPush; //처음에 ispush트루
