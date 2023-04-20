@@ -39,6 +39,7 @@ public class StageManager : MonoSingleTon<StageManager>
     [Header("효과 관련")]
     [SerializeField]
     private ShockWaveController shockWave;
+
     private void Awake()
     {
         SpawnStage();
@@ -148,7 +149,7 @@ public class StageManager : MonoSingleTon<StageManager>
     public void InitTransform()
     {
         CurStage.transform.DOKill();
-        CurStage.transform.rotation = Quaternion.Euler(0, 0, 0);
+      // CurStage.transform.rotation = Quaternion.Euler(0, 0, 0);
 
     }
     public void SpawnPlayer(Transform spawnPos, bool isDefaultPlayer, bool isFirst = false)
@@ -187,9 +188,6 @@ public class StageManager : MonoSingleTon<StageManager>
             highlighter.Settings.MeshOutlineFront.Color = Color.yellow;
         }
         Highlighter.HighlightersNeedReset();
-
-        //rePlayerObj = Instantiate(rewindPlayerPrefab, spawnPos.position, Quaternion.identity);
-
     }
 
     public void InitPlayer(bool isClear)
