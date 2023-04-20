@@ -7,6 +7,7 @@ using System.IO;
 public class Player : MonoBehaviour
 {
     private List<PlayerAction> _playerActions = new List<PlayerAction>();
+    private List<IPlayerResetable> _resetables = new List<IPlayerResetable>();
 
     #region SO
     [SerializeField]
@@ -76,17 +77,13 @@ public class Player : MonoBehaviour
     private float _maxSlopeAngle = 10f;
     RaycastHit _slopeHit;
 
-    [SerializeField]
-    private CapsuleCollider _normalCapsuleCol = null;
-    [SerializeField]
-    private CapsuleCollider _dashCapsuleCol = null;
-
     private void Awake()
     {
         LoadJson();
         //액션 초기화
         List<PlayerAction> tempActions = new List<PlayerAction>(GetComponents<PlayerAction>());
         _playerActions = (from action in tempActions orderby action.ActionType ascending select action).ToList();
+        _resetables = new List<IPlayerResetable>(GetComponents<IPlayerResetable>());
         //캐싱
         _playerBuff = GetComponent<PlayerBuff>();
         _playerHP = GetComponent<PlayerHP>();
@@ -97,17 +94,7 @@ public class Player : MonoBehaviour
         _gravityModule = GetComponent<GravityModule>();
         _playerTrail = GetComponent<TrailableObject>();
         _playerAudio = transform.Find("AgentSound").GetComponent<PlayerAudio>();
-
-        if (_normalCapsuleCol != null && _dashCapsuleCol != null)
-        {
-            _col = _normalCapsuleCol;
-            _normalCapsuleCol.enabled = true;
-            _dashCapsuleCol.enabled = false;
-        }
-        else
-        {
-            _col = GetComponent<CapsuleCollider>();
-        }
+        _col = GetComponent<CapsuleCollider>();
     }
 
     private void LoadJson()
@@ -128,6 +115,22 @@ public class Player : MonoBehaviour
         string json = JsonUtility.ToJson(_playerJsonData);
         File.WriteAllText(path, json);
         _playerInventory.SaveInventory();
+    }
+
+    public void EnableReset()
+    {
+        Debug.Log("EnableReset");
+        for (int i = 0; i < _playerActions.Count; i++)
+            _playerActions[i].ActionExit();
+        for (int i = 0; i < _resetables.Count; i++)
+            _resetables[i].EnableReset();
+    }
+
+    public void DisableReset()
+    {
+        Debug.Log("DisableReset");
+        for (int i = 0; i < _resetables.Count; i++)
+            _resetables[i].DisableReset();
     }
 
     private void FixedUpdate()
@@ -255,7 +258,6 @@ public class Player : MonoBehaviour
         halfExtents.y = _groundCheckRayLength;
         float maxDistance = _col.bounds.extents.y;
         _isGrounded = Physics.BoxCast(boxCenter, halfExtents, -transform.up, out _slopeHit, transform.rotation, maxDistance, _groundMask);
-
         if (lastGrounded == _isGrounded)
             return;
         OnIsGrounded?.Invoke(_isGrounded);
@@ -304,6 +306,12 @@ public class Player : MonoBehaviour
         VeloCityResetImm(true, true);
         _playerInput.InputVectorReset();
         _playerAnimation.FallOrIdleAnimation(IsGrounded);
+        _characterMoveAmount = Vector3.zero;
+    }
+
+    public void TrailDisable()
+    {
+        _playerTrail.TrailDisable();
     }
 
     public void AfterImageEnable(bool value)
@@ -316,42 +324,24 @@ public class Player : MonoBehaviour
 
     public void ColliderSet(PlayerColliderType type)
     {
-        if (_normalCapsuleCol == null || _dashCapsuleCol == null)
-            return;
+        Vector3 center = Vector3.zero;
+        float height = 0f;
         switch (type)
         {
             case PlayerColliderType.None:
                 break;
             case PlayerColliderType.Normal:
-                _col = _normalCapsuleCol;
-                _normalCapsuleCol.enabled = true;
-                _dashCapsuleCol.enabled = false;
+                center.y = 0.92f;
+                height = 1.9f;
                 break;
             case PlayerColliderType.Dash:
-                _col = _dashCapsuleCol;
-                _normalCapsuleCol.enabled = false;
-                _dashCapsuleCol.enabled = true;
+                center.y = 0.3f;
+                height = 0f;
                 break;
             default:
                 break;
         }
-    }
-
-    public CapsuleCollider GetCapsuleCollider(PlayerColliderType type)
-    {
-        if (_normalCapsuleCol == null || _dashCapsuleCol == null)
-            return _col;
-        switch (type)
-        {
-            case PlayerColliderType.None:
-                break;
-            case PlayerColliderType.Normal:
-                return _normalCapsuleCol;
-            case PlayerColliderType.Dash:
-                return _dashCapsuleCol;
-            default:
-                break;
-        }
-        return _col;
+        _col.center = center;
+        _col.height = height;
     }
 }

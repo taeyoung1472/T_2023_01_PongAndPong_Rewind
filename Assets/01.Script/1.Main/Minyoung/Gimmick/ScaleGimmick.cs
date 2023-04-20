@@ -3,115 +3,130 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using System;
+using System.Linq;
 
-public class ScaleGimmick : MonoBehaviour
+public class ScaleGimmick : GimmickObject
 {
-    private Collider leftScaleCol;
-    private Collider rightScaleCol;
-    public float rayDistance = 5f;
+    public Collider leftCol;
+    public Collider rightCol;
+    [SerializeField] private float totalLength;
 
-    [SerializeField] private float totalLineLength;
+    public Vector3 leftOriginPos;
+    public Vector3 rightOriginPos;
 
-    public int leftWeight = 0;
-    public int rightWeight = 0;
+    public override void Init()
+    {
+        leftCol = transform.Find("Left").GetComponent<Collider>();
+        rightCol = transform.Find("Right").GetComponent<Collider>();
+    }
 
-
-    public bool isDowning;
-    private float preLeftWeight;
-    private float preRightWeight;
+    public override void Awake()
+    {
+        base.Awake();
+        Init();
+    }
     private void Start()
     {
-        leftScaleCol = transform.Find("Left").GetComponent<Collider>();
-        rightScaleCol = transform.Find("Right").GetComponent<Collider>();
+        leftOriginPos = leftCol.transform.position;
+        rightOriginPos = rightCol.transform.position;
     }
-    private void FixedUpdate()
+    public void Update()
     {
-        LeftShootBoxcast();
-        RightShootBoxcast();
-    }
-    private void Update()
-    {
-        CalculPos();
-    }
-
-    private void CalculPos()
-    {
-        float ratio;
-
-        if(rightWeight == leftWeight)
+        if (isRewind)
         {
-            Vector3 _pos = leftScaleCol.transform.position;
-            leftScaleCol.transform.position = new Vector3(_pos.x, Mathf.Lerp(_pos.y, -totalLineLength / 1.5f, Time.deltaTime), _pos.z);
-
-            _pos = rightScaleCol.transform.position;
-            rightScaleCol.transform.position = new Vector3(_pos.x, Mathf.Lerp(_pos.y, -totalLineLength / 1.5f, Time.deltaTime), _pos.z);
             return;
         }
+        Move();
+    }
+    public float left;
+    public float right;
 
-        if(leftWeight == 0)
+    private void Move()
+    {
+        float leftLength;
+        float rightLength = 0;
+         left = CalculLeftWeight();
+        right = CalculRightWeight();
+
+        if ((left == 0 && right == 0) || left == right)
         {
-            ratio = 1;
+            rightLength = totalLength * 0.5f;
+            leftLength = totalLength * 0.5f;
+        }
+        else if (left == 0)
+        {
+            rightLength = totalLength;
+            leftLength = 0;
+        }
+        else if (right == 0)
+        {
+            rightLength = 0;
+            leftLength = totalLength;
         }
         else
-            ratio = rightWeight / leftWeight;
-        float rightLength = ratio * totalLineLength;
-
-        if (rightWeight == 0)
         {
-            ratio = 1;
+            float total = right + left;
+            float ratioRight = right * (1 / total);
+            float ratioLeft = left * (1 / total);
+
+            rightLength = totalLength * ratioRight;
+            leftLength = totalLength * ratioLeft;
+            Debug.Log(leftLength);
+            Debug.Log(rightLength);
         }
-        else
-            ratio = leftWeight / rightWeight;
-        float leftLength = ratio * totalLineLength;
-
-        Vector3 pos = leftScaleCol.transform.position;
-        leftScaleCol.transform.position = new Vector3(pos.x, Mathf.Lerp(pos.y, -leftLength, Time.deltaTime), pos.z);
-
-        pos = rightScaleCol.transform.position;
-        rightScaleCol.transform.position = new Vector3(pos.x, Mathf.Lerp(pos.y, -rightLength, Time.deltaTime), pos.z);
+        leftCol.transform.position = Vector3.Lerp(leftCol.transform.position, leftOriginPos + new Vector3(0, leftOriginPos.y - leftLength, 0), Time.deltaTime);
+        rightCol.transform.position = Vector3.Lerp(rightCol.transform.position, rightOriginPos + new Vector3(0, rightOriginPos.y - rightLength, 0), Time.deltaTime);
     }
 
-    void LeftShootBoxcast()
+    private float CalculRightWeight()
     {
-        Vector3 boxCenter = leftScaleCol.bounds.center;
-        Vector3 halfExtents = leftScaleCol.bounds.extents;
-
-        RaycastHit[] hits = Physics.BoxCastAll(boxCenter, halfExtents, transform.up, transform.rotation, rayDistance);
-
-        leftWeight = 0;
-        preLeftWeight = leftWeight;
-
-        foreach (var h in hits)
+        Vector3 boxCenter = rightCol.bounds.center + Vector3.up * rightCol.bounds.size.y;
+        Vector3 halfExtents = rightCol.bounds.size;
+        Collider[] hitColliders = Physics.OverlapBox(boxCenter, halfExtents, Quaternion.identity);
+        float rightWeight = 0;
+        foreach (var col in hitColliders)
         {
-            if (h.transform == null)
+            if (col.transform == null)
                 continue;
 
-            ObjWeight obj = h.transform.GetComponent<ObjWeight>();
+            ObjWeight obj = col.transform.GetComponent<ObjWeight>();
             if (obj == null)
                 continue;
-
-            leftWeight += obj.so.weight;
-        }
-    }
-    void RightShootBoxcast()
-    {
-        Vector3 boxCenter = rightScaleCol.bounds.center;
-        Vector3 halfExtents = rightScaleCol.bounds.extents;
-
-        RaycastHit[] hits = Physics.BoxCastAll(boxCenter, halfExtents, transform.up, transform.rotation, rayDistance);
-        rightWeight = 0;
-        preRightWeight = rightWeight;
-
-        foreach (var h in hits)
-        {
-            if (h.transform == null)
-                continue;
-
-            ObjWeight obj = h.transform.GetComponent<ObjWeight>();
-            if (obj == null)
-                continue;
-
             rightWeight += obj.so.weight;
         }
+
+        return rightWeight;
     }
+
+    private float CalculLeftWeight()
+    {
+        Vector3 boxCenter = leftCol.bounds.center + Vector3.up * rightCol.bounds.size.y;
+        Vector3 halfExtents = leftCol.bounds.size;
+        Collider[] hitColliders = Physics.OverlapBox(boxCenter, halfExtents, Quaternion.identity);
+        float leftWeight = 0;
+        foreach (var col in hitColliders)
+        {
+            if (col.transform == null)
+                continue;
+
+            ObjWeight obj = col.transform.GetComponent<ObjWeight>();
+            if (obj == null)
+                continue;
+            leftWeight += obj.so.weight;
+        }
+
+        return leftWeight;
+    }
+
+    private void OnDrawGizmos()
+    {
+        //Vector3 boxCenter = rightCol.bounds.center + Vector3.up * rightCol.bounds.size.y;
+        //Vector3 halfExtents = rightCol.bounds.size;
+        //Gizmos.DrawWireCube(boxCenter, halfExtents);
+
+        //boxCenter = leftCol.bounds.center + Vector3.up * rightCol.bounds.size.y;
+        //halfExtents = leftCol.bounds.size;
+        //Gizmos.DrawWireCube(boxCenter, halfExtents);
+    }
+
 }

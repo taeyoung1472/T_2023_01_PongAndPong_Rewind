@@ -25,9 +25,36 @@ public class TrailableObject : MonoBehaviour
         TrailManager.Instance.AddTrailObj(this);
     }
 
-    private void OnDestroy()
+    private void OnDisable()
     {
-        Debug.Log($"TrailableObejct ÆÄ±« : °´Ã¼ ÀÌ¸§ {gameObject.name}");
-        _isMotionTrail = false;
+        TrailDisable();
+    }
+
+    private void OnEnable()
+    {
+        TrailEnable();
+    }
+
+    public void TrailDisable()
+    {
+        Debug.Log($"TrailableObejct Á¦°Å : °´Ã¼ ÀÌ¸§ {gameObject.name}");
+        if (TrailManager.Instance != null)
+        {
+            TrailParent parent = TrailManager.Instance.GetParent(this);
+            if (parent == null)
+                return;
+            parent.Died = true;
+        }
+    }
+
+    public void TrailEnable()
+    {
+        if (TrailManager.Instance != null)
+        {
+            TrailParent parent = TrailManager.Instance.GetParent(this);
+            if (parent == null)
+                return;
+            parent.Died = false;
+        }
     }
 }

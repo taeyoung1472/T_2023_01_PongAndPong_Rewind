@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class PlayerHP : MonoBehaviour
+public class PlayerHP : MonoBehaviour, IPlayerResetable
 {
     [SerializeField]
     private Slider _hpSlider = null;
@@ -25,17 +25,6 @@ public class PlayerHP : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
-        _player = GetComponent<Player>();
-        _curHP = _player.playerHealthSO.maxHP;
-        if (_hpSlider != null)
-        {
-            _hpSlider.minValue = 0;
-            _hpSlider.maxValue = _player.playerHealthSO.maxHP;
-        }
-    }
-
     public void AddDamage(int damage)
     {
         CurHP -= damage;
@@ -47,5 +36,22 @@ public class PlayerHP : MonoBehaviour
         _player.ForceStop();
         _player.PlayerInput.enabled = false;
         OnDie?.Invoke();
+    }
+
+    public void EnableReset()
+    {
+        if (_player == null)
+            _player = GetComponent<Player>();
+        _curHP = _player.playerHealthSO.maxHP;
+        if (_hpSlider != null)
+        {
+            _hpSlider.minValue = 0;
+            _hpSlider.maxValue = _player.playerHealthSO.maxHP;
+        }
+    }
+
+    public void DisableReset()
+    {
+
     }
 }

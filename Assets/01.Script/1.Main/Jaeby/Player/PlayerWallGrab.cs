@@ -77,7 +77,6 @@ public class PlayerWallGrab : PlayerAction
 
     private void WallGrabExit() // 벽에서 나가!
     {
-        Debug.Log("WallExit");
         _player.PlayerActionLock(false, PlayerActionType.Dash, PlayerActionType.Move, PlayerActionType.WallGrab);
         _player.GravityModule.GravityScale = _player.GravityModule.OriginGravityScale;
         _player.GravityModule.UseGravity = true;
@@ -86,7 +85,6 @@ public class PlayerWallGrab : PlayerAction
     private void WallGrabEnter()
     {
         if (_locked) return;
-        Debug.Log("WallEnter");
         _player.PlayerActionExit(PlayerActionType.Dash, PlayerActionType.Jump);
         _player.VeloCityResetImm(true, true);
         _player.PlayerActionLock(true, PlayerActionType.Dash, PlayerActionType.Move, PlayerActionType.WallGrab);

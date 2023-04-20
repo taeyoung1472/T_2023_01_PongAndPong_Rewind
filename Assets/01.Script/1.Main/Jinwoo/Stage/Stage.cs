@@ -19,7 +19,6 @@ public class Stage : MonoBehaviour
             area.isAreaClear = false;
         }
 
-
         StartCoroutine(StageCycle());
     }
 
@@ -46,12 +45,16 @@ public class Stage : MonoBehaviour
 
         if (TimerManager.Instance.isRewinding) //만약 리와인드 상태에서 재시작할때
         {
+            transform.DOKill();
+            transform.rotation = Quaternion.Euler(0, 0, 0);
             TimerManager.Instance.EndRewind();
         }
         else // 일반 순행 시간에 재시작 할때
         {
             Debug.Log("리스타또");
             StageManager.Instance.InitPlayer(false);
+            transform.DOKill();
+            transform.rotation = Quaternion.Euler(0, 0, 0);
             curArea.EntryArea(true);
         }
 
@@ -73,8 +76,6 @@ public class Stage : MonoBehaviour
 
             StageManager.Instance.fadeImg.gameObject.SetActive(false);
             TimerManager.Instance.EndRewind();
-
-
         }
         EndManager.Instance.End();
     }

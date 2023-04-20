@@ -13,7 +13,7 @@ public class ThornGimmick : GimmickObject
     RaycastHit hit;
 
     public bool isDie;
-    private void Awake()
+    public override void  Awake()
     {
         Init();
     }
@@ -31,7 +31,7 @@ public class ThornGimmick : GimmickObject
 
         if (isCheck)
         {
-            if (hit.collider.gameObject.layer == LayerMask.NameToLayer("GimmickPlayer"))
+            if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Player"))
             {
                 Player player = hit.collider.GetComponentInParent<Player>();
                 if (isDie)

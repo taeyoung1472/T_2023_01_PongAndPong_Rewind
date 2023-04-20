@@ -21,6 +21,7 @@ public class PlayerInput : MonoBehaviour
     private Vector2 _inputVector = Vector2.zero;
     public Vector2 InputVectorNorm => _inputVector.normalized;
     public Vector2 InputVector => _inputVector;
+    public Vector2 RotatedInputVector => Quaternion.FromToRotation(Vector2.up, Utility.GetDirToVector(_player.PlayerRenderer.flipDirection)) * _inputVector;
 
     private Player _player = null;
 
@@ -49,27 +50,8 @@ public class PlayerInput : MonoBehaviour
             x++;
         if (Input.GetKey(KeyManager.keys[InputType.Left]))
             x--;
-        //if (Input.GetKey(KeyManager.keys[InputType.Up]))
-        //    y++;
-        //if (Input.GetKey(KeyManager.keys[InputType.Down]))
-        //    y--;
         if (_player.playerBuff.BuffCheck(PlayerBuffType.Reverse))
-        {
             x *= -1;
-        }
-        /*if (_player.PlayerRenderer.flipDirection == FlipDirection.Left)
-        {
-            int temp = x;
-            x = y;
-            y = temp;
-        }
-        else if (_player.PlayerRenderer.flipDirection == FlipDirection.Right)
-        {
-            int temp = x;
-            x = y;
-            y = temp;
-            x *= -1;
-        }*/
         _inputVector = new Vector2(x, y);
         OnMoveInput?.Invoke(new Vector2(x, y));
 

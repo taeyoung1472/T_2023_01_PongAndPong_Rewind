@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UniRx.Triggers;
 using UnityEngine;
 using UnityEngine.UI;
-
+using DG.Tweening;
 public class StageManager : MonoSingleTon<StageManager>
 {
     [Header("스테이지 관련")]
@@ -145,7 +145,12 @@ public class StageManager : MonoSingleTon<StageManager>
     {
 
     }
+    public void InitTransform()
+    {
+        CurStage.transform.DOKill();
+        CurStage.transform.rotation = Quaternion.Euler(0, 0, 0);
 
+    }
     public void SpawnPlayer(Transform spawnPos, bool isDefaultPlayer, bool isFirst = false)
     {
 
@@ -153,6 +158,9 @@ public class StageManager : MonoSingleTon<StageManager>
         {
             //playerObj = Instantiate(playerPrefab, spawnPos.position, Quaternion.identity);
             playerObj = PoolManager.Pop(PoolType.Player);
+            if (rePlayerObj != null)
+                rePlayerObj.GetComponent<Player>().DisableReset();
+            playerObj.GetComponent<Player>().EnableReset();
             playerObj.transform.position = spawnPos.position;
             //TestParticleSpawn.Instance.playerPos = playerObj.transform;
         }
@@ -166,6 +174,9 @@ public class StageManager : MonoSingleTon<StageManager>
             highlighter.Settings.MeshOutlineFront.Color = Color.white;
             
             rePlayerObj = PoolManager.Pop(PoolType.RewindPlayer);
+            if (playerObj != null)
+                playerObj.GetComponent<Player>().DisableReset();
+            rePlayerObj.GetComponent<Player>().EnableReset();
             rePlayerObj.transform.position = spawnPos.position;
 
             highlighter = rePlayerObj.AddComponent<Highlighter>();

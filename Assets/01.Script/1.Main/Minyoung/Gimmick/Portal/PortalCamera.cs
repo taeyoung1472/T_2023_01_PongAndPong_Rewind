@@ -2,11 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PortalCamera : MonoBehaviour
+public class PortalCamera : GimmickObject
 {
     public Transform playerCamera;
     public Transform portal;
     public Transform otherPortal;
+    public override void InitOnPlay()
+    {
+        base.InitOnPlay();
+    }
+    public override void Awake()
+    {
+        base.Awake();
+        Init();
+    }
+    public override void Init()
+    {
+        playerCamera = GameObject.Find("VCam").transform;
+    }
 
     private void Update()
     {

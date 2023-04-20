@@ -13,8 +13,8 @@ public class PlayerRenderer : MonoBehaviour
     public Vector3 Forward => transform.forward;
     public Vector3 Down => -transform.up;
 
-    private FlipDirection _flipDirection = FlipDirection.Down;
-    public FlipDirection flipDirection
+    private DirectionType _flipDirection = DirectionType.Down;
+    public DirectionType flipDirection
     {
         get => _flipDirection;
         set
@@ -22,18 +22,18 @@ public class PlayerRenderer : MonoBehaviour
             _flipDirection = value;
             switch (_flipDirection)
             {
-                case FlipDirection.None:
+                case DirectionType.None:
                     break;
-                case FlipDirection.Left:
+                case DirectionType.Left:
                     _player.transform.rotation = Quaternion.Euler(_player.transform.rotation.eulerAngles.y, 180f, 90f);
                     break;
-                case FlipDirection.Right:
+                case DirectionType.Right:
                     _player.transform.rotation = Quaternion.Euler(_player.transform.rotation.eulerAngles.y, 0f, 90f);
                     break;
-                case FlipDirection.Up:
+                case DirectionType.Up:
                     _player.transform.rotation = Quaternion.Euler(180f, _player.transform.rotation.eulerAngles.y, 0f);
                     break;
-                case FlipDirection.Down:
+                case DirectionType.Down:
                     _player.transform.rotation = Quaternion.Euler(0f, _player.transform.rotation.eulerAngles.y, 0f);
                     break;
                 default:
@@ -46,6 +46,8 @@ public class PlayerRenderer : MonoBehaviour
     {
         _player = GetComponentInParent<Player>();
     }
+
+
 
     public Quaternion GetFlipedRotation(DirType dirType, RotAxis rotAxis)
     {
@@ -79,24 +81,24 @@ public class PlayerRenderer : MonoBehaviour
         if (dir.x == 0f)
             return;
 
-        FlipDirection flipDir = FlipDirection.None;
+        DirectionType flipDir = DirectionType.None;
         if (dir.x > 0f)
-            flipDir = FlipDirection.Right;
+            flipDir = DirectionType.Right;
         else if (dir.x < 0f)
-            flipDir = FlipDirection.Left;
+            flipDir = DirectionType.Left;
 
         Quaternion targetRotation = Quaternion.identity;
-        if (_flipDirection == FlipDirection.Left)
+        if (_flipDirection == DirectionType.Left)
         {
-            targetRotation = Quaternion.Euler((flipDir == FlipDirection.Left) ? -90f : 90f, 180f, 90f); //플레이어 로테이션을 돌린다 
+            targetRotation = Quaternion.Euler((flipDir == DirectionType.Left) ? -90f : 90f, 180f, 90f); //플레이어 로테이션을 돌린다 
         }
-        else if (_flipDirection == FlipDirection.Right)
+        else if (_flipDirection == DirectionType.Right)
         {
-            targetRotation = Quaternion.Euler((flipDir == FlipDirection.Left) ? -90f : 90f, 0f, 90f); //플레이어 로테이션을 돌린다 
+            targetRotation = Quaternion.Euler((flipDir == DirectionType.Left) ? -90f : 90f, 0f, 90f); //플레이어 로테이션을 돌린다 
         }
         else
         {
-            targetRotation = Quaternion.Euler(_player.transform.rotation.eulerAngles.x, (flipDir == FlipDirection.Left) ? -90f : 90f, _player.transform.rotation.eulerAngles.z); //플레이어 로테이션을 돌린다 
+            targetRotation = Quaternion.Euler(_player.transform.rotation.eulerAngles.x, (flipDir == DirectionType.Left) ? -90f : 90f, _player.transform.rotation.eulerAngles.z); //플레이어 로테이션을 돌린다 
         }
         _player.transform.rotation = targetRotation;
         //_player.transform.rotation = Quaternion.Slerp(_player.transform.rotation, targetRotation, _rotationSpeed * Time.deltaTime);
@@ -108,7 +110,7 @@ public class PlayerRenderer : MonoBehaviour
             sc.x *= -1f;
         }
         transform.localScale = sc;*/
-        _fliped = flipDir == FlipDirection.Left;
+        _fliped = flipDir == DirectionType.Left;
         OnFliped?.Invoke(_fliped);
     }
 
