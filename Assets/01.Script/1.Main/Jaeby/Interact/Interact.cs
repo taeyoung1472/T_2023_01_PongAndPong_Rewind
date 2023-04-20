@@ -21,6 +21,23 @@ public abstract class Interact : MonoBehaviour
 
     protected Player _player = null;
 
+    public bool isRewind = false;
+    public virtual void Awake()
+    {
+        if (RewindManager.Instance)
+        {
+            RewindManager.Instance.InitRewind += InitOnRewind;
+            RewindManager.Instance.InitPlay += InitOnPlay;
+        }
+    }
+    public virtual void InitOnRewind()
+    {
+        isRewind = true;
+    }
+    public virtual void InitOnPlay()
+    {
+        isRewind = false;
+    }
     public void InteractStart(Player player)
     {
         if (_interactable == false)
@@ -51,4 +68,5 @@ public abstract class Interact : MonoBehaviour
     {
 
     }
+    
 }

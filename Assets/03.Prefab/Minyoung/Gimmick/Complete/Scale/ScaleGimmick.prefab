@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 4910768971954826504}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -2.54, y: 4.1, z: 0}
-  m_LocalScale: {x: 2, y: 1, z: 2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4910768972887905344}
@@ -47,14 +47,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isRewind: 0
-  scaleLayerMask:
-    serializedVersion: 2
-    m_Bits: 33024
-  rayDistance: 0.1
-  totalLineLength: 5
-  leftWeight: 0
-  rightWeight: 0
-  isStart: 0
+  leftCol: {fileID: 0}
+  rightCol: {fileID: 0}
+  totalLength: 10
+  leftOriginPos: {x: 0, y: 0, z: 0}
+  rightOriginPos: {x: 0, y: 0, z: 0}
+  left: 0
+  right: 0
 --- !u!1 &4910768972155791081
 GameObject:
   m_ObjectHideFlags: 0
@@ -83,8 +82,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4910768972155791081}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.34, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 5.3399997, y: 0, z: 0}
+  m_LocalScale: {x: 3, y: 0.25, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4910768971954826506}
@@ -201,7 +200,7 @@ Transform:
   m_GameObject: {fileID: 4910768972887905359}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 3, y: 0.25, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4910768971954826506}

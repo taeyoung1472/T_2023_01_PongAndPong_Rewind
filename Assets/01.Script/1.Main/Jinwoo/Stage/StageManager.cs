@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UniRx.Triggers;
 using UnityEngine;
 using UnityEngine.UI;
-
+using DG.Tweening;
 public class StageManager : MonoSingleTon<StageManager>
 {
     [Header("스테이지 관련")]
@@ -150,7 +150,12 @@ public class StageManager : MonoSingleTon<StageManager>
     {
 
     }
+    public void InitTransform()
+    {
+        CurStage.transform.DOKill();
+        CurStage.transform.rotation = Quaternion.Euler(0, 0, 0);
 
+    }
     public void SpawnPlayer(Transform spawnPos, bool isDefaultPlayer, bool isFirst = false)
     {
 
@@ -219,5 +224,17 @@ public class StageManager : MonoSingleTon<StageManager>
         //    rePlayerObj.SetActive(false);
 
         //}
+    }
+
+    public GameObject GetCurrentPlayer()
+    {
+        if (TimerManager.Instance.isRewinding)
+        {
+            return rePlayerObj;
+        }
+        else
+        {
+            return playerObj;
+        }
     }
 }

@@ -8,8 +8,13 @@ public class BeadJump : GimmickObject
     public override void Init()
     {
     }
+
     private void OnTriggerEnter(Collider other)
     {
+        if (isRewind)
+        {
+            return;
+        }
         if (other.gameObject.CompareTag("Player"))
         {
             Player player = other.GetComponent<Player>();
