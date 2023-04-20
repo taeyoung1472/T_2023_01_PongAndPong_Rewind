@@ -5,6 +5,8 @@ public class Bullet : PoolAbleObject
     private int _dmg = 0;
     private float _speed = 0f;
     private Rigidbody _rigid = null;
+    [SerializeField]
+    private LayerMask _destroyMask = 0;
 
     public void Init(Vector3 pos, Quaternion rot, float speed, int dmg)
     {
@@ -14,6 +16,7 @@ public class Bullet : PoolAbleObject
         if (_rigid == null)
             _rigid = GetComponent<Rigidbody>();
         _rigid.velocity = transform.right * _speed;
+        Debug.Log(_rigid.velocity);
     }
 
     public override void Init_Pop()
@@ -26,9 +29,9 @@ public class Bullet : PoolAbleObject
 
     private void OnTriggerEnter(Collider other)
     {
-        // АјАн
-        if (other.CompareTag("Player"))
+        if ((other.gameObject.layer | _destroyMask) == 0)
             return;
-        Destroy(gameObject);
+
+        PoolManager.Push(poolType, gameObject);
     }
 }

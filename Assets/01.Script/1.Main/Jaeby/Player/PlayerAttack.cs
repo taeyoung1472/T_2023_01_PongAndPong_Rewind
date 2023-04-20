@@ -1,12 +1,16 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UIElements;
 using static Define;
 
 public class PlayerAttack : PlayerAction
 {
     private bool _switchingable = true;
     public bool Switchingable { get => _switchingable; set => _switchingable = value; }
+
+    [SerializeField]
+    private Transform _shootingPointTrm = null;
 
     [SerializeField]
     private UnityEvent<int> OnMeleeAttack = null;
@@ -24,7 +28,7 @@ public class PlayerAttack : PlayerAction
 
     public void Attack()
     {
-        if (_locked || _delayLock || _player.PlayerActionCheck(PlayerActionType.Dash, PlayerActionType.Jump, PlayerActionType.ObjectPush, PlayerActionType.WallGrab))
+        if (_locked || _delayLock || _player.PlayerActionCheck(PlayerActionType.Dash, PlayerActionType.ObjectPush, PlayerActionType.WallGrab))
             return;
 
         if (_attackState == AttackState.Melee)
@@ -47,13 +51,16 @@ public class PlayerAttack : PlayerAction
 
     private void RangeAttack()
     {
-        Vector3 pos = Input.mousePosition;
-        pos.z = 8;
-        Vector3 distance = (Cam.ScreenToWorldPoint(pos) - transform.position);
+        Vector3 mousePos = Input.mousePosition;
+        Vector3 playerPos = _shootingPointTrm.position;
+        Quaternion camRot = Quaternion.Euler(Cam.transform.rotation.eulerAngles.x, Cam.transform.rotation.eulerAngles.y, Cam.transform.rotation.eulerAngles.z);
+        mousePos.z = (playerPos - Cam.transform.position).z;
+        Vector3 target = Camera.main.ScreenToWorldPoint(mousePos);
+        Vector3 distance = target - playerPos;
         float angle = Mathf.Atan2(distance.y, distance.x) * Mathf.Rad2Deg;
         Quaternion rot = Quaternion.AngleAxis(angle, Vector3.forward);
-        GameObject bullet = Instantiate(_player.playerAttackSO.bulletPrefab);
-        bullet.GetComponent<Bullet>().Init(transform.position, rot, _player.playerAttackSO.bulletSpeed, _player.playerAttackSO.rangeAttackPower);
+        Bullet bullet = PoolManager.Pop(PoolType.PlayerBullet).GetComponent<Bullet>();
+        bullet.GetComponent<Bullet>().Init(playerPos, rot, _player.playerAttackSO.bulletSpeed, _player.playerAttackSO.rangeAttackPower);
         OnRangeAttack?.Invoke();
     }
 
@@ -92,14 +99,14 @@ public class PlayerAttack : PlayerAction
     {
         _excuting = true;
         _player.VeloCityResetImm(true, true);
-        _player.PlayerActionExit(PlayerActionType.Move, PlayerActionType.Jump, PlayerActionType.Dash);
-        _player.PlayerActionLock(true, PlayerActionType.Move, PlayerActionType.Jump, PlayerActionType.Dash);
+        //_player.PlayerActionExit(PlayerActionType.Move, PlayerActionType.Jump, PlayerActionType.Dash);
+        //_player.PlayerActionLock(true, PlayerActionType.Move, PlayerActionType.Jump, PlayerActionType.Dash);
     }
 
     public void AttackEnd()
     {
         _excuting = false;
-        _player.PlayerActionLock(false, PlayerActionType.Move, PlayerActionType.Jump, PlayerActionType.Dash);
+        //_player.PlayerActionLock(false, PlayerActionType.Move, PlayerActionType.Jump, PlayerActionType.Dash);
     }
 
     public override void ActionExit()
