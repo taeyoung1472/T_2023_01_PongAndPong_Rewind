@@ -10,6 +10,8 @@ public class ChatDataSO : ScriptableObject
     public Sprite profile;
 
     public List<ChatUnit> chatDatas;
+
+    public int curChatIndex;
 }
 
 [Serializable]

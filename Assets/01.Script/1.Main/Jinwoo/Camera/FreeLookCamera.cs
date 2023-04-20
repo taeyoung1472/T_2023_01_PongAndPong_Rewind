@@ -33,6 +33,8 @@ public class FreeLookCamera : MonoBehaviour
     public float offsetX = 10;
     public float offsetY = 10;
     public float offsetZ = 10;
+    public float centerX = 0;
+    public float centerY = 5;
 
     public Vector3 initPos;
 
@@ -80,8 +82,8 @@ public class FreeLookCamera : MonoBehaviour
     void LateUpdate()
     {
         _rig.position = new Vector3(
-            Mathf.Clamp(_rig.position.x, -offsetX, offsetX),
-            Mathf.Clamp(_rig.position.y, -offsetY, offsetY),
+            Mathf.Clamp(_rig.position.x, centerX - offsetX * 0.5f, centerX + offsetX * 0.5f),
+            Mathf.Clamp(_rig.position.y, centerY - offsetY * 0.5f, centerY + offsetY * 0.5f),
             Mathf.Clamp(_rig.position.z, -offsetZ, 0));
     }
     private void OnEnable()

@@ -20,7 +20,7 @@ public class DeployHandler : MonoBehaviour
     public MapElement decalPrefab;
     [Range(0.0f, 1.0f)] public float decalChance;
     public float decalSizeFactor = 1;
-    public bool centerX_decal, centerY_decal, rotX, rotY, rotZ;
+    public bool centerX_decal, centerY_decal, randomX, randomY, rotX, rotY, rotZ;
 
     public static DrawMode drawMode;
 
@@ -277,15 +277,15 @@ public class DeployHandler : MonoBehaviour
                     {
                         case DeployType.XY:
                             decalPos = new Vector3(curX + (centerX_decal ? (decalPrefab.size.x * decalSizeFactor) / 2 : 0), curY + (centerY_decal ? (decalPrefab.size.y * decalSizeFactor) / 2 : 0), transform.position.z);
-                            curY += decalPrefab.size.y * UnityEngine.Random.Range(0.5f, 1.5f) * decalSizeFactor;
+                            curY += (!randomY ? decalPrefab.size.y : decalPrefab.size.y * UnityEngine.Random.Range(0.5f, 1.5f)) * decalSizeFactor;
                             break;
                         case DeployType.XZ:
                             decalPos = new Vector3(curX + (centerX_decal ? (decalPrefab.size.x * decalSizeFactor) / 2 : 0), transform.position.y, curY + (centerY_decal ? (decalPrefab.size.z * decalSizeFactor) / 2 : 0));
-                            curY += decalPrefab.size.z * UnityEngine.Random.Range(0.5f, 1.5f) * decalSizeFactor;
+                            curY += (!randomY ? decalPrefab.size.z : decalPrefab.size.z * UnityEngine.Random.Range(0.5f, 1.5f)) * decalSizeFactor;
                             break;
                         case DeployType.YZ:
                             decalPos = new Vector3(transform.position.x, curX + (centerX_decal ? (decalPrefab.size.y * decalSizeFactor) / 2 : 0), curY + (centerY_decal ? (decalPrefab.size.z * decalSizeFactor) / 2 : 0));
-                            curY += decalPrefab.size.z * UnityEngine.Random.Range(0.5f, 1.5f) * decalSizeFactor;
+                            curY += (!randomY ? decalPrefab.size.z : decalPrefab.size.z * UnityEngine.Random.Range(0.5f, 1.5f)) * decalSizeFactor;
                             break;
                     }
 
@@ -304,13 +304,13 @@ public class DeployHandler : MonoBehaviour
                 switch (deployType)
                 {
                     case DeployType.XY:
-                        curX += decalPrefab.size.x * UnityEngine.Random.Range(0.5f, 1.5f) * decalSizeFactor;
+                        curX += (!randomX ? decalPrefab.size.x : decalPrefab.size.x * UnityEngine.Random.Range(0.5f, 1.5f)) * decalSizeFactor;
                         break;
                     case DeployType.XZ:
-                        curX += decalPrefab.size.x * UnityEngine.Random.Range(0.5f, 1.5f) * decalSizeFactor;
+                        curX += (!randomX ? decalPrefab.size.x : decalPrefab.size.x * UnityEngine.Random.Range(0.5f, 1.5f)) * decalSizeFactor;
                         break;
                     case DeployType.YZ:
-                        curX += decalPrefab.size.y * UnityEngine.Random.Range(0.5f, 1.5f) * decalSizeFactor;
+                        curX += (!randomX ? decalPrefab.size.y : decalPrefab.size.y * UnityEngine.Random.Range(0.5f, 1.5f)) * decalSizeFactor;
                         break;
                 }
             }

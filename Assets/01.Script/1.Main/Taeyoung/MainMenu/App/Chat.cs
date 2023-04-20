@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.Android.Types;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -25,6 +24,7 @@ public class Chat : MonoBehaviour
     [Header("[ChatContent]")]
     [SerializeField] private Transform contentParent;
     [SerializeField] private ChatCategory contentTemplate;
+    [SerializeField] private GameObject dummyObject;
     private Dictionary<ChatTarget, ChatCategory> contentDic = new();
     private ChatCategory prevContentObject;
 
@@ -73,6 +73,15 @@ public class Chat : MonoBehaviour
         prevContentObject = contentDic[data.myInfo];
         prevContentObject.gameObject.SetActive(true);
         prevChatBtn = chatDic[data.myInfo];
+        StartCoroutine(SetSize());
         prevChatBtn.Focus();
+    }
+
+    private IEnumerator SetSize()
+    {
+        yield return new WaitForEndOfFrame();
+        dummyObject.gameObject.SetActive(true);
+        yield return new WaitForEndOfFrame();
+        dummyObject.gameObject.SetActive(false);
     }
 }

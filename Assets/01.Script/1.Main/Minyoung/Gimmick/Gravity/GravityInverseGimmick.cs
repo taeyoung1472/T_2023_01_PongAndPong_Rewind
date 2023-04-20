@@ -1,8 +1,5 @@
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
-using static Highlighters.HighlighterTrigger;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class GravityInverseGimmick : GimmickObject
 {
