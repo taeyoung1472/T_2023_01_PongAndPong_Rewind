@@ -10,6 +10,7 @@ public class StageManager : MonoSingleTon<StageManager>
 {
     [Header("스테이지 관련")]
     public static StageDataSO stageDataSO;
+    [SerializeField] private StageDataSO demoStageDataSO;
 
     //[SerializeField] private StageDatabase stageDatabase;
     private StageDataSO curStageDataSO;
@@ -134,6 +135,10 @@ public class StageManager : MonoSingleTon<StageManager>
 
     public void SpawnStage()
     {
+        if(stageDataSO == null)
+        {
+            stageDataSO = demoStageDataSO;
+        }
         curStageDataSO = stageDataSO;
 
         curStage = Instantiate(curStageDataSO.stagePrefab, Vector3.zero, Quaternion.identity);
