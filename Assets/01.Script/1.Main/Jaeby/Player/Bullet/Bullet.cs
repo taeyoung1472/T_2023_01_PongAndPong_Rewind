@@ -10,7 +10,9 @@ public class Bullet : PoolAbleObject
 
     public void Init(Vector3 pos, Quaternion rot, float speed, int dmg)
     {
+        Transform effectTrm = PoolManager.Pop(PoolType.BulletEffect).transform;
         transform.SetPositionAndRotation(pos, rot);
+        effectTrm.SetPositionAndRotation(pos, rot);
         _speed = speed;
         _dmg = dmg;
         if (_rigid == null)
