@@ -19,7 +19,7 @@ public class MovingObjectGimmick : ControlAbleObjcet
         };
     }
 
-    public override void Control(ControlType controlType)
+    public override void Control(ControlType controlType, bool isLever, Player player)
     {
 
     }
