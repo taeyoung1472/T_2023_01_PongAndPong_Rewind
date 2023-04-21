@@ -26,6 +26,8 @@ public class CheckAttackRangeAction : ActionNode
         if (IsTargetOnSight(target))
         {
             Debug.Log("АјАн!!!");
+            context.animator.SetBool("IsRun", false);
+            blackboard.isAttacking = true;
             return State.Success;
         }
         else
@@ -37,9 +39,9 @@ public class CheckAttackRangeAction : ActionNode
     {
         RaycastHit hit;
 
-        Vector3 direction = target.position - context.enemyAI.eyeTransform.position;
+        Vector3 direction = context.enemyAI.eyeTransform.forward;
 
-
+        //direction.y = context.enemyAI.eyeTransform.forward.y;
 
         if (Physics.Raycast(context.enemyAI.eyeTransform.position, direction, out hit, range))
         {
