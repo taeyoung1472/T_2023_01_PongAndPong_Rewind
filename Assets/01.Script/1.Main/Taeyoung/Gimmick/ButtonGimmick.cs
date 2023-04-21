@@ -11,8 +11,6 @@ public class ButtonGimmick : GimmickObject
     [SerializeField] private GimmickVisualLink visualLinkPrefab;
     [SerializeField] private Color color = Color.white;
 
-    Player player;
-
     [ContextMenu("Gen Color")]
     public void GenColor()
     {
