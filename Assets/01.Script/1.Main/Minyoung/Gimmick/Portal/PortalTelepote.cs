@@ -31,6 +31,7 @@ public class PortalTelepote : GimmickObject
     public override void InitOnPlay()
     {
         base.InitOnPlay();
+        playerTrm = null;
         if (playerTrm == null)
         {
             playerTrm = FindObjectOfType<Player>().transform;
@@ -40,8 +41,7 @@ public class PortalTelepote : GimmickObject
     public override void InitOnRewind()
     {
         base.InitOnRewind();
-        player = null;
-        playerTrm = null;
+        
     }
     void Update()
     {
@@ -78,7 +78,7 @@ public class PortalTelepote : GimmickObject
             Debug.Log(offset);
             playerTrm.position = reciever.position + offset;
             playerIsOverlapping = false;
-            Invoke("DeleteBuff", 0.5f);
+            Invoke("DeleteBuff", 0.3f);
         }
     }
     public void DeleteBuff()
@@ -97,13 +97,15 @@ public class PortalTelepote : GimmickObject
 
         if (other.gameObject.CompareTag("Player"))
         {
-            
             Vector3 portalToPlayer = playerTrm.position - transform.position;
             Vector3 crossVec = Vector3.Cross(transform.forward, portalToPlayer);
             cross = crossVec.y;
+            Debug.Log("작동 잘하나요" + cross);
             if (cross >= 0f)
             {
                 playerIsOverlapping = true;
+                Debug.Log(player);
+                Debug.Log(player.playerBuff);
                 player.playerBuff.AddBuff(PlayerBuffType.Reverse);
             }
         }

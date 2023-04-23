@@ -11,6 +11,11 @@ public class ButtonGimmick : GimmickObject
     [SerializeField] private GimmickVisualLink visualLinkPrefab;
     [SerializeField] private Color color = Color.white;
 
+    [SerializeField] private bool isToggle;
+    [SerializeField] private float toggleTime;
+    [SerializeField] private float origntToggleTime;
+    [SerializeField] private bool toggleing;
+
     [ContextMenu("Gen Color")]
     public void GenColor()
     {
@@ -30,27 +35,22 @@ public class ButtonGimmick : GimmickObject
             {
                 foreach (var control in controlDataArr)
                 {
-                    control.target.isLocked = false; 
+                    control.target.isLocked = false;
                 }
                 isActive = false;
             };
-            //RewindManager.Instance.InitPlay += () =>
-            //{
-            //      = false;
-            //};
-            //RewindManager.Instance.InitRewind += () =>
-            //{
-            //    isRewind = true;
-            //};
         }
         foreach (var data in controlDataArr)
         {
             GimmickVisualLink link = Instantiate(visualLinkPrefab);
             link.Link(transform, data.target.transform, color);
         }
-      
     }
-
+    public override void InitOnPlay()
+    {
+        base.InitOnPlay();
+        toggleTime = origntToggleTime;
+    }
     public void Update()
     {
         if (isRewind)
@@ -58,9 +58,10 @@ public class ButtonGimmick : GimmickObject
             return;
         }
 
+
         CheckPlayer();
 
-        if (isActive)
+        if (toggleing == true)
         {
             foreach (var control in controlDataArr)
             {
@@ -70,16 +71,44 @@ public class ButtonGimmick : GimmickObject
                 }
                 else
                 {
-                    control.target.Control(control.isReverse ? ControlType.ReberseControl : ControlType.Control, false , player);
+                    control.target.Control(control.isReverse ? ControlType.ReberseControl : ControlType.Control, false, player);
+                }
+            }
+            toggleTime -= Time.deltaTime;
+            if (toggleTime <= 0.0f)
+            {
+                isActive = false;
+                foreach (var control in controlDataArr)
+                {
+                    control.target.Control(ControlType.None, false, player);
                 }
             }
         }
-        else
+
+
+        if (!isToggle)
         {
-            foreach (var control in controlDataArr)
+            if (isActive)
             {
-                control.target.Control(ControlType.None, false, player);
-                CamManager.Instance.RemoveTargetGroup(control.target.transform);
+                foreach (var control in controlDataArr)
+                {
+                    if (control.isLever)
+                    {
+                        control.target.Control(control.isReverse ? ControlType.ReberseControl : ControlType.Control, true, player);
+                    }
+                    else
+                    {
+                        control.target.Control(control.isReverse ? ControlType.ReberseControl : ControlType.Control, false, player);
+                    }
+                }
+            }
+            else
+            {
+                foreach (var control in controlDataArr)
+                {
+                    control.target.Control(ControlType.None, false, player);
+                    CamManager.Instance.RemoveTargetGroup(control.target.transform);
+                }
             }
         }
     }
@@ -113,6 +142,8 @@ public class ButtonGimmick : GimmickObject
     {
         if (other.gameObject.TryGetComponent<Player>(out Player player))
         {
+            toggleing = true;
+
             if (this.player == null)
             {
                 this.player = player;
@@ -144,13 +175,12 @@ public class ButtonGimmick : GimmickObject
             Handles.DrawLine(transform.position, control.target.transform.position, 10);
         }
     }
-
+#endif
     public override void Init()
     {
-        throw new NotImplementedException();
     }
-#endif
 }
+
 [Serializable]
 public class ControlData
 {
