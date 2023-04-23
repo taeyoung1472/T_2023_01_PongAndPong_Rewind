@@ -47,6 +47,8 @@ public class PlayerAttack : PlayerAction
         _attackIndex = (_attackIndex + 1) % _maxAttackIndex;
         OnMeleeAttack?.Invoke(_attackIndex);
         player.playerAudio.AttackAudio();
+
+        AttackCollider.Create(0, ColliderOwnerType.Player, null, _player.transform.position + _player.PlayerRenderer.Forward, 0.9f, null, false, null);
     }
 
     private void RangeAttack()
@@ -62,6 +64,8 @@ public class PlayerAttack : PlayerAction
         Bullet bullet = PoolManager.Pop(PoolType.PlayerBullet).GetComponent<Bullet>();
         bullet.GetComponent<Bullet>().Init(playerPos, rot, _player.playerAttackSO.bulletSpeed, _player.playerAttackSO.rangeAttackPower);
         OnRangeAttack?.Invoke();
+
+        //AttackCollider.Create(0, _player.gameObject, bullet.transform, Vector3.zero, 0.5f, null, true, null);
     }
 
     public void WeaponSwitching()
