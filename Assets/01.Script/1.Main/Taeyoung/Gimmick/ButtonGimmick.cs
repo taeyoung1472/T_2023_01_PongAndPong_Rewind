@@ -11,7 +11,12 @@ public class ButtonGimmick : GimmickObject
     [SerializeField] private GimmickVisualLink visualLinkPrefab;
     [SerializeField] private Color color = Color.white;
 
-    Player player;
+    [SerializeField] private bool isToggle;
+    [SerializeField] private float toggleTime;
+    [SerializeField] private float origntToggleTime;
+    [SerializeField] private bool toggleing;
+
+    private Animator animator;
 
     [ContextMenu("Gen Color")]
     public void GenColor()
@@ -26,33 +31,35 @@ public class ButtonGimmick : GimmickObject
 
     public void Start()
     {
+        animator = GetComponent<Animator>();
         if (RewindManager.Instance)
         {
             RewindManager.Instance.RestartPlay += () =>
             {
                 foreach (var control in controlDataArr)
                 {
-                    control.target.isLocked = false; 
+                    control.target.isLocked = false;
                 }
                 isActive = false;
             };
-            //RewindManager.Instance.InitPlay += () =>
-            //{
-            //      = false;
-            //};
-            //RewindManager.Instance.InitRewind += () =>
-            //{
-            //    isRewind = true;
-            //};
         }
         foreach (var data in controlDataArr)
         {
             GimmickVisualLink link = Instantiate(visualLinkPrefab);
             link.Link(transform, data.target.transform, color);
         }
-      
     }
-
+    public override void InitOnPlay()
+    {
+        base.InitOnPlay();
+        toggleing = false;
+        toggleTime = origntToggleTime;
+        foreach (var control in controlDataArr)
+        {
+            control.target.Control(ControlType.None, false, player);
+            CamManager.Instance.RemoveTargetGroup(control.target.transform);
+        }
+    }
     public void Update()
     {
         if (isRewind)
@@ -60,9 +67,37 @@ public class ButtonGimmick : GimmickObject
             return;
         }
 
+
         CheckPlayer();
 
-        if (isActive)
+        if (!isToggle)
+        {
+            if (isActive)
+            {
+                foreach (var control in controlDataArr)
+                {
+                    if (control.isLever)
+                    {
+                        control.target.Control(control.isReverse ? ControlType.ReberseControl : ControlType.Control, true, player);
+                    }
+                    else
+                    {
+                        control.target.Control(control.isReverse ? ControlType.ReberseControl : ControlType.Control, false, player);
+                    }
+                }
+            }
+            else
+            {
+                foreach (var control in controlDataArr)
+                {
+                    control.target.Control(ControlType.None, false, player);
+                    CamManager.Instance.RemoveTargetGroup(control.target.transform);
+                }
+            }
+        }
+
+
+        if (toggleing == true && isToggle == true )
         {
             foreach (var control in controlDataArr)
             {
@@ -72,18 +107,27 @@ public class ButtonGimmick : GimmickObject
                 }
                 else
                 {
-                    control.target.Control(control.isReverse ? ControlType.ReberseControl : ControlType.Control, false , player);
+                    control.target.Control(control.isReverse ? ControlType.ReberseControl : ControlType.Control, false, player);
                 }
             }
-        }
-        else
-        {
-            foreach (var control in controlDataArr)
+            if (isActive == false)
             {
-                control.target.Control(ControlType.None, false, player);
-                CamManager.Instance.RemoveTargetGroup(control.target.transform);
+                toggleTime -= Time.deltaTime;
+            }
+            if (toggleTime <= 0.0f)
+            {
+                //isActive = false;
+                animator.Play("Idle");
+                foreach (var control in controlDataArr)
+                {
+                    control.target.Control(ControlType.None, false, player);
+                }
+                //toggleing = false;
+                //toggleTime = origntToggleTime;
             }
         }
+
+
     }
 
     private void CheckPlayer()
@@ -115,6 +159,11 @@ public class ButtonGimmick : GimmickObject
     {
         if (other.gameObject.TryGetComponent<Player>(out Player player))
         {
+            toggleing = true;
+            toggleTime = origntToggleTime;
+
+            animator.Play("Push");
+
             if (this.player == null)
             {
                 this.player = player;
@@ -124,6 +173,7 @@ public class ButtonGimmick : GimmickObject
         if (other.TryGetComponent<GimmickObject>(out GimmickObject gimmickObject))
         {
             isActive = true;
+            animator.Play("Push");
         }
     }
     public void OnTriggerExit(Collider other)
@@ -131,6 +181,7 @@ public class ButtonGimmick : GimmickObject
         if (other.TryGetComponent<GimmickObject>(out GimmickObject gimmickObject))
         {
             isActive = false;
+            animator.Play("Idle");
         }
     }
 
@@ -146,13 +197,12 @@ public class ButtonGimmick : GimmickObject
             Handles.DrawLine(transform.position, control.target.transform.position, 10);
         }
     }
-
+#endif
     public override void Init()
     {
-        throw new NotImplementedException();
     }
-#endif
 }
+
 [Serializable]
 public class ControlData
 {

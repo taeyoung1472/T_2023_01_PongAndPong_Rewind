@@ -10,6 +10,8 @@ public class StageArea : MonoBehaviour
     [SerializeField] private Transform defaultPlayerSpawn;
     [SerializeField] private Transform rewindPlayerSpawn;
 
+    public GameObject gameObjesddct;
+
     public void InitArea()
     {
         TimerManager.Instance.InitTimer();

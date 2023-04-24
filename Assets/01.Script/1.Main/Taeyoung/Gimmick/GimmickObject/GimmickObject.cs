@@ -13,11 +13,16 @@ public abstract class GimmickObject : MonoBehaviour
     public virtual void InitOnPlay()
     {
         isRewind = false;
+        player = null;
         if (player == null)
         {
-            FindObjectOfType<Player>();
+            player = FindObjectOfType<Player>();
         }
         Debug.Log(isRewind);
+    }
+    public virtual void InitOnRestart()
+    {
+
     }
 
     public virtual void Awake()

@@ -9,7 +9,6 @@ public class PortalTelepote : GimmickObject
     #region Player
     public Transform playerTrm;
     public  bool playerIsOverlapping = false;
-    public Player player;
     #endregion
 
     public float cross;
@@ -32,15 +31,17 @@ public class PortalTelepote : GimmickObject
     public override void InitOnPlay()
     {
         base.InitOnPlay();
+        playerTrm = null;
         if (playerTrm == null)
         {
             playerTrm = FindObjectOfType<Player>().transform;
         }
+        cross = 0f;
     }
     public override void InitOnRewind()
     {
         base.InitOnRewind();
-        player = null;
+        
     }
     void Update()
     {
@@ -77,7 +78,7 @@ public class PortalTelepote : GimmickObject
             Debug.Log(offset);
             playerTrm.position = reciever.position + offset;
             playerIsOverlapping = false;
-            Invoke("DeleteBuff", 0.7f);
+            Invoke("DeleteBuff", 0.3f);
         }
     }
     public void DeleteBuff()
@@ -89,18 +90,22 @@ public class PortalTelepote : GimmickObject
     }
     void OnTriggerEnter(Collider other)
     {
+        if (isRewind)
+        {
+            return;
+        }
+
         if (other.gameObject.CompareTag("Player"))
         {
             Vector3 portalToPlayer = playerTrm.position - transform.position;
             Vector3 crossVec = Vector3.Cross(transform.forward, portalToPlayer);
             cross = crossVec.y;
-            if (cross > 0f)
+            Debug.Log("작동 잘하나요" + cross);
+            if (cross >= 0f)
             {
                 playerIsOverlapping = true;
-                if (player == null)
-                {
-                    player = other.GetComponent<Player>();
-                }
+                Debug.Log(player);
+                Debug.Log(player.playerBuff);
                 player.playerBuff.AddBuff(PlayerBuffType.Reverse);
             }
         }
@@ -110,7 +115,7 @@ public class PortalTelepote : GimmickObject
             Vector3 objToPlayer = playerTrm.position - transform.position;
             Vector3 crossVec = Vector3.Cross(transform.forward, objToPlayer);
             cross = crossVec.y;
-            if (cross > 0f)
+            if (cross >= 0f)
             {
                 telObjList.Add(other.gameObject.transform);
                 objIsOverlapping = true;
