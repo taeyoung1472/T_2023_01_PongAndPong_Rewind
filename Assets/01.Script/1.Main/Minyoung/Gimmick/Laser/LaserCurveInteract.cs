@@ -22,15 +22,4 @@ public class LaserCurveInteract : Interact
         shootLaser.SetLine();
         InteractEnd(true);
     }
-
-    public override void InteractEnter()
-    {
-        UIGetter.Instance.GetInteractUI(_interactUIPos.position, _interactSprite, KeyManager.keys[InputType.Interact]);
-
-    }
-
-    public override void InteractExit()
-    {
-        UIGetter.Instance.PushUIs();
-    }
 }

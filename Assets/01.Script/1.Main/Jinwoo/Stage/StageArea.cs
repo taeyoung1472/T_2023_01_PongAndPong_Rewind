@@ -30,6 +30,7 @@ public class StageArea : MonoBehaviour
 
     public void Rewind()
     {
+        StageManager.Instance.InitTransform();
         StageManager.Instance.SpawnPlayer(rewindPlayerSpawn, false);
     }
 

@@ -9,6 +9,10 @@ public class WorldDataSO : ScriptableObject
     public List<StageDataSO> stageList;
 
     public int rewardCount = 8;
+    public string collectObjectName = "";
+    public GameObject collectObject = null;
+
+
     public List<RewardFunctionData> _rewardFunctionData = new List<RewardFunctionData>();
 
     public StageDataSO GetStage(int index)
@@ -20,7 +24,7 @@ public class WorldDataSO : ScriptableObject
     {
         foreach(var a in _rewardFunctionData)
         {
-            if (count == a.targetCount)
+            if (count >= a.targetCount)
                 return a.function;
         }
         return null;

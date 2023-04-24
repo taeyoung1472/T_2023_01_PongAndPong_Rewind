@@ -22,14 +22,14 @@ public class PlayerInventory : MonoBehaviour
     {
         string path = Application.dataPath + "/Save/Inventory.json";
         string json = JsonConvert.SerializeObject(_inventory);
-        Debug.Log(json);
+        Debug.Log("인벤토리 " + json);
         File.WriteAllText(path, json);
     }
 
     public void AddItem(ItemData data)
     {
         List<string> temp;
-        if(_inventory.TryGetValue(data.itemType, out temp) == false)
+        if (_inventory.TryGetValue(data.itemType, out temp) == false)
         {
             temp = new List<string>();
             _inventory[data.itemType] = temp;

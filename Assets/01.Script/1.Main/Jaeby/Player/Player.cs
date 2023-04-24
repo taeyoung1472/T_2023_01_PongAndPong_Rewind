@@ -11,6 +11,9 @@ public class Player : MonoBehaviour
 
     #region SO
     [SerializeField]
+    private StageDatabase _worldsDatabase = null;
+
+    [SerializeField]
     private PlayerHealthSO _playerHealthSO = null;
     [SerializeField]
     private PlayerMovementSO _playerMovementSO = null;
@@ -71,7 +74,7 @@ public class Player : MonoBehaviour
     [SerializeField]
     private LayerMask _groundMask = 0;
     private bool _isGrounded = false;
-    public bool IsGrounded => _isGrounded;
+    public bool IsGrounded { get => _isGrounded; set => _isGrounded = value; }
     #endregion
     [SerializeField]
     private float _maxSlopeAngle = 10f;
@@ -97,13 +100,49 @@ public class Player : MonoBehaviour
         _col = GetComponent<CapsuleCollider>();
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            WorldCollectionsCountSet(_worldsDatabase.worldList[0], Random.Range(0, 9));
+        }
+        if (Input.GetKeyDown(KeyCode.Y))
+        {
+            WorldCollectionsCountSet(_worldsDatabase.worldList[1], Random.Range(0, 9));
+        }
+        if (Input.GetKeyDown(KeyCode.U))
+        {
+            WorldCollectionsCountSet(_worldsDatabase.worldList[2], Random.Range(0, 9));
+        }
+    }
+
+    public void WorldCollectionsCountSet(WorldType key, int value)
+    {
+        WorldCollectionsCountSet(_worldsDatabase.GetWorldData(key), value);
+    }
+
+    public void WorldCollectionsCountSet(WorldDataSO key, int value)
+    {
+        if (_playerJsonData.collectDatas.ContainsKey(key.worldName))
+            _playerJsonData.collectDatas[key.worldName] = value;
+        SaveJsonData();
+    }
+
     private void LoadJson()
     {
         string path = Application.dataPath + "/Save/JsonData.json";
         string json = File.ReadAllText(path);
-        _playerJsonData = JsonUtility.FromJson<PlayerJsonData>(json);
+        _playerJsonData = Newtonsoft.Json.JsonConvert.DeserializeObject<PlayerJsonData>(json);
         if (_playerJsonData == null)
+        {
             _playerJsonData = new PlayerJsonData();
+        }
+        if (_playerJsonData.collectDatas == null)
+        {
+            _playerJsonData.collectDatas = new Dictionary<string, int>();
+            for (int i = 0; i < _worldsDatabase.worldList.Count; i++)
+                _playerJsonData.collectDatas.Add(_worldsDatabase.worldList[i].worldName, 0);
+        }
         _playerInventory = GetComponent<PlayerInventory>();
         _playerInventory.LoadInventory();
     }
@@ -112,9 +151,16 @@ public class Player : MonoBehaviour
     public void SaveJsonData()
     {
         string path = Application.dataPath + "/Save/JsonData.json";
-        string json = JsonUtility.ToJson(_playerJsonData);
+        string json = Newtonsoft.Json.JsonConvert.SerializeObject(_playerJsonData);
         File.WriteAllText(path, json);
         _playerInventory.SaveInventory();
+
+#if UNITY_EDITOR
+        string debugString = "";
+        foreach (var a in _playerJsonData.collectDatas)
+            debugString += a.Key + "   " + a.Value + " ";
+        Debug.Log("¼öÁýÇ° " + debugString);
+#endif
     }
 
     public void EnableReset()
