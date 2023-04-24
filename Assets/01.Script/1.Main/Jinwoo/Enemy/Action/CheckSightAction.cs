@@ -49,7 +49,7 @@ public class CheckSightAction : ActionNode
     {
         RaycastHit hit;
 
-        Vector3 direction = target.position - context.enemyAI.eyeTransform.position;
+        Vector3 direction = context.enemyAI.eyeTransform.forward;
 
         //direction.y = context.enemyAI.eyeTransform.forward.y;
 
