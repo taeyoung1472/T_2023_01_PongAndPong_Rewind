@@ -24,44 +24,17 @@ public class AnimationIK : MonoBehaviour
     float footLWeight;
     float footRWeight;
 
+    private bool _rotationLock = false;
+    public bool RotationLock { get => _rotationLock; set => _rotationLock = value; }
+
     private void OnAnimatorIK(int layerIndex)
     {
-        if(lookTrm)
-        {
-            animator.SetLookAtPosition(lookTrm.position);
-            animator.SetLookAtWeight(lookWeight);
-        }
-        if (handL)
-        {
-            animator.SetIKPosition(AvatarIKGoal.LeftHand, handL.position);
-            animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, handLWeight);
-            animator.SetIKRotation(AvatarIKGoal.LeftHand, handL.rotation);
-            animator.SetIKRotationWeight(AvatarIKGoal.LeftHand, handLWeight);
-        }
+        IKSet();
+    }
 
-        if (handR)
-        {
-            animator.SetIKPosition(AvatarIKGoal.RightHand, handR.position);
-            animator.SetIKPositionWeight(AvatarIKGoal.RightHand, handRWeight);
-            animator.SetIKRotation(AvatarIKGoal.RightHand, handR.rotation);
-            animator.SetIKRotationWeight(AvatarIKGoal.RightHand, handRWeight);
-        }
-
-        if (footL)
-        {
-            animator.SetIKPosition(AvatarIKGoal.LeftFoot, footL.position);
-            animator.SetIKPositionWeight(AvatarIKGoal.LeftFoot, footLWeight);
-            animator.SetIKRotation(AvatarIKGoal.LeftFoot, footL.rotation);
-            animator.SetIKRotationWeight(AvatarIKGoal.LeftFoot, footLWeight);
-        }
-
-        if (footR)
-        {
-            animator.SetIKPosition(AvatarIKGoal.RightFoot, footR.position);
-            animator.SetIKPositionWeight(AvatarIKGoal.RightFoot, footRWeight);
-            animator.SetIKRotation(AvatarIKGoal.RightFoot, footR.rotation);
-            animator.SetIKRotationWeight(AvatarIKGoal.RightFoot, footRWeight);
-        }
+    public void IKUpdate()
+    {
+        IKSet();
     }
 
     public void SetIKWeightZero()
@@ -80,5 +53,60 @@ public class AnimationIK : MonoBehaviour
         handRWeight = 1;
         footLWeight = 1;
         footRWeight = 1;
+    }
+
+    private void IKSet()
+    {
+        if (lookTrm)
+        {
+            animator.SetLookAtPosition(lookTrm.position);
+            animator.SetLookAtWeight(lookWeight);
+        }
+        if (handL)
+        {
+            animator.SetIKPosition(AvatarIKGoal.LeftHand, handL.position);
+            animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, handLWeight);
+            if (_rotationLock == false)
+            {
+                animator.SetIKRotation(AvatarIKGoal.LeftHand, handL.rotation);
+                animator.SetIKRotationWeight(AvatarIKGoal.LeftHand, handLWeight);
+            }
+        }
+
+        if (handR)
+        {
+            if (_rotationLock == false)
+            {
+                animator.SetIKRotation(AvatarIKGoal.RightHand, handR.rotation);
+                animator.SetIKRotationWeight(AvatarIKGoal.RightHand, handRWeight);
+            }
+
+            animator.SetIKPosition(AvatarIKGoal.RightHand, handR.position);
+            animator.SetIKPositionWeight(AvatarIKGoal.RightHand, handRWeight);
+        }
+
+        if (footL)
+        {
+
+            if (_rotationLock == false)
+            {
+                animator.SetIKRotation(AvatarIKGoal.LeftFoot, footL.rotation);
+                animator.SetIKRotationWeight(AvatarIKGoal.LeftFoot, footLWeight);
+            }
+            animator.SetIKPosition(AvatarIKGoal.LeftFoot, footL.position);
+            animator.SetIKPositionWeight(AvatarIKGoal.LeftFoot, footLWeight);
+        }
+
+        if (footR)
+        {
+
+            if (_rotationLock == false)
+            {
+                animator.SetIKRotation(AvatarIKGoal.RightFoot, footR.rotation);
+                animator.SetIKRotationWeight(AvatarIKGoal.RightFoot, footRWeight);
+            }
+            animator.SetIKPosition(AvatarIKGoal.RightFoot, footR.position);
+            animator.SetIKPositionWeight(AvatarIKGoal.RightFoot, footRWeight);
+        }
     }
 }
