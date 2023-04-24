@@ -26,6 +26,8 @@ public class PlayerAttack : PlayerAction
 
     private bool _delayLock = false;
 
+    private Transform _mousePositionTrm = null;
+
     public void Attack()
     {
         if (_locked || _delayLock || _player.PlayerActionCheck(PlayerActionType.Dash, PlayerActionType.ObjectPush, PlayerActionType.WallGrab))
@@ -64,7 +66,16 @@ public class PlayerAttack : PlayerAction
         Bullet bullet = PoolManager.Pop(PoolType.PlayerBullet).GetComponent<Bullet>();
         bullet.GetComponent<Bullet>().Init(playerPos, rot, _player.playerAttackSO.bulletSpeed, _player.playerAttackSO.rangeAttackPower);
         OnRangeAttack?.Invoke();
-
+        _player.PlayerRenderer.Flip(target - _player.transform.position);
+        if (_mousePositionTrm == null)
+        {
+            _mousePositionTrm = new GameObject("MousePositionTrm").transform;
+        }
+        _mousePositionTrm.position = target;
+        _player.animationIK.LookTrm = _mousePositionTrm;
+        _player.animationIK.HandL = _mousePositionTrm;
+        _player.animationIK.HandR = _mousePositionTrm;
+        _player.animationIK.SetIKWeightOne();
         //AttackCollider.Create(0, _player.gameObject, bullet.transform, Vector3.zero, 0.5f, null, true, null);
     }
 

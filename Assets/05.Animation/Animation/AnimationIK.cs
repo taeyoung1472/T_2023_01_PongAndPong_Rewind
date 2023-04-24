@@ -6,11 +6,19 @@ public class AnimationIK : MonoBehaviour
 {
     [SerializeField] private Animator animator;
 
+    [SerializeField] private Transform lookTrm;
     [SerializeField] private Transform handL;
     [SerializeField] private Transform handR;
     [SerializeField] private Transform footL;
     [SerializeField] private Transform footR;
 
+    public Transform LookTrm { get => lookTrm; set => lookTrm = value; }
+    public Transform HandL { get => handL; set => handL = value; }
+    public Transform HandR { get => handR; set => handR = value; }
+    public Transform FootL { get => footL; set => footL = value; }
+    public Transform FootR { get => footR; set => footR = value; }
+
+    float lookWeight = 1f;
     float handLWeight;
     float handRWeight;
     float footLWeight;
@@ -18,6 +26,11 @@ public class AnimationIK : MonoBehaviour
 
     private void OnAnimatorIK(int layerIndex)
     {
+        if(lookTrm)
+        {
+            animator.SetLookAtPosition(lookTrm.position);
+            animator.SetLookAtWeight(lookWeight);
+        }
         if (handL)
         {
             animator.SetIKPosition(AvatarIKGoal.LeftHand, handL.position);
@@ -53,14 +66,16 @@ public class AnimationIK : MonoBehaviour
 
     public void SetIKWeightZero()
     {
+        lookWeight = 0;
         handLWeight = 0;
         handRWeight = 0;
         footLWeight = 0;
         footRWeight = 0;
     }
 
-    public void SetIKWeightOne() 
+    public void SetIKWeightOne()
     {
+        lookWeight = 1;
         handLWeight = 1;
         handRWeight = 1;
         footLWeight = 1;
