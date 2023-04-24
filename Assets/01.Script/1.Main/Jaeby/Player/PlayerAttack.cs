@@ -48,7 +48,7 @@ public class PlayerAttack : PlayerAction
         OnMeleeAttack?.Invoke(_attackIndex);
         player.playerAudio.AttackAudio();
 
-        AttackCollider.Create(0, ColliderOwnerType.Player, null, _player.transform.position + _player.PlayerRenderer.Forward, 0.9f, null, false, null);
+        AttackCollider.Create(0, ColliderOwnerType.Player, null, _player.transform.position + _player.PlayerRenderer.Forward, 0.9f, 0.5f, false, null);
     }
 
     private void RangeAttack()

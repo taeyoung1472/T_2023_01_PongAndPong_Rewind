@@ -22,11 +22,12 @@ public class AttackCollider : PoolAbleObject
     /// <summary>
     /// 어택 콜라이더 생성
     /// </summary>
+    /// <param name="레이어 마스크"></param>
     /// <param name="생성하는 오브젝트"></param>
+    /// <param name="부모 트랜스폼"></param>
     /// <param name="포지션"></param>
     /// <param name="콜라이더 반지름"></param>
     /// <param name="지속시간"></param>
-    /// <param name="부모 트랜스폼"></param>
     /// <param name="한 번만 터치하면 끝인가요?"></param>
     /// <param name="이벤트"></param>
     public static void Create(LayerMask mask, ColliderOwnerType ownerType, Transform parent, Vector3 pos, float radius, float? lifeTime, bool onceTouch, Action<Collider> CallbackAction)
