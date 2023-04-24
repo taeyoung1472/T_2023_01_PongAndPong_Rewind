@@ -11,7 +11,6 @@ public class SlowGimmick : GimmickObject
     [SerializeField] private float slowSpeed = 0.5f;
 
     public bool isCheck = false;
-    Player player =  null;
 
     RaycastHit hit;
     public override void Awake()
