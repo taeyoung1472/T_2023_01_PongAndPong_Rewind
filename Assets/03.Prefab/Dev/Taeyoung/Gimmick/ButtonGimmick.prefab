@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5097872224309720769}
   - component: {fileID: 5097872224309720774}
   - component: {fileID: 5097872224309720775}
+  - component: {fileID: 7057342934287687677}
   m_Layer: 0
   m_Name: ButtonGimmick
   m_TagString: Untagged
@@ -63,10 +64,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c9942b2d7a895547ba3e24a5da09b3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isTogle: 0
+  isRewind: 0
   controlDataArr: []
   visualLinkPrefab: {fileID: 890039849475592693, guid: 8edd75bc3b5461546a8b5eea6b19a0d0, type: 3}
   color: {r: 1, g: 1, b: 1, a: 1}
+  isToggle: 0
+  toggleTime: 0
+  origntToggleTime: 0
+  toggleing: 0
+--- !u!95 &7057342934287687677
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5097872224309720768}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c9963e4046f3492408c4a19c167ca4b4, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
 --- !u!1 &5097872224346056638
 GameObject:
   m_ObjectHideFlags: 0

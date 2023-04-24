@@ -27,6 +27,14 @@ public class LeverInteract : Interact
     {
         _player.PlayerInput.enabled = true;
 
+        foreach (var control in controlDataArr)
+        {
+            if (control.target.isLocked)
+            {
+                return;
+            }
+        }
+
         LeverAnimation(isPush);
         LeverPullAction();
     }
@@ -51,13 +59,7 @@ public class LeverInteract : Interact
         if (_animator == null)
             _animator = GetComponent<Animator>();
 
-        foreach (var control in controlDataArr)
-        {
-            if (control.target.isLocked)
-            {
-                return;
-            }
-        }
+      
 
         if (pull)
         {
