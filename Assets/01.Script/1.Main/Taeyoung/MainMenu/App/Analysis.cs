@@ -2,6 +2,7 @@ using DG.Tweening;
 using Shapes;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using static Define;
@@ -33,7 +34,7 @@ public class Analysis : MonoBehaviour
     [SerializeField]
     private float _uiAnimationTime = 1f;
 
-    private GameObject _curCollectObj = null;
+    private List<GameObject> _curCollectObj = new List<GameObject>();
     private Sequence _startingSeq = null;
     private Sequence _countUpSeq = null;
     private Coroutine _percentTextCoroutine = null;
@@ -121,12 +122,24 @@ public class Analysis : MonoBehaviour
         _maxCount = _curData.rewardCount;
         _curCount = player.playerJsonData.collectDatas[_curData.worldName];
 
+        for (int i = 0; i < _curCollectObj.Count; i++)
+            Destroy(_curCollectObj[i]);
+        _curCollectObj.Clear();
+
         if (_curData.collectObject != null)
         {
-            if (_curCollectObj != null)
-                Destroy(_curCollectObj);
-            _curCollectObj = Instantiate(_curData.collectObject, _collectObjParent);
+            float targetPercent = ((float)_curCount / _maxCount) * 100f;
+            int count = (int)(targetPercent / 12.5f);
+            for (int i = 0; i < count; i++)
+            {
+                Vector3 localPos = UnityEngine.Random.insideUnitSphere * 0.1f;
+                localPos.z = 0f;
+                GameObject obj = Instantiate(_curData.collectObject, _collectObjParent);
+                obj.transform.localPosition = localPos;
+                _curCollectObj.Add(obj);
+            }
         }
+
         _collcetObjectNameText.SetText(_curData.collectObjectName);
         _worldNameText.SetText("½ºÅ×ÀÌÁö " + _curData.worldName);
         if (_percentTextCoroutine != null)
@@ -138,15 +151,15 @@ public class Analysis : MonoBehaviour
 
     private IEnumerator PercentTextCoroutine()
     {
-        float tagetPercent = ((float)_curCount / _maxCount) * 100f;
+        float targetPercent = ((float)_curCount / _maxCount) * 100f;
         float time = 0f;
         while (time <= 1f)
         {
-            _collectingPercentText.SetText($"ÁøÇà·ü\n{(tagetPercent * time).ToString("N0")}%");
+            _collectingPercentText.SetText($"ÁøÇà·ü\n{(targetPercent * time).ToString("N0")}%");
             time += Time.deltaTime * (1 / _uiAnimationTime);
             yield return null;
         }
-        _collectingPercentText.SetText($"ÁøÇà·ü\n{(tagetPercent).ToString("N0")}%");
+        _collectingPercentText.SetText($"ÁøÇà·ü\n{(targetPercent).ToString("N0")}%");
     }
 
     private void UIAnimation()
