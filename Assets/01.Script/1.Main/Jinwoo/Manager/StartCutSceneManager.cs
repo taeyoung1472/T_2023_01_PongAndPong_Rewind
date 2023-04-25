@@ -32,7 +32,7 @@ public class StartCutSceneManager : MonoBehaviour
     {
         curCool = 0; 
         isStartCutScene = false;
-        textAnim.SetTextSpeed(0.15f);
+        textAnim.SetTextSpeed(0.1f);
         firsttext.SetText("");
         explaintext.SetText("");
 
