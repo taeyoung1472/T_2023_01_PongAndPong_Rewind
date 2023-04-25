@@ -8,6 +8,15 @@ public class WeightButtonGimmick : MonoBehaviour
     [SerializeField] private float weight;
     private BoxCollider _col;
     [SerializeField] private float distance = 0.1f;
+
+    public enum ColiderState 
+    {
+        Box,
+            Capsule,
+            Sphere,
+    }
+    public ColiderState coliderState;
+    
     void Start()
     {
         _col = GetComponentInChildren<BoxCollider>();
@@ -15,7 +24,7 @@ public class WeightButtonGimmick : MonoBehaviour
 
     void Update()
     {
-        
+
     }
 
     private void FixedUpdate()
@@ -23,28 +32,64 @@ public class WeightButtonGimmick : MonoBehaviour
         Vector3 halfExtents = _col.bounds.extents;
         Vector3 boxCenter = _col.bounds.center;
         RaycastHit[] hits = Physics.BoxCastAll(boxCenter, halfExtents, transform.up, Quaternion.identity, distance);
-        Debug.Log(hits.Length);
-        Debug.Log(hits[0].collider.name);
-        if (hits.Length <= 0)
-        {
-            return;
-        }
-        else
+        if (hits.Length >= 1)
         {
             Debug.Log("Sdhishasf");
             weight = 0;
+            queue.Clear();
             foreach (RaycastHit hit in hits)
             {
                 Debug.Log(hit.collider.name);
                 if (hit.transform.TryGetComponent<ObjWeight>(out ObjWeight objWeight))
                 {
                     this.weight += objWeight.so.weight;
-                    Debug.Log("Sex");
                     queue.Enqueue(hit.collider);
                 }
             }
-            while(queue.Count >= 0)
+            Debug.Log(queue.Count);
+            while (queue.Count > 0)
             {
+                Collider colPop = queue.Dequeue();
+                if (colPop is BoxCollider)
+                {
+                    coliderState = ColiderState.Box;
+                }
+                else if (colPop is CapsuleCollider)
+                {
+                    coliderState = ColiderState.Capsule;
+                }
+                else if (colPop is SphereCollider)
+                {
+                    coliderState = ColiderState.Sphere;
+                }
+
+                RaycastHit[] boxHits = Physics.BoxCastAll(colPop.bounds.extents, colPop.bounds.center, transform.up, Quaternion.identity, distance);
+
+                //switch (coliderState)
+                //{
+                //    case ColiderState.Box:
+                //        if (boxHits.Length >= 1)
+                //        {
+                //            foreach (var hit in boxHits)
+                //            {
+                //                if (hit.transform.TryGetComponent<ObjWeight>(out ObjWeight objWeight))
+                //                {
+                //                    Debug.Log("이제ㅐ엽예{외사항그만찾아시발련아");
+                //                    this.weight += objWeight.so.weight;
+                //                    queue.Enqueue(hit.collider);
+                //                }
+                //            }
+                //        }
+                //        break;
+                //    case ColiderState.Capsule:
+                //        RaycastHit[] capsuleHits = Physics.BoxCastAll(colPop.bounds.extents, colPop.bounds.center, transform.up, Quaternion.identity, distance);
+                //        break;
+                //    case ColiderState.Sphere:
+                //        RaycastHit[] sphereHits = Physics.BoxCastAll(colPop.bounds.extents, colPop.bounds.center, transform.up, Quaternion.identity, distance);
+                //        break;
+             
+                // }
+                Debug.Log("시발ㄴ모이 큐");
             }
         }
     }
