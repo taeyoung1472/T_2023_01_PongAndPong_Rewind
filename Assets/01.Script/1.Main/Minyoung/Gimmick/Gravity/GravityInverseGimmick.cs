@@ -6,7 +6,6 @@ public class GravityInverseGimmick : GimmickObject
     public override void Init()
     {
     }
-    Player player = null;
 
     public DirectionType gravityDirState;
 
