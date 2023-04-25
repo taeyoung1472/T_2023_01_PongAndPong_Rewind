@@ -120,7 +120,7 @@ public class MainMenuManager : MonoSingleTon<MainMenuManager>
         playerInput.enabled = true;
 
         isActive = false;
-        playerAnimator.SetLayerWeight(2, 0);
+        //playerAnimator.SetLayerWeight(2, 0);
         playerAnimator.GetComponent<AnimationIK>().SetIKWeightZero();
         playerAnimator.SetBool("IsHolding", false);
         WindowClose();
@@ -138,7 +138,7 @@ public class MainMenuManager : MonoSingleTon<MainMenuManager>
         playerInput.enabled = false;
 
         isActive = true;
-        playerAnimator.SetLayerWeight(2, 1);
+        //playerAnimator.SetLayerWeight(2, 1);
         playerAnimator.GetComponent<AnimationIK>().SetIKWeightOne();
         playerAnimator.SetBool("IsHolding", true);
 

@@ -35,6 +35,6 @@ public class GimmickDoor : ControlAbleObjcet
                 break;
         }
 
-        transform.position = Vector3.Lerp(transform.position, targetPos, Time.deltaTime * speed);
+        transform.localPosition = Vector3.Lerp(transform.localPosition, targetPos, Time.deltaTime * speed) ;
     }
 }

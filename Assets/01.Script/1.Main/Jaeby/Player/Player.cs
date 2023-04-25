@@ -34,6 +34,7 @@ public class Player : MonoBehaviour
     private PlayerBuff _playerBuff = null;
     private PlayerHP _playerHP = null;
     private CapsuleCollider _col = null;
+    private AnimationIK _animationIK = null;
     #endregion
 
     #region 프로퍼티
@@ -50,6 +51,7 @@ public class Player : MonoBehaviour
     public PlayerBuff playerBuff => _playerBuff;
     public PlayerHP playerHP => _playerHP;
     public CapsuleCollider Col => _col;
+    public AnimationIK animationIK => _animationIK;
     #endregion
 
     #region Json 저장 데이터
@@ -98,6 +100,7 @@ public class Player : MonoBehaviour
         _playerTrail = GetComponent<TrailableObject>();
         _playerAudio = transform.Find("AgentSound").GetComponent<PlayerAudio>();
         _col = GetComponent<CapsuleCollider>();
+        _animationIK = _playerRenderer.GetComponent<AnimationIK>();
     }
 
     private void Update()
