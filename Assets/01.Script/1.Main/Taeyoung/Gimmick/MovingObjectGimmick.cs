@@ -7,6 +7,7 @@ public class MovingObjectGimmick : ControlAbleObjcet
 {
     [SerializeField] private Vector3 moveDir;
     [SerializeField] private float moveSpeed;
+    [SerializeField] private Vector3 rotateDir;
     private bool isMoving;
 
     public void Awake()
@@ -29,6 +30,7 @@ public class MovingObjectGimmick : ControlAbleObjcet
         if (isMoving)
         {
             transform.position += moveDir.normalized * moveSpeed * Time.deltaTime;
+            transform.Rotate(rotateDir * Time.deltaTime);
         }
     }
 }
