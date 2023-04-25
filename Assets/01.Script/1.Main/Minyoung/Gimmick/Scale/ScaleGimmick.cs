@@ -46,7 +46,7 @@ public class ScaleGimmick : GimmickObject
         float leftLength;
         float rightLength = 0;
          left = CalculLeftWeight();
-        //right = CalculRightWeight();
+        right = CalculRightWeight();
 
         if ((left == 0 && right == 0) || left == right)
         {
