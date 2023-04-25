@@ -15,6 +15,9 @@ public class PlayerAnimation : MonoBehaviour
 
     private Player _player = null;
 
+    private bool _moveFlipLock = false;
+    public bool MoveFlipLock { get => _moveFlipLock; set => _moveFlipLock = value; }
+
     private void Awake()
     {
         _player = GetComponentInParent<Player>();
@@ -24,7 +27,8 @@ public class PlayerAnimation : MonoBehaviour
     public void MoveAnimation(Vector2 input)
     {
         _animator.SetBool("Move", Mathf.Abs(input.x) > 0f);
-        _player.PlayerRenderer.Flip(input);
+        if(_moveFlipLock == false)
+            _player.PlayerRenderer.Flip(input);
     }
 
     public void SlideAnimation()
