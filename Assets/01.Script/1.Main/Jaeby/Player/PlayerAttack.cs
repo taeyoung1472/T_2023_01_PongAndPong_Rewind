@@ -128,7 +128,7 @@ public class PlayerAttack : PlayerAction, IPlayerResetable
 
     private void LateUpdate()
     {
-        if (_excuting == false || _shooting == false || _observerStarting == false)
+        if (_observerStarting == false)
             return;
         Vector3 mousePos = Input.mousePosition;
         mousePos.z = (_player.transform.position - Cam.transform.position).z;
@@ -174,7 +174,6 @@ public class PlayerAttack : PlayerAction, IPlayerResetable
 
     private IEnumerator EndIkCoroutine()
     {
-        Debug.Log("¹«½¼ ÀÏÀÓ?");
         float time = 1f;
         while (time >= 0f)
         {
@@ -186,11 +185,24 @@ public class PlayerAttack : PlayerAction, IPlayerResetable
         _player.animationIK.RotationLock = false;
     }
 
+    public void WeaponSwitching(AttackState state, bool force)
+    {
+        if (force)
+            _switchingable = true;
+
+        if (state == AttackState.Melee)
+            _attackState = AttackState.Range;
+        else
+            _attackState = AttackState.Melee;
+        WeaponSwitching();
+    }
+
     public void WeaponSwitching()
     {
         if (_switchingable == false)
             return;
 
+        ActionExit();
         _attackState = _attackState == AttackState.Melee ? AttackState.Range : AttackState.Melee;
         if (_attackState == AttackState.Range)
         {
@@ -258,8 +270,7 @@ public class PlayerAttack : PlayerAction, IPlayerResetable
     public void EnableReset()
     {
         _pistolObj.SetActive(false);
-        _attackState = AttackState.Range;
-        WeaponSwitching();
+        WeaponSwitching(AttackState.Melee, true);
     }
 
     public void DisableReset()
