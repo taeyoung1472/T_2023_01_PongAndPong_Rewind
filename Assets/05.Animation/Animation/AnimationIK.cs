@@ -6,6 +6,9 @@ public class AnimationIK : MonoBehaviour
 {
     [SerializeField] private Animator animator;
 
+    [SerializeField] private Transform tabletHandL;
+    [SerializeField] private Transform tabletHandR;
+
     [SerializeField] private Transform lookTrm;
     [SerializeField] private Transform handL;
     [SerializeField] private Transform handR;
@@ -35,6 +38,30 @@ public class AnimationIK : MonoBehaviour
     public void IKUpdate()
     {
         IKSet();
+    }
+
+    public void TabletSetStart()
+    {
+        HandL = tabletHandL;
+        HandR = tabletHandR;
+        RotationLock = false;
+        SetIKWeightOne();
+    }
+
+    public void TabletSetEnd()
+    {
+        HandL = null;
+        HandR = null;
+        SetIKWeightZero();
+    }
+
+    public void SetIKWeight(float weight)
+    {
+        lookWeight = weight;
+        handLWeight = weight;
+        handRWeight = weight;
+        footLWeight = weight;
+        footRWeight = weight;
     }
 
     public void SetIKWeightZero()

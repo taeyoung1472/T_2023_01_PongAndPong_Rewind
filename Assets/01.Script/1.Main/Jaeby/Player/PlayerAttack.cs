@@ -28,12 +28,17 @@ public class PlayerAttack : PlayerAction
     #region 원거리 공격
     [SerializeField]
     private Transform _shootingPointTrm = null;
-    [SerializeField]
     private Coroutine _flipLockCo = null;
+    private Coroutine _iKEndAnimationCoroutine = null;
+    [SerializeField]
     private float _flipLockTime = 0.4f;
+    [SerializeField]
+    private float _ikEndAnimationTime = 0.3f;
     private Transform _mousePositionTrm = null;
-    private bool _iKFliped = false;
     private bool _shooting = false;
+    [SerializeField]
+    private float _ikCancelMaxAngle = 30f;
+    private bool _observerStarting = false;
     #endregion
 
     public void Attack()
@@ -67,6 +72,9 @@ public class PlayerAttack : PlayerAction
     private void RangeAttack()
     {
         _shooting = true;
+        _observerStarting = false;
+        if (_iKEndAnimationCoroutine != null)
+            StopCoroutine(_iKEndAnimationCoroutine);
         StartCoroutine(RangeAttackCoroutine());
     }
 
@@ -86,7 +94,6 @@ public class PlayerAttack : PlayerAction
         _player.animationIK.HandR = _mousePositionTrm;
         _player.animationIK.RotationLock = true;
         _player.animationIK.SetIKWeightOne();
-        _iKFliped = _player.PlayerRenderer.Fliped;
 
         yield return new WaitForEndOfFrame();
 
@@ -94,47 +101,81 @@ public class PlayerAttack : PlayerAction
         float angle = Mathf.Atan2(distance.y, distance.x) * Mathf.Rad2Deg;
         Quaternion rot = Quaternion.AngleAxis(angle, Vector3.forward);
 
-        if (_flipLockCo != null)
-            StopCoroutine(_flipLockCo);
-        _flipLockCo = StartCoroutine(FlipLockCoroutine());
+        if (AngleCheck())
+        {
+            EndIK();
+        }
+        else
+        {
+            if (_flipLockCo != null)
+                StopCoroutine(_flipLockCo);
+            _flipLockCo = StartCoroutine(FlipLockCoroutine());
+            _observerStarting = true;
+        }
+
         Bullet bullet = PoolManager.Pop(PoolType.PlayerBullet).GetComponent<Bullet>();
         bullet.GetComponent<Bullet>().Init(_shootingPointTrm.position, rot, _player.playerAttackSO.bulletSpeed, _player.playerAttackSO.rangeAttackPower);
         OnRangeAttack?.Invoke();
     }
 
-    private void Update()
+    private void LateUpdate()
     {
-        if (_excuting == false || _shooting == false)
+        if (_excuting == false || _shooting == false || _observerStarting == false)
             return;
-
         Vector3 mousePos = Input.mousePosition;
         mousePos.z = (_player.transform.position - Cam.transform.position).z;
         Vector3 target = Camera.main.ScreenToWorldPoint(mousePos);
         _mousePositionTrm.position = new Vector3(target.x, target.y, _player.transform.position.z);
-        _player.PlayerRenderer.Flip(target - _player.transform.position);
-
-        /*bool fliped = _mousePositionTrm.position.x < _player.transform.position.x; // flip -> 왼쪽
-        if (_iKFliped != fliped)
+        if (AngleCheck())
         {
-            Debug.Log("원거리 IK 해제");
-            if (_flipLockCo != null)
-                StopCoroutine(_flipLockCo);
-            _player.animationIK.SetIKWeightZero();
-            _player.animationIK.RotationLock = false;
-            _player.PlayerAnimation.MoveFlipLock = false;
-            _shooting = false;
-            _excuting = false;
-        }*/
+            _observerStarting = false;
+            EndIK();
+        }
+        _player.PlayerRenderer.Flip(target - _player.transform.position);
+    }
+
+    private bool AngleCheck()
+    {
+        float angle = Vector2.Angle((Vector2)(_mousePositionTrm.position - _player.transform.position), (Vector2)_player.transform.up);
+        if (angle < _ikCancelMaxAngle || angle > (180 - _ikCancelMaxAngle))
+        {
+            return true;
+        }
+        return false;
     }
 
     private IEnumerator FlipLockCoroutine()
     {
         yield return new WaitForSeconds(_flipLockTime);
-        _player.animationIK.SetIKWeightZero();
+        EndIK();
+    }
+
+    private void EndIK()
+    {
+        if (_flipLockCo != null)
+            StopCoroutine(_flipLockCo);
+        if (_iKEndAnimationCoroutine != null)
+            StopCoroutine(_iKEndAnimationCoroutine);
+        _iKEndAnimationCoroutine = StartCoroutine(EndIkCoroutine());
+
         _player.animationIK.RotationLock = false;
         _player.PlayerAnimation.MoveFlipLock = false;
         _shooting = false;
         _excuting = false;
+        _observerStarting = false;
+    }
+
+    private IEnumerator EndIkCoroutine()
+    {
+        Debug.Log("무슨 일임?");
+        float time = 1f;
+        while (time >= 0f)
+        {
+            _player.animationIK.SetIKWeight(time);
+            time -= Time.deltaTime * (1 / _ikEndAnimationTime);
+            yield return null;
+        }
+        _player.animationIK.SetIKWeightZero();
     }
 
     public void WeaponSwitching()
@@ -184,10 +225,15 @@ public class PlayerAttack : PlayerAction
             StopCoroutine(_switchingCo);
         if (_attackDelayCo != null)
             StopCoroutine(_attackDelayCo);
+        if (_iKEndAnimationCoroutine != null)
+            StopCoroutine(_iKEndAnimationCoroutine);
+        if (_flipLockCo != null)
+            StopCoroutine(_flipLockCo);
         _switchingable = true;
         _delayLock = false;
         _excuting = false;
         _shooting = false;
+        _observerStarting = false;
         _player.animationIK.SetIKWeightZero();
         _player.animationIK.RotationLock = false;
         _player.PlayerAnimation.MoveFlipLock = false;

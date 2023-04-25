@@ -121,7 +121,7 @@ public class MainMenuManager : MonoSingleTon<MainMenuManager>
 
         isActive = false;
         //playerAnimator.SetLayerWeight(2, 0);
-        playerAnimator.GetComponent<AnimationIK>().SetIKWeightZero();
+        playerAnimator.GetComponent<AnimationIK>().TabletSetEnd();
         playerAnimator.SetBool("IsHolding", false);
         WindowClose();
 
@@ -139,7 +139,7 @@ public class MainMenuManager : MonoSingleTon<MainMenuManager>
 
         isActive = true;
         //playerAnimator.SetLayerWeight(2, 1);
-        playerAnimator.GetComponent<AnimationIK>().SetIKWeightOne();
+        playerAnimator.GetComponent<AnimationIK>().TabletSetStart();
         playerAnimator.SetBool("IsHolding", true);
 
         this.Invoke(() => tabletAnimator.SetBool("IsOpen", true), 0.5f);
