@@ -103,22 +103,6 @@ public class Player : MonoBehaviour
         _animationIK = _playerRenderer.GetComponent<AnimationIK>();
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            WorldCollectionsCountSet(_worldsDatabase.worldList[0], Random.Range(0, 9));
-        }
-        if (Input.GetKeyDown(KeyCode.Y))
-        {
-            WorldCollectionsCountSet(_worldsDatabase.worldList[1], Random.Range(0, 9));
-        }
-        if (Input.GetKeyDown(KeyCode.U))
-        {
-            WorldCollectionsCountSet(_worldsDatabase.worldList[2], Random.Range(0, 9));
-        }
-    }
-
     public void WorldCollectionsCountSet(WorldType key, int value)
     {
         WorldCollectionsCountSet(_worldsDatabase.GetWorldData(key), value);

@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 using static Define;
 using static UnityEngine.Rendering.DebugUI.Table;
 
-public class PlayerAttack : PlayerAction
+public class PlayerAttack : PlayerAction, IPlayerResetable
 {
     [SerializeField]
     private UnityEvent<int> OnMeleeAttack = null;
@@ -27,6 +27,8 @@ public class PlayerAttack : PlayerAction
 
     #region 원거리 공격
     [SerializeField]
+    private GameObject _pistolObj = null;
+    [SerializeField]
     private Transform _shootingPointTrm = null;
     private Coroutine _flipLockCo = null;
     private Coroutine _iKEndAnimationCoroutine = null;
@@ -41,9 +43,15 @@ public class PlayerAttack : PlayerAction
     private bool _observerStarting = false;
     #endregion
 
+    private void Start()
+    {
+
+        _pistolObj.SetActive(false);
+    }
+
     public void Attack()
     {
-        if (_locked || _delayLock || _player.PlayerActionCheck(PlayerActionType.Dash, PlayerActionType.ObjectPush, PlayerActionType.WallGrab))
+        if (_locked || _delayLock || _player.PlayerActionCheck(PlayerActionType.ObjectPush, PlayerActionType.WallGrab))
             return;
 
         _excuting = true;
@@ -158,7 +166,6 @@ public class PlayerAttack : PlayerAction
             StopCoroutine(_iKEndAnimationCoroutine);
         _iKEndAnimationCoroutine = StartCoroutine(EndIkCoroutine());
 
-        _player.animationIK.RotationLock = false;
         _player.PlayerAnimation.MoveFlipLock = false;
         _shooting = false;
         _excuting = false;
@@ -176,6 +183,7 @@ public class PlayerAttack : PlayerAction
             yield return null;
         }
         _player.animationIK.SetIKWeightZero();
+        _player.animationIK.RotationLock = false;
     }
 
     public void WeaponSwitching()
@@ -184,6 +192,14 @@ public class PlayerAttack : PlayerAction
             return;
 
         _attackState = _attackState == AttackState.Melee ? AttackState.Range : AttackState.Melee;
+        if (_attackState == AttackState.Range)
+        {
+            _pistolObj.SetActive(true);
+        }
+        else if (_attackState == AttackState.Melee)
+        {
+            _pistolObj.SetActive(false);
+        }
         _attackIndex = -1;
         if (_switchingCo != null)
             StopCoroutine(_switchingCo);
@@ -237,5 +253,17 @@ public class PlayerAttack : PlayerAction
         _player.animationIK.SetIKWeightZero();
         _player.animationIK.RotationLock = false;
         _player.PlayerAnimation.MoveFlipLock = false;
+    }
+
+    public void EnableReset()
+    {
+        _pistolObj.SetActive(false);
+        _attackState = AttackState.Range;
+        WeaponSwitching();
+    }
+
+    public void DisableReset()
+    {
+
     }
 }
