@@ -24,7 +24,6 @@ public class PlayerAttack : PlayerAction, IPlayerResetable
     public bool Switchingable { get => _switchingable; set => _switchingable = value; }
     private Coroutine _switchingCo = null;
     #endregion
-
     #region 원거리 공격
     [SerializeField]
     private GameObject _pistolObj = null;
@@ -72,7 +71,8 @@ public class PlayerAttack : PlayerAction, IPlayerResetable
         // 타격 처리
         _attackIndex = (_attackIndex + 1) % _maxAttackIndex;
         OnMeleeAttack?.Invoke(_attackIndex);
-        player.playerAudio.AttackAudio();
+        _player.playerAudio.AttackAudio();
+
 
         AttackCollider.Create(0, ColliderOwnerType.Player, null, _player.transform.position + _player.PlayerRenderer.Forward, 0.9f, 0.5f, false, null);
     }
