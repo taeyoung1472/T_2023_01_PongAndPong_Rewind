@@ -2,29 +2,82 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WeightButtonGimmick : MonoBehaviour
+public class WeightButtonGimmick : GimmickObject
 {
     public Queue<Collider> queue = new Queue<Collider>();
     [SerializeField] private float weight;
     private BoxCollider _col;
     [SerializeField] private float distance = 0.1f;
 
+    [SerializeField] private float pushableWeight = 20;
+
+    [SerializeField] private ControlData[] controlDataArr;
+    [SerializeField] private GimmickVisualLink visualLinkPrefab;
+    [SerializeField] private Color color = Color.white;
+
     public enum ColiderState 
     {
         Box,
-            Capsule,
-            Sphere,
+        Capsule,
+        Sphere,
     }
     public ColiderState coliderState;
-    
+
+    [ContextMenu("Gen Color")]
+    public void GenColor()
+    {
+        color = Random.ColorHSV();
+    }
     void Start()
     {
         _col = GetComponentInChildren<BoxCollider>();
+
+        if (RewindManager.Instance)
+        {
+            RewindManager.Instance.RestartPlay += () =>
+            {
+                foreach (var control in controlDataArr)
+                {
+                    control.target.isLocked = false;
+                }
+            };
+        }
+        foreach (var data in controlDataArr)
+        {
+            GimmickVisualLink link = Instantiate(visualLinkPrefab);
+            link.Link(transform, data.target.transform, color);
+        }
     }
 
     void Update()
     {
+        if (isRewind)
+        {
+            return;
+        }
 
+        if (pushableWeight < weight)
+        {
+            foreach (var control in controlDataArr)
+            {
+                if (control.isLever)
+                {
+                    control.target.Control(control.isReverse ? ControlType.ReberseControl : ControlType.Control, true, player);
+                }
+                else
+                {
+                    control.target.Control(control.isReverse ? ControlType.ReberseControl : ControlType.Control, false, player);
+                }
+            }
+        }
+        else
+        {
+            foreach (var control in controlDataArr)
+            {
+                control.target.Control(ControlType.None, false, player);
+                CamManager.Instance.RemoveTargetGroup(control.target.transform);
+            }
+        }
     }
 
     private void FixedUpdate()
@@ -108,5 +161,10 @@ public class WeightButtonGimmick : MonoBehaviour
         {
             Gizmos.DrawRay(transform.position, transform.forward * distance);
         }
+    }
+
+    public override void Init()
+    {
+        throw new System.NotImplementedException();
     }
 }
