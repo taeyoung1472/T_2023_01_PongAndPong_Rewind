@@ -172,7 +172,10 @@ public class ButtonGimmick : GimmickObject
         }
         if (other.TryGetComponent<GimmickObject>(out GimmickObject gimmickObject))
         {
+            Debug.Log(gimmickObject);
             isActive = true;
+            toggleing = true;
+            toggleTime = origntToggleTime;
             animator.Play("Push");
         }
     }
