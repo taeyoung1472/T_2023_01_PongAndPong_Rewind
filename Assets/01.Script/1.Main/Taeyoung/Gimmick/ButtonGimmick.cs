@@ -6,6 +6,9 @@ using DG.Tweening;
 public class ButtonGimmick : GimmickObject
 {
     bool isActive = false;
+    bool isActivePlayer = false;
+
+    [SerializeField] private bool onlyObj;
 
     [SerializeField] private ControlData[] controlDataArr;
     [SerializeField] private GimmickVisualLink visualLinkPrefab;
@@ -67,7 +70,6 @@ public class ButtonGimmick : GimmickObject
             return;
         }
 
-
         CheckPlayer();
 
         if (!isToggle)
@@ -95,9 +97,7 @@ public class ButtonGimmick : GimmickObject
                 }
             }
         }
-
-
-        if (toggleing == true && isToggle == true )
+        if (toggleing == true && isToggle == true)
         {
             foreach (var control in controlDataArr)
             {
@@ -116,14 +116,11 @@ public class ButtonGimmick : GimmickObject
             }
             if (toggleTime <= 0.0f)
             {
-                //isActive = false;
                 animator.Play("Idle");
                 foreach (var control in controlDataArr)
                 {
                     control.target.Control(ControlType.None, false, player);
                 }
-                //toggleing = false;
-                //toggleTime = origntToggleTime;
             }
         }
 
@@ -157,8 +154,10 @@ public class ButtonGimmick : GimmickObject
 
     public void OnTriggerEnter(Collider other)
     {
+
         if (other.gameObject.TryGetComponent<Player>(out Player player))
         {
+            isActivePlayer = true;
             toggleing = true;
             toggleTime = origntToggleTime;
 
@@ -170,9 +169,13 @@ public class ButtonGimmick : GimmickObject
                 Debug.Log(player);
             }
         }
+        
         if (other.TryGetComponent<GimmickObject>(out GimmickObject gimmickObject))
         {
+            Debug.Log(gimmickObject);
             isActive = true;
+            toggleing = true;
+            toggleTime = origntToggleTime;
             animator.Play("Push");
         }
     }

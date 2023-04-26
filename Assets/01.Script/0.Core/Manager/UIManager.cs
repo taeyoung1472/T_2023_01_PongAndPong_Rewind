@@ -86,7 +86,10 @@ public class UIManager : MonoSingleTon<UIManager>
     {
         Debug.Log("클릭");
         isPause = false;
-        TimerManager.Instance.ChangeOnTimer(true);
+        if (StageManager.Instance.GetAreaPlayCheck()) //게임 시작 도중이였을 때
+        {
+            TimerManager.Instance.ChangeOnTimer(true);
+        }
         pauseImg.gameObject.SetActive(false);
         Time.timeScale = 1f;
     }

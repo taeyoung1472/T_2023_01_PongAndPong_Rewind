@@ -19,6 +19,9 @@ public class PortalTelepote : GimmickObject
     public List<Transform> telObjList;
     #endregion
     private Collider col;
+
+    [SerializeField] private bool isRight;
+   
     public override void Awake()
     {
         base.Awake();
@@ -41,7 +44,6 @@ public class PortalTelepote : GimmickObject
     public override void InitOnRewind()
     {
         base.InitOnRewind();
-        
     }
     void Update()
     {
@@ -65,7 +67,14 @@ public class PortalTelepote : GimmickObject
                 Debug.Log(diffVec);
                 float offset = trm.GetComponent<Collider>().bounds.size.x;
                 Debug.Log(offset);
-                trm.position = (reciever.position + new Vector3(offset * 1.5f, 0, 0)) - diffVec;
+                if (isRight)
+                {
+                    trm.position = (reciever.position + new Vector3(offset * 2f, 0, 0)) - diffVec;
+                }
+                else
+                {
+                    trm.position = (reciever.position + new Vector3(-offset * 2f, 0, 0)) - diffVec;
+                }
             }
         }
 
@@ -75,12 +84,21 @@ public class PortalTelepote : GimmickObject
         if (playerIsOverlapping)
         {
             Vector3 offset = new Vector3(player.GetComponent<CapsuleCollider>().radius * 2.5f, 0, 0);
+            if (isRight)
+            {
+                playerTrm.position = reciever.position + offset;
+            }
+            else
+            {
+                playerTrm.position = reciever.position + -offset;
+            }
             Debug.Log(offset);
-            playerTrm.position = reciever.position + offset;
             playerIsOverlapping = false;
-            Invoke("DeleteBuff", 0.3f);
+            DeleteBuff();
+            //Invoke("DeleteBuff", 0.1f);
         }
     }
+    
     public void DeleteBuff()
     {
         if (player == null)
