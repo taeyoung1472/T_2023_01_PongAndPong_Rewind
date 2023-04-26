@@ -12,11 +12,6 @@ public class MovePlatform : MonoBehaviour
     [SerializeField]
     private List<Rigidbody> _targetRigids = new List<Rigidbody>();
 
-    private void Update()
-    {
-        transform.Translate(Vector2.up * _speed * Time.deltaTime);
-    }
-
     private void Start()
     {
         _lastPosition = transform.position;
@@ -37,12 +32,25 @@ public class MovePlatform : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        _targetRigids.Add(collision.collider.GetComponent<Rigidbody>());
+        if (_targetRigids.Contains(collision.collider.GetComponent<Rigidbody>()) == false)
+            _targetRigids.Add(collision.collider.GetComponent<Rigidbody>());
     }
 
     private void OnCollisionExit(Collision collision)
     {
-        _targetRigids.Remove(collision.collider.GetComponent<Rigidbody>());
+        if (_targetRigids.Contains(collision.collider.GetComponent<Rigidbody>()))
+            _targetRigids.Remove(collision.collider.GetComponent<Rigidbody>());
     }
 
+    public void RemoveRigid(Rigidbody rigid)
+    {
+        if (_targetRigids.Contains(rigid) == false)
+            _targetRigids.Remove(rigid);
+    }
+
+    public void AddRigid(Rigidbody rigid)
+    {
+        if (_targetRigids.Contains(rigid))
+            _targetRigids.Add(rigid);
+    }
 }
