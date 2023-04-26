@@ -1,18 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using DG.Tweening;
-using System;
-using System.Linq;
 
 public class ScaleGimmick : GimmickObject
 {
-    public Collider leftCol;
-    public Collider rightCol;
+    private Collider leftCol;
+    private Collider rightCol;
     [SerializeField] private float totalLength;
 
-    public Vector3 leftOriginPos;
-    public Vector3 rightOriginPos;
+    private Vector3 leftOriginPos;
+    private Vector3 rightOriginPos;
 
     public override void Init()
     {
@@ -45,7 +40,7 @@ public class ScaleGimmick : GimmickObject
     {
         float leftLength;
         float rightLength = 0;
-         left = CalculLeftWeight();
+        left = CalculLeftWeight();
         right = CalculRightWeight();
 
         if ((left == 0 && right == 0) || left == right)
