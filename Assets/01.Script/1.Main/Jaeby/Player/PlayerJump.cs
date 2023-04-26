@@ -124,7 +124,7 @@ public class PlayerJump : PlayerAction, IPlayerResetable
         OnJump?.Invoke();
         if (_player.PlayerActionCheck(PlayerActionType.WallGrab)) // ¿ùÁ¡ÇÁ!!
         {
-            _player.PlayerActionExit(PlayerActionType.WallGrab);
+            _player.GetPlayerAction<PlayerWallGrab>().WallExit();
             _player.VeloCityResetImm(x: true, y: true);
             _player.PlayerRenderer.ForceFlip();
             Vector2 jumpDir = _player.playerMovementSO.wallJumpPower;
