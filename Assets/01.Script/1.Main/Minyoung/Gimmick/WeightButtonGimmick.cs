@@ -87,19 +87,19 @@ public class WeightButtonGimmick : GimmickObject
         RaycastHit[] hits = Physics.BoxCastAll(boxCenter, halfExtents, transform.up, Quaternion.identity, distance);
         if (hits.Length >= 1)
         {
-            Debug.Log("Sdhishasf");
+            //Debug.Log("Sdhishasf");
             weight = 0;
             queue.Clear();
             foreach (RaycastHit hit in hits)
             {
-                Debug.Log(hit.collider.name);
+                //Debug.Log(hit.collider.name);
                 if (hit.transform.TryGetComponent<ObjWeight>(out ObjWeight objWeight))
                 {
                     this.weight += objWeight.so.weight;
                     queue.Enqueue(hit.collider);
                 }
             }
-            Debug.Log(queue.Count);
+            //Debug.Log(queue.Count);
             while (queue.Count > 0)
             {
                 Collider colPop = queue.Dequeue();
