@@ -304,8 +304,6 @@ public class Player : MonoBehaviour
             halfExtents.y = _groundCheckRayLength;
         }
         _isGrounded = Physics.BoxCast(boxCenter, halfExtents, -transform.up, out _slopeHit, transform.rotation, maxDistance, _groundMask);
-        if (_slopeHit.collider != null)
-            Debug.Log(_slopeHit.collider.gameObject.name);
         if (lastGrounded == _isGrounded)
             return;
         OnIsGrounded?.Invoke(_isGrounded);
