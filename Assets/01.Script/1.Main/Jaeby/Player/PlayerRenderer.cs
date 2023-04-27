@@ -43,7 +43,7 @@ public class PlayerRenderer : MonoBehaviour
         }
     }
 
-    private void Start()
+    private void Awake()
     {
         _player = GetComponentInParent<Player>();
     }

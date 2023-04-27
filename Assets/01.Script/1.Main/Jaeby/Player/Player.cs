@@ -157,6 +157,9 @@ public class Player : MonoBehaviour
             _playerActions[i].ActionExit();
         for (int i = 0; i < _resetables.Count; i++)
             _resetables[i].EnableReset();
+
+        if(_playerRenderer != null)
+            _playerRenderer.flipDirection = DirectionType.Down;
     }
 
     public void DisableReset()
@@ -289,12 +292,27 @@ public class Player : MonoBehaviour
         bool lastGrounded = _isGrounded;
         Vector3 boxCenter = _col.bounds.center;
         Vector3 halfExtents = _col.bounds.extents;
-        halfExtents.y = _groundCheckRayLength;
-        float maxDistance = _col.bounds.extents.y;
+        float maxDistance = 0f;
+        if (_playerRenderer.flipDirection == DirectionType.Left || _playerRenderer.flipDirection == DirectionType.Right)
+        {
+            maxDistance = _col.bounds.extents.x;
+            halfExtents.x = _groundCheckRayLength;
+        }
+        else
+        {
+            maxDistance = _col.bounds.extents.y;
+            halfExtents.y = _groundCheckRayLength;
+        }
         _isGrounded = Physics.BoxCast(boxCenter, halfExtents, -transform.up, out _slopeHit, transform.rotation, maxDistance, _groundMask);
+        if (_slopeHit.collider != null)
+            Debug.Log(_slopeHit.collider.gameObject.name);
         if (lastGrounded == _isGrounded)
             return;
         OnIsGrounded?.Invoke(_isGrounded);
+    }
+
+    private void Update()
+    {
     }
 
     private bool OnSlope()
