@@ -1,12 +1,8 @@
 using System.Collections;
 using UnityEngine;
 
-public class GravityInverseGimmick : GimmickObject
+public class GravityInverseGimmick : ControlAbleObjcet
 {
-    public override void Init()
-    {
-    }
-
     public DirectionType gravityDirState;
 
     [SerializeField]
@@ -17,50 +13,52 @@ public class GravityInverseGimmick : GimmickObject
     [SerializeField]
     private LayerMask _groundMask = 0;
 
+    public Player player;
+
     RaycastHit hit;
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (_locked)
-            return;
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    if (_locked)
+    //        return;
 
-        if (other.CompareTag("Player"))
-        {
-            if (player == null)
-                player = other.GetComponent<Player>();
+    //    if (other.CompareTag("Player"))
+    //    {
+    //        if (player == null)
+    //            player = other.GetComponent<Player>();
 
-            player.GravityModule.GravityScale = _gravityScale;
-            PlayerGravitySet(gravityDirState);
-        }
-        /*if (other.gameObject.TryGetComponent<GravityGimmickObject>
-            (out GravityGimmickObject gravityGimmick))
-        {
-            gravityGimmick.GravityDir = Utility.GetDirToVector(gravityDirState) * 9.8f;
-            gravityGimmick.GravityScale = _gravityScale;
-        }*/
-    }
+    //        player.GravityModule.GravityScale = _gravityScale;
+    //        PlayerGravitySet(gravityDirState);
+    //    }
+    //    /*if (other.gameObject.TryGetComponent<GravityGimmickObject>
+    //        (out GravityGimmickObject gravityGimmick))
+    //    {
+    //        gravityGimmick.GravityDir = Utility.GetDirToVector(gravityDirState) * 9.8f;
+    //        gravityGimmick.GravityScale = _gravityScale;
+    //    }*/
+    //}
 
-    private void OnTriggerExit(Collider other)
-    {
-        if (_locked)
-            return;
+    //private void OnTriggerExit(Collider other)
+    //{
+    //    if (_locked)
+    //        return;
 
-        if (player == null)
-        {
-            return;
-        }
-        player.GravityModule.GravityScale = player.GravityModule.OriginGravityScale;
-        PlayerGravitySet(DirectionType.Down);
-        player = null;
-        //module.GravityScale = module.OriginGravityScale;
+    //    if (player == null)
+    //    {
+    //        return;
+    //    }
+    //    player.GravityModule.GravityScale = player.GravityModule.OriginGravityScale;
+    //    PlayerGravitySet(DirectionType.Down);
+    //    player = null;
+    //    //module.GravityScale = module.OriginGravityScale;
 
-        /*if (other.gameObject.TryGetComponent<GravityGimmickObject>
-                  (out GravityGimmickObject gravityGimmick))
-        {
-            gravityGimmick.GravityDir = Utility.GetDirToVector(FlipDirection.Down) * 9.8f;
-            gravityGimmick.GravityScale = gravityGimmick.OrignGravityScale;
-        }*/
-    }
+    //    /*if (other.gameObject.TryGetComponent<GravityGimmickObject>
+    //              (out GravityGimmickObject gravityGimmick))
+    //    {
+    //        gravityGimmick.GravityDir = Utility.GetDirToVector(FlipDirection.Down) * 9.8f;
+    //        gravityGimmick.GravityScale = gravityGimmick.OrignGravityScale;
+    //    }*/
+    //}
 
     private void PlayerGravitySet(DirectionType direction)
     {
@@ -99,5 +97,27 @@ public class GravityInverseGimmick : GimmickObject
         _locked = true;
         yield return new WaitForSeconds(_coolTime);
         _locked = false;
+    }
+
+    public override void Control(ControlType controlType, bool isLever, Player player, DirectionType dirType)
+    {
+        if (player == null)
+        {
+            player = FindObjectOfType<Player>();
+        }
+        this.player = player;
+        curControlType = controlType;
+
+        switch (controlType)
+        {
+            case ControlType.Control:
+                PlayerGravitySet(dirType);
+                break;
+            case ControlType.None:
+               // PlayerGravitySet(DirectionType.Down);
+                break;
+            case ControlType.ReberseControl:
+                break;
+        }
     }
 }

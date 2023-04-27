@@ -21,6 +21,8 @@ public class ButtonGimmick : GimmickObject
 
     private Animator animator;
 
+    public DirectionType gravitChangeDirState;
+
     [ContextMenu("Gen Color")]
     public void GenColor()
     {
@@ -59,7 +61,7 @@ public class ButtonGimmick : GimmickObject
         toggleTime = origntToggleTime;
         foreach (var control in controlDataArr)
         {
-            control.target.Control(ControlType.None, false, player);
+            control.target.Control(ControlType.None, false, player, gravitChangeDirState);
             CamManager.Instance.RemoveTargetGroup(control.target.transform);
         }
     }
@@ -80,11 +82,11 @@ public class ButtonGimmick : GimmickObject
                 {
                     if (control.isLever)
                     {
-                        control.target.Control(control.isReverse ? ControlType.ReberseControl : ControlType.Control, true, player);
+                        control.target.Control(control.isReverse ? ControlType.ReberseControl : ControlType.Control, true, player, gravitChangeDirState);
                     }
                     else
                     {
-                        control.target.Control(control.isReverse ? ControlType.ReberseControl : ControlType.Control, false, player);
+                        control.target.Control(control.isReverse ? ControlType.ReberseControl : ControlType.Control, false, player, gravitChangeDirState);
                     }
                 }
             }
@@ -92,7 +94,7 @@ public class ButtonGimmick : GimmickObject
             {
                 foreach (var control in controlDataArr)
                 {
-                    control.target.Control(ControlType.None, false, player);
+                    control.target.Control(ControlType.None, false, player, gravitChangeDirState);
                     CamManager.Instance.RemoveTargetGroup(control.target.transform);
                 }
             }
@@ -103,11 +105,11 @@ public class ButtonGimmick : GimmickObject
             {
                 if (control.isLever)
                 {
-                    control.target.Control(control.isReverse ? ControlType.ReberseControl : ControlType.Control, true, player);
+                    control.target.Control(control.isReverse ? ControlType.ReberseControl : ControlType.Control, true, player, gravitChangeDirState);
                 }
                 else
                 {
-                    control.target.Control(control.isReverse ? ControlType.ReberseControl : ControlType.Control, false, player);
+                    control.target.Control(control.isReverse ? ControlType.ReberseControl : ControlType.Control, false, player, gravitChangeDirState);
                 }
             }
             if (isActive == false)
@@ -119,7 +121,7 @@ public class ButtonGimmick : GimmickObject
                 animator.Play("Idle");
                 foreach (var control in controlDataArr)
                 {
-                    control.target.Control(ControlType.None, false, player);
+                    control.target.Control(ControlType.None, false, player, gravitChangeDirState);
                 }
             }
         }

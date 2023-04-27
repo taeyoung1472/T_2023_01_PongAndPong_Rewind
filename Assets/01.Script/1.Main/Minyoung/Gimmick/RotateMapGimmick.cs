@@ -19,7 +19,7 @@ public class RotateMapGimmick : ControlAbleObjcet
     {
         originRotation = rotateTrm.rotation;
     }
-    public override void Control(ControlType controlType, bool isLever, Player player) //버튼이 눌리고있을때 나는 버튼을 눌렀을때가필요한것인가?
+    public override void Control(ControlType controlType, bool isLever, Player player, DirectionType dirType) //버튼이 눌리고있을때 나는 버튼을 눌렀을때가필요한것인가?
     {
         if (isLocked)
             return;

@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 using static Define;
 using static UnityEngine.Rendering.DebugUI.Table;
 
-public class PlayerAttack : PlayerAction
+public class PlayerAttack : PlayerAction, IPlayerResetable
 {
     [SerializeField]
     private UnityEvent<int> OnMeleeAttack = null;
@@ -24,21 +24,33 @@ public class PlayerAttack : PlayerAction
     public bool Switchingable { get => _switchingable; set => _switchingable = value; }
     private Coroutine _switchingCo = null;
     #endregion
-
     #region 원거리 공격
     [SerializeField]
-    private Transform _shootingPointTrm = null;
+    private GameObject _pistolObj = null;
     [SerializeField]
+    private Transform _shootingPointTrm = null;
     private Coroutine _flipLockCo = null;
+    private Coroutine _iKEndAnimationCoroutine = null;
+    [SerializeField]
     private float _flipLockTime = 0.4f;
+    [SerializeField]
+    private float _ikEndAnimationTime = 0.3f;
     private Transform _mousePositionTrm = null;
-    private bool _iKFliped = false;
     private bool _shooting = false;
+    [SerializeField]
+    private float _ikCancelMaxAngle = 30f;
+    private bool _observerStarting = false;
     #endregion
+
+    private void Start()
+    {
+
+        _pistolObj.SetActive(false);
+    }
 
     public void Attack()
     {
-        if (_locked || _delayLock || _player.PlayerActionCheck(PlayerActionType.Dash, PlayerActionType.ObjectPush, PlayerActionType.WallGrab))
+        if (_locked || _delayLock || _player.PlayerActionCheck(PlayerActionType.ObjectPush, PlayerActionType.WallGrab))
             return;
 
         _excuting = true;
@@ -59,7 +71,8 @@ public class PlayerAttack : PlayerAction
         // 타격 처리
         _attackIndex = (_attackIndex + 1) % _maxAttackIndex;
         OnMeleeAttack?.Invoke(_attackIndex);
-        player.playerAudio.AttackAudio();
+        _player.playerAudio.AttackAudio();
+
 
         AttackCollider.Create(0, ColliderOwnerType.Player, null, _player.transform.position + _player.PlayerRenderer.Forward, 0.9f, 0.5f, false, null);
     }
@@ -67,6 +80,9 @@ public class PlayerAttack : PlayerAction
     private void RangeAttack()
     {
         _shooting = true;
+        _observerStarting = false;
+        if (_iKEndAnimationCoroutine != null)
+            StopCoroutine(_iKEndAnimationCoroutine);
         StartCoroutine(RangeAttackCoroutine());
     }
 
@@ -86,7 +102,6 @@ public class PlayerAttack : PlayerAction
         _player.animationIK.HandR = _mousePositionTrm;
         _player.animationIK.RotationLock = true;
         _player.animationIK.SetIKWeightOne();
-        _iKFliped = _player.PlayerRenderer.Fliped;
 
         yield return new WaitForEndOfFrame();
 
@@ -94,47 +109,92 @@ public class PlayerAttack : PlayerAction
         float angle = Mathf.Atan2(distance.y, distance.x) * Mathf.Rad2Deg;
         Quaternion rot = Quaternion.AngleAxis(angle, Vector3.forward);
 
-        if (_flipLockCo != null)
-            StopCoroutine(_flipLockCo);
-        _flipLockCo = StartCoroutine(FlipLockCoroutine());
+        if (AngleCheck())
+        {
+            EndIK();
+        }
+        else
+        {
+            if (_flipLockCo != null)
+                StopCoroutine(_flipLockCo);
+            _flipLockCo = StartCoroutine(FlipLockCoroutine());
+            _observerStarting = true;
+        }
+
         Bullet bullet = PoolManager.Pop(PoolType.PlayerBullet).GetComponent<Bullet>();
         bullet.GetComponent<Bullet>().Init(_shootingPointTrm.position, rot, _player.playerAttackSO.bulletSpeed, _player.playerAttackSO.rangeAttackPower);
         OnRangeAttack?.Invoke();
     }
 
-    private void Update()
+    private void LateUpdate()
     {
-        if (_excuting == false || _shooting == false)
+        if (_observerStarting == false)
             return;
-
         Vector3 mousePos = Input.mousePosition;
         mousePos.z = (_player.transform.position - Cam.transform.position).z;
         Vector3 target = Camera.main.ScreenToWorldPoint(mousePos);
         _mousePositionTrm.position = new Vector3(target.x, target.y, _player.transform.position.z);
-        _player.PlayerRenderer.Flip(target - _player.transform.position);
-
-        /*bool fliped = _mousePositionTrm.position.x < _player.transform.position.x; // flip -> 왼쪽
-        if (_iKFliped != fliped)
+        if (AngleCheck())
         {
-            Debug.Log("원거리 IK 해제");
-            if (_flipLockCo != null)
-                StopCoroutine(_flipLockCo);
-            _player.animationIK.SetIKWeightZero();
-            _player.animationIK.RotationLock = false;
-            _player.PlayerAnimation.MoveFlipLock = false;
-            _shooting = false;
-            _excuting = false;
-        }*/
+            _observerStarting = false;
+            EndIK();
+        }
+        _player.PlayerRenderer.Flip(target - _player.transform.position);
+    }
+
+    private bool AngleCheck()
+    {
+        float angle = Vector2.Angle((Vector2)(_mousePositionTrm.position - _player.transform.position), (Vector2)_player.transform.up);
+        if (angle < _ikCancelMaxAngle || angle > (180 - _ikCancelMaxAngle))
+        {
+            return true;
+        }
+        return false;
     }
 
     private IEnumerator FlipLockCoroutine()
     {
         yield return new WaitForSeconds(_flipLockTime);
-        _player.animationIK.SetIKWeightZero();
-        _player.animationIK.RotationLock = false;
+        EndIK();
+    }
+
+    private void EndIK()
+    {
+        if (_flipLockCo != null)
+            StopCoroutine(_flipLockCo);
+        if (_iKEndAnimationCoroutine != null)
+            StopCoroutine(_iKEndAnimationCoroutine);
+        _iKEndAnimationCoroutine = StartCoroutine(EndIkCoroutine());
+
         _player.PlayerAnimation.MoveFlipLock = false;
         _shooting = false;
         _excuting = false;
+        _observerStarting = false;
+    }
+
+    private IEnumerator EndIkCoroutine()
+    {
+        float time = 1f;
+        while (time >= 0f)
+        {
+            _player.animationIK.SetIKWeight(time);
+            time -= Time.deltaTime * (1 / _ikEndAnimationTime);
+            yield return null;
+        }
+        _player.animationIK.SetIKWeightZero();
+        _player.animationIK.RotationLock = false;
+    }
+
+    public void WeaponSwitching(AttackState state, bool force)
+    {
+        if (force)
+            _switchingable = true;
+
+        if (state == AttackState.Melee)
+            _attackState = AttackState.Range;
+        else
+            _attackState = AttackState.Melee;
+        WeaponSwitching();
     }
 
     public void WeaponSwitching()
@@ -142,7 +202,16 @@ public class PlayerAttack : PlayerAction
         if (_switchingable == false)
             return;
 
+        ActionExit();
         _attackState = _attackState == AttackState.Melee ? AttackState.Range : AttackState.Melee;
+        if (_attackState == AttackState.Range)
+        {
+            _pistolObj.SetActive(true);
+        }
+        else if (_attackState == AttackState.Melee)
+        {
+            _pistolObj.SetActive(false);
+        }
         _attackIndex = -1;
         if (_switchingCo != null)
             StopCoroutine(_switchingCo);
@@ -184,12 +253,28 @@ public class PlayerAttack : PlayerAction
             StopCoroutine(_switchingCo);
         if (_attackDelayCo != null)
             StopCoroutine(_attackDelayCo);
+        if (_iKEndAnimationCoroutine != null)
+            StopCoroutine(_iKEndAnimationCoroutine);
+        if (_flipLockCo != null)
+            StopCoroutine(_flipLockCo);
         _switchingable = true;
         _delayLock = false;
         _excuting = false;
         _shooting = false;
+        _observerStarting = false;
         _player.animationIK.SetIKWeightZero();
         _player.animationIK.RotationLock = false;
         _player.PlayerAnimation.MoveFlipLock = false;
+    }
+
+    public void EnableReset()
+    {
+        _pistolObj.SetActive(false);
+        WeaponSwitching(AttackState.Melee, true);
+    }
+
+    public void DisableReset()
+    {
+
     }
 }
