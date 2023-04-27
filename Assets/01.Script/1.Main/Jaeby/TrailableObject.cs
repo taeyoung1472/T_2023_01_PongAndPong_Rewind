@@ -37,7 +37,7 @@ public class TrailableObject : MonoBehaviour
 
     public void TrailDisable()
     {
-        Debug.Log($"TrailableObejct 제거 : 객체 이름 {gameObject.name}");
+        //Debug.Log($"TrailableObejct 제거 : 객체 이름 {gameObject.name}");
         if (TrailManager.Instance != null)
         {
             TrailParent parent = TrailManager.Instance.GetParent(this);

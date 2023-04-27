@@ -34,7 +34,7 @@ public class StageArea : MonoBehaviour
         StageManager.Instance.SpawnPlayer(defaultPlayerSpawn, true);
 
 
-        Debug.Log("아리아엔트리");
+        //Debug.Log("아리아엔트리");
         if(isGameStart)
             RewindManager.Instance.StartAreaPlay();
     }

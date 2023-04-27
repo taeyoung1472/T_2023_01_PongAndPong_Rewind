@@ -13,6 +13,7 @@ public class FreeLookCamera : MonoBehaviour
     [Range(1f, 10f)]
     public float _rotationSpeed = 5f;
     public bool _wheelAcceleration = true; // 마우스 휠로 이동속도 증가/감소
+    public LayerMask freeviewLayerMask;
 
     [Space]
     public KeyCode _moveLeft = KeyCode.A;
@@ -53,6 +54,8 @@ public class FreeLookCamera : MonoBehaviour
     private Vector3 Origin;
     private Vector3 Difference;
     private Vector3 ResetCamera;
+
+    public LayerMask gameviewLayerMask;
 
     #endregion
 
@@ -192,6 +195,20 @@ public class FreeLookCamera : MonoBehaviour
     /// <summary> 전체 기능 활성화/비활성화 </summary>
     public void Activate(bool state)
     {
+        if(cam == null)                 
+        {
+            cam = Camera.main;
+            gameviewLayerMask = cam.cullingMask;
+        }
+
+        if (state)
+        {
+            cam.cullingMask = gameviewLayerMask | freeviewLayerMask;
+        }
+        else
+        {
+            cam.cullingMask = gameviewLayerMask;
+        }
         _isActivated = state;
     }
 
