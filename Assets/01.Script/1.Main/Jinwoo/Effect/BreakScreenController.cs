@@ -28,7 +28,7 @@ public class BreakScreenController : MonoSingleTon<BreakScreenController>
     {
         yield return new WaitForEndOfFrame();
 
-        Debug.Log("연출 스타또");
+        //Debug.Log("연출 스타또");
         slicesPrefabs.gameObject.SetActive(true);
 
         isBreaking = true;
