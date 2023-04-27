@@ -106,6 +106,7 @@ public class StageManager : MonoSingleTon<StageManager>
     }
     public void OnFreeLookCam(bool isOn)
     {
+        Debug.Log(isOn);
         if (isOn) //자유시점 온
         {
             SetAreaPlay(false);

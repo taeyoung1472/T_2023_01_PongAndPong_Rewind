@@ -16,7 +16,7 @@ public abstract class RewindAbstract : MonoBehaviour
 
     protected virtual void Awake()
     {
-        Debug.Log(transform.position + name + "1");
+        //Debug.Log(transform.position + name + "1");
         Init();
     }
 
@@ -46,7 +46,7 @@ public abstract class RewindAbstract : MonoBehaviour
                 trackedAnimationTimes.Add(new CircularBuffer<AnimationValues>());
         }
         trackedAudioTimes = new CircularBuffer<AudioTrackedData>();
-        Debug.Log(transform.position + name + "2");
+        //Debug.Log(transform.position + name + "2");
     }
     public void InitBuffer()
     {

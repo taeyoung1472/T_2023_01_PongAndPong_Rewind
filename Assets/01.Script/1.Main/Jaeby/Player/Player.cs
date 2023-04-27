@@ -168,7 +168,7 @@ public class Player : MonoBehaviour
 
     public void EnableReset()
     {
-        Debug.Log("EnableReset");
+        //Debug.Log("EnableReset");
         for (int i = 0; i < _playerActions.Count; i++)
             _playerActions[i].ActionExit();
         for (int i = 0; i < _resetables.Count; i++)
