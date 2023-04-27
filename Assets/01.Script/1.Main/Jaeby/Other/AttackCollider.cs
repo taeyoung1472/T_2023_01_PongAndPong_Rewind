@@ -54,6 +54,7 @@ public class AttackCollider : PoolAbleObject
         if ((other.gameObject.layer & _mask) == 0)
             return;
 
+        other.GetComponent<IDamageable>()?.Damaged(_ownerType);
         _callback?.Invoke(other);
         if (_isOnceTouch)
             PoolManager.Push(poolType, gameObject);

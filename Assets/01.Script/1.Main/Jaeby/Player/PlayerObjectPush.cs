@@ -76,6 +76,7 @@ public class PlayerObjectPush : PlayerAction
             if(_pushingCollider != null)
             {
                 _pushingCollider = null;
+                _excuting = false;
                 Debug.Log("오브젝트 밀기 빠져나감");
                 OnExitCollider?.Invoke();
             }
