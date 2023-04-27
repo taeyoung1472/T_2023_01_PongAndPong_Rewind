@@ -14,6 +14,7 @@ public class WeightButtonGimmick : GimmickObject
     [SerializeField] private ControlData[] controlDataArr;
     [SerializeField] private GimmickVisualLink visualLinkPrefab;
     [SerializeField] private Color color = Color.white;
+    public DirectionType gravitChangeDirState;
 
     public enum ColiderState 
     {
@@ -62,11 +63,11 @@ public class WeightButtonGimmick : GimmickObject
             {
                 if (control.isLever)
                 {
-                    control.target.Control(control.isReverse ? ControlType.ReberseControl : ControlType.Control, true, player);
+                    control.target.Control(control.isReverse ? ControlType.ReberseControl : ControlType.Control, true, player, gravitChangeDirState);
                 }
                 else
                 {
-                    control.target.Control(control.isReverse ? ControlType.ReberseControl : ControlType.Control, false, player);
+                    control.target.Control(control.isReverse ? ControlType.ReberseControl : ControlType.Control, false, player, gravitChangeDirState);
                 }
             }
         }
@@ -74,7 +75,7 @@ public class WeightButtonGimmick : GimmickObject
         {
             foreach (var control in controlDataArr)
             {
-                control.target.Control(ControlType.None, false, player);
+                control.target.Control(ControlType.None, false, player, gravitChangeDirState);
                 CamManager.Instance.RemoveTargetGroup(control.target.transform);
             }
         }
