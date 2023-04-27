@@ -9,6 +9,7 @@ public class ScaleGimmick : GimmickObject
     private Vector3 leftOriginPos;
     private Vector3 rightOriginPos;
 
+    public bool isCastOn = false;
     public override void Init()
     {
         leftCol = transform.Find("Left").GetComponent<Collider>();
@@ -72,9 +73,32 @@ public class ScaleGimmick : GimmickObject
         leftCol.transform.position = Vector3.Lerp(leftCol.transform.position, leftOriginPos + new Vector3(0, leftOriginPos.y - leftLength, 0), Time.deltaTime);
         rightCol.transform.position = Vector3.Lerp(rightCol.transform.position, rightOriginPos + new Vector3(0, rightOriginPos.y - rightLength, 0), Time.deltaTime);
     }
+    private void OnCollisionEnter(Collision collision)
+    {
+        Debug.Log("충돌은 되는거임");
+        if (collision.transform.TryGetComponent<ObjWeight>(out ObjWeight objWeight))
+        {
+            isCastOn = true;
+            Debug.Log("무게체크시작");
+        }
+    }
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.transform.TryGetComponent<ObjWeight>(out ObjWeight objWeight))
+        {
+            isCastOn = false;
+            Debug.Log("무게체크멈춰");
+        }
+    }
 
+    
     private float CalculRightWeight()
     {
+        if (isCastOn == false)
+        {
+            return 0;
+        }
+        Debug.Log("시발섹스");
         Vector3 boxCenter = rightCol.bounds.center + Vector3.up * rightCol.bounds.size.y;
         Vector3 halfExtents = rightCol.bounds.size;
         Collider[] hitColliders = Physics.OverlapBox(boxCenter, halfExtents, Quaternion.identity);
@@ -95,6 +119,11 @@ public class ScaleGimmick : GimmickObject
 
     private float CalculLeftWeight()
     {
+        if (isCastOn == false)
+        {
+            return 0;
+        }
+
         Vector3 boxCenter = leftCol.bounds.center + Vector3.up * rightCol.bounds.size.y;
         Vector3 halfExtents = leftCol.bounds.size;
         Collider[] hitColliders = Physics.OverlapBox(boxCenter, halfExtents, Quaternion.identity);
@@ -113,15 +142,15 @@ public class ScaleGimmick : GimmickObject
         return leftWeight;
     }
 
-    private void OnDrawGizmos()
-    {
-        //Vector3 boxCenter = rightCol.bounds.center + Vector3.up * rightCol.bounds.size.y;
-        //Vector3 halfExtents = rightCol.bounds.size;
-        //Gizmos.DrawWireCube(boxCenter, halfExtents);
+    //private void OnDrawGizmos()
+    //{
+    //    Vector3 boxCenter = rightCol.bounds.center + Vector3.up * rightCol.bounds.size.y;
+    //    Vector3 halfExtents = rightCol.bounds.size;
+    //    Gizmos.DrawWireCube(boxCenter, halfExtents);
 
-        //boxCenter = leftCol.bounds.center + Vector3.up * rightCol.bounds.size.y;
-        //halfExtents = leftCol.bounds.size;
-        //Gizmos.DrawWireCube(boxCenter, halfExtents);
-    }
+    //    boxCenter = leftCol.bounds.center + Vector3.up * rightCol.bounds.size.y;
+    //    halfExtents = leftCol.bounds.size;
+    //    Gizmos.DrawWireCube(boxCenter, halfExtents);
+    //}
 
 }

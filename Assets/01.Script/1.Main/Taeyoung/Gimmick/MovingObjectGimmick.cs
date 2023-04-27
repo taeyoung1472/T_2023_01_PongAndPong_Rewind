@@ -20,7 +20,7 @@ public class MovingObjectGimmick : ControlAbleObjcet
         };
     }
 
-    public override void Control(ControlType controlType, bool isLever, Player player)
+    public override void Control(ControlType controlType, bool isLever, Player player, DirectionType dirType)
     {
 
     }

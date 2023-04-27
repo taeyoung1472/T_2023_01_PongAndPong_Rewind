@@ -9,7 +9,7 @@ public class ScaleObj : ControlAbleObjcet
     {
         rb = GetComponent<Rigidbody>();   
     }
-    public override void Control(ControlType controlType, bool isLever, Player player)
+    public override void Control(ControlType controlType, bool isLever, Player player, DirectionType dirType)
     {
         switch (controlType)
         {
