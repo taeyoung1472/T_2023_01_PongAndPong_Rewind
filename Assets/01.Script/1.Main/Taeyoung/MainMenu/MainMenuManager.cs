@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class MainMenuManager : MonoSingleTon<MainMenuManager>
 {
-    static bool isOpend;
+    public static bool isOpend;
     bool isActive = true;
     bool isWindowActive = false;
 

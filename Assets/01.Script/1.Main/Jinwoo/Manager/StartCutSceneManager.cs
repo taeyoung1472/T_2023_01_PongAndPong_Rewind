@@ -5,9 +5,16 @@ using UnityEngine.UI;
 using DG.Tweening;
 using TMPro;
 using UnityEngine.SceneManagement;
+using UnityEngine.Rendering;
 
 public class StartCutSceneManager : MonoBehaviour
 {
+    public Volume volume;
+
+    // Temp Glitch effect.
+    private LimitlessGlitch1 glitch1;
+    private Jitter jitter;
+
     private TextAnim textAnim;
     private bool isStartCutScene = false;
 
@@ -39,6 +46,11 @@ public class StartCutSceneManager : MonoBehaviour
     }
     private void Start()
     {
+        volume.profile.TryGet(out glitch1);
+        volume.profile.TryGet(out jitter);
+        jitter.active = true;
+        glitch1.active = true;
+
         StartCoroutine(StartFade());
     }
 
@@ -70,6 +82,9 @@ public class StartCutSceneManager : MonoBehaviour
     }
     IEnumerator MonitorOnStart()
     {
+        jitter.enable.value = false;
+        glitch1.enable.value = false;
+
         isStartCutScene = true;
         textAnim.StopAnim();
         
@@ -102,16 +117,23 @@ public class StartCutSceneManager : MonoBehaviour
 
     IEnumerator StartFade()
     {
+        fadeImg.gameObject.SetActive(true);
         fadeImg.DOFade(0, 3f);
+        jitter.enable.value = true;
+        glitch1.enable.value = true;
         yield return new WaitForSeconds(1f);
         textAnim.SetText(firsttext);
         textAnim.EndCheck();
+
+        
     }
     IEnumerator EndFadeImg()
     {
+        
         fadeImg.DOFade(1, 2f);
         images[images.Length-1].DOFade(0, 1.5f);
         yield return new WaitForSeconds(2.5f);
-        SceneManager.LoadScene("Lab");
+        SceneManager.LoadScene("Lab Jinwoo");
+        MainMenuManager.isOpend = true;
     }
 }

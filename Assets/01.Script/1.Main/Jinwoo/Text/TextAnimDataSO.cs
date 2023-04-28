@@ -9,6 +9,7 @@ using UnityEngine.UI;
 public class TextAnimDataSO : ScriptableObject
 {
     //public CutSceneData[] array;
+    [TextArea]
     public string[] stringArray;
 
     public float timeBtwnChars;
