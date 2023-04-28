@@ -44,11 +44,11 @@ public class PlayerWallGrab : PlayerAction, IPlayerResetable
     public override void ActionExit()
     {
         _excuting = false;
-        WallExit();
-
+        _player.GravityModule.UseGravity = true;
         if (_wallGrabCoroutine != null)
             StopCoroutine(_wallGrabCoroutine);
         _player.PlayerActionLock(false, PlayerActionType.WallGrab, PlayerActionType.Move, PlayerActionType.Dash);
+        OnWallGrabed?.Invoke(false);
     }
 
     public void EnableReset()
