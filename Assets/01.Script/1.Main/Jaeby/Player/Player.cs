@@ -34,6 +34,7 @@ public class Player : MonoBehaviour
     private PlayerBuff _playerBuff = null;
     private PlayerHP _playerHP = null;
     private CapsuleCollider _col = null;
+    private AnimationIK _animationIK = null;
     #endregion
 
     #region 프로퍼티
@@ -50,6 +51,7 @@ public class Player : MonoBehaviour
     public PlayerBuff playerBuff => _playerBuff;
     public PlayerHP playerHP => _playerHP;
     public CapsuleCollider Col => _col;
+    public AnimationIK animationIK => _animationIK;
     #endregion
 
     #region Json 저장 데이터
@@ -98,22 +100,7 @@ public class Player : MonoBehaviour
         _playerTrail = GetComponent<TrailableObject>();
         _playerAudio = transform.Find("AgentSound").GetComponent<PlayerAudio>();
         _col = GetComponent<CapsuleCollider>();
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            WorldCollectionsCountSet(_worldsDatabase.worldList[0], Random.Range(0, 9));
-        }
-        if (Input.GetKeyDown(KeyCode.Y))
-        {
-            WorldCollectionsCountSet(_worldsDatabase.worldList[1], Random.Range(0, 9));
-        }
-        if (Input.GetKeyDown(KeyCode.U))
-        {
-            WorldCollectionsCountSet(_worldsDatabase.worldList[2], Random.Range(0, 9));
-        }
+        _animationIK = _playerRenderer.GetComponent<AnimationIK>();
     }
 
     public void WorldCollectionsCountSet(WorldType key, int value)
@@ -165,11 +152,14 @@ public class Player : MonoBehaviour
 
     public void EnableReset()
     {
-        Debug.Log("EnableReset");
+        //Debug.Log("EnableReset");
         for (int i = 0; i < _playerActions.Count; i++)
             _playerActions[i].ActionExit();
         for (int i = 0; i < _resetables.Count; i++)
             _resetables[i].EnableReset();
+
+        if(_playerRenderer != null)
+            _playerRenderer.flipDirection = DirectionType.Down;
     }
 
     public void DisableReset()
@@ -296,17 +286,31 @@ public class Player : MonoBehaviour
         return null;
     }
 
+
     private void GroundCheck()
     {
         bool lastGrounded = _isGrounded;
         Vector3 boxCenter = _col.bounds.center;
         Vector3 halfExtents = _col.bounds.extents;
-        halfExtents.y = _groundCheckRayLength;
-        float maxDistance = _col.bounds.extents.y;
+        float maxDistance = 0f;
+        if (_playerRenderer.flipDirection == DirectionType.Left || _playerRenderer.flipDirection == DirectionType.Right)
+        {
+            maxDistance = _col.bounds.extents.x;
+            halfExtents.x = _groundCheckRayLength;
+        }
+        else
+        {
+            maxDistance = _col.bounds.extents.y;
+            halfExtents.y = _groundCheckRayLength;
+        }
         _isGrounded = Physics.BoxCast(boxCenter, halfExtents, -transform.up, out _slopeHit, transform.rotation, maxDistance, _groundMask);
         if (lastGrounded == _isGrounded)
             return;
         OnIsGrounded?.Invoke(_isGrounded);
+    }
+
+    private void Update()
+    {
     }
 
     private bool OnSlope()

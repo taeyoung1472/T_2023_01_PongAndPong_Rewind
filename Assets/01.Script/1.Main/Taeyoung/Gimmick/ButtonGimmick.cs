@@ -6,6 +6,9 @@ using DG.Tweening;
 public class ButtonGimmick : GimmickObject
 {
     bool isActive = false;
+    bool isActivePlayer = false;
+
+    [SerializeField] private bool onlyObj;
 
     [SerializeField] private ControlData[] controlDataArr;
     [SerializeField] private GimmickVisualLink visualLinkPrefab;
@@ -17,6 +20,8 @@ public class ButtonGimmick : GimmickObject
     [SerializeField] private bool toggleing;
 
     private Animator animator;
+
+    public DirectionType gravitChangeDirState;
 
     [ContextMenu("Gen Color")]
     public void GenColor()
@@ -56,7 +61,7 @@ public class ButtonGimmick : GimmickObject
         toggleTime = origntToggleTime;
         foreach (var control in controlDataArr)
         {
-            control.target.Control(ControlType.None, false, player);
+            control.target.Control(ControlType.None, false, player, gravitChangeDirState);
             CamManager.Instance.RemoveTargetGroup(control.target.transform);
         }
     }
@@ -66,7 +71,6 @@ public class ButtonGimmick : GimmickObject
         {
             return;
         }
-
 
         CheckPlayer();
 
@@ -78,11 +82,11 @@ public class ButtonGimmick : GimmickObject
                 {
                     if (control.isLever)
                     {
-                        control.target.Control(control.isReverse ? ControlType.ReberseControl : ControlType.Control, true, player);
+                        control.target.Control(control.isReverse ? ControlType.ReberseControl : ControlType.Control, true, player, gravitChangeDirState);
                     }
                     else
                     {
-                        control.target.Control(control.isReverse ? ControlType.ReberseControl : ControlType.Control, false, player);
+                        control.target.Control(control.isReverse ? ControlType.ReberseControl : ControlType.Control, false, player, gravitChangeDirState);
                     }
                 }
             }
@@ -90,24 +94,22 @@ public class ButtonGimmick : GimmickObject
             {
                 foreach (var control in controlDataArr)
                 {
-                    control.target.Control(ControlType.None, false, player);
+                    control.target.Control(ControlType.None, false, player, gravitChangeDirState);
                     CamManager.Instance.RemoveTargetGroup(control.target.transform);
                 }
             }
         }
-
-
-        if (toggleing == true && isToggle == true )
+        if (toggleing == true && isToggle == true)
         {
             foreach (var control in controlDataArr)
             {
                 if (control.isLever)
                 {
-                    control.target.Control(control.isReverse ? ControlType.ReberseControl : ControlType.Control, true, player);
+                    control.target.Control(control.isReverse ? ControlType.ReberseControl : ControlType.Control, true, player, gravitChangeDirState);
                 }
                 else
                 {
-                    control.target.Control(control.isReverse ? ControlType.ReberseControl : ControlType.Control, false, player);
+                    control.target.Control(control.isReverse ? ControlType.ReberseControl : ControlType.Control, false, player, gravitChangeDirState);
                 }
             }
             if (isActive == false)
@@ -116,14 +118,11 @@ public class ButtonGimmick : GimmickObject
             }
             if (toggleTime <= 0.0f)
             {
-                //isActive = false;
                 animator.Play("Idle");
                 foreach (var control in controlDataArr)
                 {
-                    control.target.Control(ControlType.None, false, player);
+                    control.target.Control(ControlType.None, false, player, gravitChangeDirState);
                 }
-                //toggleing = false;
-                //toggleTime = origntToggleTime;
             }
         }
 
@@ -157,8 +156,10 @@ public class ButtonGimmick : GimmickObject
 
     public void OnTriggerEnter(Collider other)
     {
+
         if (other.gameObject.TryGetComponent<Player>(out Player player))
         {
+            isActivePlayer = true;
             toggleing = true;
             toggleTime = origntToggleTime;
 
@@ -170,9 +171,13 @@ public class ButtonGimmick : GimmickObject
                 Debug.Log(player);
             }
         }
+        
         if (other.TryGetComponent<GimmickObject>(out GimmickObject gimmickObject))
         {
+            Debug.Log(gimmickObject);
             isActive = true;
+            toggleing = true;
+            toggleTime = origntToggleTime;
             animator.Play("Push");
         }
     }

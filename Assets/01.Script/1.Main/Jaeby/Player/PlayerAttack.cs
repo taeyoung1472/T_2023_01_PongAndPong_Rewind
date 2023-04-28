@@ -3,15 +3,10 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UIElements;
 using static Define;
+using static UnityEngine.Rendering.DebugUI.Table;
 
-public class PlayerAttack : PlayerAction
+public class PlayerAttack : PlayerAction, IPlayerResetable
 {
-    private bool _switchingable = true;
-    public bool Switchingable { get => _switchingable; set => _switchingable = value; }
-
-    [SerializeField]
-    private Transform _shootingPointTrm = null;
-
     [SerializeField]
     private UnityEvent<int> OnMeleeAttack = null;
     [SerializeField]
@@ -19,17 +14,47 @@ public class PlayerAttack : PlayerAction
 
     private int _attackIndex = -1; // 함수에 들어가서 +1 해주기에 -1부터 시작
     private readonly int _maxAttackIndex = 3;
+    private bool _delayLock = false;
 
     private AttackState _attackState = AttackState.Melee;
-    private Coroutine _switchingCo = null;
     private Coroutine _attackDelayCo = null;
 
-    private bool _delayLock = false;
+    #region 스위칭
+    private bool _switchingable = true;
+    public bool Switchingable { get => _switchingable; set => _switchingable = value; }
+    private Coroutine _switchingCo = null;
+    #endregion
+    #region 원거리 공격
+    [SerializeField]
+    private GameObject _pistolObj = null;
+    [SerializeField]
+    private Transform _shootingPointTrm = null;
+    private Coroutine _flipLockCo = null;
+    private Coroutine _iKEndAnimationCoroutine = null;
+    [SerializeField]
+    private float _flipLockTime = 0.4f;
+    [SerializeField]
+    private float _ikEndAnimationTime = 0.3f;
+    private Transform _mousePositionTrm = null;
+    private bool _shooting = false;
+    [SerializeField]
+    private float _ikCancelMaxAngle = 30f;
+    private bool _observerStarting = false;
+    #endregion
+
+    private void Start()
+    {
+
+        _pistolObj.SetActive(false);
+    }
 
     public void Attack()
     {
-        if (_locked || _delayLock || _player.PlayerActionCheck(PlayerActionType.Dash, PlayerActionType.ObjectPush, PlayerActionType.WallGrab))
+        if (_locked || _delayLock || _player.PlayerActionCheck(PlayerActionType.ObjectPush, PlayerActionType.WallGrab))
             return;
+
+        _excuting = true;
+        _player.VelocitySetMove(0f, 0f);
 
         if (_attackState == AttackState.Melee)
             MeleeAttack();
@@ -46,26 +71,130 @@ public class PlayerAttack : PlayerAction
         // 타격 처리
         _attackIndex = (_attackIndex + 1) % _maxAttackIndex;
         OnMeleeAttack?.Invoke(_attackIndex);
-        player.playerAudio.AttackAudio();
+        _player.playerAudio.AttackAudio();
+
 
         AttackCollider.Create(0, ColliderOwnerType.Player, null, _player.transform.position + _player.PlayerRenderer.Forward, 0.9f, 0.5f, false, null);
     }
 
     private void RangeAttack()
     {
+        _shooting = true;
+        _observerStarting = false;
+        if (_iKEndAnimationCoroutine != null)
+            StopCoroutine(_iKEndAnimationCoroutine);
+        StartCoroutine(RangeAttackCoroutine());
+    }
+
+    private IEnumerator RangeAttackCoroutine()
+    {
         Vector3 mousePos = Input.mousePosition;
-        Vector3 playerPos = _shootingPointTrm.position;
-        Quaternion camRot = Quaternion.Euler(Cam.transform.rotation.eulerAngles.x, Cam.transform.rotation.eulerAngles.y, Cam.transform.rotation.eulerAngles.z);
-        mousePos.z = (playerPos - Cam.transform.position).z;
+        mousePos.z = (_player.transform.position - Cam.transform.position).z;
         Vector3 target = Camera.main.ScreenToWorldPoint(mousePos);
-        Vector3 distance = target - playerPos;
+
+        if (_mousePositionTrm == null)
+            _mousePositionTrm = new GameObject("MousePositionTrm").transform;
+        _player.PlayerRenderer.Flip(target - _player.transform.position);
+        _player.PlayerAnimation.MoveFlipLock = true;
+        _mousePositionTrm.position = new Vector3(target.x, target.y, _player.transform.position.z);
+        _player.animationIK.LookTrm = _mousePositionTrm;
+        _player.animationIK.HandL = _mousePositionTrm;
+        _player.animationIK.HandR = _mousePositionTrm;
+        _player.animationIK.RotationLock = true;
+        _player.animationIK.SetIKWeightOne();
+
+        yield return new WaitForEndOfFrame();
+
+        Vector3 distance = target - _shootingPointTrm.position;
         float angle = Mathf.Atan2(distance.y, distance.x) * Mathf.Rad2Deg;
         Quaternion rot = Quaternion.AngleAxis(angle, Vector3.forward);
-        Bullet bullet = PoolManager.Pop(PoolType.PlayerBullet).GetComponent<Bullet>();
-        bullet.GetComponent<Bullet>().Init(playerPos, rot, _player.playerAttackSO.bulletSpeed, _player.playerAttackSO.rangeAttackPower);
-        OnRangeAttack?.Invoke();
 
-        //AttackCollider.Create(0, _player.gameObject, bullet.transform, Vector3.zero, 0.5f, null, true, null);
+        if (AngleCheck())
+        {
+            EndIK();
+        }
+        else
+        {
+            if (_flipLockCo != null)
+                StopCoroutine(_flipLockCo);
+            _flipLockCo = StartCoroutine(FlipLockCoroutine());
+            _observerStarting = true;
+        }
+
+        Bullet bullet = PoolManager.Pop(PoolType.PlayerBullet).GetComponent<Bullet>();
+        bullet.GetComponent<Bullet>().Init(_shootingPointTrm.position, rot, _player.playerAttackSO.bulletSpeed, _player.playerAttackSO.rangeAttackPower);
+        OnRangeAttack?.Invoke();
+    }
+
+    private void LateUpdate()
+    {
+        if (_observerStarting == false)
+            return;
+        Vector3 mousePos = Input.mousePosition;
+        mousePos.z = (_player.transform.position - Cam.transform.position).z;
+        Vector3 target = Camera.main.ScreenToWorldPoint(mousePos);
+        _mousePositionTrm.position = new Vector3(target.x, target.y, _player.transform.position.z);
+        if (AngleCheck())
+        {
+            _observerStarting = false;
+            EndIK();
+        }
+        _player.PlayerRenderer.Flip(target - _player.transform.position);
+    }
+
+    private bool AngleCheck()
+    {
+        float angle = Vector2.Angle((Vector2)(_mousePositionTrm.position - _player.transform.position), (Vector2)_player.transform.up);
+        if (angle < _ikCancelMaxAngle || angle > (180 - _ikCancelMaxAngle))
+        {
+            return true;
+        }
+        return false;
+    }
+
+    private IEnumerator FlipLockCoroutine()
+    {
+        yield return new WaitForSeconds(_flipLockTime);
+        EndIK();
+    }
+
+    private void EndIK()
+    {
+        if (_flipLockCo != null)
+            StopCoroutine(_flipLockCo);
+        if (_iKEndAnimationCoroutine != null)
+            StopCoroutine(_iKEndAnimationCoroutine);
+        _iKEndAnimationCoroutine = StartCoroutine(EndIkCoroutine());
+
+        _player.PlayerAnimation.MoveFlipLock = false;
+        _shooting = false;
+        _excuting = false;
+        _observerStarting = false;
+    }
+
+    private IEnumerator EndIkCoroutine()
+    {
+        float time = 1f;
+        while (time >= 0f)
+        {
+            _player.animationIK.SetIKWeight(time);
+            time -= Time.deltaTime * (1 / _ikEndAnimationTime);
+            yield return null;
+        }
+        _player.animationIK.SetIKWeightZero();
+        _player.animationIK.RotationLock = false;
+    }
+
+    public void WeaponSwitching(AttackState state, bool force)
+    {
+        if (force)
+            _switchingable = true;
+
+        if (state == AttackState.Melee)
+            _attackState = AttackState.Range;
+        else
+            _attackState = AttackState.Melee;
+        WeaponSwitching();
     }
 
     public void WeaponSwitching()
@@ -73,7 +202,16 @@ public class PlayerAttack : PlayerAction
         if (_switchingable == false)
             return;
 
+        ActionExit();
         _attackState = _attackState == AttackState.Melee ? AttackState.Range : AttackState.Melee;
+        if (_attackState == AttackState.Range)
+        {
+            _pistolObj.SetActive(true);
+        }
+        else if (_attackState == AttackState.Melee)
+        {
+            _pistolObj.SetActive(false);
+        }
         _attackIndex = -1;
         if (_switchingCo != null)
             StopCoroutine(_switchingCo);
@@ -102,15 +240,11 @@ public class PlayerAttack : PlayerAction
     public void AttackStart()
     {
         _excuting = true;
-        _player.VeloCityResetImm(true, true);
-        //_player.PlayerActionExit(PlayerActionType.Move, PlayerActionType.Jump, PlayerActionType.Dash);
-        //_player.PlayerActionLock(true, PlayerActionType.Move, PlayerActionType.Jump, PlayerActionType.Dash);
     }
 
     public void AttackEnd()
     {
         _excuting = false;
-        //_player.PlayerActionLock(false, PlayerActionType.Move, PlayerActionType.Jump, PlayerActionType.Dash);
     }
 
     public override void ActionExit()
@@ -119,8 +253,28 @@ public class PlayerAttack : PlayerAction
             StopCoroutine(_switchingCo);
         if (_attackDelayCo != null)
             StopCoroutine(_attackDelayCo);
+        if (_iKEndAnimationCoroutine != null)
+            StopCoroutine(_iKEndAnimationCoroutine);
+        if (_flipLockCo != null)
+            StopCoroutine(_flipLockCo);
         _switchingable = true;
         _delayLock = false;
         _excuting = false;
+        _shooting = false;
+        _observerStarting = false;
+        _player.animationIK.SetIKWeightZero();
+        _player.animationIK.RotationLock = false;
+        _player.PlayerAnimation.MoveFlipLock = false;
+    }
+
+    public void EnableReset()
+    {
+        _pistolObj.SetActive(false);
+        WeaponSwitching(AttackState.Melee, true);
+    }
+
+    public void DisableReset()
+    {
+
     }
 }

@@ -28,6 +28,7 @@ public class StageManager : MonoSingleTon<StageManager>
 
     public Image fadeImg;
 
+    public bool isGameStart = false;
     public bool isDownButton = false;
     private float reStartCoolTime = 1f;
     private float freelookCoolTime = 2f;
@@ -82,6 +83,14 @@ public class StageManager : MonoSingleTon<StageManager>
         }
 
     }
+    public void SetAreaPlay(bool isPlay)
+    {
+        curStage.curArea.IsAreaPlay = isPlay;
+    }
+    public bool GetAreaPlayCheck()
+    {
+        return CurStage.curArea.IsAreaPlay;
+    }
     public void PlayShockWave()
     {
         shockWave.StartShockWave();
@@ -97,8 +106,10 @@ public class StageManager : MonoSingleTon<StageManager>
     }
     public void OnFreeLookCam(bool isOn)
     {
+        Debug.Log(isOn);
         if (isOn) //자유시점 온
         {
+            SetAreaPlay(false);
             freeLookCam.gameObject.SetActive(true);
             freeLookCam.Activate(true);
             if (TimerManager.Instance.isRewinding)

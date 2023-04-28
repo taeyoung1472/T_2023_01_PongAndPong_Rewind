@@ -5,6 +5,7 @@ public class PlayerRenderer : MonoBehaviour
 {
     private bool _fliped = false;
     public bool Fliped => _fliped;
+
     [SerializeField]
     private UnityEvent<bool> OnFliped = null;
 
@@ -42,7 +43,7 @@ public class PlayerRenderer : MonoBehaviour
         }
     }
 
-    private void Start()
+    private void Awake()
     {
         _player = GetComponentInParent<Player>();
     }

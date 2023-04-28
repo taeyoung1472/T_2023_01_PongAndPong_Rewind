@@ -16,9 +16,9 @@ public class GenericRewind : RewindAbstract
 
     protected override void InitOnPlay()
     {
-        Debug.Log(transform.position + name + "3");
+        //Debug.Log(transform.position + name + "3");
         InitBuffer();
-        Debug.Log(transform.position + name + "4");
+        //Debug.Log(transform.position + name + "4");
     }
 
     protected override void InitOnRewind()
@@ -28,9 +28,9 @@ public class GenericRewind : RewindAbstract
 
     protected override void RestartObj()
     {
-        Debug.Log("오브젝트 리셋");
+        //Debug.Log("오브젝트 리셋");
         transform.SetPositionAndRotation(originalPos, originalRot);
-        Debug.Log(transform.position + name + "??");
+        //Debug.Log(transform.position + name + "??");
     }
 
     protected override void Rewind(float seconds)
@@ -67,7 +67,7 @@ public class GenericRewind : RewindAbstract
     protected override void Awake()
     {
         base.Awake();
-        Debug.Log(transform.position + name + "5");
+        //Debug.Log(transform.position + name + "5");
         InitializeParticles(particleSettings);
         originalPos = transform.position;
         originalRot = transform.rotation;

@@ -12,6 +12,12 @@ public class StageArea : MonoBehaviour
 
     public GameObject gameObjesddct;
 
+    private bool isAreaPlay = false;
+    public bool IsAreaPlay { get => isAreaPlay; set => isAreaPlay = value; }
+    private void Start()
+    {
+        isAreaPlay = false;
+    }
     public void InitArea()
     {
         TimerManager.Instance.InitTimer();
@@ -22,10 +28,13 @@ public class StageArea : MonoBehaviour
     public void EntryArea(bool isGameStart = false)
     {
         //함수 실행 순서 매우 중요;
+        IsAreaPlay = true;
+
         InitArea();
         StageManager.Instance.SpawnPlayer(defaultPlayerSpawn, true);
 
-        Debug.Log("아리아엔트리");
+
+        //Debug.Log("아리아엔트리");
         if(isGameStart)
             RewindManager.Instance.StartAreaPlay();
     }
@@ -38,6 +47,7 @@ public class StageArea : MonoBehaviour
 
     public void ExitArea()
     {
+        IsAreaPlay = false;
         if (!isAreaClear)
         {
             StageManager.Instance.InitPlayer(isAreaClear);

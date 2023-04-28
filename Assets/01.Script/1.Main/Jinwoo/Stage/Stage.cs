@@ -25,7 +25,7 @@ public class Stage : MonoBehaviour
     public void ReStartArea(bool isReStart)
     {
         StartCoroutine(StartReStart(isReStart));
-
+        
     }
     public IEnumerator StartReStart(bool isReStart)
     {
@@ -51,11 +51,12 @@ public class Stage : MonoBehaviour
         }
         else // 일반 순행 시간에 재시작 할때
         {
-            Debug.Log("리스타또");
+            //Debug.Log("리스타또");
             StageManager.Instance.InitPlayer(false);
             transform.DOKill();
             transform.rotation = Quaternion.Euler(0, 0, 0);
             curArea.EntryArea(true);
+            
         }
 
         RewindManager.Instance.RestartPlay?.Invoke();

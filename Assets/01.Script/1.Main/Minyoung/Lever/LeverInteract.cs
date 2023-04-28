@@ -10,6 +10,7 @@ public class LeverInteract : Interact
 
     public bool isPush = false;
 
+    public DirectionType gravityChangeDir;
     public override void InitOnPlay()
     {
         base.InitOnPlay();
@@ -45,11 +46,11 @@ public class LeverInteract : Interact
         {
             if (isPush)
             {
-                control.target.Control(control.isReverse ? ControlType.ReberseControl : ControlType.Control, true, _player);
+                control.target.Control(control.isReverse ? ControlType.ReberseControl : ControlType.Control, true, _player, gravityChangeDir);
             }
             else
             {
-                control.target.Control(control.isReverse ? ControlType.ReberseControl : ControlType.Control, false, _player);
+                control.target.Control(control.isReverse ? ControlType.ReberseControl : ControlType.Control, false, _player, gravityChangeDir);
             }
         }
     }

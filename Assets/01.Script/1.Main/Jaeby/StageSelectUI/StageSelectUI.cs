@@ -1,5 +1,4 @@
 using DG.Tweening;
-using Michsky.UI.Shift;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -112,7 +111,7 @@ public class StageSelectUI : MonoBehaviour
             _curStageWorld.ResetWorld();
             _curStageWorld.gameObject.SetActive(false);
         }
-        if(_worldScrollRect.content != null)
+        if (_worldScrollRect.content != null)
             _worldScrollRect.content.anchoredPosition = Vector3.zero;
         _curStage = _prevStage = null;
 
