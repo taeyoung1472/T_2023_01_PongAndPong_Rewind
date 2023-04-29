@@ -16,9 +16,6 @@ public class Notify : MonoBehaviour
         myRect = GetComponent<RectTransform>();
         text.SetText(notifyContent);
         content.anchoredPosition = new Vector2(-99999, -99999);
-        //content.anchoredPosition = new Vector2(content.sizeDelta.x * 1.5f, -content.sizeDelta.y);
-        //DOTween.To(() => myRect.sizeDelta, x => myRect.sizeDelta = x, new Vector2(myRect.sizeDelta.x, 75), 0.75f);
-        //DOTween.To(() => content.anchoredPosition, x => content.anchoredPosition = x, Vector2.zero, 0.75f);
         StartCoroutine(RegenRect());
     }
 

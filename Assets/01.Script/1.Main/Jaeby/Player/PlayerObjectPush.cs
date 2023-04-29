@@ -1,10 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
-using static Highlighters.HighlighterTrigger;
 
 public class PlayerObjectPush : PlayerAction
 {
@@ -31,7 +26,7 @@ public class PlayerObjectPush : PlayerAction
     {
         if (_pushingCollider == null)
             return;
-        if(Vector3.Dot(_pushingCollider.transform.position - _player.transform.position, _player.PlayerRenderer.Forward) < 0f)
+        if (Vector3.Dot(_pushingCollider.transform.position - _player.transform.position, _player.PlayerRenderer.Forward) < 0f)
         {
             _pushingCollider = null;
             Debug.Log("오브젝트 밀기 끝");
