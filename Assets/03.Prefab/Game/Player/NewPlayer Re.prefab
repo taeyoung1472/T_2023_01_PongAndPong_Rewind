@@ -208,7 +208,6 @@ GameObject:
   - component: {fileID: 7541942952882201184}
   - component: {fileID: 6615103273171162517}
   - component: {fileID: 5632815061406279861}
-  - component: {fileID: 4713945507521297608}
   - component: {fileID: -5436315614427967250}
   - component: {fileID: 8856121245186995438}
   m_Layer: 8
@@ -294,6 +293,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37e4f44bf7499b645b5dcfe572673577, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _worldsDatabase: {fileID: 0}
   _playerHealthSO: {fileID: 0}
   _playerMovementSO: {fileID: 11400000, guid: 7b340fc37eed2244bb3a508fc629a727, type: 2}
   _playerAttackSO: {fileID: 11400000, guid: 9c0314343253bb54a9880059056c3f23, type: 2}
@@ -405,6 +405,10 @@ MonoBehaviour:
   OnWallGrabJump:
     m_PersistentCalls:
       m_Calls: []
+  _upLayLength: 0.1
+  _upLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!114 &6691628707489746803
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -437,10 +441,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _actionType: 4
-  _wallMask:
-    serializedVersion: 2
-    m_Bits: 64
-  _rayLength: 0.1
   OnWallGrabed:
     m_PersistentCalls:
       m_Calls:
@@ -456,6 +456,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  _wallgrabCooltime: 0.4
 --- !u!114 &6691628707489746802
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -499,6 +500,11 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  _pistolObj: {fileID: 0}
+  _shootingPointTrm: {fileID: 0}
+  _flipLockTime: 0.4
+  _ikEndAnimationTime: 0.3
+  _ikCancelMaxAngle: 30
 --- !u!114 &6691628707489746807
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -723,10 +729,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _actionType: 7
-  _pushMask:
-    serializedVersion: 2
-    m_Bits: 0
-  _rayLength: 1
   OnEnterCollider:
     m_PersistentCalls:
       m_Calls:
@@ -781,7 +783,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  _pushPower: 13
 --- !u!54 &5632815061406279861
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -798,83 +799,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
---- !u!114 &4713945507521297608
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6691628707489746810}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0970a923eff145744a66a980e20b235c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  highlighterSettings:
-    depthMask: 0
-    infoRenderScale: 1
-    useOuterGlow: 0
-    useSingleOuterGlow: 1
-    outerGlowColorFront: {r: 0, g: 0, b: 0, a: 1}
-    outerGlowColorBack: {r: 0, g: 0, b: 0, a: 1}
-    outlineVisibleBeforeObject: 1
-    blurType: 1
-    blendType: 0
-    boxBlurSize: 0.04
-    blurIterations: 40
-    blurRenderScale: 1
-    blurIntensity: 1
-    blurIntensityMultiplier: 1
-    blurAdaptiveThickness: 0
-    cameraDistanceMultiplier: 1
-    useMeshOutline: 1
-    useSingleMeshOutline: 1
-    meshOutlineFront:
-      color: {r: 1, g: 1, b: 1, a: 1}
-    meshOutlineBack:
-      color: {r: 1, g: 1, b: 1, a: 1}
-    meshOutlineThickness: 0.015
-    meshOutlineAdaptiveThickness: 0
-    useInnerGlow: 0
-    useSingleInnerGlow: 1
-    innerGlowFront:
-      color: {r: 0, g: 1, b: 1, a: 1}
-      power: 4
-    innerGlowBack:
-      color: {r: 0, g: 1, b: 1, a: 1}
-      power: 4
-    useOverlay: 1
-    useSingleOverlay: 1
-    overlayFront:
-      color: {r: 0, g: 1, b: 1, a: 0.19607843}
-      useTexture: 0
-      texture: {fileID: 0}
-      background: 0
-      tilling: 60
-      rotation: 0
-    overlayBack:
-      color: {r: 0, g: 1, b: 1, a: 0.19607843}
-      useTexture: 0
-      texture: {fileID: 0}
-      background: 0
-      tilling: 60
-      rotation: 0
-    RenderingBoundsSizeIncrease: 0.2
-    RenderingBoundsDistanceFix: 0
-    RenderingBoundsMaxDistanceFix: 1
-    RenderingBoundsMinDistanceFix: 0
-  findRenderers: 0
-  renderers:
-  - renderer: {fileID: 112894375679413401}
-    useCutout: 0
-    clippingThreshold: 0
-    clippingSource: 0
-    clipTexture: {fileID: 0}
-    submeshIndexes: 0000000001000000020000000300000004000000
-    cullMode: 2
-  id: 1
-  showRenderBounds: 0
-  showScreenAdjustedRenderBounds: 0
 --- !u!114 &-5436315614427967250
 MonoBehaviour:
   m_ObjectHideFlags: 0
