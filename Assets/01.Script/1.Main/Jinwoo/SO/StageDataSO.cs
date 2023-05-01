@@ -7,6 +7,7 @@ public class StageDataSO : ScriptableObject
     public int stageNumber;
     public bool isClear = false;
     public Stage stagePrefab;
+    public StageDataSO nextStageData;
 
     public string stageInfo;
 

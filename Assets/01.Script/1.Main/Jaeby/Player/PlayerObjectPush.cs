@@ -34,16 +34,16 @@ public class PlayerObjectPush : PlayerAction
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void PushStart(GameObject other)
     {
         if (other.CompareTag("PushTrigger") == false || _pushingCollider != null)
             return;
-        _pushingCollider = other.transform.root.gameObject;
+        _pushingCollider = other.transform.gameObject;
         Debug.Log("오브젝트 밀기 시작");
         OnEnterCollider?.Invoke();
     }
 
-    private void OnTriggerExit(Collider other)
+    public void PushEnd(GameObject other)
     {
         if (other.CompareTag("PushTrigger") == false || _pushingCollider == null)
             return;
