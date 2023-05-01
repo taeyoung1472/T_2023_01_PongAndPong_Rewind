@@ -1,6 +1,4 @@
 using DigitalRuby.ThunderAndLightning;
-using Highlighters;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class GimmickVisualLink : MonoBehaviour
@@ -28,38 +26,6 @@ public class GimmickVisualLink : MonoBehaviour
 
         lightning.gameObject.SetActive(true);
         lightning.LightningTintColor = color;
-
-        if (start.GetComponent<Highlighter>() == null)
-        {
-            Highlighter highlighter = start.AddComponent<Highlighter>();
-            highlighter.GetRenderers();
-            highlighter.Settings.DepthMask = DepthMask.Both;
-            highlighter.Settings.UseMeshOutline = true;
-            highlighter.Settings.MeshOutlineThickness = 0.02f;
-            highlighter.Settings.MeshOutlineFront.Color = color;
-
-            highlighter.Settings.UseOverlay = true;
-            highlighter.Settings.UseSingleOverlay = false;
-            highlighter.Settings.OverlayFront.Color = new Color(1, 1, 1, 0);
-            highlighter.Settings.OverlayBack.Color = color * new Color(1, 1, 1, 0.2f);
-        }
-
-
-        if (end.GetComponent<Highlighter>() == null)
-        {
-            Highlighter highlighter = end.AddComponent<Highlighter>();
-            highlighter.GetRenderers();
-            highlighter.Settings.DepthMask = DepthMask.Both;
-            highlighter.Settings.UseMeshOutline = true;
-            highlighter.Settings.MeshOutlineThickness = 0.02f;
-            highlighter.Settings.MeshOutlineFront.Color = color;
-
-            highlighter.Settings.UseOverlay = true;
-            highlighter.Settings.UseSingleOverlay = false;
-            highlighter.Settings.OverlayFront.Color = new Color(1, 1, 1, 0);
-            highlighter.Settings.OverlayBack.Color = color * new Color(1, 1, 1, 0.2f);
-        }
-        Highlighter.HighlightersNeedReset();
 
         isLinked = true;
     }

@@ -1,7 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using Highlighters;
 
 public class BreakScreenController : MonoSingleTon<BreakScreenController>
 {
@@ -17,12 +15,12 @@ public class BreakScreenController : MonoSingleTon<BreakScreenController>
         {
             //slices = Instantiate(slicesPrefabs, spawntrm);
             //obj.SetActive(false);
-            StartCoroutine(CourtineScreenShot());    
+            StartCoroutine(CourtineScreenShot());
         }
     }
     public void StartBreakScreen()
     {
-        StartCoroutine(CourtineScreenShot());    
+        StartCoroutine(CourtineScreenShot());
     }
     private IEnumerator CourtineScreenShot()
     {
