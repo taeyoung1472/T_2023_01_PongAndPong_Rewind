@@ -294,6 +294,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37e4f44bf7499b645b5dcfe572673577, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _worldsDatabase: {fileID: 0}
   _playerHealthSO: {fileID: 0}
   _playerMovementSO: {fileID: 11400000, guid: 7b340fc37eed2244bb3a508fc629a727, type: 2}
   _playerAttackSO: {fileID: 11400000, guid: 9c0314343253bb54a9880059056c3f23, type: 2}
@@ -405,6 +406,10 @@ MonoBehaviour:
   OnWallGrabJump:
     m_PersistentCalls:
       m_Calls: []
+  _upLayLength: 0.1
+  _upLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!114 &6691628707489746803
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -437,10 +442,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _actionType: 4
-  _wallMask:
-    serializedVersion: 2
-    m_Bits: 64
-  _rayLength: 0.1
   OnWallGrabed:
     m_PersistentCalls:
       m_Calls:
@@ -456,6 +457,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  _wallgrabCooltime: 0.4
 --- !u!114 &6691628707489746802
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -499,6 +501,11 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  _pistolObj: {fileID: 0}
+  _shootingPointTrm: {fileID: 0}
+  _flipLockTime: 0.4
+  _ikEndAnimationTime: 0.3
+  _ikCancelMaxAngle: 30
 --- !u!114 &6691628707489746807
 MonoBehaviour:
   m_ObjectHideFlags: 0
