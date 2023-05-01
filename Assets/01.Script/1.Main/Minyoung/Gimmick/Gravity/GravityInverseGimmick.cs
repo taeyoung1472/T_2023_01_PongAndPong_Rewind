@@ -1,10 +1,14 @@
+using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class GravityInverseGimmick : ControlAbleObjcet
 {
     public DirectionType gravityDirState;
-
+    public Dictionary<float, DirectionType> dirChangeDic = new Dictionary<float, DirectionType>();
+    //버튼을 밟을까 바뀔방향이 
     [SerializeField]
     private float _gravityScale = 0.8f;
     [SerializeField]
@@ -14,29 +18,32 @@ public class GravityInverseGimmick : ControlAbleObjcet
     private LayerMask _groundMask = 0;
 
     public Player player;
+    public Player rewindPlayer;
 
     RaycastHit hit;
 
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    if (_locked)
-    //        return;
+    private float timer = 0f;
 
-    //    if (other.CompareTag("Player"))
-    //    {
-    //        if (player == null)
-    //            player = other.GetComponent<Player>();
+    private void OnTriggerEnter(Collider other)
+    {
+        //if (_locked)
+        //    return;
 
-    //        player.GravityModule.GravityScale = _gravityScale;
-    //        PlayerGravitySet(gravityDirState);
-    //    }
-    //    /*if (other.gameObject.TryGetComponent<GravityGimmickObject>
-    //        (out GravityGimmickObject gravityGimmick))
-    //    {
-    //        gravityGimmick.GravityDir = Utility.GetDirToVector(gravityDirState) * 9.8f;
-    //        gravityGimmick.GravityScale = _gravityScale;
-    //    }*/
-    //}
+        //if (other.CompareTag("Player"))
+        //{
+        //    if (player == null)
+        //        player = other.GetComponent<Player>();
+
+        //    player.GravityModule.GravityScale = _gravityScale;
+        //    PlayerGravitySet(gravityDirState, rewindPlayer);
+        //}
+        /*if (other.gameObject.TryGetComponent<GravityGimmickObject>
+            (out GravityGimmickObject gravityGimmick))
+        {
+            gravityGimmick.GravityDir = Utility.GetDirToVector(gravityDirState) * 9.8f;
+            gravityGimmick.GravityScale = _gravityScale;
+        }*/
+    }
 
     //private void OnTriggerExit(Collider other)
     //{
@@ -60,27 +67,58 @@ public class GravityInverseGimmick : ControlAbleObjcet
     //    }*/
     //}
 
-    private void PlayerGravitySet(DirectionType direction)
+
+    private void PlayerGravitySet(DirectionType direction, Player player)
     {
         player.ForceStop();
         player.ColliderSet(PlayerColliderType.Normal);
+
+
         CapsuleCollider col = player.Col;
-        if ((gravityDirState == DirectionType.Left || gravityDirState == DirectionType.Right))
+        Vector3 newPos = Vector3.zero;
+        switch (gravityDirState)
         {
-            Vector3 newPos = Vector3.zero;
-            if (RayCheck(Vector3.up, col))
-            {
-                newPos = hit.point;
-                newPos.y -= col.height * 1.1f;
-                player.transform.position = newPos;
-            }
+            case DirectionType.Left:
+                player.transform.Rotate(new Vector3(0, 0, -90));
+                if (RayCheck(Vector3.up, col))
+                {
+                    newPos = hit.point;
+                    newPos.y += col.height / 2;
+                    player.transform.position = newPos;
+                }
+                break;
+            case DirectionType.Right:
+                player.transform.Rotate(new Vector3(0, 0, 90));
+                if (RayCheck(Vector3.up, col))
+                {
+                    newPos = hit.point;
+                    newPos.y -= col.height / 2;
+                    player.transform.position = newPos;
+                }
+                break;
+            case DirectionType.Up:
+                player.transform.Rotate(new Vector3(180, 0, 0));
+                break;
+            case DirectionType.Down:
+                player.transform.Rotate(Vector3.zero);
+                break;
         }
-        else
-        {
-            Vector3 newPos = Vector3.zero;
-            newPos = player.transform.position + player.transform.up * col.height;
-            player.transform.position = newPos;
-        }
+        //if ((gravityDirState == DirectionType.Left || gravityDirState == DirectionType.Right))
+        //{
+        //    Vector3 newPos = Vector3.zero;
+        //    if (RayCheck(Vector3.up, col))
+        //    {
+        //        newPos = hit.point;
+        //        newPos.y -= col.height * 1.1f;
+        //        player.transform.position = newPos;
+        //    }
+        //}
+        //else
+        //{
+        //    Vector3 newPos = Vector3.zero;
+        //    newPos = player.transform.position + player.transform.up * col.height;
+        //    player.transform.position = newPos;
+        //}
         player.PlayerRenderer.flipDirection = direction;
         player.GravityModule.GravityDir = Utility.GetDirToVector(direction) * 9.8f;
     }
@@ -101,23 +139,91 @@ public class GravityInverseGimmick : ControlAbleObjcet
 
     public override void Control(ControlType controlType, bool isLever, Player player, DirectionType dirType)
     {
-        if (player == null)
-        {
-            player = FindObjectOfType<Player>();
-        }
-        this.player = player;
         curControlType = controlType;
 
         switch (controlType)
         {
             case ControlType.Control:
-                PlayerGravitySet(dirType);
+                if (rewindPlayer != null)
+                {
+                    gravityDirState = dirType;
+                    PlayerGravitySet(gravityDirState, rewindPlayer);
+                }
+                else
+                {
+                    PlayerGravitySet(dirType, player);
+                }
                 break;
             case ControlType.None:
-               // PlayerGravitySet(DirectionType.Down);
+                // PlayerGravitySet(DirectionType.Down);
                 break;
             case ControlType.ReberseControl:
                 break;
         }
+    }
+    private void Awake()
+    {
+        if (RewindManager.Instance)
+        {
+            RewindManager.Instance.InitRewind += InitOnRewind;
+            RewindManager.Instance.InitPlay += InitOnPlay;
+            //RewindManager.Instance.RestartPlay += InitOnPlay;
+        }
+
+    }
+    public bool isRewind = false;
+    private void InitOnPlay()
+    {
+        rewindPlayer = null;
+        isRewind = false;
+        StopAllCoroutines();
+        dirChangeDic.Clear();
+        dirChangeDic.Add(0, gravityDirState);
+        if (player == null)
+        {
+            player = FindObjectOfType<Player>();
+            Debug.Log(player);
+        }
+    }
+
+    private void InitOnRewind()
+    {
+        player = null;
+        isRewind = true;
+        if (rewindPlayer == null)
+        {
+            rewindPlayer = FindObjectOfType<Player>();
+            Debug.Log(gravityDirState);
+            StartCoroutine(DirChangeCo());
+        }
+    }
+    private IEnumerator DirChangeCo()
+    {
+        yield return null;
+        dirChangeDic = dirChangeDic.OrderByDescending(x => x.Key).ToDictionary(x => x.Key, x => x.Value);
+
+        float beforeKey = 11f;
+        foreach (var item in dirChangeDic)
+        {
+            Debug.Log(item.Key + "  " + item.Value);
+            PlayerGravitySet(item.Value, rewindPlayer);
+            yield return new WaitForSeconds(beforeKey - item.Key);
+            beforeKey = item.Key;
+        }
+
+
+        //dirChangeDic.Clear();
+
+            //Debug.Log("아이템의 키:"+ item.Key + "아이템의 밸류:" + item.Value);
+            //Debug.Log("storage = " + storage);
+            //yield return new WaitForSeconds(item.Key - storage); //스테이지 시간
+            //storage += item.Key;
+            //PlayerGravitySet(item.Value, rewindPlayer);
+            //Debug.Log("잘 돌았니?" + rewindPlayer.PlayerRenderer.flipDirection);
+
+        //foreach마지막이 실행이안됨
+        //한번돌고 실행하고 딕셔너리를 2번돈다  
+        //딕셔너리가 빌떄까지 
+        //한번사용 하면 딕셔너리
     }
 }

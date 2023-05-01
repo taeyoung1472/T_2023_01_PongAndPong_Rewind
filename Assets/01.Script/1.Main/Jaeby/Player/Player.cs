@@ -296,7 +296,7 @@ public class Player : MonoBehaviour
         if (_playerRenderer.flipDirection == DirectionType.Left || _playerRenderer.flipDirection == DirectionType.Right)
         {
             maxDistance = _col.bounds.extents.x;
-            halfExtents.x = _groundCheckRayLength;
+            halfExtents.y = _groundCheckRayLength;
         }
         else
         {
@@ -304,8 +304,6 @@ public class Player : MonoBehaviour
             halfExtents.y = _groundCheckRayLength;
         }
         _isGrounded = Physics.BoxCast(boxCenter, halfExtents, -transform.up, out _slopeHit, transform.rotation, maxDistance, _groundMask);
-        if (_slopeHit.collider != null)
-            Debug.Log(_slopeHit.collider.gameObject.name);
         if (lastGrounded == _isGrounded)
             return;
         OnIsGrounded?.Invoke(_isGrounded);
