@@ -1,6 +1,5 @@
 using Cinemachine;
 using DG.Tweening;
-using Highlighters;
 using System.Collections;
 using UnityEngine;
 
@@ -65,7 +64,7 @@ public class MainMenuManager : MonoSingleTon<MainMenuManager>
                     PlayGame();
                 }
             }
-            else if(Define.player.PlayerActionCheck(PlayerActionType.Interact) == false)
+            else if (Define.player.PlayerActionCheck(PlayerActionType.Interact) == false)
             {
                 OpenMenu();
             }
@@ -123,7 +122,6 @@ public class MainMenuManager : MonoSingleTon<MainMenuManager>
         menuCam.Priority = 0;
         playerCam.Priority = 1;
         player.SetActive(true);
-        player.GetComponent<Highlighter>().enabled = true;
         playerInput.enabled = true;
 
         isActive = false;
@@ -141,7 +139,6 @@ public class MainMenuManager : MonoSingleTon<MainMenuManager>
         playerCam.Priority = 0;
 
         player.GetComponent<Player>().ForceStop();
-        player.GetComponent<Highlighter>().enabled = false;
         playerInput.enabled = false;
 
         isActive = true;

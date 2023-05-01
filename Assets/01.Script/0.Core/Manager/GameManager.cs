@@ -5,23 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoSingleTon<GameManager>
 {
-    //[SerializeField] private GameObject pauseUi;
-
-    //[SerializeField] private StageData testStage;//StageDataSO testStage;
-
-    //public void Update()
-    //{
-    //    //if (Input.GetKeyDown(KeyCode.Escape))
-    //    //{
-    //    //    pauseUi.SetActive(!pauseUi.activeSelf);
-    //    //    if (pauseUi.activeSelf)
-    //    //        Time.timeScale = 0;
-    //    //    else
-    //    //        Time.timeScale = 1;
-    //    //}
-    //}
-    
-
     public void StagePlayStart()
     {
 
@@ -38,13 +21,17 @@ public class GameManager : MonoSingleTon<GameManager>
 
     public void LoadMenu()
     {
-        LoadingSceneManager.LoadScene(0);//LoadingSceneManager.LoadScene(0);
-        Debug.Log("いい");
+        LoadingSceneManager.LoadScene(0);
     }
 
     public void LoadGame()
     {
         LoadingSceneManager.LoadScene(1);
-        Debug.Log("しし");
+    }
+
+    public void LoadNextStage()
+    {
+        StageManager.stageDataSO = StageManager.stageDataSO.nextStageData;
+        LoadingSceneManager.LoadScene(1);
     }
 }

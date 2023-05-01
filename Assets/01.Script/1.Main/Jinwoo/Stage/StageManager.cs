@@ -1,11 +1,6 @@
-using Highlighters;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UniRx.Triggers;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
-using DG.Tweening;
 public class StageManager : MonoSingleTon<StageManager>
 {
     [Header("스테이지 관련")]
@@ -69,7 +64,7 @@ public class StageManager : MonoSingleTon<StageManager>
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.R) && isRestartPossible && !freeLookCam._isActivated&&
+        if (Input.GetKeyDown(KeyCode.R) && isRestartPossible && !freeLookCam._isActivated &&
             !BreakScreenController.Instance.isBreaking)
         {
             OnReStartArea();
@@ -116,7 +111,7 @@ public class StageManager : MonoSingleTon<StageManager>
             {
                 RewindManager.Instance.StopRewindTimeBySeconds();
             }
-                InitPlayer(false);
+            InitPlayer(false);
 
             TimerManager.Instance.InitTimer();
             TimerManager.Instance.ChangeOnTimer(false);
@@ -147,7 +142,7 @@ public class StageManager : MonoSingleTon<StageManager>
 
     public void SpawnStage()
     {
-        if(stageDataSO == null)
+        if (stageDataSO == null)
         {
             stageDataSO = demoStageDataSO;
         }
@@ -165,7 +160,7 @@ public class StageManager : MonoSingleTon<StageManager>
     public void InitTransform()
     {
         CurStage.transform.DOKill();
-      // CurStage.transform.rotation = Quaternion.Euler(0, 0, 0);
+        // CurStage.transform.rotation = Quaternion.Euler(0, 0, 0);
 
     }
     public void SpawnPlayer(Transform spawnPos, bool isDefaultPlayer, bool isFirst = false)
@@ -183,32 +178,17 @@ public class StageManager : MonoSingleTon<StageManager>
         }
         else
         {
-            Highlighter highlighter = playerObj.AddComponent<Highlighter>();
-            highlighter.GetRenderers();
-            highlighter.Renderers.RemoveAt(highlighter.Renderers.Count - 1);
-            highlighter.Settings.UseMeshOutline = true;
-            highlighter.Settings.MeshOutlineThickness = 0.01f;
-            highlighter.Settings.MeshOutlineFront.Color = Color.white;
-            
             rePlayerObj = PoolManager.Pop(PoolType.RewindPlayer);
             if (playerObj != null)
                 playerObj.GetComponent<Player>().DisableReset();
             rePlayerObj.GetComponent<Player>().EnableReset();
             rePlayerObj.transform.position = spawnPos.position;
-
-            highlighter = rePlayerObj.AddComponent<Highlighter>();
-            highlighter.GetRenderers();
-            highlighter.Renderers.RemoveAt(highlighter.Renderers.Count - 1);
-            highlighter.Settings.UseMeshOutline = true;
-            highlighter.Settings.MeshOutlineThickness = 0.01f;
-            highlighter.Settings.MeshOutlineFront.Color = Color.yellow;
         }
-        Highlighter.HighlightersNeedReset();
     }
 
     public void InitPlayer(bool isClear)
     {
-        if(rePlayerObj != null)
+        if (rePlayerObj != null)
         {
             PoolManager.Push(PoolType.RewindPlayer, rePlayerObj);
         }
