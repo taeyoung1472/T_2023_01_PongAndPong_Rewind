@@ -296,7 +296,7 @@ public class Player : MonoBehaviour
         if (_playerRenderer.flipDirection == DirectionType.Left || _playerRenderer.flipDirection == DirectionType.Right)
         {
             maxDistance = _col.bounds.extents.x;
-            halfExtents.x = _groundCheckRayLength;
+            halfExtents.y = _groundCheckRayLength;
         }
         else
         {

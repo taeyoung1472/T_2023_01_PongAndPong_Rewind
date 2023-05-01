@@ -53145,7 +53145,7 @@ GameObject:
   - component: {fileID: 6198562773258931636}
   - component: {fileID: 2712934307250929565}
   - component: {fileID: 1392310697423987736}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Wall_R (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -56050,7 +56050,7 @@ GameObject:
   - component: {fileID: 6496248408959064200}
   - component: {fileID: 6496248408959064201}
   - component: {fileID: 2385918186675489265}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Wall_R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -56172,8 +56172,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   deployType: 2
-  firstAxis: {x: -10, y: 0, z: 2}
-  secondAxis: {x: -10, y: 9, z: -2}
+  firstAxis: {x: 0, y: 0, z: 2}
+  secondAxis: {x: 0, y: 9, z: -2}
   prefab: {fileID: 2254269081510064502, guid: 13d40436472398f4bb28d791dba5fabc, type: 3}
   prefabSizeFactor: 1
   centerX: 0
@@ -56212,7 +56212,7 @@ GameObject:
   - component: {fileID: 6496248409247676855}
   - component: {fileID: 6496248409247676840}
   - component: {fileID: 460118848041291790}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WallB
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -74512,7 +74512,7 @@ GameObject:
   - component: {fileID: 6837418239432306925}
   - component: {fileID: 4299651486593935894}
   - component: {fileID: 2702088601923767838}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Wall_R (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -79895,12 +79895,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4357689904505457132, guid: 15c059a0cc52ec94a8189c18e0e9b6ff, type: 3}
   m_PrefabInstance: {fileID: 1347204982500460558}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &4843781550388346917 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5875696006807324715, guid: 15c059a0cc52ec94a8189c18e0e9b6ff, type: 3}
+  m_PrefabInstance: {fileID: 1347204982500460558}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1803788063167092950
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 2792127625373361883}
+    m_TransformParent: {fileID: 4843781550388346917}
     m_Modifications:
     - target: {fileID: 6922515265029031185, guid: 4543295202c243c42a52699e5428777c, type: 3}
       propertyPath: gravityDirState
@@ -79952,15 +79957,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6922515265029031187, guid: 4543295202c243c42a52699e5428777c, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 6922515265029031187, guid: 4543295202c243c42a52699e5428777c, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 6922515265029031187, guid: 4543295202c243c42a52699e5428777c, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 6922515265029031187, guid: 4543295202c243c42a52699e5428777c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -80337,7 +80342,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5097872224309720769, guid: 98a194a0dcbc7d348bc98400ff9f8ed9, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5097872224309720769, guid: 98a194a0dcbc7d348bc98400ff9f8ed9, type: 3}
       propertyPath: m_LocalPosition.x
@@ -80380,6 +80385,18 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5097872224309720775, guid: 98a194a0dcbc7d348bc98400ff9f8ed9, type: 3}
+      propertyPath: timer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5097872224309720775, guid: 98a194a0dcbc7d348bc98400ff9f8ed9, type: 3}
+      propertyPath: rewindButton
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5097872224309720775, guid: 98a194a0dcbc7d348bc98400ff9f8ed9, type: 3}
+      propertyPath: gravityButton
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5097872224309720775, guid: 98a194a0dcbc7d348bc98400ff9f8ed9, type: 3}
       propertyPath: gravityDirState
       value: 3
       objectReference: {fileID: 0}
@@ -80395,6 +80412,10 @@ PrefabInstance:
       propertyPath: controlDataArr.Array.data[0].target
       value: 
       objectReference: {fileID: 8726253534492515783}
+    - target: {fileID: 5097872224346056636, guid: 98a194a0dcbc7d348bc98400ff9f8ed9, type: 3}
+      propertyPath: m_Size.y
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 98a194a0dcbc7d348bc98400ff9f8ed9, type: 3}
 --- !u!1001 &8911841229357767943
@@ -80410,7 +80431,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5097872224309720769, guid: 98a194a0dcbc7d348bc98400ff9f8ed9, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5097872224309720769, guid: 98a194a0dcbc7d348bc98400ff9f8ed9, type: 3}
       propertyPath: m_LocalPosition.x
@@ -80453,12 +80474,36 @@ PrefabInstance:
       value: -90
       objectReference: {fileID: 0}
     - target: {fileID: 5097872224309720775, guid: 98a194a0dcbc7d348bc98400ff9f8ed9, type: 3}
+      propertyPath: timer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5097872224309720775, guid: 98a194a0dcbc7d348bc98400ff9f8ed9, type: 3}
+      propertyPath: rewindButton
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5097872224309720775, guid: 98a194a0dcbc7d348bc98400ff9f8ed9, type: 3}
+      propertyPath: gravityButton
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5097872224309720775, guid: 98a194a0dcbc7d348bc98400ff9f8ed9, type: 3}
       propertyPath: gravityDirState
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5097872224309720775, guid: 98a194a0dcbc7d348bc98400ff9f8ed9, type: 3}
       propertyPath: gravitChangeDirState
-      value: 3
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5097872224309720775, guid: 98a194a0dcbc7d348bc98400ff9f8ed9, type: 3}
+      propertyPath: controlDataArr.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5097872224309720775, guid: 98a194a0dcbc7d348bc98400ff9f8ed9, type: 3}
+      propertyPath: controlDataArr.Array.data[0].target
+      value: 
+      objectReference: {fileID: 8726253534492515783}
+    - target: {fileID: 5097872224346056636, guid: 98a194a0dcbc7d348bc98400ff9f8ed9, type: 3}
+      propertyPath: m_Size.y
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 98a194a0dcbc7d348bc98400ff9f8ed9, type: 3}
