@@ -21,7 +21,8 @@ public class PortalTelepote : GimmickObject
     private Collider col;
 
     [SerializeField] private bool isRight;
-   
+
+    [SerializeField] private float telValue = 2f;
     public override void Awake()
     {
         base.Awake();
@@ -69,11 +70,11 @@ public class PortalTelepote : GimmickObject
                 Debug.Log(offset);
                 if (isRight)
                 {
-                    trm.position = (reciever.position + new Vector3(offset * 2f, 0, 0)) - diffVec;
+                    trm.position = (reciever.position + new Vector3(offset * telValue, 0, 0)) - diffVec;
                 }
                 else
                 {
-                    trm.position = (reciever.position + new Vector3(-offset * 2f, 0, 0)) - diffVec;
+                    trm.position = (reciever.position + new Vector3(-offset * telValue, 0, 0)) - diffVec;
                 }
             }
         }
