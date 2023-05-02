@@ -20,6 +20,9 @@ public class PlayerRenderer : MonoBehaviour
         get => _flipDirection;
         set
         {
+            if (value == _flipDirection)
+                return;
+
             _flipDirection = value;
             switch (_flipDirection)
             {

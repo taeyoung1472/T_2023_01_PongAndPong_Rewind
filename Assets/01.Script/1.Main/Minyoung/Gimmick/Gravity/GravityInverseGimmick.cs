@@ -75,59 +75,33 @@ public class GravityInverseGimmick : ControlAbleObjcet
         player.ForceStop();
         player.ColliderSet(PlayerColliderType.Normal);
 
+        player.PlayerRenderer.flipDirection = direction;
+        player.GravityModule.GravityDir = Utility.GetDirToVector(direction) * 9.8f;
 
         CapsuleCollider col = player.Col;
         Vector3 newPos = Vector3.zero;
         switch (direction)
         {
             case DirectionType.Left:
-                Debug.Log("한번만찍히나요?");
-                player.transform.position += new Vector3(0, moveValue, 0);
-                player.transform.Rotate(new Vector3(0, 0, -90));
-                if (RayCheck(Vector3.up, col))
-                {
-                    newPos = hit.point;
-                    newPos.y += col.height / 2;
-                    player.transform.position = newPos;
-                }
                 break;
             case DirectionType.Right:
-                player.transform.position += new Vector3(0, - moveValue, 0);
-                player.transform.Rotate(new Vector3(0, 0, 90));
-                if (RayCheck(Vector3.up, col))
-                {
-                    newPos = hit.point;
-                    newPos.y -= col.height / 2;
-                    player.transform.position = newPos;
-                }
                 break;
             case DirectionType.Up:
-                //player.transform.position -= new Vector3(0, moveValue, 0);
-                player.transform.Rotate(new Vector3(180, 0, 0));
+                if (isRewind)
+                {
+                    Debug.Log("너 재비니?");
+                    player.ColliderSet(PlayerColliderType.Normal);
+                    player.transform.Translate(Vector2.down * player.Col.height);
+                }
                 break;
             case DirectionType.Down:
-               // player.transform.position += new Vector3(moveValue, 0, 0);
-                player.transform.Rotate(Vector3.zero);
+                if (isRewind)
+                {
+                    //player.ColliderSet(PlayerColliderType.Normal);
+                    //player.transform.Translate(Vector2.down * player.Col.height);
+                }
                 break;
         }
-        //if ((gravityDirState == DirectionType.Left || gravityDirState == DirectionType.Right))
-        //{
-        //    Vector3 newPos = Vector3.zero;
-        //    if (RayCheck(Vector3.up, col))
-        //    {
-        //        newPos = hit.point;
-        //        newPos.y -= col.height * 1.1f;
-        //        player.transform.position = newPos;
-        //    }
-        //}
-        //else
-        //{
-        //    Vector3 newPos = Vector3.zero;
-        //    newPos = player.transform.position + player.transform.up * col.height;
-        //    player.transform.position = newPos;
-        //}
-        player.PlayerRenderer.flipDirection = direction;
-        player.GravityModule.GravityDir = Utility.GetDirToVector(direction) * 9.8f;
     }
 
     private bool RayCheck(Vector3 dir, CapsuleCollider playerCol)
