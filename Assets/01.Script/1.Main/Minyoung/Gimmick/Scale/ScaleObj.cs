@@ -14,10 +14,11 @@ public class ScaleObj : ControlAbleObjcet
         switch (controlType)
         {
             case ControlType.Control:
-            Debug.Log("이거작동중임");
                 rb.useGravity = true;
                 break;
             case ControlType.None:
+                Debug.Log("ㄴㄷㅌ");
+                rb.useGravity = false;
                 break;
             case ControlType.ReberseControl:
                 break;

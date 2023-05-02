@@ -24,6 +24,8 @@ public class GravityInverseGimmick : ControlAbleObjcet
 
     private float timer = 0f;
 
+    [SerializeField] private float moveValue = 2f;
+
     private void OnTriggerEnter(Collider other)
     {
         //if (_locked)
@@ -76,9 +78,11 @@ public class GravityInverseGimmick : ControlAbleObjcet
 
         CapsuleCollider col = player.Col;
         Vector3 newPos = Vector3.zero;
-        switch (gravityDirState)
+        switch (direction)
         {
             case DirectionType.Left:
+                Debug.Log("한번만찍히나요?");
+                player.transform.position += new Vector3(0, moveValue, 0);
                 player.transform.Rotate(new Vector3(0, 0, -90));
                 if (RayCheck(Vector3.up, col))
                 {
@@ -88,6 +92,7 @@ public class GravityInverseGimmick : ControlAbleObjcet
                 }
                 break;
             case DirectionType.Right:
+                player.transform.position += new Vector3(0, - moveValue, 0);
                 player.transform.Rotate(new Vector3(0, 0, 90));
                 if (RayCheck(Vector3.up, col))
                 {
@@ -97,9 +102,11 @@ public class GravityInverseGimmick : ControlAbleObjcet
                 }
                 break;
             case DirectionType.Up:
+                //player.transform.position -= new Vector3(0, moveValue, 0);
                 player.transform.Rotate(new Vector3(180, 0, 0));
                 break;
             case DirectionType.Down:
+               // player.transform.position += new Vector3(moveValue, 0, 0);
                 player.transform.Rotate(Vector3.zero);
                 break;
         }
@@ -205,7 +212,6 @@ public class GravityInverseGimmick : ControlAbleObjcet
         float beforeKey = 11f;
         foreach (var item in dirChangeDic)
         {
-            Debug.Log(item.Key + "  " + item.Value);
             PlayerGravitySet(item.Value, rewindPlayer);
             yield return new WaitForSeconds(beforeKey - item.Key);
             beforeKey = item.Key;
