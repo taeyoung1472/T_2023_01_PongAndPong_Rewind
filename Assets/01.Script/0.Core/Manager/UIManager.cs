@@ -20,7 +20,7 @@ public class UIManager : MonoSingleTon<UIManager>
 
     public bool IsPause => isPause;
 
-    [SerializeField] private Image pauseImg;
+    [SerializeField] private GameObject pauseImg;
 
     public void Init()
     {
