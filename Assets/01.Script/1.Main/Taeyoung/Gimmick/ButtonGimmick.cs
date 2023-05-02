@@ -1,6 +1,5 @@
 using System;
 using UnityEditor;
-using UnityEditor.U2D.Path.GUIFramework;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -79,7 +78,7 @@ public class ButtonGimmick : GimmickObject
             CamManager.Instance.RemoveTargetGroup(control.target.transform);
         }
     }
- 
+
     public void CheckGravityTimeDir()
     {
         timer += Time.deltaTime;
@@ -120,7 +119,7 @@ public class ButtonGimmick : GimmickObject
             }
         }
     }
-    
+
     public void OnTriggerEnter(Collider other)
     {
 
@@ -170,13 +169,13 @@ public class ButtonGimmick : GimmickObject
 
         foreach (var control in controlDataArr)
         {
-            if(controlType == ControlType.None)
+            if (controlType == ControlType.None)
                 CamManager.Instance.RemoveTargetGroup(control.target.transform);
             else
                 CamManager.Instance.AddTargetGroup(control.target.transform);
 
-            if(isFunc)
-                controlType = control.isReverse? ControlType.ReberseControl: ControlType.Control;
+            if (isFunc)
+                controlType = control.isReverse ? ControlType.ReberseControl : ControlType.Control;
 
             control.target.Control(controlType, control.isLever, player, gravitChangeDirState);
         }

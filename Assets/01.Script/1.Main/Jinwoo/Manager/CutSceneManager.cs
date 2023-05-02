@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine.Playables;
 //using Cinemachine;
 using UnityEngine;
-using UnityEditor.Animations;
 
 public class CutSceneManager : MonoSingleTon<CutSceneManager>
 {
@@ -14,7 +13,7 @@ public class CutSceneManager : MonoSingleTon<CutSceneManager>
 
     [SerializeField] private Player player;
     [SerializeField] private Animator playerAnimator;
-    [SerializeField] private AnimatorController talkAnimator;
+    [SerializeField] private RuntimeAnimatorController talkAnimator;
 
     private bool isAutoTalking = false;
     [SerializeField] private int autoTalkingIndex = 0;
