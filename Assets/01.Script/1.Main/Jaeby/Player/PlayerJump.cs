@@ -180,6 +180,7 @@ public class PlayerJump : PlayerAction, IPlayerResetable
 
     public void JumpCountSetting(int cnt)
     {
+        _firstJump = false;
         _curJumpCount = cnt;
         if (_curJumpCount < 0)
             _curJumpCount = 0;
@@ -187,6 +188,7 @@ public class PlayerJump : PlayerAction, IPlayerResetable
 
     public void MoreJump(int cnt)
     {
+        _firstJump = false;
         _curJumpCount -= cnt;
         if (_curJumpCount < 0)
             _curJumpCount = 0;
