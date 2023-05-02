@@ -27,8 +27,11 @@ public class GimmickVisualLink : MonoBehaviour
 
         Outlinable startOutline = start.gameObject.AddComponent<Outlinable>();
         startOutline.AddAllChildRenderersToRenderingList();
+        startOutline.OutlineParameters.Color = color;
+        
         Outlinable endOutline = end.gameObject.AddComponent<Outlinable>();
         endOutline.AddAllChildRenderersToRenderingList();
+        endOutline.OutlineParameters.Color = color;
 
         lightning.gameObject.SetActive(true);
         lightning.LightningTintColor = color;
