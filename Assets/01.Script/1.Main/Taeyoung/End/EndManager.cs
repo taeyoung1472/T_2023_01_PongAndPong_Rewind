@@ -20,7 +20,6 @@ public class EndManager : MonoSingleTon<EndManager>
         stageExplainImage.sprite = StageManager.stageDataSO.stageSprite;
         timePieceText.SetText("È¹µæÇÑ ½Ã°£ÀÇ Á¶°¢" + timePiece + "/1");
         currentStageNumberText.SetText(StageManager.stageDataSO.stageNumber.ToString());
-
         nextStageBtn.interactable = StageManager.stageDataSO.nextStageData != null;
         nextStageBtn.onClick.AddListener(() => nextStageBtn.interactable = false);
 
