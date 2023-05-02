@@ -12,7 +12,10 @@ public class StageDataSO : ScriptableObject
     public string stageInfo;
 
     public Sprite stageSprite;
+    public Sprite closerStageSprite;
+
     public string stageSubTitle;
     public string stageExplain;
     public int stageIndex;
+
 }

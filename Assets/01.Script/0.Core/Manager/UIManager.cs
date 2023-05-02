@@ -25,7 +25,6 @@ public class UIManager : MonoSingleTon<UIManager>
     public void Init()
     {
         //RewindManager.Instance.OnTimeChanging += OnTimeChange;
-        
     }
 
     public void OnPlayTimeChange(float time)
