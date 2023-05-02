@@ -178,17 +178,20 @@ public class PlayerJump : PlayerAction, IPlayerResetable
             OnGrounded(true);
     }
 
-    public void MoreJump(int cnt)
+    public void JumpCountSetting(int cnt)
     {
+        _firstJump = false;
         _curJumpCount = cnt;
         if (_curJumpCount < 0)
             _curJumpCount = 0;
     }
 
-    public void JumpCountUp()
+    public void MoreJump(int cnt)
     {
-        _curJumpCount--;
-        _curJumpCount = Mathf.Clamp(_curJumpCount, 0, _player.playerMovementSO.jumpCount);
+        _firstJump = false;
+        _curJumpCount -= cnt;
+        if (_curJumpCount < 0)
+            _curJumpCount = 0;
     }
 
     public void TryGravityUp(Vector2 input)
@@ -204,8 +207,6 @@ public class PlayerJump : PlayerAction, IPlayerResetable
         _jumpInputTime = 0f;
         _jumpKeyUped = false;
         JumpEnd();
-        if (_player.PlayerActionCheck(PlayerActionType.WallGrab))
-            JumpCountUp();
     }
 
     public void SpawnJumpEffect()

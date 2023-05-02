@@ -289,6 +289,9 @@ public class Player : MonoBehaviour
 
     private void GroundCheck()
     {
+        //if (PlayerActionCheck(PlayerActionType.WallGrab, PlayerActionType.Dash))
+        //    return;
+
         bool lastGrounded = _isGrounded;
         Vector3 boxCenter = _col.bounds.center;
         Vector3 halfExtents = _col.bounds.extents;
