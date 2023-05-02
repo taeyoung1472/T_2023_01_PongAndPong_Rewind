@@ -2,7 +2,7 @@ using System;
 using UnityEditor;
 using UnityEngine;
 using Random = UnityEngine.Random;
-using DG.Tweening;
+
 public class ButtonGimmick : GimmickObject
 {
     bool isActive = false;
@@ -171,7 +171,7 @@ public class ButtonGimmick : GimmickObject
                 Debug.Log(player);
             }
         }
-        
+
         if (other.TryGetComponent<GimmickObject>(out GimmickObject gimmickObject))
         {
             Debug.Log(gimmickObject);
