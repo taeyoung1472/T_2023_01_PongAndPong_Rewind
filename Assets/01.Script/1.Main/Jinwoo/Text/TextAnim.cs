@@ -27,6 +27,10 @@ public class TextAnim : MonoBehaviour
     {
         textData.timeBtwnChars = speed;
     }
+    public void ClearText()
+    {
+        _textMeshPro.SetText("");
+    }
     public void EndCheck()
     {
         if (idx <= textData.stringArray.Length - 1)

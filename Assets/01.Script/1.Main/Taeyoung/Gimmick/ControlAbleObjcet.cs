@@ -7,6 +7,7 @@ public abstract class ControlAbleObjcet : MonoBehaviour
 
     public bool isLocked =false;
 
+ 
 }
 public enum ControlType
 {

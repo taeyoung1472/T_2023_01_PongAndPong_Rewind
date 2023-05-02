@@ -10,9 +10,18 @@ public class MovingObjectGimmick : ControlAbleObjcet
     [SerializeField] private Vector3 rotateDir;
     private bool isMoving;
 
+    Vector3 originPos;
+    Quaternion originRot;
+
     public void Awake()
     {
-        RewindManager.Instance.InitRewind += () => this.enabled = false;
+        originPos = transform.position;
+        originRot = transform.rotation;
+        RewindManager.Instance.InitRewind += () =>
+        {
+            transform.SetPositionAndRotation(originPos, originRot);
+            this.enabled = false;
+        };
         RewindManager.Instance.InitPlay += () =>
         {
             isMoving = true;
