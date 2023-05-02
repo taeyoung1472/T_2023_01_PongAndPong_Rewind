@@ -25,9 +25,12 @@ public class GravityModule : MonoBehaviour, IPlayerResetable
     private Vector3 _gravityDir = new Vector3(0, -9.8f, 0);
     public Vector3 GravityDir { get => _gravityDir; set => _gravityDir = value; }
 
+    private bool _isMovePlatform = false;
+    public bool IsMovePlatform { get => _isMovePlatform; set => _isMovePlatform = value; }
+
     public Vector3 GetGravity()
     {
-        if (_useGravity)
+        if (_useGravity && _isMovePlatform == false)
         {
             return _gravityDir * (_gravityScale + _curGravityAcceleration);
         }
@@ -76,5 +79,6 @@ public class GravityModule : MonoBehaviour, IPlayerResetable
     {
         if (_accelCo != null)
             StopCoroutine(_accelCo);
+        _isMovePlatform = false;
     }
 }

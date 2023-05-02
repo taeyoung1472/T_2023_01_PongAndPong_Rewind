@@ -25,7 +25,10 @@ public class MovePlatform : MonoBehaviour
         Transform trm = other.transform;
         if (_trmList.Contains(trm))
             return;
-
+        if (other.GetComponent<Player>() != null)
+        {
+            other.GetComponent<Player>().GravityModule.IsMovePlatform = true;
+        }
         _trmList.Add(trm);
         trm.SetParent(_parentTrm);
     }
@@ -37,7 +40,10 @@ public class MovePlatform : MonoBehaviour
         Transform trm = other.transform;
         if (_trmList.Contains(trm) == false)
             return;
-
+        if (other.GetComponent<Player>() != null)
+        {
+            other.GetComponent<Player>().GravityModule.IsMovePlatform = false;
+        }
         _trmList.Remove(trm);
         trm.SetParent(null);
     }
