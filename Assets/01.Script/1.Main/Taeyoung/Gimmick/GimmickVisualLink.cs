@@ -1,4 +1,5 @@
 using DigitalRuby.ThunderAndLightning;
+using EPOOutline;
 using UnityEngine;
 
 public class GimmickVisualLink : MonoBehaviour
@@ -23,6 +24,11 @@ public class GimmickVisualLink : MonoBehaviour
             pathArr[i].position = Vector3.Lerp(start.position, end.position, (float)i / (pathArr.Length - 1));
             pathArr[i].position = pathArr[i].position + Vector3.back * Mathf.Sin(((float)i / (pathArr.Length - 1)) * Mathf.PI) * depth;
         }
+
+        Outlinable startOutline = start.gameObject.AddComponent<Outlinable>();
+        startOutline.AddAllChildRenderersToRenderingList();
+        Outlinable endOutline = end.gameObject.AddComponent<Outlinable>();
+        endOutline.AddAllChildRenderersToRenderingList();
 
         lightning.gameObject.SetActive(true);
         lightning.LightningTintColor = color;

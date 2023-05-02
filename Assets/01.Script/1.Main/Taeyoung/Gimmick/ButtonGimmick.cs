@@ -1,5 +1,6 @@
 using System;
 using UnityEditor;
+using UnityEditor.U2D.Path.GUIFramework;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -78,78 +79,36 @@ public class ButtonGimmick : GimmickObject
             CamManager.Instance.RemoveTargetGroup(control.target.transform);
         }
     }
-    public override void InitOnRewind()
-    {
-        base.InitOnRewind();
-        isStart = false;
-    }
+ 
     public void CheckGravityTimeDir()
     {
-        //참일때까지 시간을 뺴
-            timer += Time.deltaTime;
+        timer += Time.deltaTime;
         if (isActivePlayer)
         {
             gravityInverseGimmick.dirChangeDic.Add(timer, gravitChangeDirState);
-           // Debug.Log(timer); 
-            //foreach (var pair in gravityInverseGimmick.dirChangeDic)
-            //{
-            //    Debug.Log(pair.Key + "키와밸류" +  pair.Value.ToString());
-            //}
         }
     }
     public void Update()
     {
-        if (isRewind)// && rewindButton == false)
-        {
+        if (isRewind)
             return;
-        }
-
         if (gravityButton)
-        {
             CheckGravityTimeDir();
-        }
-
-        CheckPlayer();
 
         if (!isToggle)
         {
             if (isActive)
             {
-                foreach (var control in controlDataArr)
-                {
-                    if (control.isLever)
-                    {
-                        control.target.Control(control.isReverse ? ControlType.ReberseControl : ControlType.Control, true, player, gravitChangeDirState);
-                    }
-                    else
-                    {
-                        control.target.Control(control.isReverse ? ControlType.ReberseControl : ControlType.Control, false, player, gravitChangeDirState);
-                        //Debug.Log("버튼" + gravitChangeDirState);
-                    }
-                }
+                Control();
             }
             else
             {
-                foreach (var control in controlDataArr)
-                {
-                    control.target.Control(ControlType.None, false, player, gravitChangeDirState);
-                    CamManager.Instance.RemoveTargetGroup(control.target.transform);
-                }
+                Control(false);
             }
         }
         if (toggleing == true && isToggle == true)
         {
-            foreach (var control in controlDataArr)
-            {
-                if (control.isLever)
-                {
-                    control.target.Control(control.isReverse ? ControlType.ReberseControl : ControlType.Control, true, player, gravitChangeDirState);
-                }
-                else
-                {
-                    control.target.Control(control.isReverse ? ControlType.ReberseControl : ControlType.Control, false, player, gravitChangeDirState);
-                }
-            }
+            Control();
             if (isActive == false)
             {
                 toggleTime -= Time.deltaTime;
@@ -157,39 +116,9 @@ public class ButtonGimmick : GimmickObject
             if (toggleTime <= 0.0f)
             {
                 animator.Play("Idle");
-                foreach (var control in controlDataArr)
-                {
-                    control.target.Control(ControlType.None, false, player, gravitChangeDirState);
-                }
+                Control(false);
             }
         }
-
-
-    }
-
-    private void CheckPlayer()
-    {
-        if (isActive)
-            return;
-
-        foreach (var col in Physics.OverlapBox(transform.position, Vector3.one * 2.5f))
-        {
-            if (col.gameObject.TryGetComponent<Player>(out Player player))
-            {
-                foreach (var control in controlDataArr)
-                {
-                    CamManager.Instance.AddTargetGroup(control.target.transform);
-                }
-
-                return;
-            }
-        }
-
-        foreach (var control in controlDataArr)
-        {
-            CamManager.Instance.RemoveTargetGroup(control.target.transform);
-        }
-        return;
     }
     
     public void OnTriggerEnter(Collider other)
@@ -219,6 +148,7 @@ public class ButtonGimmick : GimmickObject
             animator.Play("Push");
         }
     }
+
     public void OnTriggerExit(Collider other)
     {
         if (other.TryGetComponent<GimmickObject>(out GimmickObject gimmickObject))
@@ -229,6 +159,26 @@ public class ButtonGimmick : GimmickObject
         if (other.gameObject.TryGetComponent<Player>(out Player player))
         {
             isActivePlayer = false;
+        }
+    }
+
+    public void Control(bool isFunc = true)
+    {
+        ControlType controlType = ControlType.Control;
+        if (isFunc == false)
+            controlType = ControlType.None;
+
+        foreach (var control in controlDataArr)
+        {
+            if(controlType == ControlType.None)
+                CamManager.Instance.RemoveTargetGroup(control.target.transform);
+            else
+                CamManager.Instance.AddTargetGroup(control.target.transform);
+
+            if(isFunc)
+                controlType = control.isReverse? ControlType.ReberseControl: ControlType.Control;
+
+            control.target.Control(controlType, control.isLever, player, gravitChangeDirState);
         }
     }
 
