@@ -49,6 +49,7 @@ public class ButtonGimmick : GimmickObject
         {
             RewindManager.Instance.RestartPlay += () =>
             {
+                Control(false);
                 foreach (var control in controlDataArr)
                 {
                     control.target.isLocked = false;
