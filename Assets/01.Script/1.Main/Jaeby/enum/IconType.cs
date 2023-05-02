@@ -5,5 +5,11 @@ public enum IconType
     Researcher,
     Portal,
     Trader,
+    Bujang,
+    Sajang,
+    Secretary,
+    Investor,
+    Employee,
+
 
 }

@@ -8,20 +8,27 @@ public class ButtonGimmick : GimmickObject
     bool isActive = false;
     bool isActivePlayer = false;
 
-    [SerializeField] private bool onlyObj;
-
     [SerializeField] private ControlData[] controlDataArr;
     [SerializeField] private GimmickVisualLink visualLinkPrefab;
     [SerializeField] private Color color = Color.white;
 
+    #region 토글
     [SerializeField] private bool isToggle;
     [SerializeField] private float toggleTime;
     [SerializeField] private float origntToggleTime;
     [SerializeField] private bool toggleing;
+    #endregion
+
+    private bool isStart = false;
+
 
     private Animator animator;
 
+    [SerializeField] private bool gravityButton;
     public DirectionType gravitChangeDirState;
+    private GravityInverseGimmick gravityInverseGimmick;
+
+    public float timer = 0f;
 
     [ContextMenu("Gen Color")]
     public void GenColor()
@@ -53,23 +60,53 @@ public class ButtonGimmick : GimmickObject
             GimmickVisualLink link = Instantiate(visualLinkPrefab);
             link.Link(transform, data.target.transform, color);
         }
+
+        if (gravityButton)
+        {
+            gravityInverseGimmick = FindObjectOfType<GravityInverseGimmick>();
+        }
     }
     public override void InitOnPlay()
     {
         base.InitOnPlay();
         toggleing = false;
         toggleTime = origntToggleTime;
+        timer = 0;
         foreach (var control in controlDataArr)
         {
             control.target.Control(ControlType.None, false, player, gravitChangeDirState);
             CamManager.Instance.RemoveTargetGroup(control.target.transform);
         }
     }
+    public override void InitOnRewind()
+    {
+        base.InitOnRewind();
+        isStart = false;
+    }
+    public void CheckGravityTimeDir()
+    {
+        //참일때까지 시간을 뺴
+            timer += Time.deltaTime;
+        if (isActivePlayer)
+        {
+            gravityInverseGimmick.dirChangeDic.Add(timer, gravitChangeDirState);
+           // Debug.Log(timer); 
+            //foreach (var pair in gravityInverseGimmick.dirChangeDic)
+            //{
+            //    Debug.Log(pair.Key + "키와밸류" +  pair.Value.ToString());
+            //}
+        }
+    }
     public void Update()
     {
-        if (isRewind)
+        if (isRewind)// && rewindButton == false)
         {
             return;
+        }
+
+        if (gravityButton)
+        {
+            CheckGravityTimeDir();
         }
 
         CheckPlayer();
@@ -87,6 +124,7 @@ public class ButtonGimmick : GimmickObject
                     else
                     {
                         control.target.Control(control.isReverse ? ControlType.ReberseControl : ControlType.Control, false, player, gravitChangeDirState);
+                        //Debug.Log("버튼" + gravitChangeDirState);
                     }
                 }
             }
@@ -153,7 +191,7 @@ public class ButtonGimmick : GimmickObject
         }
         return;
     }
-
+    
     public void OnTriggerEnter(Collider other)
     {
 
@@ -162,9 +200,9 @@ public class ButtonGimmick : GimmickObject
             isActivePlayer = true;
             toggleing = true;
             toggleTime = origntToggleTime;
-
+            //역행상태에서 버튼을 밟게 했는데 타이밍이 반대야
             animator.Play("Push");
-
+            //gravityInverseGimmick.dirChangeDic.Add(2, gravitChangeDirState);
             if (this.player == null)
             {
                 this.player = player;
@@ -187,6 +225,10 @@ public class ButtonGimmick : GimmickObject
         {
             isActive = false;
             animator.Play("Idle");
+        }
+        if (other.gameObject.TryGetComponent<Player>(out Player player))
+        {
+            isActivePlayer = false;
         }
     }
 
