@@ -7,6 +7,7 @@ public class EndManager : MonoSingleTon<EndManager>
 {
     #region NextStage UI
     [SerializeField] private GameObject nextStagePanel;
+    public GameObject NextStagePanel => nextStagePanel;
 
     [SerializeField] private Image nextStageExplainImage;
     [SerializeField] private Button nextCloserSpriteBtn;
@@ -14,6 +15,7 @@ public class EndManager : MonoSingleTon<EndManager>
 
     #region ±×³É ²¢À»¶§ UI
     [SerializeField] private GameObject endPanel;
+    public GameObject EndPanel => endPanel;
 
     [SerializeField] private Button closerSpriteBtn;
     [SerializeField] private Button nextStageBtn;
@@ -26,6 +28,7 @@ public class EndManager : MonoSingleTon<EndManager>
     #endregion
 
     [SerializeField] private bool isCloser = false;
+
 
     private void Start()
     {
