@@ -8,23 +8,20 @@ public class GravityInverseGimmick : ControlAbleObjcet
 {
     public DirectionType gravityDirState;
     public Dictionary<float, DirectionType> dirChangeDic = new Dictionary<float, DirectionType>();
-    //버튼을 밟을까 바뀔방향이 
-    [SerializeField]
-    private float _gravityScale = 0.8f;
-    [SerializeField]
-    private float _coolTime = 0.2f;
-    private bool _locked = false;
+
+    //[SerializeField]
+    //private float _coolTime = 0.2f;
+    //private bool _locked = false;
+
     [SerializeField]
     private LayerMask _groundMask = 0;
 
     public Player player;
     public Player rewindPlayer;
 
+    private bool isRewind = false;
+
     RaycastHit hit;
-
-    private float timer = 0f;
-
-    [SerializeField] private float moveValue = 2f;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -89,7 +86,6 @@ public class GravityInverseGimmick : ControlAbleObjcet
             case DirectionType.Up:
                 if (isRewind)
                 {
-                    Debug.Log("너 재비니?");
                     player.ColliderSet(PlayerColliderType.Normal);
                     player.transform.Translate(Vector2.down * player.Col.height);
                 }
@@ -111,12 +107,12 @@ public class GravityInverseGimmick : ControlAbleObjcet
         return Physics.Raycast(player.transform.position, dir, out hit, playerCol.height, _groundMask);
     }
 
-    private IEnumerator CooltimeCoroutine()
-    {
-        _locked = true;
-        yield return new WaitForSeconds(_coolTime);
-        _locked = false;
-    }
+    //private IEnumerator CooltimeCoroutine()
+    //{
+    //    _locked = true;
+    //    yield return new WaitForSeconds(_coolTime);
+    //    _locked = false;
+    //}
 
     public override void Control(ControlType controlType, bool isLever, Player player, DirectionType dirType)
     {
@@ -152,7 +148,7 @@ public class GravityInverseGimmick : ControlAbleObjcet
         }
 
     }
-    public bool isRewind = false;
+
     private void InitOnPlay()
     {
         rewindPlayer = null;
@@ -190,20 +186,5 @@ public class GravityInverseGimmick : ControlAbleObjcet
             yield return new WaitForSeconds(beforeKey - item.Key);
             beforeKey = item.Key;
         }
-
-
-        //dirChangeDic.Clear();
-
-            //Debug.Log("아이템의 키:"+ item.Key + "아이템의 밸류:" + item.Value);
-            //Debug.Log("storage = " + storage);
-            //yield return new WaitForSeconds(item.Key - storage); //스테이지 시간
-            //storage += item.Key;
-            //PlayerGravitySet(item.Value, rewindPlayer);
-            //Debug.Log("잘 돌았니?" + rewindPlayer.PlayerRenderer.flipDirection);
-
-        //foreach마지막이 실행이안됨
-        //한번돌고 실행하고 딕셔너리를 2번돈다  
-        //딕셔너리가 빌떄까지 
-        //한번사용 하면 딕셔너리
     }
 }
