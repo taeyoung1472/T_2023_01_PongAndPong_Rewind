@@ -6,6 +6,9 @@ public class TriggerNotify : MonoBehaviour
     bool isTriggerd = false;
     public void OnTriggerEnter(Collider other)
     {
+        if (MainMenuManager.isOpend)
+            return;
+
         if (isTriggerd)
             return;
 

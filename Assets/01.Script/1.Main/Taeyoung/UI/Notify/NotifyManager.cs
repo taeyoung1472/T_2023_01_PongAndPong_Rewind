@@ -14,13 +14,9 @@ public class NotifyManager : MonoSingleTon<NotifyManager>
     public void Update()
     {
         LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)transform);
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Return))
         {
             CloseNotify();
-        }
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            Notify("안녕하세요 저는 도움말 입니다.");
         }
     }
 

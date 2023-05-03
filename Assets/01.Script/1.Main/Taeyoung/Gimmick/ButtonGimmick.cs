@@ -1,6 +1,5 @@
 using System;
 using UnityEditor;
-using UnityEditor.U2D.Path.GUIFramework;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -29,7 +28,8 @@ public class ButtonGimmick : GimmickObject
     public DirectionType gravitChangeDirState;
     private GravityInverseGimmick gravityInverseGimmick;
 
-    public float timer = 0f;
+    private float timer = 0f;
+    [SerializeField] private DirectionType preDirType;
 
     [ContextMenu("Gen Color")]
     public void GenColor()
@@ -49,11 +49,7 @@ public class ButtonGimmick : GimmickObject
         {
             RewindManager.Instance.RestartPlay += () =>
             {
-                foreach (var control in controlDataArr)
-                {
-                    control.target.isLocked = false;
-                }
-                isActive = false;
+                InitInfo();
             };
         }
         foreach (var data in controlDataArr)
@@ -67,25 +63,41 @@ public class ButtonGimmick : GimmickObject
             gravityInverseGimmick = FindObjectOfType<GravityInverseGimmick>();
         }
     }
+    private void InitInfo()
+    {
+        Control(false);
+        foreach (var control in controlDataArr)
+        {
+            control.target.isLocked = false;
+            preDirType = DirectionType.None;
+        }
+        timer = 0;
+        isActive = false;
+
+    }
     public override void InitOnPlay()
     {
         base.InitOnPlay();
         toggleing = false;
         toggleTime = origntToggleTime;
         timer = 0;
+        InitInfo();
         foreach (var control in controlDataArr)
         {
             control.target.Control(ControlType.None, false, player, gravitChangeDirState);
             CamManager.Instance.RemoveTargetGroup(control.target.transform);
         }
     }
- 
+
     public void CheckGravityTimeDir()
     {
         timer += Time.deltaTime;
-        if (isActivePlayer)
+        if (isActivePlayer && preDirType != gravitChangeDirState)
         {
             gravityInverseGimmick.dirChangeDic.Add(timer, gravitChangeDirState);
+            Debug.Log("µñ¼Å³Ê¸®¿¡ Ãß°¡µÊ");
+            preDirType = gravitChangeDirState;
+            
         }
     }
     public void Update()
@@ -120,7 +132,7 @@ public class ButtonGimmick : GimmickObject
             }
         }
     }
-    
+
     public void OnTriggerEnter(Collider other)
     {
 
@@ -170,13 +182,13 @@ public class ButtonGimmick : GimmickObject
 
         foreach (var control in controlDataArr)
         {
-            if(controlType == ControlType.None)
+            if (controlType == ControlType.None)
                 CamManager.Instance.RemoveTargetGroup(control.target.transform);
             else
                 CamManager.Instance.AddTargetGroup(control.target.transform);
 
-            if(isFunc)
-                controlType = control.isReverse? ControlType.ReberseControl: ControlType.Control;
+            if (isFunc)
+                controlType = control.isReverse ? ControlType.ReberseControl : ControlType.Control;
 
             control.target.Control(controlType, control.isLever, player, gravitChangeDirState);
         }
