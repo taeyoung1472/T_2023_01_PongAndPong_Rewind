@@ -25,15 +25,32 @@ public class EndManager : MonoSingleTon<EndManager>
     [SerializeField] private Image stageExplainImage;
     #endregion
 
-    private bool isCloser = false;
+    [SerializeField] private bool isCloser = false;
 
+    private void Start()
+    {
+        closerSpriteBtn.onClick.AddListener(() =>
+        {
+            isCloser = !isCloser;
+            closerSpriteBtn.GetComponentInChildren<TextMeshProUGUI>().text = (isCloser) ? "æ‡µµ" : "∏ ";
+            stageExplainImage.sprite = (isCloser) ? StageManager.stageDataSO.closerStageSprite : StageManager.stageDataSO.stageSprite;
+        });
+
+
+        nextCloserSpriteBtn.onClick.AddListener(() =>
+        {
+            isCloser = !isCloser;
+            nextCloserSpriteBtn.GetComponentInChildren<TextMeshProUGUI>().text = (isCloser) ? "æ‡µµ" : "∏ ";
+            nextStageExplainImage.sprite = (isCloser) ? StageManager.stageDataSO.nextStageData.closerStageSprite : StageManager.stageDataSO.nextStageData.stageSprite;
+        });
+    }
     public void End()
     {
         nextStagePanel.SetActive(false);
         endPanel.SetActive(true);
 
         isCloser = false;
-
+        closerSpriteBtn.GetComponentInChildren<TextMeshProUGUI>().text = "∏ ";
         stageExplainImage.sprite = StageManager.stageDataSO.stageSprite;
 
         timePieceText.SetText("»πµÊ«— Ω√∞£¿« ¡∂∞¢" + "1/1");
@@ -42,12 +59,7 @@ public class EndManager : MonoSingleTon<EndManager>
         nextStageBtn.interactable = StageManager.stageDataSO.nextStageData != null;
         nextStageBtn.onClick.AddListener(() => nextStageBtn.interactable = false);
 
-        closerSpriteBtn.onClick.AddListener(() =>
-        {
-            isCloser = !isCloser;
-            closerSpriteBtn.GetComponentInChildren<TextMeshProUGUI>().text = (isCloser) ? "æ‡µµ" : "∏ ";
-            stageExplainImage.sprite = (isCloser) ? StageManager.stageDataSO.closerStageSprite : StageManager.stageDataSO.stageSprite;
-        });
+        
     }
     public void ReStart()
     {
@@ -59,14 +71,9 @@ public class EndManager : MonoSingleTon<EndManager>
         nextStagePanel.SetActive(true);
 
         isCloser = false;
+        nextCloserSpriteBtn.GetComponentInChildren<TextMeshProUGUI>().text = "∏ ";
         nextStageExplainImage.sprite = StageManager.stageDataSO.nextStageData.stageSprite;
 
-        nextCloserSpriteBtn.onClick.AddListener(() =>
-        {
-            isCloser = !isCloser;
-            nextCloserSpriteBtn.GetComponentInChildren<TextMeshProUGUI>().text = (isCloser) ? "æ‡µµ" : "∏ ";
-            nextStageExplainImage.sprite = (isCloser) ? StageManager.stageDataSO.nextStageData.closerStageSprite : StageManager.stageDataSO.nextStageData.stageSprite;
-        });
     }
 
     public void JoinStage()

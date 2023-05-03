@@ -7,8 +7,9 @@ public class LaserCurveInteract : Interact
     private ShootLaser shootLaser;
 
     public float rotateValue = 45f;
-    private void Awake()
+    public override void Awake()
     {
+        base.Awake();
         shootLaser = FindObjectOfType<ShootLaser>();   
     }
 

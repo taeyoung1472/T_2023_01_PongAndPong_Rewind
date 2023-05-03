@@ -5,7 +5,6 @@ using DG.Tweening;
 public class MoveGimmick : GimmickObject
 {
     private Vector3 firstmovePos;
-    [SerializeField] private float waitTime = 2f;
     [SerializeField] private float moveTime = 3f;
     [SerializeField] private float moveDistance = 5f;
 
