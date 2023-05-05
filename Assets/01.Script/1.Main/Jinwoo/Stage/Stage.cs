@@ -1,8 +1,7 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using DG.Tweening;
-using UnityEngine.UI;
 
 public class Stage : MonoBehaviour
 {
@@ -25,8 +24,8 @@ public class Stage : MonoBehaviour
     public void ReStartArea(bool isReStart)
     {
         StartCoroutine(StartReStart(isReStart));
-        
     }
+
     public IEnumerator StartReStart(bool isReStart)
     {
         if (isReStart) //만약 리스타트면 연출 넣고 
@@ -35,9 +34,9 @@ public class Stage : MonoBehaviour
         }
         else //그냥 자유시점이면 연출 다른거나 안넣고
         {
-            
+
         }
-        yield return new WaitUntil(()=> !BreakScreenController.Instance.isBreaking);
+        yield return new WaitUntil(() => !BreakScreenController.Instance.isBreaking);
 
         yield return new WaitForSeconds(1f);
 
@@ -56,7 +55,7 @@ public class Stage : MonoBehaviour
             transform.DOKill();
             transform.rotation = Quaternion.Euler(0, 0, 0);
             curArea.EntryArea(true);
-            
+
         }
 
         RewindManager.Instance.RestartPlay?.Invoke();
