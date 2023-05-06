@@ -25,7 +25,6 @@ public class UIManager : MonoSingleTon<UIManager>
     public void Init()
     {
         //RewindManager.Instance.OnTimeChanging += OnTimeChange;
-        
     }
 
     public void OnPlayTimeChange(float time)
@@ -68,7 +67,7 @@ public class UIManager : MonoSingleTon<UIManager>
     {
         if (Input.GetKeyDown(KeyCode.Escape) && !BreakScreenController.Instance.isBreaking)
         {
-            if (!isPause)
+            if (!isPause && EndManager.Instance.EndPanel.activeSelf == false && EndManager.Instance.NextStagePanel.activeSelf == false)
             {
                 isPause = true;
                 TimerManager.Instance.ChangeOnTimer(false);

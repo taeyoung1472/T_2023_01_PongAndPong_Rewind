@@ -4,11 +4,15 @@ public class TriggerNotify : MonoBehaviour
 {
     [SerializeField] private string notifyText;
     bool isTriggerd = false;
-    public void OnTriggerEnter(Collider other)
+
+    public void Awake()
     {
         if (MainMenuManager.isOpend)
-            return;
+            Destroy(this);
+    }
 
+    public void OnTriggerEnter(Collider other)
+    {
         if (isTriggerd)
             return;
 

@@ -6,8 +6,9 @@ public class ChainGimmickObj : GimmickObject
 {
     ChainGimmick chainGimmick;
     List<ChainGimmickObj> chainGimmickObjList = new List<ChainGimmickObj>();
-    private void Awake()
+    public override void Awake()
     {
+        base.Awake();
         Init();
     }
     public override void Init()

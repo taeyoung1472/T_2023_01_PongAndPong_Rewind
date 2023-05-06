@@ -7,8 +7,9 @@ public class BoxCastGimmickObject : GimmickObject
     private Collider _col;
     [SerializeField] private float rayDistance;
     public bool isCol = false; 
-    private void Awake()
+    public override void Awake()
     {
+        base.Awake();
         Init();
     }
 
