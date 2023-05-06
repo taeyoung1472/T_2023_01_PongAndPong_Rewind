@@ -5,46 +5,84 @@ using System.Net;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class MovePlatform : MonoBehaviour
+public class MovePlatform : GimmickObject
 {
     [SerializeField, Header("null¿Ã∏È root")]
     private Transform _parentTrm = null;
+    private Rigidbody _rigid = null;
 
-    private List<Transform> _trmList = new List<Transform>();
+    private List<GameObject> _objList = new List<GameObject>();
+
+    [SerializeField]
+    private LayerMask _mask = 0;
+    [SerializeField]
+    private float _lerpSpeed = 0.5f;
+    private Vector3 _lastPosition = Vector3.zero;
 
     private void Start()
     {
         if (_parentTrm == null)
             _parentTrm = transform.root;
+        _rigid = GetComponentInParent<Rigidbody>();
+    }
+
+    public override void InitOnPlay()
+    {
+        base.InitOnPlay();
+        _lastPosition = Vector3.zero;
+        _objList.Clear();
+    }
+
+    public override void InitOnRewind()
+    {
+        base.InitOnRewind();
+        _lastPosition = _parentTrm.position;
+        _objList.Clear();
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.GetComponent<Rigidbody>() == null)
+        if ((_mask & (1 << other.gameObject.layer)) == 0 || _objList.Contains(other.gameObject))
             return;
-        Transform trm = other.transform;
-        if (_trmList.Contains(trm))
-            return;
-        if (other.GetComponent<Player>() != null)
-        {
-            other.GetComponent<Player>().GravityModule.IsMovePlatform = true;
-        }
-        _trmList.Add(trm);
-        trm.SetParent(_parentTrm);
+
+        _objList.Add(other.gameObject);
+        other.transform.SetParent(_parentTrm);
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.GetComponent<Rigidbody>() == null)
+        if ((_mask & (1 << other.gameObject.layer)) == 0 || _objList.Contains(other.gameObject) == false)
             return;
-        Transform trm = other.transform;
-        if (_trmList.Contains(trm) == false)
+
+        _objList.Remove(other.gameObject);
+        other.transform.SetParent(null);
+    }
+
+    private void LateUpdate()
+    {
+        if (isRewind == false)
             return;
-        if (other.GetComponent<Player>() != null)
+
+        _rigid.MovePosition(Vector3.Lerp(_lastPosition, _parentTrm.position, _lerpSpeed));
+        for (int i = 0; i < _objList.Count; i++)
         {
-            other.GetComponent<Player>().GravityModule.IsMovePlatform = false;
+            if (_objList[i].GetComponent<Collider>().CompareTag("Player"))
+            {
+                if(_objList[i].GetComponent<Player>().PlayerActionCheck(PlayerActionType.Jump))
+                {
+                    continue;
+                }
+            }
+            Vector3 newVec = _objList[i].transform.position;
+            newVec.y = _parentTrm.position.y +
+                _parentTrm.transform.localScale.y * 0.49f;
+            _objList[i].transform.position = newVec;
         }
-        _trmList.Remove(trm);
-        trm.SetParent(null);
+
+        _lastPosition = _parentTrm.position;
+    }
+
+    public override void Init()
+    {
     }
 }

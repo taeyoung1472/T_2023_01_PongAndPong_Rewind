@@ -77,7 +77,7 @@ public class PlayerJump : PlayerAction, IPlayerResetable
         _curJumpCount = 0;
         _player.GravityModule.GravityScale = _player.GravityModule.OriginGravityScale;
     }
-    public void ForceJump(Vector2 dir, float jumpPower)
+    public void ForceJump(Vector2 dir, float jumpPower, float jumpHoldTime)
     {
         _jumpEndCheck = false;
         _excuting = true;
@@ -90,7 +90,7 @@ public class PlayerJump : PlayerAction, IPlayerResetable
         }
         _player.VeloCityResetImm(y: true);
 
-        _jumpCoroutine = StartCoroutine(JumpCoroutine(dir, jumpPower));
+        _jumpCoroutine = StartCoroutine(JumpCoroutine(dir, jumpPower, jumpHoldTime));
         OnJump?.Invoke();
     }
 
@@ -129,14 +129,14 @@ public class PlayerJump : PlayerAction, IPlayerResetable
             _player.PlayerRenderer.ForceFlip();
             Vector2 jumpDir = _player.playerMovementSO.wallJumpPower;
             jumpDir.x *= _player.PlayerRenderer.Forward.x;
-            _jumpCoroutine = StartCoroutine(JumpCoroutine(jumpDir, _player.playerMovementSO.wallGrabJumpPower));
+            _jumpCoroutine = StartCoroutine(JumpCoroutine(jumpDir, _player.playerMovementSO.wallGrabJumpPower, _player.playerMovementSO.jumpHoldTime));
             _moveLockCoroutine = StartCoroutine(MoveLockCoroutine());
             OnWallGrabJump?.Invoke();
         }
         else
         {
             _player.VeloCityResetImm(y: true);
-            _jumpCoroutine = StartCoroutine(JumpCoroutine(_player.transform.up, _player.playerMovementSO.jumpPower));
+            _jumpCoroutine = StartCoroutine(JumpCoroutine(_player.transform.up, _player.playerMovementSO.jumpPower, _player.playerMovementSO.jumpHoldTime));
         }
     }
 
@@ -147,14 +147,14 @@ public class PlayerJump : PlayerAction, IPlayerResetable
         _player.PlayerActionLock(false, PlayerActionType.Move);
     }
 
-    private IEnumerator JumpCoroutine(Vector2 dir, float jumpPower)
+    private IEnumerator JumpCoroutine(Vector2 dir, float jumpPower, float jumpHoldTime)
     {
         float time = 1f;
         while (time > 0f)
         {
             Vector2 final = new Vector2(Mathf.Sqrt(1 - (float)Math.Pow(time - 1, 2)) * dir.x * jumpPower, Mathf.Sqrt(1 - (float)Math.Pow(time - 1, 2)) * dir.y * jumpPower);
             _player.VelocitySetExtra(final.x, final.y);
-            time -= Time.deltaTime * (1f / _player.playerMovementSO.jumpHoldTime);
+            time -= Time.deltaTime * (1f / jumpHoldTime);
             yield return null;
         }
         JumpEnd();
