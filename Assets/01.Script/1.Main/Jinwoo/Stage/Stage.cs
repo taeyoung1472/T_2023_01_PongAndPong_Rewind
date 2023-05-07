@@ -78,5 +78,6 @@ public class Stage : MonoBehaviour
             TimerManager.Instance.EndRewind();
         }
         EndManager.Instance.End();
+        CollectionManager.Instance.SaveCollection();
     }
 }
