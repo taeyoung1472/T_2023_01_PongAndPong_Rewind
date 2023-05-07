@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "SO/Stage/InGameInfo")]
@@ -18,4 +19,7 @@ public class StageDataSO : ScriptableObject
     public string stageExplain;
     public int stageIndex;
 
+
+    //¼öÁýÇ°
+    public List<bool> stageCollection;
 }

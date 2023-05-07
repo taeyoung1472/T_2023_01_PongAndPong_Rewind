@@ -12,6 +12,9 @@ public class ButtonGimmick : GimmickObject
     [SerializeField] private GimmickVisualLink visualLinkPrefab;
     [SerializeField] private Color color = Color.white;
 
+    [SerializeField] private bool isVisuaLinkDisable;
+    [SerializeField] private bool isCameraControlDisable;
+
     #region ≈‰±€
     [SerializeField] private bool isToggle;
     [SerializeField] private float toggleTime;
@@ -52,10 +55,14 @@ public class ButtonGimmick : GimmickObject
                 InitInfo();
             };
         }
-        foreach (var data in controlDataArr)
+
+        if (!isVisuaLinkDisable)
         {
-            GimmickVisualLink link = Instantiate(visualLinkPrefab);
-            link.Link(transform, data.target.transform, color);
+            foreach (var data in controlDataArr)
+            {
+                GimmickVisualLink link = Instantiate(visualLinkPrefab);
+                link.Link(transform, data.target.transform, color);
+            }
         }
 
         if (gravityButton)
@@ -182,10 +189,13 @@ public class ButtonGimmick : GimmickObject
 
         foreach (var control in controlDataArr)
         {
-            if (controlType == ControlType.None)
-                CamManager.Instance.RemoveTargetGroup(control.target.transform);
-            else
-                CamManager.Instance.AddTargetGroup(control.target.transform);
+            if (!isCameraControlDisable)
+            {
+                if (controlType == ControlType.None)
+                    CamManager.Instance.RemoveTargetGroup(control.target.transform);
+                else
+                    CamManager.Instance.AddTargetGroup(control.target.transform);
+            }
 
             if (isFunc)
                 controlType = control.isReverse ? ControlType.ReberseControl : ControlType.Control;
