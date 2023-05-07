@@ -13,7 +13,7 @@ public class CollectionManager : MonoSingleTon<CollectionManager>
 
     public StageCollectionData StageCollectionData;
 
-    public ChapterStageCollectionData ChapterStageCollectionData = new ChapterStageCollectionData();
+    public ChapterStageCollectionData ChapterStageCollectionData = null;
 
     [SerializeField] private StageWorldListSO stageWorldList;
     private void Awake()
@@ -29,7 +29,7 @@ public class CollectionManager : MonoSingleTon<CollectionManager>
             //StageManager.Instance.CurStageDataSO.stageCollection.Add(item.IsEat);
             Debug.Log(item);
         }
-
+        LoadCollection();
         //처음에 아이템을 트루로해
         SetCollectionActive();
     }
