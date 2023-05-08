@@ -16,12 +16,13 @@ public class ScaleObj : ControlAbleObjcet
         RewindManager.Instance.InitRewind += () =>
         {
             rb.useGravity = false;
-            transform.SetPositionAndRotation(originPos, originRot);
-            this.enabled = false;
+            //transform.SetPositionAndRotation(originPos, originRot);
+            //this.enabled = false;
         };
     }
     public override void Control(ControlType controlType, bool isLever, Player player, DirectionType dirType)
     {
+        Debug.Log("ÀÏ´Üµé¾î¿È" + controlType);
         switch (controlType)
         {
             case ControlType.Control:
