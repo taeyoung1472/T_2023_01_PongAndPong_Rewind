@@ -12,6 +12,7 @@ public class Collection : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
+            Debug.Log("SDdssd");
             Player player = other.GetComponent<Player>();
             isEat = true;
             gameObject.SetActive(false);
