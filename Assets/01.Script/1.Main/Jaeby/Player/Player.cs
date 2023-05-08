@@ -388,8 +388,8 @@ public class Player : MonoBehaviour
                 height = 1.9f;
                 break;
             case PlayerColliderType.Dash:
-                center.y = 0.3f;
-                height = 0f;
+                center.y = 0.35f;
+                height = 0.8f;
                 break;
             default:
                 break;
