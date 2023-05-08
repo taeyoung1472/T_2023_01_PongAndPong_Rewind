@@ -78,7 +78,7 @@ public class Stage : MonoBehaviour
             StageManager.Instance.fadeImg.gameObject.SetActive(false);
             TimerManager.Instance.EndRewind();
         }
-        EndManager.Instance.End();
         CollectionManager.Instance.SaveCollection();
+        EndManager.Instance.End();
     }
 }

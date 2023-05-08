@@ -11,13 +11,14 @@ public class CollectionManager : MonoSingleTon<CollectionManager>
 
     public Transform collectionParentTrm;
 
-    public StageCollectionData StageCollectionData;
+    private StageCollectionData _stageCollectionData;
 
-    public ChapterStageCollectionData ChapterStageCollectionData = null;
+    private ChapterStageCollectionData _chapterStageCollectionData;
 
-    [SerializeField] private StageWorldListSO stageWorldList;
+    public WorldDataSO worldDataSO;
     private void Awake()
     {
+        LoadCollectionJson();
     }
     private void Start()
     {
@@ -26,16 +27,14 @@ public class CollectionManager : MonoSingleTon<CollectionManager>
         foreach (var item in collectionParentTrm.GetComponentsInChildren<Collection>())
         {
             collectionObj.Add(item);
-            //StageManager.Instance.CurStageDataSO.stageCollection.Add(item.IsEat);
             Debug.Log(item);
         }
-        LoadCollection();
-        //처음에 아이템을 트루로해
         SetCollectionActive();
     }
-
+    
     public void SetCollectionActive()
     {
+
         for (int i = 0; i < StageManager.Instance.CurStageDataSO.stageCollection.Count; i++)
         {
             if (StageManager.Instance.CurStageDataSO.stageCollection[i] == false)
@@ -48,15 +47,50 @@ public class CollectionManager : MonoSingleTon<CollectionManager>
             }
         }
     }
-
-    public void LoadCollection()
+    public void SetStageCollecitonSO()
     {
-        string json = File.ReadAllText(Application.dataPath + "/Save/ChapterCollection.json");
-
-        ChapterStageCollectionData = Newtonsoft.Json.JsonConvert.DeserializeObject<ChapterStageCollectionData>(json);
-        if (ChapterStageCollectionData == null)
+        for (int i = 0; i < _chapterStageCollectionData.stageCollectionDatas.Count; i++)
         {
-            ChapterStageCollectionData = new ChapterStageCollectionData();
+            worldDataSO.stageList[i].stageCollection = _chapterStageCollectionData.stageCollectionDatas[i].collectionData;
+        }
+    }
+    public void LoadCollectionJson()
+    {
+        string path = Application.dataPath + "/Save/ChapterCollection.json";
+        if (File.Exists(path))
+        {
+            string json = File.ReadAllText(path);
+            _chapterStageCollectionData = Newtonsoft.Json.JsonConvert.DeserializeObject<ChapterStageCollectionData>(json);
+
+            SetStageCollecitonSO();
+        }
+        else
+        {
+            Debug.Log("콜렉션제이슨데이터생성");
+            File.WriteAllText(path, Newtonsoft.Json.JsonConvert.SerializeObject(_chapterStageCollectionData));
+
+            if (_chapterStageCollectionData == null)
+            {
+                _chapterStageCollectionData = new ChapterStageCollectionData();
+                Debug.Log("널이니까 새로만듬 챕터를" + _chapterStageCollectionData);
+            }
+
+
+            if (_chapterStageCollectionData.stageCollectionDatas == null)
+            {
+                _chapterStageCollectionData.stageCollectionDatas = new List<StageCollectionData>();
+
+                if (_stageCollectionData == null)
+                {
+                    _stageCollectionData = new StageCollectionData();
+                    Debug.Log("널이니까 새로만듬 스테이지를" + _stageCollectionData);
+                }
+                for (int i = 0; i < worldDataSO.stageList.Count; i++)
+                {
+                    _chapterStageCollectionData.stageCollectionDatas.Add(_stageCollectionData);
+                    _chapterStageCollectionData.stageCollectionDatas[i].collectionData = worldDataSO.stageList[i].stageCollection;
+                }
+            }
         }
     }
 
@@ -65,13 +99,17 @@ public class CollectionManager : MonoSingleTon<CollectionManager>
         SaveStageCollecitonActive();
 
         string path = Application.dataPath + "/Save/ChapterCollection.json";
-        string json = Newtonsoft.Json.JsonConvert.SerializeObject(ChapterStageCollectionData);
+        string json = Newtonsoft.Json.JsonConvert.SerializeObject(_chapterStageCollectionData);
 
-        Debug.Log("콜렉션 " + json);
+        for(int i = 0; i < _chapterStageCollectionData.stageCollectionDatas.Count; i++)
+        {
+            Debug.Log(_chapterStageCollectionData.stageCollectionDatas[i].collectionData[0] + " ");
+            //Debug.Log("콜렉션 " + json);
+        }
         File.WriteAllText(path, json);
     }
     public void SaveStageCollecitonActive()
     {
-        ChapterStageCollectionData.stageCollectionDatas[StageManager.Instance.CurStageDataSO.stageIndex].collectionData = StageManager.Instance.CurStageDataSO.stageCollection;
+        _chapterStageCollectionData.stageCollectionDatas[StageManager.Instance.CurStageDataSO.stageIndex].collectionData = StageManager.Instance.CurStageDataSO.stageCollection;
     }
 }
