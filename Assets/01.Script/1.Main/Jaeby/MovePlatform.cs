@@ -75,7 +75,7 @@ public class MovePlatform : GimmickObject
             }
             Vector3 newVec = _objList[i].transform.position;
             newVec.y = _parentTrm.position.y +
-                _parentTrm.transform.localScale.y * 0.49f;
+                _parentTrm.GetComponent<BoxCollider>().size.y * 0.49f;
             _objList[i].transform.position = newVec;
         }
 
