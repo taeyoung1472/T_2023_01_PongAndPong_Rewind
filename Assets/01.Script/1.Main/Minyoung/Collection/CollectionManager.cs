@@ -22,8 +22,13 @@ public class CollectionManager : MonoSingleTon<CollectionManager>
     }
     private void Start()
     {
+     
         collectionParentTrm = GameObject.Find("Collection").transform;
-
+        if (collectionParentTrm == null)
+        {
+            return;
+        }
+        Debug.Log("콜렉션트랜스폼있음");
         foreach (var item in collectionParentTrm.GetComponentsInChildren<Collection>())
         {
             collectionObj.Add(item);
