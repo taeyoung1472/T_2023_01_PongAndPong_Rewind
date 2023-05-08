@@ -137,16 +137,16 @@ public class ScaleGimmick : GimmickObject
         return leftWeight;
     }
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.yellow;
-        Vector3 boxCenter = rightCol.bounds.center + Vector3.up * rightCol.bounds.size.y;
-        Vector3 halfExtents = rightCol.bounds.extents;
-        Gizmos.DrawWireCube(boxCenter, halfExtents);
+    //private void OnDrawGizmos()
+    //{
+    //    Gizmos.color = Color.yellow;
+    //    Vector3 boxCenter = rightCol.bounds.center + Vector3.up * rightCol.bounds.size.y;
+    //    Vector3 halfExtents = rightCol.bounds.extents;
+    //    Gizmos.DrawWireCube(boxCenter, halfExtents);
 
-        boxCenter = leftCol.bounds.center + Vector3.up * rightCol.bounds.size.y;
-        halfExtents = leftCol.bounds.size;
-        Gizmos.DrawWireCube(boxCenter, halfExtents);
-    }
+    //    boxCenter = leftCol.bounds.center + Vector3.up * rightCol.bounds.size.y;
+    //    halfExtents = leftCol.bounds.size;
+    //    Gizmos.DrawWireCube(boxCenter, halfExtents);
+    //}
 
 }

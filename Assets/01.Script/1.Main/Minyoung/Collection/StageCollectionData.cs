@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class StageCollectionData : MonoBehaviour
+public class StageCollectionData 
 {
+
     public List<bool> collectionData;
 }
