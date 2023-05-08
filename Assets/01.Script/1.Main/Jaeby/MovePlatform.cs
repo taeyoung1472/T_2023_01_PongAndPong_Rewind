@@ -16,6 +16,8 @@ public class MovePlatform : GimmickObject
     [SerializeField]
     private LayerMask _mask = 0;
     [SerializeField]
+    private bool _larpMoving = false;
+    [SerializeField]
     private float _lerpSpeed = 0.5f;
     private Vector3 _lastPosition = Vector3.zero;
 
@@ -23,7 +25,7 @@ public class MovePlatform : GimmickObject
     {
         if (_parentTrm == null)
             _parentTrm = transform.root;
-        _rigid = GetComponentInParent<Rigidbody>();
+        //_rigid = GetComponentInParent<Rigidbody>();
     }
 
     public override void InitOnPlay()
@@ -63,7 +65,9 @@ public class MovePlatform : GimmickObject
         if (isRewind == false)
             return;
 
-        _rigid.MovePosition(Vector3.Lerp(_lastPosition, _parentTrm.position, _lerpSpeed));
+        if(_larpMoving)
+            _parentTrm.position = Vector3.Lerp(_lastPosition, _parentTrm.position, _lerpSpeed);
+        //_rigid.MovePosition();
         for (int i = 0; i < _objList.Count; i++)
         {
             if (_objList[i].GetComponent<Collider>().CompareTag("Player"))
