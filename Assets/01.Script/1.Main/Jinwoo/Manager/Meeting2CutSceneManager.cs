@@ -37,12 +37,24 @@ public class Meeting2CutSceneManager : MonoSingleTon<Meeting2CutSceneManager>
         if (isMeetingStart)
         {
             curCool += Time.deltaTime;
-            if (Input.GetKeyDown(KeyCode.Space) && spacebarCoolTime <= curCool)
+            if (Input.GetKeyDown(KeyCode.Space))
             {
-                CheckAutoTalkSpeechBubble();
+                ShowText();
                 curCool = 0;
             }
         }
+    }
+    public void ShowText()
+    {
+        foreach (var npc in npcTexts)
+        {
+            if (npc.gameObject.activeSelf && npc.isAnim)
+            {
+                npc.isSkip = true;
+                return;
+            }
+        }
+        CheckAutoTalkSpeechBubble();
     }
     public void CheckAutoTalkSpeechBubble()
     {

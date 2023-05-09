@@ -33,12 +33,24 @@ public class LastNPCTalkCutScene : MonoSingleTon<LastNPCTalkCutScene>
         if (isTalkStart)
         {
             curCool += Time.deltaTime;
-            if (Input.GetKeyDown(KeyCode.Space) && spacebarCoolTime <= curCool)
+            if (Input.GetKeyDown(KeyCode.Space))
             {
-                CheckAutoTalkSpeechBubble();
+                ShowText();
                 curCool = 0;
             }
         }
+    }
+    public void ShowText()
+    {
+        foreach (var npc in npcTexts)
+        {
+            if (npc.gameObject.activeSelf && npc.isAnim)
+            {
+                npc.isSkip = true;
+                return;
+            }
+        }
+        CheckAutoTalkSpeechBubble();
     }
     public void StartTalkNPC()
     {
@@ -110,13 +122,12 @@ public class LastNPCTalkCutScene : MonoSingleTon<LastNPCTalkCutScene>
         AllClearText();
 
         isTalkStart = false;
+        FadeInOutManager.Instance.FadeIn(5f);
         yield return new WaitForSeconds(2f);
 
     }
-    public IEnumerator NextCutScene()
+    public void NextCutScene()
     {
-        FadeInOutManager.Instance.FadeIn(5f);
-        yield return new WaitForSeconds(5.5f);
         SceneManager.LoadScene("OfficeJinwoo");
     }
 

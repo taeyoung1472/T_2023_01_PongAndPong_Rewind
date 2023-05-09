@@ -43,11 +43,27 @@ public class OfficeCutSceneManager : MonoSingleTon<OfficeCutSceneManager>
         if (isAnswerPhone)
         {
             curCool += Time.deltaTime;
-            if (Input.GetKeyDown(KeyCode.Space) && spacebarCoolTime <= curCool)
+            if (Input.GetKeyDown(KeyCode.Space))
             {
-                CheckAutoTalkSpeechBubble();
+                ShowText();
                 curCool = 0;
             }
+        }
+    }
+    public void ShowText()
+    {
+        if (playerText.gameObject.activeSelf && playerText.isAnim)
+        {
+            playerText.isSkip = true;
+        }
+        else if (cellphoneText.gameObject.activeSelf && cellphoneText.isAnim)
+        {
+            cellphoneText.isSkip = true;
+        }
+        else
+        {
+            CheckAutoTalkSpeechBubble();
+
         }
     }
     public void DisableList()
@@ -68,9 +84,6 @@ public class OfficeCutSceneManager : MonoSingleTon<OfficeCutSceneManager>
         playerCam.gameObject.SetActive(false);
 
 
-        playerText.gameObject.SetActive(true);
-        cellphoneText.gameObject.SetActive(true);
-
         FadeInOutManager.Instance.FadeIn(1f);
         FadeInOutManager.Instance.FadeOut(1f);
 
@@ -82,6 +95,8 @@ public class OfficeCutSceneManager : MonoSingleTon<OfficeCutSceneManager>
         player.PlayerAnimation.MoveAnimation(Vector2.zero);
 
         DisableList();
+
+        ShowText();
     }
     IEnumerator CellPhoneRing()
     {
@@ -162,11 +177,19 @@ public class OfficeCutSceneManager : MonoSingleTon<OfficeCutSceneManager>
     {
         if (isPlayer)
         {
+            cellphoneText.ClearText();
+            cellphoneText.gameObject.SetActive(false);
+            playerText.gameObject.SetActive(true);
+
             playerText.StopAnim();
             playerText.EndCheck();
         }
         else
         {
+            playerText.ClearText();
+            playerText.gameObject.SetActive(false);
+            cellphoneText.gameObject.SetActive(true);
+
             cellphoneText.StopAnim();
             cellphoneText.EndCheck();
         }

@@ -30,13 +30,26 @@ public class MonitorNPCTalk : MonoSingleTon<MonitorNPCTalk>
         if (isMeetingStart)
         {
             curCool += Time.deltaTime;
-            if (Input.GetKeyDown(KeyCode.Space) && spacebarCoolTime <= curCool)
+            if (Input.GetKeyDown(KeyCode.Space))
             {
                 CheckAutoTalkSpeechBubble();
                 curCool = 0;
             }
         }
     }
+    public void ShowText()
+    {
+        foreach (var npc in npcTexts)
+        {
+            if (npc.gameObject.activeSelf && npc.isAnim)
+            {
+                npc.isSkip = true;
+                return;
+            }
+        }
+        CheckAutoTalkSpeechBubble();
+    }
+
     public void StartMeeting()
     {
         meetingCam.enabled = true;

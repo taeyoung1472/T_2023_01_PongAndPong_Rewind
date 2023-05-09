@@ -26,6 +26,8 @@ public class CutSceneManager : MonoSingleTon<CutSceneManager>
     private float spacebarCoolTime = 1f;
     private float curCool = 0;
 
+    private int skipToggle;
+
     [SerializeField] private PlayableDirector elevatorCutScene;
     [SerializeField] private PlayableDirector npcTalkCutScene;
 
@@ -49,14 +51,29 @@ public class CutSceneManager : MonoSingleTon<CutSceneManager>
         if (isAutoTalking)
         {
             curCool += Time.deltaTime;
-            if (Input.GetKeyDown(KeyCode.Space) && spacebarCoolTime <= curCool)
+            if (Input.GetKeyDown(KeyCode.Space))
             {
-                CheckAutoTalkSpeechBubble();
+                ShowText();
                 curCool = 0;
             }
         }
     }
+    public void ShowText()
+    {
+        if (playerTalktext.gameObject.activeSelf && playerTalktext.isAnim)
+        {
+            playerTalktext.isSkip = true;
+        }
+        else if (npcTalktext.gameObject.activeSelf && npcTalktext.isAnim)
+        {
+            npcTalktext.isSkip = true;
+        }
+        else
+        {
+                CheckAutoTalkSpeechBubble();
 
+        }
+    }
     public void CheckAllTalkNPC()
     {
         int successNpc = 0;
@@ -220,11 +237,20 @@ public class CutSceneManager : MonoSingleTon<CutSceneManager>
     {
         if (isPlayer)
         {
+            npcTalktext.ClearText();
+            npcTalktext.gameObject.SetActive(false);
+
+
+            playerTalktext.gameObject.SetActive(true);
             playerTalktext.StopAnim();
             playerTalktext.EndCheck();
         }
         else
         {
+            playerTalktext.ClearText();
+            playerTalktext.gameObject.SetActive(false);
+
+            npcTalktext.gameObject.SetActive(true);
             npcTalktext.StopAnim();
             npcTalktext.EndCheck();
         }

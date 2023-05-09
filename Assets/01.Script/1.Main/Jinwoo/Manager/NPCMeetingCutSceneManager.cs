@@ -48,12 +48,25 @@ public class NPCMeetingCutSceneManager : MonoSingleTon<NPCMeetingCutSceneManager
         if (isMeetingStart)
         {
             curCool += Time.deltaTime;
-            if (Input.GetKeyDown(KeyCode.Space) && spacebarCoolTime <= curCool)
+            if (Input.GetKeyDown(KeyCode.Space))
             {
-                CheckAutoTalkSpeechBubble();
+                ShowText();
                 curCool = 0;
             }
         }
+    }
+
+    public void ShowText()
+    {
+        foreach (var npc in npcs)
+        {
+            if (npc.gameObject.activeSelf && npc.isAnim)
+            {
+                npc.isSkip = true;
+                return;
+            }
+        }
+        CheckAutoTalkSpeechBubble();
     }
     public void CheckAutoTalkSpeechBubble()
     {

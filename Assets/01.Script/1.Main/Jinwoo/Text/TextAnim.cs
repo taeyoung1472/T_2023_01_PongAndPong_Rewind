@@ -13,13 +13,22 @@ public class TextAnim : MonoBehaviour
 
     private int idx = 0;
 
-    private bool isAnim = true;
+    public bool isAnim = false;
 
-    private bool isComplete = false;
+    public bool isComplete = false;
+    public bool isSkip = false;
 
-    void Start()
+    void Awake()
     {
         //EndCheck();
+        isComplete = false;
+        isAnim = false;
+        isSkip = false;
+    }
+    private void OnEnable()
+    {
+        isAnim = false;
+        isSkip = false;
     }
     public void SetText(TextMeshProUGUI text)
     {
@@ -75,9 +84,15 @@ public class TextAnim : MonoBehaviour
 
 
             counter += 1;
-            yield return new WaitForSeconds(textData.timeBtwnChars);
+            if (!isSkip)
+            {
+                yield return new WaitForSeconds(textData.timeBtwnChars);
+            }
 
 
         }
+        isSkip = false;
+        isAnim = false;
+        isComplete = true;
     }
 }
