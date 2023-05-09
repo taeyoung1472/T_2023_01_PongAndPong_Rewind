@@ -1,5 +1,9 @@
+using SCPE;
+using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -28,12 +32,23 @@ public class EndManager : MonoSingleTon<EndManager>
     #endregion
 
     [SerializeField] private bool isCloser = false;
+    [SerializeField] private UnityEvent onEnd;
+
+    public Volume volume;
+    private LimitlessGlitch2 glitch2;
+    private DoubleVision blur;
     public bool IsEnd { get { return isEnd; } }
     private bool isEnd;
 
 
     private void Start()
     {
+        volume.profile.TryGet(out glitch2);
+        volume.profile.TryGet(out blur);
+
+        glitch2.enable.value = false;
+        blur.intensity.value = 0f;
+
         closerSpriteBtn.onClick.AddListener(() =>
         {
             isCloser = !isCloser;
@@ -49,9 +64,31 @@ public class EndManager : MonoSingleTon<EndManager>
             nextStageExplainImage.sprite = (isCloser) ? StageManager.stageDataSO.nextStageData.closerStageSprite : StageManager.stageDataSO.nextStageData.stageSprite;
         });
     }
+
+    public void EndVolume()
+    {
+        blur.intensity.value = 0f;
+        glitch2.enable.value = true;
+        StartCoroutine(BlurEvent());
+    }
+    IEnumerator BlurEvent()
+    {
+        yield return new WaitForSeconds(0.2f);
+        while (blur.intensity.value < 1f)
+        {
+            if (blur.intensity.value > 0.6f)
+            {
+                break;
+            }
+            blur.intensity.value += 0.01f;
+            yield return new WaitForSeconds(0.05f);
+        }
+        glitch2.enable.value = false;
+    }
     public void End()
     {
         isEnd = true;
+        onEnd?.Invoke();
         nextStagePanel.SetActive(false);
         endPanel.SetActive(true);
 
@@ -74,10 +111,12 @@ public class EndManager : MonoSingleTon<EndManager>
     }
     public void ReStart()
     {
+        blur.intensity.value = 0f;
         SceneManager.LoadScene(1);
     }
     public void NextStage()
     {
+        blur.intensity.value = 0f;
         endPanel.SetActive(false);
         nextStagePanel.SetActive(true);
 
@@ -89,6 +128,7 @@ public class EndManager : MonoSingleTon<EndManager>
 
     public void JoinStage()
     {
+        blur.intensity.value = 0f;
         endPanel.SetActive(false);
         nextStagePanel.SetActive(false);
         GameManager.Instance.LoadNextStage();
