@@ -7,7 +7,6 @@ public abstract class GimmickObject : MonoBehaviour
     public virtual void InitOnRewind() 
     {
         isRewind = true;
-        Debug.Log(isRewind);
         player = null;
     }
     public virtual void InitOnPlay()
