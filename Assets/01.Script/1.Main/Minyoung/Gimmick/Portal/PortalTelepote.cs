@@ -71,10 +71,12 @@ public class PortalTelepote : GimmickObject
                 if (isRight)
                 {
                     trm.position = (reciever.position + new Vector3(offset * telValue, 0, 0)) - diffVec;
+                    Debug.LogError("TelPoObj()" + reciever.position + "        " + trm.position);
                 }
                 else
                 {
                     trm.position = (reciever.position + new Vector3(-offset * telValue, 0, 0)) - diffVec;
+                    Debug.LogError("TelPoObj()" + reciever.position + "        " + trm.position);
                 }
             }
         }
@@ -88,10 +90,12 @@ public class PortalTelepote : GimmickObject
             if (isRight)
             {
                 playerTrm.position = reciever.position + offset;
+                Debug.LogError("TelPoPlayer()" + reciever.position + "        " + playerTrm.position);
             }
             else
             {
                 playerTrm.position = reciever.position + -offset;
+                Debug.LogError("TelPoPlayer()" + reciever.position + "        " + playerTrm.position);
             }
             Debug.Log(offset);
             playerIsOverlapping = false;
@@ -123,8 +127,6 @@ public class PortalTelepote : GimmickObject
             if (cross >= 0f)
             {
                 playerIsOverlapping = true;
-                Debug.Log(player);
-                Debug.Log(player.playerBuff);
                 player.playerBuff.AddBuff(PlayerBuffType.Reverse);
             }
         }
