@@ -143,7 +143,6 @@ public class WeightButtonGimmick : GimmickObject
                 //        break;
              
                 // }
-                Debug.Log("시발ㄴ모이 큐");
             }
         }
     }

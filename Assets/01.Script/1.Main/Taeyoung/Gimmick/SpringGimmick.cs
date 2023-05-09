@@ -1,7 +1,11 @@
 using UnityEngine;
 
-public class SpringGimmick : MonoBehaviour
+public class SpringGimmick : GimmickObject
 {
+    public override void Init()
+    {
+    }
+
     public void OnCollisionEnter(Collision collision)
     {
         ColliderEnter(collision.collider);
@@ -9,6 +13,11 @@ public class SpringGimmick : MonoBehaviour
 
     private void ColliderEnter(Collider target)
     {
+        if (isRewind)
+        {
+            return;
+        }
+
         if (target.transform.TryGetComponent<RigidbodyGimmickObject>(out RigidbodyGimmickObject obj))
         {
             Debug.Log("°®°í¤Ã¿Í");

@@ -55,8 +55,15 @@ public class EndManager : MonoSingleTon<EndManager>
         isCloser = false;
         closerSpriteBtn.GetComponentInChildren<TextMeshProUGUI>().text = "∏ ";
         stageExplainImage.sprite = StageManager.stageDataSO.stageSprite;
-
-        timePieceText.SetText("»πµÊ«— Ω√∞£¿« ¡∂∞¢" + "1/1");
+        int eatCollectionCnt = 0;
+        foreach (var item in StageManager.Instance.CurStageDataSO.stageCollection)
+        {
+            if (item)
+            {
+                eatCollectionCnt++;
+            }
+        }
+        timePieceText.SetText("»πµÊ«— Ω√∞£¿« ¡∂∞¢" + eatCollectionCnt + "/" + StageManager.Instance.CurStageDataSO.stageCollection.Count);
         currentStageNumberText.SetText(StageManager.stageDataSO.stageNumber.ToString());
 
         nextStageBtn.interactable = StageManager.stageDataSO.nextStageData != null;
