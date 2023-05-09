@@ -157,6 +157,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Active: 1
   Event: 550
+--- !u!114 &-595953363920522659
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ee8851bdeb459741ada1bac26e556aa, type: 3}
+  m_Name: '[SCPE] DoubleVisionRenderer'
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  settings:
+    injectionPoint: 550
+    alwaysEnable: 0
+    cameraTypes: 3
 --- !u!114 &-428546792813567370
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -215,6 +232,8 @@ MonoBehaviour:
   - {fileID: -5310926443592431007}
   - {fileID: -428546792813567370}
   - {fileID: 7561328200038329096}
+  - {fileID: 6887833810934437791}
+  - {fileID: -595953363920522659}
   m_RendererFeatureMap: 783bca8b011d03174113783a494e19c41c07bc5589e02ca4ee6e53b14190b769fbb16a53703b89496ff666122312278a3885b9f0e2ff8ae70ae309e1a751527875c2d8be2b3b37efbeb51dc1478be78600ffb6e5b27ba9fa219aa5416836d75361ca71bd89cc4bb676e2b664f67e0dfa08ab6db1ef3bef68
   m_UseNativeRenderPass: 0
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
@@ -295,6 +314,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Active: 1
   Event: 550
+--- !u!114 &6887833810934437791
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2bd7de23ae8245d4bb4b286ac8e88842, type: 3}
+  m_Name: '[SCPE] RadialBlurRenderer'
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  settings:
+    injectionPoint: 550
+    alwaysEnable: 0
+    cameraTypes: 5
 --- !u!114 &7561328200038329096
 MonoBehaviour:
   m_ObjectHideFlags: 0
