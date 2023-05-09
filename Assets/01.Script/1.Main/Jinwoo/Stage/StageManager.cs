@@ -149,6 +149,7 @@ public class StageManager : MonoSingleTon<StageManager>
         curStageDataSO = stageDataSO;
 
         curStage = Instantiate(curStageDataSO.stagePrefab, Vector3.zero, Quaternion.identity);
+        
         curStage.Init();
 
         OnFreeLookCam(true);

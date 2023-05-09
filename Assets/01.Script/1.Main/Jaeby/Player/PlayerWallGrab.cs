@@ -13,7 +13,7 @@ public class PlayerWallGrab : PlayerAction, IPlayerResetable
 
     public void WallEnter(GameObject wallObj, Vector3 wallPosition)
     {
-        if (_locked)
+        if (_locked || _player.IsGrounded)
             return;
         _excuting = true;
 
@@ -21,6 +21,7 @@ public class PlayerWallGrab : PlayerAction, IPlayerResetable
         _player.PlayerActionLock(true, PlayerActionType.Dash, PlayerActionType.Move, PlayerActionType.WallGrab);
         _player.PlayerRenderer.Flip(wallPosition - _player.transform.position);
         _player.GravityModule.UseGravity = false;
+        _player.GetPlayerAction<PlayerJump>().MoreJump(1);
         OnWallGrabed?.Invoke(true);
     }
 
@@ -44,11 +45,11 @@ public class PlayerWallGrab : PlayerAction, IPlayerResetable
     public override void ActionExit()
     {
         _excuting = false;
-        WallExit();
-
+        _player.GravityModule.UseGravity = true;
         if (_wallGrabCoroutine != null)
             StopCoroutine(_wallGrabCoroutine);
         _player.PlayerActionLock(false, PlayerActionType.WallGrab, PlayerActionType.Move, PlayerActionType.Dash);
+        OnWallGrabed?.Invoke(false);
     }
 
     public void EnableReset()

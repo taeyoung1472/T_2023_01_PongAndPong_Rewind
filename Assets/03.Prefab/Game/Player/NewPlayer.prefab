@@ -5528,7 +5528,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isRewind: 0
   isRewindPlayer: 0
-  _springAmplification: 20
+  _springAmplification: 21
+  _springTime: 0.65
 --- !u!114 &4173287881949798369
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5620,34 +5621,10 @@ MonoBehaviour:
         m_CallState: 2
   OnAttack:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 6691628707489746802}
-        m_TargetAssemblyTypeName: PlayerAttack, Assembly-CSharp
-        m_MethodName: Attack
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   OnWeaponChange:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 6691628707489746802}
-        m_TargetAssemblyTypeName: PlayerAttack, Assembly-CSharp
-        m_MethodName: WeaponSwitching
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   OnInteract:
     m_PersistentCalls:
       m_Calls: []
@@ -5698,7 +5675,7 @@ MonoBehaviour:
   _upLayLength: 0.07
   _upLayerMask:
     serializedVersion: 2
-    m_Bits: 3221290687
+    m_Bits: 192
 --- !u!114 &6691628707489746808
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5826,7 +5803,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  _wallgrabCooltime: 0.4
+  _wallgrabCooltime: 0.15
 --- !u!114 &-6009568936688706850
 MonoBehaviour:
   m_ObjectHideFlags: 0

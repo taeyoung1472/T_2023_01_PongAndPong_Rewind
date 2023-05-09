@@ -211,13 +211,13 @@ public class DeployHandler : MonoBehaviour
         switch (deployType)
         {
             case DeployType.XY:
-                boxCollider.size = new Vector3(maxX - minX, maxY - minY, 0);
+                boxCollider.size = new Vector3(maxX - minX, maxY - minY, 0.1f);
                 break;
             case DeployType.XZ:
-                boxCollider.size = new Vector3(maxX - minX, 0f, maxY - minY);
+                boxCollider.size = new Vector3(maxX - minX, 0.1f, maxY - minY);
                 break;
             case DeployType.YZ:
-                boxCollider.size = new Vector3(0f, maxX - minX, maxY - minY);
+                boxCollider.size = new Vector3(0.1f, maxX - minX, maxY - minY);
                 break;
         }
 

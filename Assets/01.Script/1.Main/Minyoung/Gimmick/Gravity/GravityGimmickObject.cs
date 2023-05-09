@@ -13,12 +13,9 @@ public class GravityGimmickObject : GimmickObject
     [SerializeField] private float orignGravityScale;
     [SerializeField] public float OrignGravityScale => orignGravityScale;
 
-    private void Awake()
-    {
-        Init();
-    }
     private void Start()
     {
+        Init();
         gravityDir = new Vector3(0, -9.8f, 0f);
     }
     private void FixedUpdate()

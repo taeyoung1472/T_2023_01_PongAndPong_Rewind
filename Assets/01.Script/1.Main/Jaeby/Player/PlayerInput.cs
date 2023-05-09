@@ -50,8 +50,11 @@ public class PlayerInput : MonoBehaviour
             x++;
         if (Input.GetKey(KeyManager.keys[InputType.Left]))
             x--;
-        if (_player.playerBuff.BuffCheck(PlayerBuffType.Reverse))
+        if (_player.playerBuff.BuffCheck(PlayerBuffType.Reverse) || _player.PlayerRenderer.flipDirection == DirectionType.Left
+            || _player.PlayerRenderer.flipDirection == DirectionType.Right)
+        {
             x *= -1;
+        }
         _inputVector = new Vector2(x, y);
         OnMoveInput?.Invoke(new Vector2(x, y));
 

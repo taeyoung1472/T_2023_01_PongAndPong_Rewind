@@ -289,6 +289,9 @@ public class Player : MonoBehaviour
 
     private void GroundCheck()
     {
+        //if (PlayerActionCheck(PlayerActionType.WallGrab, PlayerActionType.Dash))
+        //    return;
+
         bool lastGrounded = _isGrounded;
         Vector3 boxCenter = _col.bounds.center;
         Vector3 halfExtents = _col.bounds.extents;
@@ -385,8 +388,8 @@ public class Player : MonoBehaviour
                 height = 1.9f;
                 break;
             case PlayerColliderType.Dash:
-                center.y = 0.3f;
-                height = 0f;
+                center.y = 0.35f;
+                height = 0.8f;
                 break;
             default:
                 break;
