@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.Playables;
 //using Cinemachine;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CutSceneManager : MonoSingleTon<CutSceneManager>
 {
@@ -24,6 +25,8 @@ public class CutSceneManager : MonoSingleTon<CutSceneManager>
 
     private float spacebarCoolTime = 1f;
     private float curCool = 0;
+
+    private int skipToggle;
 
     [SerializeField] private PlayableDirector elevatorCutScene;
     [SerializeField] private PlayableDirector npcTalkCutScene;
@@ -48,14 +51,29 @@ public class CutSceneManager : MonoSingleTon<CutSceneManager>
         if (isAutoTalking)
         {
             curCool += Time.deltaTime;
-            if (Input.GetKeyDown(KeyCode.Space) && spacebarCoolTime <= curCool)
+            if (Input.GetKeyDown(KeyCode.Space))
             {
-                CheckAutoTalkSpeechBubble();
+                ShowText();
                 curCool = 0;
             }
         }
     }
+    public void ShowText()
+    {
+        if (playerTalktext.gameObject.activeSelf && playerTalktext.isAnim)
+        {
+            playerTalktext.isSkip = true;
+        }
+        else if (npcTalktext.gameObject.activeSelf && npcTalktext.isAnim)
+        {
+            npcTalktext.isSkip = true;
+        }
+        else
+        {
+                CheckAutoTalkSpeechBubble();
 
+        }
+    }
     public void CheckAllTalkNPC()
     {
         int successNpc = 0;
@@ -75,6 +93,8 @@ public class CutSceneManager : MonoSingleTon<CutSceneManager>
 
             cutsceneCheck[0].gameObject.SetActive(true);
             cutsceneCheck[1].gameObject.SetActive(true);
+
+            UIGetter.Instance.PushUIs();
         }
         else 
         {
@@ -106,10 +126,7 @@ public class CutSceneManager : MonoSingleTon<CutSceneManager>
         {
             item.enabled = false;
         }
-        foreach (var item in npc)
-        {
-            item.gameObject.SetActive(false);
-        }
+        
     }
     public void PlayerTurn()
     {
@@ -220,11 +237,20 @@ public class CutSceneManager : MonoSingleTon<CutSceneManager>
     {
         if (isPlayer)
         {
+            npcTalktext.ClearText();
+            npcTalktext.gameObject.SetActive(false);
+
+
+            playerTalktext.gameObject.SetActive(true);
             playerTalktext.StopAnim();
             playerTalktext.EndCheck();
         }
         else
         {
+            playerTalktext.ClearText();
+            playerTalktext.gameObject.SetActive(false);
+
+            npcTalktext.gameObject.SetActive(true);
             npcTalktext.StopAnim();
             npcTalktext.EndCheck();
         }
@@ -243,5 +269,15 @@ public class CutSceneManager : MonoSingleTon<CutSceneManager>
 
         isAutoTalking = true;
         CheckAutoTalkSpeechBubble();
+    }
+
+    public void NextCutScene()
+    {
+        StartCoroutine(NextScene());
+    }
+    IEnumerator NextScene()
+    {
+        yield return new WaitForSeconds(1f);
+        SceneManager.LoadScene("Lab NPCMeeting");
     }
 }

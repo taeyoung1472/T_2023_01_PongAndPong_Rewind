@@ -13,6 +13,7 @@ public class PortalTelepote : GimmickObject
 
     public float cross;
     public Transform reciever;
+    public Transform objreciever;
 
     #region ¹°Ã¼
     public bool objIsOverlapping = false;
@@ -59,25 +60,29 @@ public class PortalTelepote : GimmickObject
     {
         if (objIsOverlapping)
         {
+
             Vector3 centerPos = col.bounds.center;
             Debug.Log("CenterPos" + centerPos);
             foreach (Transform trm in telObjList)
             {
-                Vector3 diffVec = centerPos - trm.position;
-                diffVec.z = 0;
-                Debug.Log(diffVec);
-                float offset = trm.GetComponent<Collider>().bounds.size.x;
-                Debug.Log(offset);
-                if (isRight)
-                {
-                    trm.position = (reciever.position + new Vector3(offset * telValue, 0, 0)) - diffVec;
-                    Debug.LogError("TelPoObj()" + reciever.position + "        " + trm.position);
-                }
-                else
-                {
-                    trm.position = (reciever.position + new Vector3(-offset * telValue, 0, 0)) - diffVec;
-                    Debug.LogError("TelPoObj()" + reciever.position + "        " + trm.position);
-                }
+                float reciPosX = objreciever.position.x;
+                trm.position = new Vector3(reciPosX, trm.position.y, trm.position.z );
+
+                //Vector3 diffVec = centerPos - trm.position;
+                //diffVec.z = 0;
+                //Debug.Log(diffVec);
+                //float offset = trm.GetComponent<Collider>().bounds.size.x;
+                //Debug.Log(offset);
+                //if (isRight)
+                //{
+                //    trm.position = (reciever.position + new Vector3(offset * telValue, 0, 0)) - diffVec;
+                //    Debug.LogError("TelPoObj()" + reciever.position + "        " + trm.position);
+                //}
+                //else
+                //{
+                //    trm.position = (reciever.position + new Vector3(-offset * telValue, 0, 0)) - diffVec;
+                //    Debug.LogError("TelPoObj()" + reciever.position + "        " + trm.position);
+                //}
             }
         }
 
@@ -86,6 +91,7 @@ public class PortalTelepote : GimmickObject
     {
         if (playerIsOverlapping)
         {
+
             Vector3 offset = new Vector3(player.GetComponent<CapsuleCollider>().radius * 2.5f, 0, 0);
             if (isRight)
             {
@@ -141,7 +147,7 @@ public class PortalTelepote : GimmickObject
                 telObjList.Add(other.gameObject.transform);
                 objIsOverlapping = true;
             }
-    
+
         }     
     }
 
