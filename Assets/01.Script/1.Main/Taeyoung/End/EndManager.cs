@@ -116,14 +116,12 @@ public class EndManager : MonoSingleTon<EndManager>
     }
     public void NextStage()
     {
-        blur.intensity.value = 0f;
         endPanel.SetActive(false);
         nextStagePanel.SetActive(true);
 
         isCloser = false;
         nextCloserSpriteBtn.GetComponentInChildren<TextMeshProUGUI>().text = "¸Ê";
         nextStageExplainImage.sprite = StageManager.stageDataSO.nextStageData.stageSprite;
-
     }
 
     public void JoinStage()
