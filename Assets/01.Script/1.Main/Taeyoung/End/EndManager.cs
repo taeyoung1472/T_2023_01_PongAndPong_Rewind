@@ -112,7 +112,7 @@ public class EndManager : MonoSingleTon<EndManager>
     public void ReStart()
     {
         blur.intensity.value = 0f;
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(2);
     }
     public void NextStage()
     {
