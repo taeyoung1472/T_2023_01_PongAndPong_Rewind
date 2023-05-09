@@ -23,6 +23,8 @@ public class PlayerRenderer : MonoBehaviour
     private bool _fliping = false;
     [SerializeField]
     private float _rotationSpeed = 20f;
+    [SerializeField]
+    private float _camShakePower = 5f;
 
     private void Awake()
     {
@@ -53,6 +55,8 @@ public class PlayerRenderer : MonoBehaviour
         }
         else
         {
+            //CamManager.Instance.GravityChangeCameraAnimation(null, dirType, _camRotatePower, 0.2f);
+            CamManager.Instance.CameraShake(0.25f, _camShakePower, 3f);
             _flipSeq = DOTween.Sequence();
             _fliping = true;
             _flipSeq.Append(_player.transform.DORotate(targetRotation, _flipTime));
