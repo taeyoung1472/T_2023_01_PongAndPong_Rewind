@@ -2064,6 +2064,7 @@ MonoBehaviour:
   _mask:
     serializedVersion: 2
     m_Bits: 0
+  _larpMoving: 0
   _lerpSpeed: 0.5
 --- !u!65 &1404640390532624099
 BoxCollider:
@@ -47187,6 +47188,63 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   so: {fileID: 11400000, guid: 4eb050bab88201344baf22930a9173ea, type: 2}
+--- !u!114 &1839708110491050086
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2955220278383750477}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fe91dc294731a9428c0941ea7579110, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  complexMaskingMode: 0
+  drawingMode: 1
+  outlineLayer: 0
+  outlineTargets:
+  - IsVisible: 1
+    CutoutMask: 8
+    edgeDilateAmount: 5
+    frontEdgeDilateAmount: 5
+    backEdgeDilateAmount: 5
+    renderer: {fileID: 2978778525444314061}
+    SubmeshIndex: 0
+    BoundsMode: 0
+    Bounds:
+      m_Center: {x: 0, y: 0, z: 0}
+      m_Extent: {x: 0.5, y: 0.5, z: 0.5}
+    CutoutThreshold: 0.5
+    CullMode: 2
+    cutoutTextureName: 
+    DilateRenderingMode: 0
+    cutoutTextureIndex: 0
+  renderStyle: 1
+  outlineParameters:
+    enabled: 1
+    color: {r: 0.5882353, g: 0.23529412, b: 0.23529412, a: 1}
+    dilateShift: 1
+    blurShift: 1
+    fillPass:
+      shader: {fileID: 0}
+      serializedProperties: []
+  backParameters:
+    enabled: 1
+    color: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+    dilateShift: 1
+    blurShift: 1
+    fillPass:
+      shader: {fileID: 0}
+      serializedProperties: []
+  frontParameters:
+    enabled: 1
+    color: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+    dilateShift: 1
+    blurShift: 1
+    fillPass:
+      shader: {fileID: 0}
+      serializedProperties: []
 --- !u!114 &2831409819074407598
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -47232,7 +47290,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isRewind: 0
-  isRewindPlayer: 0
+  isRewindPlayer: 1
+--- !u!114 &8682159709566641697
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2955220278383750477}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 034bc47afcbf5e141a58d5c20b7808e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &8961268370515103146
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -47248,6 +47318,11 @@ MonoBehaviour:
 --- !u!4 &2960779515820238079 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4964086646461976, guid: 5278b16ea019ebd46828c7ff64b50651, type: 3}
+  m_PrefabInstance: {fileID: 2956454306532143847}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &2978778525444314061 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 23029058412355882, guid: 5278b16ea019ebd46828c7ff64b50651, type: 3}
   m_PrefabInstance: {fileID: 2956454306532143847}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3006146071554543701
@@ -47525,6 +47600,18 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5097872224309720775, guid: 98a194a0dcbc7d348bc98400ff9f8ed9, type: 3}
+      propertyPath: isToggle
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5097872224309720775, guid: 98a194a0dcbc7d348bc98400ff9f8ed9, type: 3}
+      propertyPath: origntToggleTime
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 5097872224309720775, guid: 98a194a0dcbc7d348bc98400ff9f8ed9, type: 3}
+      propertyPath: isCameraControlDisable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5097872224309720775, guid: 98a194a0dcbc7d348bc98400ff9f8ed9, type: 3}
       propertyPath: controlDataArr.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -47532,6 +47619,10 @@ PrefabInstance:
       propertyPath: controlDataArr.Array.data[0].target
       value: 
       objectReference: {fileID: 3051785081875515749}
+    - target: {fileID: 5097872224309720775, guid: 98a194a0dcbc7d348bc98400ff9f8ed9, type: 3}
+      propertyPath: controlDataArr.Array.data[0].isLever
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 98a194a0dcbc7d348bc98400ff9f8ed9, type: 3}
 --- !u!1001 &7489514821199586495

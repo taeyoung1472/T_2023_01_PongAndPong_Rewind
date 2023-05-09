@@ -6096,6 +6096,7 @@ MonoBehaviour:
   _mask:
     serializedVersion: 2
     m_Bits: 256
+  _larpMoving: 0
   _lerpSpeed: 0.5
 --- !u!65 &479829378930454927
 BoxCollider:
@@ -111828,7 +111829,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isRewind: 0
-  isRewindPlayer: 0
+  isRewindPlayer: 1
+--- !u!114 &1114733295921976530
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2352968151998676158}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 034bc47afcbf5e141a58d5c20b7808e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &3244119279151331019
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -111841,6 +111854,63 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcc49bd7f04dd7b4b9d023d360f8cd7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6471505039705232011
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2352968151998676158}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fe91dc294731a9428c0941ea7579110, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  complexMaskingMode: 0
+  drawingMode: 1
+  outlineLayer: 0
+  outlineTargets:
+  - IsVisible: 1
+    CutoutMask: 8
+    edgeDilateAmount: 5
+    frontEdgeDilateAmount: 5
+    backEdgeDilateAmount: 5
+    renderer: {fileID: 2374204559414493758}
+    SubmeshIndex: 0
+    BoundsMode: 0
+    Bounds:
+      m_Center: {x: 0, y: 0, z: 0}
+      m_Extent: {x: 0.5, y: 0.5, z: 0.5}
+    CutoutThreshold: 0.5
+    CullMode: 2
+    cutoutTextureName: 
+    DilateRenderingMode: 0
+    cutoutTextureIndex: 0
+  renderStyle: 1
+  outlineParameters:
+    enabled: 1
+    color: {r: 0.5882353, g: 0.23529412, b: 0.23529412, a: 1}
+    dilateShift: 1
+    blurShift: 1
+    fillPass:
+      shader: {fileID: 0}
+      serializedProperties: []
+  backParameters:
+    enabled: 1
+    color: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+    dilateShift: 1
+    blurShift: 1
+    fillPass:
+      shader: {fileID: 0}
+      serializedProperties: []
+  frontParameters:
+    enabled: 1
+    color: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+    dilateShift: 1
+    blurShift: 1
+    fillPass:
+      shader: {fileID: 0}
+      serializedProperties: []
 --- !u!114 &7032199367358883790
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -111863,6 +111933,11 @@ MonoBehaviour:
 --- !u!4 &2356135181080851724 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4964086646461976, guid: 5278b16ea019ebd46828c7ff64b50651, type: 3}
+  m_PrefabInstance: {fileID: 2351739621407040276}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &2374204559414493758 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 23029058412355882, guid: 5278b16ea019ebd46828c7ff64b50651, type: 3}
   m_PrefabInstance: {fileID: 2351739621407040276}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2931160479746869655
