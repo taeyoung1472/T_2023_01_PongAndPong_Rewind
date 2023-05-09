@@ -104,7 +104,7 @@ public class ButtonGimmick : GimmickObject
             gravityInverseGimmick.dirChangeDic.Add(timer, gravitChangeDirState);
             Debug.Log("딕셔너리에 추가됨");
             preDirType = gravitChangeDirState;
-            
+
         }
     }
     public void Update()
@@ -134,7 +134,6 @@ public class ButtonGimmick : GimmickObject
             }
             if (toggleTime <= 0.0f)
             {
-                animator.Play("Idle");
                 Control(false);
             }
         }
@@ -148,8 +147,6 @@ public class ButtonGimmick : GimmickObject
             isActivePlayer = true;
             toggleing = true;
             toggleTime = origntToggleTime;
-            //역행상태에서 버튼을 밟게 했는데 타이밍이 반대야
-            animator.Play("Push");
             //gravityInverseGimmick.dirChangeDic.Add(2, gravitChangeDirState);
             if (this.player == null)
             {
@@ -164,7 +161,6 @@ public class ButtonGimmick : GimmickObject
             isActive = true;
             toggleing = true;
             toggleTime = origntToggleTime;
-            animator.Play("Push");
         }
     }
 
@@ -173,7 +169,6 @@ public class ButtonGimmick : GimmickObject
         if (other.TryGetComponent<GimmickObject>(out GimmickObject gimmickObject))
         {
             isActive = false;
-            animator.Play("Idle");
         }
         if (other.gameObject.TryGetComponent<Player>(out Player player))
         {
@@ -202,6 +197,11 @@ public class ButtonGimmick : GimmickObject
 
             control.target.Control(controlType, control.isLever, player, gravitChangeDirState);
         }
+
+        if (controlType == ControlType.None)
+            animator.SetBool("IsActive", false);
+        else
+            animator.SetBool("IsActive", true);
     }
 
 #if UNITY_EDITOR
