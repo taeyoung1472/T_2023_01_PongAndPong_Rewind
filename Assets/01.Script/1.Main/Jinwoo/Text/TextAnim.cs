@@ -15,6 +15,8 @@ public class TextAnim : MonoBehaviour
 
     private bool isAnim = true;
 
+    private bool isComplete = false;
+
     void Start()
     {
         //EndCheck();
@@ -48,6 +50,11 @@ public class TextAnim : MonoBehaviour
         _textMeshPro.SetText("");
         _textMeshPro.ClearMesh();
     }
+    public void CompleteText()
+    {
+        if(idx - 1 >= 0)
+        _textMeshPro.text = textData.stringArray[idx-1];
+    }
     private IEnumerator TextVisible()
     {
         _textMeshPro.ForceMeshUpdate();
@@ -65,6 +72,7 @@ public class TextAnim : MonoBehaviour
                 //Invoke("EndCheck", textData.timeBtwnWords);
                 break;
             }
+
 
             counter += 1;
             yield return new WaitForSeconds(textData.timeBtwnChars);

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.Playables;
 //using Cinemachine;
 using UnityEngine;
-using UnityEditor.Animations;
+using UnityEngine.SceneManagement;
 
 public class CutSceneManager : MonoSingleTon<CutSceneManager>
 {
@@ -14,7 +14,7 @@ public class CutSceneManager : MonoSingleTon<CutSceneManager>
 
     [SerializeField] private Player player;
     [SerializeField] private Animator playerAnimator;
-    [SerializeField] private AnimatorController talkAnimator;
+    [SerializeField] private RuntimeAnimatorController talkAnimator;
 
     private bool isAutoTalking = false;
     [SerializeField] private int autoTalkingIndex = 0;
@@ -76,6 +76,8 @@ public class CutSceneManager : MonoSingleTon<CutSceneManager>
 
             cutsceneCheck[0].gameObject.SetActive(true);
             cutsceneCheck[1].gameObject.SetActive(true);
+
+            UIGetter.Instance.PushUIs();
         }
         else 
         {
@@ -107,10 +109,7 @@ public class CutSceneManager : MonoSingleTon<CutSceneManager>
         {
             item.enabled = false;
         }
-        foreach (var item in npc)
-        {
-            item.gameObject.SetActive(false);
-        }
+        
     }
     public void PlayerTurn()
     {
@@ -244,5 +243,15 @@ public class CutSceneManager : MonoSingleTon<CutSceneManager>
 
         isAutoTalking = true;
         CheckAutoTalkSpeechBubble();
+    }
+
+    public void NextCutScene()
+    {
+        StartCoroutine(NextScene());
+    }
+    IEnumerator NextScene()
+    {
+        yield return new WaitForSeconds(1f);
+        SceneManager.LoadScene("Lab NPCMeeting");
     }
 }

@@ -1,0 +1,159 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using Cinemachine;
+using UnityEngine.SceneManagement;
+
+public class OfficeCutScene2 : MonoSingleTon<OfficeCutScene2>
+{
+    [SerializeField] private CinemachineVirtualCamera playerCam;
+    [SerializeField] private Player player;
+
+    [SerializeField] private TextAnim playerText;
+    [SerializeField] private TextAnim cellphoneText;
+
+    [SerializeField] private Image exclamationMark;
+
+    public GameObject checkCol;
+    public bool isAnswerPhone = false;
+
+    [SerializeField] private int autoTalkingIndex = 1;
+
+    [SerializeField] private List<MonoBehaviour> enableList;
+
+    [SerializeField] private float spacebarCoolTime = 1.5f;
+    private float curCool = 0;
+
+    [SerializeField] private string sceneName;
+
+    void Start()
+    {
+        isAnswerPhone = false;
+        autoTalkingIndex = 1;
+
+        playerText.ClearText();
+        playerText.gameObject.SetActive(false);
+        cellphoneText.ClearText();
+        cellphoneText.gameObject.SetActive(false);
+        checkCol.SetActive(false);
+
+        StartCoroutine(CellPhoneRing());
+    }
+
+    void Update()
+    {
+        if (isAnswerPhone)
+        {
+            curCool += Time.deltaTime;
+            if (Input.GetKeyDown(KeyCode.Space) && spacebarCoolTime <= curCool)
+            {
+                CheckAutoTalkSpeechBubble();
+                curCool = 0;
+            }
+        }
+    }
+    public void DisableList()
+    {
+        foreach (var item in enableList)
+        {
+            item.enabled = false;
+        }
+    }
+    public void AnswerCellPhone()
+    {
+        isAnswerPhone = true;
+        UIGetter.Instance.PushUIs();
+
+
+        exclamationMark.gameObject.SetActive(false);
+        checkCol.gameObject.SetActive(false);
+        playerCam.gameObject.SetActive(false);
+
+
+        playerText.gameObject.SetActive(true);
+        cellphoneText.gameObject.SetActive(true);
+
+        FadeInOutManager.Instance.FadeIn(1f);
+        FadeInOutManager.Instance.FadeOut(1f);
+
+        player.transform.rotation = Quaternion.Euler(0, 90, 0);
+
+        player.Rigid.constraints = RigidbodyConstraints.FreezeAll;
+
+        player.PlayerInput.InputVectorReset();
+        player.PlayerAnimation.MoveAnimation(Vector2.zero);
+
+        DisableList();
+    }
+    IEnumerator CellPhoneRing()
+    {
+        yield return new WaitForSeconds(5f);
+        exclamationMark.gameObject.SetActive(true);
+        checkCol.SetActive(true);
+    }
+    public void CheckAutoTalkSpeechBubble()
+    {
+        switch (autoTalkingIndex)
+        {
+            case 1:
+                ShowSpeechBubble(true);
+                break;
+            case 2:
+                ShowSpeechBubble(false);
+                break;
+            case 3:
+                ShowSpeechBubble(true);
+                break;
+            case 4:
+                ShowSpeechBubble(false);
+                break;
+            case 5:
+                ShowSpeechBubble(false);
+                break;
+            case 6:
+                ShowSpeechBubble(true);
+                break;
+            case 7:
+                ShowSpeechBubble(false);
+                break;
+            case 8:
+                EndTalk();
+                break;
+            default:
+                break;
+        }
+        autoTalkingIndex++;
+    }
+    private void EndTalk()
+    {
+        playerText.ClearText();
+        playerText.gameObject.SetActive(false);
+
+        cellphoneText.ClearText();
+        cellphoneText.gameObject.SetActive(false);
+
+        isAnswerPhone = false;
+        FadeInOutManager.Instance.FadeIn(2.5f);
+
+        StartCoroutine(NextCutScene());
+    }
+    public IEnumerator NextCutScene()
+    {
+        yield return new WaitForSeconds(3f);
+        SceneManager.LoadScene(sceneName);
+    }
+    public void ShowSpeechBubble(bool isPlayer)
+    {
+        if (isPlayer)
+        {
+            playerText.StopAnim();
+            playerText.EndCheck();
+        }
+        else
+        {
+            cellphoneText.StopAnim();
+            cellphoneText.EndCheck();
+        }
+    }
+}

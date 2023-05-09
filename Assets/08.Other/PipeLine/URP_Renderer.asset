@@ -24,6 +24,37 @@ MonoBehaviour:
     ApplyPixelizationMap: {fileID: 4800000, guid: f47f4f650fb29834684600d9a95f41c7, type: 3}
   OutlineShaders:
     OutlineDetection: {fileID: 4800000, guid: c59878161c7e0ad40b0661b47620d0e5, type: 3}
+--- !u!114 &-8725852612708158018
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75b66763eec44e84fbffb152b15a8738, type: 3}
+  m_Name: VHSScanlines_RLPRO
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  Event: 550
+--- !u!114 &-8491798630541887889
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97a529de71a3723409dc5bcc5e30cf8c, type: 3}
+  m_Name: ScanlinesRenderer
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  settings:
+    injectionPoint: 550
+    alwaysEnable: 0
+    cameraTypes: 5
 --- !u!114 &-6908118496918000843
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -52,6 +83,20 @@ MonoBehaviour:
   m_Name: URPOutlineFeature
   m_EditorClassIdentifier: 
   m_Active: 1
+--- !u!114 &-5310926443592431007
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a34f9733ef80345e782a33abcb47a1f7, type: 3}
+  m_Name: Glitch1
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  Event: 550
 --- !u!114 &-4316332691437382847
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -84,6 +129,62 @@ MonoBehaviour:
   renderingEvent: 1
   renderSceneDepth: 1
   isWorking: 1
+--- !u!114 &-1762314953995745992
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c4b56c4489e7452c9b8a62543a66430, type: 3}
+  m_Name: AnalogTVNoise_RLPRO
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  Event: 550
+--- !u!114 &-1209432915854179723
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b4aaab42e3f7614ca4c47faae323b21, type: 3}
+  m_Name: LimitlessVHSTapeRewind
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  Event: 550
+--- !u!114 &-428546792813567370
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 556568a008c5845c2b9aff7eeaa6e59a, type: 3}
+  m_Name: Glitch2
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  Event: 300
+--- !u!114 &-384640284875096320
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77908a6207cd6654d8e9e2d41276e19b, type: 3}
+  m_Name: TVEffect_RLPRO
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  Event: 550
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -102,7 +203,19 @@ MonoBehaviour:
   - {fileID: 1658200980279933816}
   - {fileID: -4316332691437382847}
   - {fileID: -6616666872060573924}
-  m_RendererFeatureMap: 783bca8b011d03174113783a494e19c41c07bc5589e02ca4
+  - {fileID: 7617715906542792430}
+  - {fileID: 5298831790199976443}
+  - {fileID: -8491798630541887889}
+  - {fileID: -1762314953995745992}
+  - {fileID: 8670082014118535946}
+  - {fileID: -1209432915854179723}
+  - {fileID: -8725852612708158018}
+  - {fileID: -384640284875096320}
+  - {fileID: 6041357246546680353}
+  - {fileID: -5310926443592431007}
+  - {fileID: -428546792813567370}
+  - {fileID: 7561328200038329096}
+  m_RendererFeatureMap: 783bca8b011d03174113783a494e19c41c07bc5589e02ca4ee6e53b14190b769fbb16a53703b89496ff666122312278a3885b9f0e2ff8ae70ae309e1a751527875c2d8be2b3b37efbeb51dc1478be78600ffb6e5b27ba9fa219aa5416836d75361ca71bd89cc4bb676e2b664f67e0dfa08ab6db1ef3bef68
   m_UseNativeRenderPass: 0
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}
@@ -154,3 +267,73 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Active: 1
   shader: {fileID: 4800000, guid: f543b3af2e0e5044caa979485a566d18, type: 3}
+--- !u!114 &5298831790199976443
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7844df956262394994083ddeb428870, type: 3}
+  m_Name: UltimateVignette_RLPRO
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  Event: 550
+--- !u!114 &6041357246546680353
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b62ef008f1254b2b9f6e4ddbf09cd04, type: 3}
+  m_Name: Noise_RLPRO
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  Event: 550
+--- !u!114 &7561328200038329096
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2f6178ec3d0143deb3c009eb674c298, type: 3}
+  m_Name: Glitch3
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  Event: 550
+--- !u!114 &7617715906542792430
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 086121500fc2a42c09847ca64876bd91, type: 3}
+  m_Name: CinematicBars_RLPRO
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  Event: 550
+--- !u!114 &8670082014118535946
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a5aa0b62f42f444994ed38e7cc43aa9, type: 3}
+  m_Name: Jitter_RLPRO
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  Event: 550

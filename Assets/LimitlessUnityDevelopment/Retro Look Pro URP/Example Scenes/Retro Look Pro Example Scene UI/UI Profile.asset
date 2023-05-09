@@ -223,6 +223,35 @@ MonoBehaviour:
   GlobalPostProcessingSettings:
     m_OverrideState: 0
     m_Value: 0
+--- !u!114 &-2501442672318771884
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc5d2777661194196b68af01098c12a7, type: 3}
+  m_Name: CustomTexture
+  m_EditorClassIdentifier: 
+  active: 0
+  enable:
+    m_OverrideState: 1
+    m_Value: 1
+  texture:
+    m_OverrideState: 1
+    m_Value: {fileID: 8400000, guid: a05bd0e40cc87a3458d3bdb92f1a7aa0, type: 2}
+    dimension: 1
+  alpha:
+    m_OverrideState: 1
+    m_Value: 1
+  fade:
+    m_OverrideState: 1
+    m_Value: 1
+  GlobalPostProcessingSettings:
+    m_OverrideState: 1
+    m_Value: 0
 --- !u!114 &-2471500394740750863
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -308,7 +337,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f1c62bdc7f018b43a75aef3da42496f, type: 3}
   m_Name: TVEffect
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   enable:
     m_OverrideState: 1
     m_Value: 1
@@ -439,7 +468,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7942413263386430284c3a24e8e45f75, type: 3}
   m_Name: Jitter
   m_EditorClassIdentifier: 
-  active: 0
+  active: 1
   enable:
     m_OverrideState: 1
     m_Value: 0
@@ -521,6 +550,7 @@ MonoBehaviour:
   - {fileID: 921209252141341355}
   - {fileID: 6626914250797514469}
   - {fileID: -4065482322830640090}
+  - {fileID: -2501442672318771884}
 --- !u!114 &370713525116264922
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -575,7 +605,7 @@ MonoBehaviour:
     m_Value: 1
   fade:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0
   warpMode:
     m_OverrideState: 1
     m_Value: 1
@@ -584,7 +614,7 @@ MonoBehaviour:
     m_Value: {x: 2.2, y: -3.54}
   scale:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0.48
   mask:
     m_OverrideState: 0
     m_Value: {fileID: 2800000, guid: 7ba8bdec7bcb23946b4eaa9890e4c686, type: 3}
@@ -607,13 +637,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 040faad06a58d4b328ec6a3eb404fee1, type: 3}
   m_Name: LimitlessGlitch2
   m_EditorClassIdentifier: 
-  active: 0
+  active: 1
   enable:
     m_OverrideState: 1
     m_Value: 1
   speed:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0.08
   intensity:
     m_OverrideState: 1
     m_Value: 0.178
