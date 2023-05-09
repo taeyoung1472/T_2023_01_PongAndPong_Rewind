@@ -151,6 +151,7 @@ public class CollectionManager : MonoSingleTon<CollectionManager>
 
     private void OnApplicationQuit()
     {
+        Debug.Log("이게실행되");
         InitSaveJSON();        
     }
 
