@@ -96,12 +96,10 @@ public class PortalTelepote : GimmickObject
             if (isRight)
             {
                 playerTrm.position = reciever.position + offset;
-                Debug.LogError("TelPoPlayer()" + reciever.position + "        " + playerTrm.position);
             }
             else
             {
                 playerTrm.position = reciever.position + -offset;
-                Debug.LogError("TelPoPlayer()" + reciever.position + "        " + playerTrm.position);
             }
             Debug.Log(offset);
             playerIsOverlapping = false;
