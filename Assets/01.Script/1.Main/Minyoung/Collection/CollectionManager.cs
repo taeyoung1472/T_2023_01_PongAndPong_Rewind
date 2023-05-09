@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -6,7 +7,6 @@ using UnityEngine;
 
 public class CollectionManager : MonoSingleTon<CollectionManager>
 {
-    //public List<Collection> collections;
     public List<Collection> collectionObj;
 
     public Transform collectionParentTrm;
@@ -16,13 +16,23 @@ public class CollectionManager : MonoSingleTon<CollectionManager>
     private ChapterStageCollectionData _chapterStageCollectionData;
 
     public WorldDataSO worldDataSO;
+
     private void Awake()
+    {
+
+        if (RewindManager.Instance)
+        {
+            RewindManager.Instance.InitPlay += InitOnPlay;
+        }
+    }
+
+    private void InitOnPlay()
     {
         LoadCollectionJson();
     }
+
     private void Start()
     {
-     
         collectionParentTrm = GameObject.Find("Collection").transform;
         if (collectionParentTrm == null)
         {
@@ -34,11 +44,15 @@ public class CollectionManager : MonoSingleTon<CollectionManager>
             collectionObj.Add(item);
             Debug.Log(item);
         }
-        SetCollectionActive();
+        LoadCollectionJson();
     }
-    
+
     public void SetCollectionActive()
     {
+        if (StageManager.Instance.CurStageDataSO == null)
+        {
+            return;
+        }
 
         for (int i = 0; i < StageManager.Instance.CurStageDataSO.stageCollection.Count; i++)
         {
@@ -52,6 +66,8 @@ public class CollectionManager : MonoSingleTon<CollectionManager>
             }
         }
     }
+
+
     public void SetStageCollecitonSO()
     {
         for (int i = 0; i < _chapterStageCollectionData.stageCollectionDatas.Count; i++)
@@ -59,6 +75,7 @@ public class CollectionManager : MonoSingleTon<CollectionManager>
             worldDataSO.stageList[i].stageCollection = _chapterStageCollectionData.stageCollectionDatas[i].collectionData;
         }
     }
+
     public void LoadCollectionJson()
     {
         string path = Application.dataPath + "/Save/ChapterCollection.json";
@@ -68,11 +85,11 @@ public class CollectionManager : MonoSingleTon<CollectionManager>
             _chapterStageCollectionData = Newtonsoft.Json.JsonConvert.DeserializeObject<ChapterStageCollectionData>(json);
 
             SetStageCollecitonSO();
+            SetCollectionActive();
         }
         else
         {
             Debug.Log("콜렉션제이슨데이터생성");
-            File.WriteAllText(path, Newtonsoft.Json.JsonConvert.SerializeObject(_chapterStageCollectionData));
 
             if (_chapterStageCollectionData == null)
             {
@@ -90,11 +107,15 @@ public class CollectionManager : MonoSingleTon<CollectionManager>
                     _stageCollectionData = new StageCollectionData();
                     Debug.Log("널이니까 새로만듬 스테이지를" + _stageCollectionData);
                 }
+
                 for (int i = 0; i < worldDataSO.stageList.Count; i++)
                 {
                     _chapterStageCollectionData.stageCollectionDatas.Add(_stageCollectionData);
                     _chapterStageCollectionData.stageCollectionDatas[i].collectionData = worldDataSO.stageList[i].stageCollection;
                 }
+                Debug.Log("처음 JSON 데이터 생성할때는 모든 false");
+
+                File.WriteAllText(path, Newtonsoft.Json.JsonConvert.SerializeObject(_chapterStageCollectionData));
             }
         }
     }
@@ -106,15 +127,31 @@ public class CollectionManager : MonoSingleTon<CollectionManager>
         string path = Application.dataPath + "/Save/ChapterCollection.json";
         string json = Newtonsoft.Json.JsonConvert.SerializeObject(_chapterStageCollectionData);
 
-        for(int i = 0; i < _chapterStageCollectionData.stageCollectionDatas.Count; i++)
-        {
-            Debug.Log(_chapterStageCollectionData.stageCollectionDatas[i].collectionData[0] + " ");
-            //Debug.Log("콜렉션 " + json);
-        }
         File.WriteAllText(path, json);
     }
     public void SaveStageCollecitonActive()
     {
         _chapterStageCollectionData.stageCollectionDatas[StageManager.Instance.CurStageDataSO.stageIndex].collectionData = StageManager.Instance.CurStageDataSO.stageCollection;
     }
+    public void InitSaveJSON()
+    {
+        LoadCollectionJson();
+        for (int i = 0; i < worldDataSO.stageList.Count - 1; i++)
+        {
+            for (int j = 0; j < _chapterStageCollectionData.stageCollectionDatas[i].collectionData.Count; j++)
+            {
+                _chapterStageCollectionData.stageCollectionDatas[i].collectionData[j] = false;
+            }
+        }
+
+        string path = Application.dataPath + "/Save/ChapterCollection.json";
+        string json = Newtonsoft.Json.JsonConvert.SerializeObject(_chapterStageCollectionData);
+        File.WriteAllText(path, json);
+    }
+
+    private void OnApplicationQuit()
+    {
+        InitSaveJSON();        
+    }
+
 }

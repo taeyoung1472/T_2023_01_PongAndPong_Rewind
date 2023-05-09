@@ -22,9 +22,6 @@ public class ButtonGimmick : GimmickObject
     [SerializeField] private bool toggleing;
     #endregion
 
-    private bool isStart = false;
-
-
     private Animator animator;
 
     [SerializeField] private bool gravityButton;
