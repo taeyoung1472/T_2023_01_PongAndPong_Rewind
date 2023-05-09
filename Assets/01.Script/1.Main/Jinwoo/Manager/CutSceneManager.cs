@@ -34,7 +34,7 @@ public class CutSceneManager : MonoSingleTon<CutSceneManager>
     [SerializeField] private Collider[] cutsceneCheck;
     void Awake()
     {
-        MainMenuManager.isOpend = true;
+        //MainMenuManager.isOpend = true;
         FadeInOutManager.Instance.FadeOut(2f);
         curCool = 0;
         isAutoTalking = false;
