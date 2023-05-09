@@ -18,6 +18,8 @@ public class MovePlatform : GimmickObject
     [SerializeField]
     private bool _larpMoving = false;
     [SerializeField]
+    private bool _childMoving = true;
+    [SerializeField]
     private float _lerpSpeed = 0.5f;
     private Vector3 _lastPosition = Vector3.zero;
 
@@ -68,19 +70,22 @@ public class MovePlatform : GimmickObject
         if(_larpMoving)
             _parentTrm.position = Vector3.Lerp(_lastPosition, _parentTrm.position, _lerpSpeed);
         //_rigid.MovePosition();
-        for (int i = 0; i < _objList.Count; i++)
+        if(_childMoving)
         {
-            if (_objList[i].GetComponent<Collider>().CompareTag("Player"))
+            for (int i = 0; i < _objList.Count; i++)
             {
-                if(_objList[i].GetComponent<Player>().PlayerActionCheck(PlayerActionType.Jump))
+                if (_objList[i].GetComponent<Collider>().CompareTag("Player"))
                 {
-                    continue;
+                    if (_objList[i].GetComponent<Player>().PlayerActionCheck(PlayerActionType.Jump))
+                    {
+                        continue;
+                    }
                 }
+                Vector3 newVec = _objList[i].transform.position;
+                newVec.y = _parentTrm.position.y +
+                    _parentTrm.GetComponent<BoxCollider>().size.y * 0.49f;
+                _objList[i].transform.position = newVec;
             }
-            Vector3 newVec = _objList[i].transform.position;
-            newVec.y = _parentTrm.position.y +
-                _parentTrm.GetComponent<BoxCollider>().size.y * 0.49f;
-            _objList[i].transform.position = newVec;
         }
 
         _lastPosition = _parentTrm.position;
