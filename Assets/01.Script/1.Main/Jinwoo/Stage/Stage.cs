@@ -71,10 +71,10 @@ public class Stage : MonoBehaviour
             TimerManager.Instance.ChangeOnTimer(false);
 
             StageManager.Instance.fadeImg.gameObject.SetActive(true);
-
-            yield return new WaitForSeconds(3f);
-
+            EndManager.Instance.EndVolume();
+            yield return new WaitForSeconds(2f);
             StageManager.Instance.fadeImg.gameObject.SetActive(false);
+
             TimerManager.Instance.EndRewind();
         }
         CollectionManager.Instance.SaveCollection();

@@ -36,10 +36,10 @@ public class UIManager : MonoSingleTon<UIManager>
         float tempTime = 0;
         for (int i = 0; i < clockColorArray.Length; i++)
         {
-            if (time >= tempTime)
-            {
-                barColor.color = Color.Lerp(clockColorArray[i], clockColorArray[Mathf.Clamp(i + 1, 0, clockColorArray.Length - 1)], (float)(time % clockTime) / (float)clockTime);
-            }
+            //if (time >= tempTime)
+            //{
+            //    barColor.color = Color.Lerp(clockColorArray[i], clockColorArray[Mathf.Clamp(i + 1, 0, clockColorArray.Length - 1)], (float)(time % clockTime) / (float)clockTime);
+            //}
             tempTime += clockTime;
         }
     }
@@ -53,12 +53,12 @@ public class UIManager : MonoSingleTon<UIManager>
         float tempTime = totalTIme;
         for (int i = clockColorArray.Length-1; i > 0; i--)
         {
-            if (time < tempTime)
-            {
-                barColor.color =
-                    Color.Lerp(clockColorArray[i], clockColorArray[Mathf.Clamp(i - 1, 0, clockColorArray.Length - 1)], 
-                    (float)(time % clockTime) / (float)clockTime);
-            }
+            //if (time < tempTime)
+            //{
+            //    barColor.color =
+            //        Color.Lerp(clockColorArray[i], clockColorArray[Mathf.Clamp(i - 1, 0, clockColorArray.Length - 1)], 
+            //        (float)(time % clockTime) / (float)clockTime);
+            //}
             tempTime -= clockTime;
         }
     }
