@@ -28,6 +28,8 @@ public class EndManager : MonoSingleTon<EndManager>
     #endregion
 
     [SerializeField] private bool isCloser = false;
+    public bool IsEnd { get { return isEnd; } }
+    private bool isEnd;
 
 
     private void Start()
@@ -49,6 +51,7 @@ public class EndManager : MonoSingleTon<EndManager>
     }
     public void End()
     {
+        isEnd = true;
         nextStagePanel.SetActive(false);
         endPanel.SetActive(true);
 
@@ -68,8 +71,6 @@ public class EndManager : MonoSingleTon<EndManager>
 
         nextStageBtn.interactable = StageManager.stageDataSO.nextStageData != null;
         nextStageBtn.onClick.AddListener(() => nextStageBtn.interactable = false);
-
-        
     }
     public void ReStart()
     {

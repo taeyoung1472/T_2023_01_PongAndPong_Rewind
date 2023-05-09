@@ -70,13 +70,13 @@ public class Stage : MonoBehaviour
             yield return new WaitUntil(() => stageAreaList[i].isAreaClear);
             TimerManager.Instance.ChangeOnTimer(false);
 
-            StageManager.Instance.fadeImg.gameObject.SetActive(true);
-
-            yield return new WaitForSeconds(3f);
-
-            StageManager.Instance.fadeImg.gameObject.SetActive(false);
+            //StageManager.Instance.fadeImg.gameObject.SetActive(true);
+            //yield return new WaitForSeconds(3f);
+            //StageManager.Instance.fadeImg.gameObject.SetActive(false);
+            
             TimerManager.Instance.EndRewind();
         }
+        StageManager.Instance.fadeImg.gameObject.SetActive(true);
         CollectionManager.Instance.SaveCollection();
         EndManager.Instance.End();
     }
