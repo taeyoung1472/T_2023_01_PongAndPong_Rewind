@@ -66,7 +66,7 @@ public class PlayerDash : PlayerAction, IPlayerResetable
             _player.PlayerAnimation.SlideAnimation();
             _player.GravityModule.UseGravity = true;
             dashVector = dir * _player.playerMovementSO.dashPower;
-            dashVector.y = 0f;
+            //dashVector.y = 0f;
         }
         else
         {

@@ -13,11 +13,22 @@ public class TextAnim : MonoBehaviour
 
     private int idx = 0;
 
-    private bool isAnim = true;
+    public bool isAnim = false;
 
-    void Start()
+    public bool isComplete = false;
+    public bool isSkip = false;
+
+    void Awake()
     {
         //EndCheck();
+        isComplete = false;
+        isAnim = false;
+        isSkip = false;
+    }
+    private void OnEnable()
+    {
+        isAnim = false;
+        isSkip = false;
     }
     public void SetText(TextMeshProUGUI text)
     {
@@ -48,6 +59,11 @@ public class TextAnim : MonoBehaviour
         _textMeshPro.SetText("");
         _textMeshPro.ClearMesh();
     }
+    public void CompleteText()
+    {
+        if(idx - 1 >= 0)
+        _textMeshPro.text = textData.stringArray[idx-1];
+    }
     private IEnumerator TextVisible()
     {
         _textMeshPro.ForceMeshUpdate();
@@ -66,10 +82,17 @@ public class TextAnim : MonoBehaviour
                 break;
             }
 
+
             counter += 1;
-            yield return new WaitForSeconds(textData.timeBtwnChars);
+            if (!isSkip)
+            {
+                yield return new WaitForSeconds(textData.timeBtwnChars);
+            }
 
 
         }
+        isSkip = false;
+        isAnim = false;
+        isComplete = true;
     }
 }

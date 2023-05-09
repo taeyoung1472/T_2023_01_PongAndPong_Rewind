@@ -72,7 +72,7 @@ public class GravityInverseGimmick : ControlAbleObjcet
         player.ForceStop();
         player.ColliderSet(PlayerColliderType.Normal);
 
-        player.PlayerRenderer.flipDirection = direction;
+        player.PlayerRenderer.FlipDirectionChange(direction, false);
         player.GravityModule.GravityDir = Utility.GetDirToVector(direction) * 9.8f;
 
         CapsuleCollider col = player.Col;
@@ -87,7 +87,8 @@ public class GravityInverseGimmick : ControlAbleObjcet
                 if (isRewind)
                 {
                     player.ColliderSet(PlayerColliderType.Normal);
-                    player.transform.Translate(Vector2.down * player.Col.height);
+                    player.transform.position += (Vector3)(Utility.GetDirToVector(direction) * player.Col.height);
+                    //player.transform.Translate(Vector2.down * player.Col.height);
                 }
                 break;
             case DirectionType.Down:

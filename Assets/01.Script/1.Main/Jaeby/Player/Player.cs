@@ -159,7 +159,7 @@ public class Player : MonoBehaviour
             _resetables[i].EnableReset();
 
         if(_playerRenderer != null)
-            _playerRenderer.flipDirection = DirectionType.Down;
+            _playerRenderer.FlipDirectionChange(DirectionType.Down, true);
     }
 
     public void DisableReset()
