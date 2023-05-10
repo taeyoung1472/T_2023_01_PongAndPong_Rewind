@@ -11,7 +11,7 @@ public class StageNotify : MonoBehaviour
         for (int i = 0; i < notifyDataArr.Length; i++)
         {
             NotifyManager.Instance.Notify(notifyDataArr[i]);
-            yield return new WaitForSeconds(notifyDataArr[i].Length * 0.15f);
+            yield return new WaitForSeconds(notifyDataArr[i].Length * 0.075f);
         }
     }
 }
