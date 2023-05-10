@@ -67,14 +67,15 @@ public class UIManager : MonoSingleTon<UIManager>
     {
         if (Input.GetKeyDown(KeyCode.Escape) && !BreakScreenController.Instance.isBreaking)
         {
-            if (!isPause && EndManager.Instance.EndPanel.activeSelf == false && EndManager.Instance.NextStagePanel.activeSelf == false)
+            Debug.Log("¤·¤·");
+            if (!isPause && !EndManager.Instance.IsEnd)
             {
                 isPause = true;
                 TimerManager.Instance.ChangeOnTimer(false);
                 pauseImg.gameObject.SetActive(true);
                 Time.timeScale = 0f;
             }
-            else
+            else if(!EndManager.Instance.IsEnd)
             {
                 PauseResume();
             }

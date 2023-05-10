@@ -14,6 +14,7 @@ public class CollectionManager : MonoSingleTon<CollectionManager>
     private StageCollectionData _stageCollectionData;
 
     private ChapterStageCollectionData _chapterStageCollectionData;
+    public ChapterStageCollectionData ChapterStageCollectionData => _chapterStageCollectionData;
 
     public WorldDataSO worldDataSO;
 
@@ -33,6 +34,7 @@ public class CollectionManager : MonoSingleTon<CollectionManager>
 
     private void Start()
     {
+
         collectionParentTrm = GameObject.Find("Collection").transform;
         if (collectionParentTrm == null)
         {
@@ -136,11 +138,12 @@ public class CollectionManager : MonoSingleTon<CollectionManager>
     public void InitSaveJSON()
     {
         LoadCollectionJson();
-        for (int i = 0; i < worldDataSO.stageList.Count - 1; i++)
+        for (int i = 0; i < worldDataSO.stageList.Count; i++)
         {
             for (int j = 0; j < _chapterStageCollectionData.stageCollectionDatas[i].collectionData.Count; j++)
             {
                 _chapterStageCollectionData.stageCollectionDatas[i].collectionData[j] = false;
+                worldDataSO.stageList[i].stageCollection[j] = false;
             }
         }
 
