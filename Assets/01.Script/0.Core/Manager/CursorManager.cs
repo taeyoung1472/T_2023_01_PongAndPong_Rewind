@@ -10,4 +10,16 @@ public class CursorManager : MonoBehaviour
     {
         Cursor.SetCursor(cursorTex, new Vector2(cursorTex.width * cursotHotspot.x, cursorTex.height * cursotHotspot.y), CursorMode.Auto);
     }
+
+    private void OnApplicationFocus(bool focus)
+    {
+        if (focus)
+        {
+            Cursor.lockState = CursorLockMode.Confined;
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.None;
+        }
+    }
 }

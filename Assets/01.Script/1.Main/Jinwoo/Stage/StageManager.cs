@@ -65,12 +65,12 @@ public class StageManager : MonoSingleTon<StageManager>
         }
 
         if (Input.GetKeyDown(KeyCode.R) && isRestartPossible && !freeLookCam._isActivated &&
-            !BreakScreenController.Instance.isBreaking)
+            !BreakScreenController.Instance.isBreaking && !EndManager.Instance.IsEnd)
         {
             OnReStartArea();
         }
 
-        if (Input.GetKeyDown(KeyCode.T) && isRestartPossible && !isDownButton)
+        if (Input.GetKeyDown(KeyCode.T) && isRestartPossible && !isDownButton && !EndManager.Instance.IsEnd)
         {
             isDownButton = true;
             GlitchManager.Instance.CoroutineColorDrift();

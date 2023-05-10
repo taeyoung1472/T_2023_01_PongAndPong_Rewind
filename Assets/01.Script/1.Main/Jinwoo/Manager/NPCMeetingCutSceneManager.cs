@@ -1,11 +1,7 @@
 using System.Collections;
-using System.Collections.Generic;
-using UnityEngine.Playables;
 //using Cinemachine;
 using UnityEngine;
-using UnityEditor.Animations;
 using UnityEngine.SceneManagement;
-using System;
 
 public class NPCMeetingCutSceneManager : MonoSingleTon<NPCMeetingCutSceneManager>
 {
@@ -19,7 +15,7 @@ public class NPCMeetingCutSceneManager : MonoSingleTon<NPCMeetingCutSceneManager
     [SerializeField] private int autoTalkingIndex = 1;
 
     [SerializeField] private TextAnim[] npcs;
-    
+
     private IEnumerator Start()
     {
 
