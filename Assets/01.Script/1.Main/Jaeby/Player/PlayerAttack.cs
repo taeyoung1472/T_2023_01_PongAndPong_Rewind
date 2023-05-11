@@ -13,7 +13,7 @@ public class PlayerAttack : PlayerAction, IPlayerResetable
     private UnityEvent OnRangeAttack = null;
 
     private int _attackIndex = -1; // 함수에 들어가서 +1 해주기에 -1부터 시작
-    private readonly int _maxAttackIndex = 3;
+    private readonly int _maxAttackIndex = 2;
     private bool _delayLock = false;
 
     private AttackState _attackState = AttackState.Melee;
