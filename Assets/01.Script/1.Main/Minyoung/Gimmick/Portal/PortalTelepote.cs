@@ -62,27 +62,38 @@ public class PortalTelepote : GimmickObject
         {
 
             Vector3 centerPos = col.bounds.center;
-            Debug.Log("CenterPos" + centerPos);
+
             foreach (Transform trm in telObjList)
             {
-                float reciPosX = objreciever.position.x;
-                trm.position = new Vector3(reciPosX, trm.position.y, trm.position.z );
+                Collider col = trm.GetComponent<Collider>();
 
-                //Vector3 diffVec = centerPos - trm.position;
-                //diffVec.z = 0;
-                //Debug.Log(diffVec);
-                //float offset = trm.GetComponent<Collider>().bounds.size.x;
-                //Debug.Log(offset);
-                //if (isRight)
-                //{
-                //    trm.position = (reciever.position + new Vector3(offset * telValue, 0, 0)) - diffVec;
-                //    Debug.LogError("TelPoObj()" + reciever.position + "        " + trm.position);
-                //}
-                //else
-                //{
-                //    trm.position = (reciever.position + new Vector3(-offset * telValue, 0, 0)) - diffVec;
-                //    Debug.LogError("TelPoObj()" + reciever.position + "        " + trm.position);
-                //}
+                if (col is BoxCollider)
+                {
+                    Vector3 diffVec = centerPos - trm.position;
+                    diffVec.z = 0;
+                    float offset = trm.GetComponent<Collider>().bounds.size.x;
+                    if (isRight)
+                    {
+                        trm.position = (reciever.position + new Vector3(offset * telValue, 0, 0)) - diffVec;
+                    }
+                    else
+                    {
+                        trm.position = (reciever.position + new Vector3(-offset * telValue, 0, 0)) - diffVec;
+                    }
+                }
+                else if (col is CapsuleCollider)
+                {
+
+                }
+                else if (col is SphereCollider)
+                {
+
+                }
+
+                //float reciPosX = objreciever.position.x;
+                //trm.position = new Vector3(reciPosX, trm.position.y, trm.position.z );
+
+
             }
         }
 

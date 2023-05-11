@@ -10181,7 +10181,7 @@ GameObject:
   - component: {fileID: 398402673}
   - component: {fileID: 398402672}
   m_Layer: 0
-  m_Name: PlayerCam
+  m_Name: VCam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -31241,6 +31241,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 345556650}
     m_Modifications:
+    - target: {fileID: 3958125039177050714, guid: 8c40e98ff3577b645a65ddcd87a1bed1, type: 3}
+      propertyPath: _collectionText
+      value: 
+      objectReference: {fileID: 1815118209}
     - target: {fileID: 3958125040172078720, guid: 8c40e98ff3577b645a65ddcd87a1bed1, type: 3}
       propertyPath: m_Name
       value: StageSelectCanvas (1)
@@ -32196,7 +32200,7 @@ MonoBehaviour:
   - m_Script
   m_LockStageInInspector: 
   m_StreamingVersion: 20170927
-  m_Priority: -1
+  m_Priority: -2
   m_StandbyUpdate: 2
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 0}
@@ -39122,7 +39126,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1612570352
 RectTransform:
   m_ObjectHideFlags: 0
@@ -39140,10 +39144,10 @@ RectTransform:
   m_Father: {fileID: 184886495}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 62.5, y: -262.5}
+  m_SizeDelta: {x: 125, y: 125}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1612570353
 MonoBehaviour:
@@ -43535,6 +43539,17 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 5
   m_TargetDisplay: 0
+--- !u!114 &1815118209 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3958125040183474283, guid: 8c40e98ff3577b645a65ddcd87a1bed1, type: 3}
+  m_PrefabInstance: {fileID: 1265779418}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1817368009
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -55328,7 +55343,7 @@ MonoBehaviour:
   drawingMode: 9
   outlineLayer: 0
   outlineTargets:
-  - IsVisible: 1
+  - IsVisible: 0
     CutoutMask: 8
     edgeDilateAmount: 5
     frontEdgeDilateAmount: 5
@@ -55344,7 +55359,7 @@ MonoBehaviour:
     cutoutTextureName: 
     DilateRenderingMode: 0
     cutoutTextureIndex: 0
-  - IsVisible: 1
+  - IsVisible: 0
     CutoutMask: 8
     edgeDilateAmount: 5
     frontEdgeDilateAmount: 5
