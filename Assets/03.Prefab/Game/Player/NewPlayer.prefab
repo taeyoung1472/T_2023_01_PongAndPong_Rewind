@@ -5305,7 +5305,7 @@ GameObject:
   - component: {fileID: 7175846074376687810}
   - component: {fileID: 532921158}
   - component: {fileID: 532921133}
-  - component: {fileID: 883607986147096027}
+  - component: {fileID: 532921140}
   m_Layer: 8
   m_Name: NewPlayer
   m_TagString: Player
@@ -5621,10 +5621,34 @@ MonoBehaviour:
         m_CallState: 2
   OnAttack:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 6691628707489746802}
+        m_TargetAssemblyTypeName: PlayerAttack, Assembly-CSharp
+        m_MethodName: Attack
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnWeaponChange:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 6691628707489746802}
+        m_TargetAssemblyTypeName: PlayerAttack, Assembly-CSharp
+        m_MethodName: WeaponSwitching
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnInteract:
     m_PersistentCalls:
       m_Calls: []
@@ -5897,7 +5921,7 @@ CapsuleCollider:
   m_Height: 1.9
   m_Direction: 1
   m_Center: {x: 0, y: 0.92, z: 0}
---- !u!114 &883607986147096027
+--- !u!114 &532921140
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -6009,26 +6033,26 @@ MonoBehaviour:
     cutoutTextureName: 
     DilateRenderingMode: 0
     cutoutTextureIndex: 0
-  renderStyle: 1
+  renderStyle: 2
   outlineParameters:
-    enabled: 1
-    color: {r: 0.5019608, g: 0, b: 1, a: 1}
-    dilateShift: 0.5
+    enabled: 0
+    color: {r: 0, g: 0.74509805, b: 0.7490196, a: 1}
+    dilateShift: 1
     blurShift: 0
     fillPass:
       shader: {fileID: 0}
       serializedProperties: []
   backParameters:
     enabled: 1
-    color: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-    dilateShift: 1
-    blurShift: 1
+    color: {r: 0, g: 1, b: 1, a: 1}
+    dilateShift: 0.5
+    blurShift: 0
     fillPass:
       shader: {fileID: 0}
       serializedProperties: []
   frontParameters:
-    enabled: 1
-    color: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+    enabled: 0
+    color: {r: 0.015686274, g: 1, b: 1, a: 1}
     dilateShift: 1
     blurShift: 1
     fillPass:
@@ -6172,7 +6196,7 @@ Animator:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6691628707631861922}
   m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: fad2fb421c57924409a5095b115f9d42, type: 3}
+  m_Avatar: {fileID: 9000000, guid: 7c105f6f61a2b3045a1e0bb6ebf01c3b, type: 3}
   m_Controller: {fileID: 9100000, guid: e1cebf3b0d6191f41b94309aedc2d75d, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
@@ -6520,6 +6544,18 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 5710882524681089668, guid: d4c00971c8036754cbcda3da87ea6e03, type: 3}
   m_PrefabInstance: {fileID: 2420170100569250931}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1700654245
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7986864027456876279}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 034bc47afcbf5e141a58d5c20b7808e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1056134667338777607
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7176,6 +7212,18 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3876009011148223193, guid: 8b7085e5a9ed6af45bfda9db4d7c1e0a, type: 3}
   m_PrefabInstance: {fileID: 3772694320589681502}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &569710801
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 112894375676232071}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 034bc47afcbf5e141a58d5c20b7808e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &8414018835329710819
 MonoBehaviour:
   m_ObjectHideFlags: 0
