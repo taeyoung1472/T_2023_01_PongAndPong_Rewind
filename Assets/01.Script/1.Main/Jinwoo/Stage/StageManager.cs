@@ -23,8 +23,8 @@ public class StageManager : MonoSingleTon<StageManager>
 
     public Image fadeImg;
 
-    public bool isGameStart = false;
-    public bool isDownButton = false;
+    [HideInInspector] public bool isGameStart = false;
+    [HideInInspector] public bool isDownButton = false;
     private float reStartCoolTime = 1f;
     private float freelookCoolTime = 2f;
     private bool isRestartPossible = false;

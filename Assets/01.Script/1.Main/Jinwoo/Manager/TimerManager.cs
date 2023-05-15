@@ -8,8 +8,6 @@ using DigitalRuby.ThunderAndLightning;
 public class TimerManager : MonoSingleTon<TimerManager>
 {
     #region 변수들
-    [SerializeField] private LightningBoltPrefabScript[] lightningBolts;
-    [SerializeField] private TextMeshProUGUI timeText;
     public float CurrentTimer { get; set; }
 
 
@@ -27,13 +25,13 @@ public class TimerManager : MonoSingleTon<TimerManager>
         }
     }
 
-    public bool isOnTimer = false;
+    [HideInInspector] public bool isOnTimer = false;
 
 
     private bool isRewindStart = false;
-    public bool isRewinding = false;
+    [HideInInspector] public bool isRewinding = false;
 
-    [SerializeField] private float rewindIntensity = 0.01f;          //되감기 속도를 변경하는 변수
+    private float rewindIntensity = 0.02f;          //되감기 속도를 변경하는 변수
     private float rewindValue = 0;
 
     [Header("[Volume]")]
@@ -80,24 +78,6 @@ public class TimerManager : MonoSingleTon<TimerManager>
     {
         defaultVolume.SetActive(isDefault);
         rewindVolume.SetActive(!isDefault);
-        if (isDefault)
-        {
-            //Camera.main.backgroundColor = Color.black;
-            foreach (var bolt in lightningBolts)
-            {
-                bolt.LightningTintColor = new Color(0.5f, 0f, 0.5f);
-                bolt.GlowTintColor = new Color(0.5f, 0f, 0.5f);
-            }
-        }
-        else
-        {
-            //Camera.main.backgroundColor = new Color(0.5f, 0f, 0.5f);
-            foreach (var bolt in lightningBolts)
-            {
-                bolt.LightningTintColor = Color.yellow;
-                bolt.GlowTintColor = Color.yellow;
-            }
-        }
     }
     public void UpdateText()
     {
