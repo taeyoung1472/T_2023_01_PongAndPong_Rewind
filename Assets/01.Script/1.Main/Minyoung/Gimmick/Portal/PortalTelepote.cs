@@ -61,7 +61,8 @@ public class PortalTelepote : GimmickObject
         if (objIsOverlapping)
         {
 
-            Vector3 centerPos = col.bounds.center;
+            Vector3 centerPos = Vector3.zero;
+            Vector3 diffVec = Vector3.zero;
 
             foreach (Transform trm in telObjList)
             {
@@ -69,7 +70,8 @@ public class PortalTelepote : GimmickObject
 
                 if (col is BoxCollider)
                 {
-                    Vector3 diffVec = centerPos - trm.position;
+                    centerPos = col.bounds.center;
+                    diffVec = centerPos - trm.position;
                     diffVec.z = 0;
                     float offset = trm.GetComponent<Collider>().bounds.size.x;
                     if (isRight)
