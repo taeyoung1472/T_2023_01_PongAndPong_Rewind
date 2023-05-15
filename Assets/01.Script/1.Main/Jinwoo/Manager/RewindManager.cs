@@ -23,7 +23,7 @@ public class RewindManager : MonoSingleTon<RewindManager>
     /// <summary>
     /// 과거까지 얼마나 추적해야 하는지를 정의하는 변수, 설정된 한계에 도달한 후 순환 버퍼에서 이전 값을 덮어씀
     /// </summary>
-    public float howManySecondsToTrack = 10;
+    [HideInInspector] public float howManySecondsToTrack = 10;
 
     /// <summary>
     /// 이 변수는 되감기에 사용할 수 있는 시간(초)을 반환함 (그니깐 시간이 지날수록 커지는 거임)
