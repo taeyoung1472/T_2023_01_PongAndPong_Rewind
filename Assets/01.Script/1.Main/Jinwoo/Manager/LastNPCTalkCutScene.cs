@@ -122,13 +122,14 @@ public class LastNPCTalkCutScene : MonoSingleTon<LastNPCTalkCutScene>
         AllClearText();
 
         isTalkStart = false;
-        FadeInOutManager.Instance.FadeIn(5f);
-        yield return new WaitForSeconds(2f);
+        FadeInOutManager.Instance.FadeIn(3f);
+        yield return new WaitForSeconds(3.4f);
+        NextCutScene();
 
     }
     public void NextCutScene()
     {
-        SceneManager.LoadScene("OfficeJinwoo");
+        SceneManager.LoadScene("Lab");
     }
 
     public void ShowSpeechBubble(int npcNum)

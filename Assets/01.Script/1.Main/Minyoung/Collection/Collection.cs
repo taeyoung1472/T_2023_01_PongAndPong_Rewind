@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class Collection : MonoBehaviour
 {
+    [SerializeField] private GameObject eatParticle;
     [SerializeField] private int index;
+
     public Vector3 pos;
     private bool isEat;
     public bool IsEat => isEat;
@@ -12,11 +14,11 @@ public class Collection : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            Debug.Log("SDdssd");
             Player player = other.GetComponent<Player>();
             isEat = true;
-            gameObject.SetActive(false);
+            Instantiate(eatParticle, other.transform.position, Quaternion.identity);
             StageManager.Instance.CurStageDataSO.stageCollection[index] = IsEat; //  .Add(IsEat);
+            gameObject.SetActive(false);
         }
     }
 }
