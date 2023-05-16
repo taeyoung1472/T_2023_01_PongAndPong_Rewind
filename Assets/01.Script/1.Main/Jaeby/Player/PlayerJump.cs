@@ -126,10 +126,12 @@ public class PlayerJump : PlayerAction, IPlayerEnableResetable
         {
             _player.GetPlayerAction<PlayerWallGrab>().WallExit();
             _player.VeloCityResetImm(x: true, y: true);
-            _player.PlayerRenderer.ForceFlip();
+            //_player.PlayerRenderer.ForceFlip();
             Vector2 jumpDir = _player.playerMovementSO.wallJumpPower;
-            jumpDir.x *= _player.PlayerRenderer.Forward.x;
+            jumpDir.x *= _player.PlayerInput.InputVector.x;
+            _player.PlayerRenderer.Flip(_player.PlayerInput.InputVector, false);
             _jumpCoroutine = StartCoroutine(JumpCoroutine(jumpDir, _player.playerMovementSO.wallGrabJumpPower, _player.playerMovementSO.jumpHoldTime));
+            //_jumpCoroutine = StartCoroutine(JumpCoroutine(_player.transform.up, _player.playerMovementSO.wallGrabJumpPower, _player.playerMovementSO.jumpHoldTime));
             _moveLockCoroutine = StartCoroutine(MoveLockCoroutine());
             OnWallGrabJump?.Invoke();
         }

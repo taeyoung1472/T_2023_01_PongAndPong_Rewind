@@ -93,7 +93,7 @@ public class PlayerRenderer : MonoBehaviour
         return rot;
     }
 
-    public void Flip(Vector2 dir)
+    public void Flip(Vector2 dir, bool smoothing = true)
     {
         if (dir.x == 0f /*|| _fliping*/)
             return;
@@ -119,17 +119,10 @@ public class PlayerRenderer : MonoBehaviour
         {
             targetRotation = Quaternion.Euler(_player.transform.rotation.eulerAngles.x, (flipDir == DirectionType.Left) ? -90f : 90f, _player.transform.rotation.eulerAngles.z); //플레이어 로테이션을 돌린다 
         }
-        //targetRotation = Quaternion.AngleAxis((flipDir == DirectionType.Left) ? -90f : 90f, _player.transform.up);
-        //_player.transform.rotation = targetRotation;
-        _player.transform.rotation = Quaternion.Slerp(_player.transform.rotation, targetRotation, _rotationSpeed * Time.deltaTime);
-
-        /*Vector3 sc = transform.localScale;
-        sc.x = Mathf.Abs(sc.x);
-        if (flipDir == FlipDirection.Left)
-        {
-            sc.x *= -1f;
-        }
-        transform.localScale = sc;*/
+        if (smoothing)
+            _player.transform.rotation = Quaternion.Slerp(_player.transform.rotation, targetRotation, _rotationSpeed * Time.deltaTime);
+        else
+            _player.transform.rotation = targetRotation;
         _fliped = flipDir == DirectionType.Left;
         OnFliped?.Invoke(_fliped);
     }
