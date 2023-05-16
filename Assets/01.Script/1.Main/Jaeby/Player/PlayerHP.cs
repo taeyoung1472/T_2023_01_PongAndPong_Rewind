@@ -33,14 +33,6 @@ public class PlayerHP : MonoBehaviour, IPlayerResetable
         CurHP -= damage;
     }
 
-    private void Update()
-    {
-        if(Input.GetKey(KeyCode.Y))
-        {
-            Die();
-        }
-    }
-
     public void Die()
     {
         Debug.Log("»ç¸Á!!");
