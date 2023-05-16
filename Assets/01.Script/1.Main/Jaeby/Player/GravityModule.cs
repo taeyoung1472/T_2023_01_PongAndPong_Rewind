@@ -11,6 +11,9 @@ public class GravityModule : MonoBehaviour, IPlayerEnableResetable, IPlayerDisab
     private float _maxGravityAcceleration = 1f;
     public float MaxGravityAcceleration { get => _maxGravityAcceleration; set => _maxGravityAcceleration = value; }
 
+    [SerializeField]
+    private float _gravityAccelerationTime = 2f;
+
     private float _gravityScale = 1f;
     public float GravityScale { get => _gravityScale; set => _gravityScale = value; }
 
@@ -61,8 +64,8 @@ public class GravityModule : MonoBehaviour, IPlayerEnableResetable, IPlayerDisab
         float x = 0f;
         while (x <= 1f)
         {
-            x += Time.deltaTime;
             _curGravityAcceleration = _maxGravityAcceleration * x;
+            x += Time.deltaTime * (1 / _gravityAccelerationTime);
             yield return null;
         }
         _curGravityAcceleration = _maxGravityAcceleration;
