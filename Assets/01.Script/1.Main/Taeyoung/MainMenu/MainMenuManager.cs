@@ -139,6 +139,7 @@ public class MainMenuManager : MonoSingleTon<MainMenuManager>
         playerCam.Priority = 0;
 
         player.GetComponent<Player>().ForceStop();
+        player.GetComponent<Player>().PlayerActionExit(PlayerActionType.ObjectPush);
         playerInput.enabled = false;
 
         isActive = true;
