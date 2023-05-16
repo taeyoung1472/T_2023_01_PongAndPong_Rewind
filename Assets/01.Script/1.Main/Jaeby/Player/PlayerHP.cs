@@ -33,6 +33,14 @@ public class PlayerHP : MonoBehaviour, IPlayerResetable
         CurHP -= damage;
     }
 
+    private void Update()
+    {
+        if(Input.GetKey(KeyCode.Y))
+        {
+            Die();
+        }
+    }
+
     public void Die()
     {
         Debug.Log("»ç¸Á!!");
@@ -46,7 +54,7 @@ public class PlayerHP : MonoBehaviour, IPlayerResetable
         if (StageManager.Instance == null)
             return;
         StageManager.Instance.InputLock = true;
-        Instantiate(_dieParticlePrefab, _player.transform.position, _player.transform.rotation);
+        Instantiate(_dieParticlePrefab, _player.transform.position + _player.Col.center, _player.transform.rotation);
     }
 
     public void Restart()

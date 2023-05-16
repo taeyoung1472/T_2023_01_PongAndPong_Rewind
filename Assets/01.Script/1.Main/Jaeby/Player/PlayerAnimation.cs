@@ -126,6 +126,16 @@ public class PlayerAnimation : MonoBehaviour
         _attackAniCo = StartCoroutine(AttackAnimationEndWaitCoroutine("PlayerRangeAttack", AttackState.Range));
     }
 
+    public void DieStartAnimation()
+    {
+        _player.playerHP.DieStart();
+    }
+
+    public void DieEndAnimation()
+    {
+        _player.playerHP.Restart();
+    }
+
     private IEnumerator AttackAnimationEndWaitCoroutine(string aniName, AttackState attackState)
     {
         OnAttackStarted?.Invoke();
