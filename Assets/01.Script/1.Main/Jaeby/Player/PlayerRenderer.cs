@@ -26,6 +26,8 @@ public class PlayerRenderer : MonoBehaviour
     [SerializeField]
     private float _camShakePower = 5f;
 
+    public bool Fliping => _fliping;
+
     private void Awake()
     {
         _player = GetComponentInParent<Player>();

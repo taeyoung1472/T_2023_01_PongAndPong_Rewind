@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class PlayerHP : MonoBehaviour, IPlayerResetable
+public class PlayerHP : MonoBehaviour, IPlayerEnableResetable
 {
     [SerializeField]
     private Slider _hpSlider = null;
@@ -68,10 +68,5 @@ public class PlayerHP : MonoBehaviour, IPlayerResetable
             _hpSlider.minValue = 0;
             _hpSlider.maxValue = _player.playerHealthSO.maxHP;
         }
-    }
-
-    public void DisableReset()
-    {
-
     }
 }

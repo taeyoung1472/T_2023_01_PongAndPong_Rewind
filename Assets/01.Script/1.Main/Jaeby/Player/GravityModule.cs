@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class GravityModule : MonoBehaviour, IPlayerResetable
+public class GravityModule : MonoBehaviour, IPlayerEnableResetable, IPlayerDisableResetable
 {
     [SerializeField]
     private float _originGravity = 1f;

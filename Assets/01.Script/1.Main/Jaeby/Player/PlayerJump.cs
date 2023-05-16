@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class PlayerJump : PlayerAction, IPlayerResetable
+public class PlayerJump : PlayerAction, IPlayerEnableResetable
 {
     private int _curJumpCount = 0; // 현재 점프 횟수
     public int CurJumpCount { get => _curJumpCount; set => _curJumpCount = value; }
@@ -231,9 +231,5 @@ public class PlayerJump : PlayerAction, IPlayerResetable
     public void EnableReset()
     {
         _curJumpCount = 0;
-    }
-
-    public void DisableReset()
-    {
     }
 }
