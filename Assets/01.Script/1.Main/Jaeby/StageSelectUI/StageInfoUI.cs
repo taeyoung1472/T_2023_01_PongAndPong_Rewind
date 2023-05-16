@@ -1,4 +1,3 @@
-using System.IO;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -22,8 +21,8 @@ public class StageInfoUI : MonoBehaviour
 
     private bool _isEnable = false;
     public bool IsEnable => _isEnable;
-    
-        public void UIOn(StageDataSO data)
+
+    public void UIOn(StageDataSO data)
     {
         if (data == null)
             return;
@@ -41,7 +40,7 @@ public class StageInfoUI : MonoBehaviour
                 colllectionCnt++;
             }
         }
-        _collectionText.SetText("수집품 개수[" + colllectionCnt + "/" + data.stageCollection.Count + "]"); 
+        _collectionText.SetText("수집품 개수[" + colllectionCnt + "/" + data.stageCollection.Count + "]");
 
         if (_animator == null)
             _animator = GetComponent<Animator>();
@@ -68,7 +67,7 @@ public class StageInfoUI : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Escape) && _isEnable)
+        if (Input.GetKeyDown(KeyCode.Escape) && _isEnable)
         {
             UIDown();
         }
