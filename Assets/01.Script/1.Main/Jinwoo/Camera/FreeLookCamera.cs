@@ -176,8 +176,8 @@ public class FreeLookCamera : MonoBehaviour
             _rig.position = Origin - Difference;
         }
 
-        if (Input.GetMouseButton(1))
-            _rig.position = ResetCamera;
+        //if (Input.GetMouseButton(1))
+        //    _rig.position = ResetCamera;
     }
     private void Move()
     {

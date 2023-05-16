@@ -29,7 +29,7 @@ public class CircularBuffer<T>
         }
         catch
         {
-            Debug.LogError("순환 버퍼는 필드 초기화를 사용할 수 없음(Time.fixedDeltaTime은 아직 알 수 없음). Start() 메서드에서 순환 버퍼를 초기화하면 될거임");
+            //Debug.LogError("순환 버퍼는 필드 초기화를 사용할 수 없음(Time.fixedDeltaTime은 아직 알 수 없음). Start() 메서드에서 순환 버퍼를 초기화하면 될거임");
         }
     }
 

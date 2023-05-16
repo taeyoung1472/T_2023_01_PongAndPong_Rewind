@@ -94,6 +94,7 @@ public class StageManager : MonoSingleTon<StageManager>
     {
         curStage.ReStartArea(true);
 
+        UIManager.Instance.ResetFastForwardTime();
         TimerManager.Instance.ChangeOnTimer(false);
 
         isRestartPossible = false;
@@ -112,6 +113,8 @@ public class StageManager : MonoSingleTon<StageManager>
                 RewindManager.Instance.StopRewindTimeBySeconds();
             }
             InitPlayer(false);
+
+            UIManager.Instance.ResetFastForwardTime();
 
             TimerManager.Instance.InitTimer();
             TimerManager.Instance.ChangeOnTimer(false);
@@ -220,6 +223,7 @@ public class StageManager : MonoSingleTon<StageManager>
     {
         if (TimerManager.Instance.isRewinding)
         {
+            Debug.Log("¿ä³ð ¹ÝÈ¯");
             return rePlayerObj;
         }
         else

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
+using DG.Tweening;
 
 public class JinwooVolumeManager : MonoSingleTon<JinwooVolumeManager>
 {
@@ -12,17 +13,27 @@ public class JinwooVolumeManager : MonoSingleTon<JinwooVolumeManager>
     private LimitlessGlitch2 glitch2;
     private LimitlessGlitch3 glitch3;
 
-    [SerializeField] private float barAmount;
+    private Noise noise;
+    private TVEffect tvEffect;
+
+    [HideInInspector] private float barAmount;
     private void Start()
     {
         volume.profile.TryGet(out cinematicBars);
         volume.profile.TryGet(out glitch1);
         volume.profile.TryGet(out glitch2);
         volume.profile.TryGet(out glitch3);
+
+        volume.profile.TryGet(out noise);
+        volume.profile.TryGet(out tvEffect);
+
         cinematicBars.enable.value = false;
         glitch1.enable.value = false;
         glitch2.enable.value = false;
         glitch3.enable.value = false;
+
+        noise.enable.value = false;
+        tvEffect.enable.value = false;
     }
     public void EnableGlitch()
     {
@@ -66,5 +77,23 @@ public class JinwooVolumeManager : MonoSingleTon<JinwooVolumeManager>
         cinematicBars.enable.value = false;
     }
 
+    public void EnableFastTimeEffect()
+    {
+        if(noise != null && tvEffect != null)
+        {
+            noise.enable.value = true;
+            tvEffect.enable.value = true;
+        }
+        
+        
+    }
+    public void DisableFastTimeEffect()
+    {
+        if (noise != null && tvEffect != null)
+        {
+            noise.enable.value = false;
+            tvEffect.enable.value = false;
+        }
 
+    }
 }
