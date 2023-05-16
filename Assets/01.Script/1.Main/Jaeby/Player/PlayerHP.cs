@@ -9,6 +9,9 @@ public class PlayerHP : MonoBehaviour, IPlayerResetable
     private Player _player = null;
 
     [SerializeField]
+    private GameObject _dieParticlePrefab = null;
+
+    [SerializeField]
     private UnityEvent OnDie = null;
 
     private int _curHP = 0;
@@ -36,6 +39,23 @@ public class PlayerHP : MonoBehaviour, IPlayerResetable
         _player.ForceStop();
         _player.PlayerInput.enabled = false;
         OnDie?.Invoke();
+    }
+
+    public void DieStart()
+    {
+        if (StageManager.Instance == null)
+            return;
+        StageManager.Instance.InputLock = true;
+        Instantiate(_dieParticlePrefab, _player.transform.position, _player.transform.rotation);
+    }
+
+    public void Restart()
+    {
+        if (StageManager.Instance == null)
+            return;
+        StageManager.Instance.InputLock = false;
+        _player.PlayerInput.enabled = true;
+        StageManager.Instance.OnReStartArea();
     }
 
     public void EnableReset()

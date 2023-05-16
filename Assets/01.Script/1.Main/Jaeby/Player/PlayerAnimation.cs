@@ -43,6 +43,13 @@ public class PlayerAnimation : MonoBehaviour
         _animator.Update(0);
     }
 
+    public void DieAnimation()
+    {
+        _animator.Rebind();
+        _animator.Play("PlayerDie");
+        _animator.Update(0);
+    }
+
     public void JumpAnimation()
     {
         _animator.Rebind();
