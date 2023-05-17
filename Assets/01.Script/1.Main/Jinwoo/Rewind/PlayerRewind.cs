@@ -9,6 +9,7 @@ public class PlayerRewind : RewindAbstract
     [SerializeField] private bool trackAnimator;
     [SerializeField] private bool trackAudio;
     [SerializeField] private bool trackParticles;
+    [SerializeField] private bool trackDashTrail;
 
     [Tooltip("파티클 추적을 선택한 경우에만 파티클 설정 채우기")]
     [SerializeField] ParticlesSetting particleSettings;
@@ -67,6 +68,8 @@ public class PlayerRewind : RewindAbstract
             RestoreParticles(seconds);
         if (trackAudio)
             RestoreAudio(seconds);
+        if (trackDashTrail)
+            RestoreDashTrail(seconds);
     }
 
     protected override void Track()
@@ -81,6 +84,17 @@ public class PlayerRewind : RewindAbstract
             TrackParticles();
         if (trackAudio)
             TrackAudio();
+        if(trackDashTrail)
+            TrackDashTrail();
+    }
+
+    public void TrackDashTrail()
+    {
+
+    }
+    public void RestoreDashTrail(float seconds)
+    {
+
     }
     private void Start()
     {
