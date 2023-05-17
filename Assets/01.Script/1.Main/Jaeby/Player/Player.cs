@@ -298,7 +298,7 @@ public class Player : MonoBehaviour
         float maxDistance = 0f;
         if (_playerRenderer.flipDirection == DirectionType.Left || _playerRenderer.flipDirection == DirectionType.Right)
         {
-            maxDistance = _col.bounds.extents.x - 0.2f;
+            maxDistance = _col.bounds.extents.x;
             halfExtents.y = _groundCheckRayLength;
         }
         else
@@ -310,10 +310,6 @@ public class Player : MonoBehaviour
         if (lastGrounded == _isGrounded)
             return;
         OnIsGrounded?.Invoke(_isGrounded);
-    }
-
-    private void Update()
-    {
     }
 
     private bool OnSlope()

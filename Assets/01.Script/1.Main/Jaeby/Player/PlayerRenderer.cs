@@ -123,6 +123,7 @@ public class PlayerRenderer : MonoBehaviour
             _player.transform.rotation = Quaternion.Slerp(_player.transform.rotation, targetRotation, _rotationSpeed * Time.deltaTime);
         else
             _player.transform.rotation = targetRotation;
+        
         _fliped = flipDir == DirectionType.Left;
         OnFliped?.Invoke(_fliped);
     }

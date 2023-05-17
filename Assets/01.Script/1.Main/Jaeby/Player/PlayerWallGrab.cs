@@ -19,7 +19,7 @@ public class PlayerWallGrab : PlayerAction
 
         _player.ForceStop();
         _player.PlayerActionLock(true, PlayerActionType.Dash, PlayerActionType.Move, PlayerActionType.WallGrab);
-        _player.PlayerRenderer.Flip(wallPosition - _player.transform.position);
+        _player.PlayerRenderer.Flip(wallPosition - _player.transform.position, false);
         _player.GravityModule.UseGravity = false;
         _player.GetPlayerAction<PlayerJump>().MoreJump(1);
         OnWallGrabed?.Invoke(true);
