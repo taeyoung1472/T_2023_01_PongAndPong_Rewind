@@ -1,24 +1,46 @@
-using System;
 using System.Collections;
+using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class TutorialManager : MonoSingleTon<TutorialManager>
 {
-    private TutorialState curTutorialState;
+    private static TutorialState curTutorialState;
 
+    [SerializeField] private GameObject gameCam;
+
+    [Space(15)]
+
+    [Header("제목")]
     [SerializeField] private Transform titlePanel;
-    [SerializeField] private Transform startPanel;
-    [SerializeField] private Transform videoPanel;
-    [SerializeField] private Transform endPanel;
-    [SerializeField] private Transform choicePanel;
-    [SerializeField] private Transform endTitlePanel;
+    [SerializeField] private TextMeshPro titleText;
+    [SerializeField] private TextMeshPro subTitleText;
 
-    private bool isChoice;
-    private bool isReplayVideo;
+    [Header("요약")]
+    [SerializeField] private Transform startPanel;
+    [SerializeField] private TextMeshPro startText;
+
+    [Header("마무리")]
+    [SerializeField] private Transform endPanel;
+    [SerializeField] private TextMeshPro endText;
+
+    [Header("끝")]
+    [SerializeField] private Transform endTitlePanel;
+    [SerializeField] private TextMeshPro endTitleText;
+
+    [SerializeField] private TutorialInfo curTutoInfo;
 
     public void Start()
     {
-        ChangeState(TutorialState.Title);
+        ChangeState(curTutorialState);
+    }
+
+    public void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha0))
+        {
+            ChangeState(TutorialState.Title);
+        }
     }
 
     #region FSM
@@ -33,14 +55,11 @@ public class TutorialManager : MonoSingleTon<TutorialManager>
             case TutorialState.Start:
                 StartCoroutine(OnStart());
                 break;
-            case TutorialState.Video:
-                StartCoroutine(OnVideo());
+            case TutorialState.Game:
+                StartCoroutine(OnGame());
                 break;
             case TutorialState.End:
                 StartCoroutine(OnEnd());
-                break;
-            case TutorialState.Choice:
-                StartCoroutine(OnChoice());
                 break;
             case TutorialState.EndTitle:
                 StartCoroutine(OnEndTitle());
@@ -51,6 +70,9 @@ public class TutorialManager : MonoSingleTon<TutorialManager>
     public IEnumerator OnTitle()
     {
         titlePanel.gameObject.SetActive(true);
+
+        titleText.SetText(curTutoInfo.tutoTitle);
+        subTitleText.SetText(curTutoInfo.tutoSubTitle);
 
         yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space));
         yield return null;
@@ -63,62 +85,42 @@ public class TutorialManager : MonoSingleTon<TutorialManager>
     {
         startPanel.gameObject.SetActive(true);
 
+        startText.SetText(curTutoInfo.tutoStartText);
+
         yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space));
         yield return null;
 
         startPanel.gameObject.SetActive(false);
-        ChangeState(TutorialState.Video);
+        ChangeState(TutorialState.Game);
     }
 
-    public IEnumerator OnVideo()
+    public IEnumerator OnGame()
     {
-        videoPanel.gameObject.SetActive(true);
-
-        // 영상 처음부터 끝 까지
-        // 프레임 단위로 조작 가능한 상태
-
-        yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space));
-        yield return null;
-
-        videoPanel.gameObject.SetActive(false);
-        ChangeState(TutorialState.End);
+        gameCam.gameObject.SetActive(true);
+        yield return new WaitForSeconds(1.5f);
+        StageManager.stageDataSO = curTutoInfo.stageData;
+        LoadingSceneManager.LoadScene(10);
+        curTutorialState = TutorialState.End;
     }
 
     public IEnumerator OnEnd()
     {
         endPanel.gameObject.SetActive(true);
 
+        endText.SetText(curTutoInfo.tutoEndText);
+
         yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space));
         yield return null;
 
         endPanel.gameObject.SetActive(false);
-        ChangeState(TutorialState.Choice);
-    }
-
-    public IEnumerator OnChoice()
-    {
-        choicePanel.gameObject.SetActive(true);
-        isChoice = false;
-
-        yield return new WaitUntil(() => isChoice);
-        yield return null;
-
-        choicePanel.gameObject.SetActive(false);
-        if (isReplayVideo)
-        {
-            ChangeState(TutorialState.Video);
-        }
-        else
-        {
-            ChangeState(TutorialState.EndTitle);
-        }
-
-        isChoice = false;
+        ChangeState(TutorialState.EndTitle);
     }
 
     public IEnumerator OnEndTitle()
     {
         endTitlePanel.gameObject.SetActive(true);
+
+        endTitleText.SetText($"[{curTutoInfo.tutoTitle}] 학습 완료");
 
         yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space));
         yield return null;
@@ -127,25 +129,13 @@ public class TutorialManager : MonoSingleTon<TutorialManager>
     }
 
     #endregion
-
-    [ContextMenu("Choice")]
-    public void A()
-    {
-        Choice(false);
-    }
-
-    public void Choice(bool value)
-    {
-        isChoice = true;
-        isReplayVideo = value;
-    }
 }
 public enum TutorialState
 {
+    None,
     Title,
     Start,
-    Video,
+    Game,
     End,
-    Choice,
     EndTitle
 }
