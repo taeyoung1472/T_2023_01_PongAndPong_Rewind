@@ -25,7 +25,6 @@ public class PlayerDash : PlayerAction, IPlayerResetable
             (Mathf.Abs(dir.x) > 0f == false) ||
             _player.PlayerActionCheck(PlayerActionType.ObjectPush, PlayerActionType.WallGrab))
             return;
-        _excuting = true;
 
         bool slide = _player.IsGrounded;
 
@@ -39,6 +38,7 @@ public class PlayerDash : PlayerAction, IPlayerResetable
             DashExit();
         }
 
+        _excuting = true;
         _dashCoroutine = StartCoroutine(DashCoroutine(slide, dir));
 
         GameObject effectObj = PoolManager.Pop(PoolType.DashEffect);

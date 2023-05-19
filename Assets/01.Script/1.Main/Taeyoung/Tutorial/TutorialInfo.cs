@@ -4,8 +4,11 @@ using UnityEngine;
 public class TutorialInfo : ScriptableObject
 {
     public string tutoTitle, tutoSubTitle;
-    public string tutoStartText;
-    public string tutoEndText;
+    [Header("NPC")]
+    [TextArea]
+    public string[] startNpcText;
+    [TextArea]
+    public string[] endNpcText;
 
     public StageDataSO stageData;
 }

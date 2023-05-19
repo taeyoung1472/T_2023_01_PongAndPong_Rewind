@@ -5,9 +5,11 @@ using UnityEngine.InputSystem;
 
 public class TutorialManager : MonoSingleTon<TutorialManager>
 {
+    public static TutorialInfo curTutoInfo;
     private static TutorialState curTutorialState;
 
     [SerializeField] private GameObject gameCam;
+    [SerializeField] private GameObject tutoCam;
 
     [Space(15)]
 
@@ -16,30 +18,22 @@ public class TutorialManager : MonoSingleTon<TutorialManager>
     [SerializeField] private TextMeshPro titleText;
     [SerializeField] private TextMeshPro subTitleText;
 
-    [Header("요약")]
-    [SerializeField] private Transform startPanel;
-    [SerializeField] private TextMeshPro startText;
-
-    [Header("마무리")]
-    [SerializeField] private Transform endPanel;
-    [SerializeField] private TextMeshPro endText;
-
     [Header("끝")]
     [SerializeField] private Transform endTitlePanel;
     [SerializeField] private TextMeshPro endTitleText;
 
-    [SerializeField] private TutorialInfo curTutoInfo;
+    [Header("끝")]
+    [SerializeField] private TextAnim_Tuto textAnim;
 
     public void Start()
     {
-        ChangeState(curTutorialState);
-    }
-
-    public void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Alpha0))
+        if(curTutoInfo != null)
         {
-            ChangeState(TutorialState.Title);
+            ChangeState(curTutorialState);
+            if(curTutorialState != TutorialState.None)
+            {
+                tutoCam.SetActive(true);
+            }
         }
     }
 
@@ -77,20 +71,27 @@ public class TutorialManager : MonoSingleTon<TutorialManager>
         yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space));
         yield return null;
 
-        titlePanel.gameObject.SetActive(false);
         ChangeState(TutorialState.Start);
     }
 
     public IEnumerator OnStart()
     {
-        startPanel.gameObject.SetActive(true);
+        int textLength = curTutoInfo.startNpcText.Length;
 
-        startText.SetText(curTutoInfo.tutoStartText);
+        for (int i = 0; i < textLength; i++)
+        {
+            textAnim.SetText(curTutoInfo.startNpcText[i]);
+
+            yield return new WaitUntil(() => textAnim.IsEnd());
+
+            yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space));
+        }
 
         yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space));
+
         yield return null;
 
-        startPanel.gameObject.SetActive(false);
+        titlePanel.gameObject.SetActive(false);
         ChangeState(TutorialState.Game);
     }
 
@@ -105,25 +106,34 @@ public class TutorialManager : MonoSingleTon<TutorialManager>
 
     public IEnumerator OnEnd()
     {
-        endPanel.gameObject.SetActive(true);
+        endTitlePanel.gameObject.SetActive(true);
+        endTitleText.SetText($"[{curTutoInfo.tutoTitle}] 학습 완료");
 
-        endText.SetText(curTutoInfo.tutoEndText);
+        int textLength = curTutoInfo.endNpcText.Length;
+
+        for (int i = 0; i < textLength; i++)
+        {
+            textAnim.SetText(curTutoInfo.endNpcText[i]);
+
+            yield return new WaitUntil(() => textAnim.IsEnd());
+
+            yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space));
+        }
 
         yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space));
         yield return null;
 
-        endPanel.gameObject.SetActive(false);
         ChangeState(TutorialState.EndTitle);
     }
 
     public IEnumerator OnEndTitle()
     {
-        endTitlePanel.gameObject.SetActive(true);
-
-        endTitleText.SetText($"[{curTutoInfo.tutoTitle}] 학습 완료");
-
         yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space));
         yield return null;
+
+        curTutoInfo = null;
+        curTutorialState = TutorialState.None;
+        tutoCam.SetActive(false);
 
         endTitlePanel.gameObject.SetActive(false);
     }

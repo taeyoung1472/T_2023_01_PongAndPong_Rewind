@@ -39,7 +39,6 @@ public class SceneChangeCanvas : MonoBehaviour
     public void Start()
     {
         DontDestroyOnLoad(gameObject);
-        DeActive();
         StartCoroutine(ChangeVolume());
     }
 
