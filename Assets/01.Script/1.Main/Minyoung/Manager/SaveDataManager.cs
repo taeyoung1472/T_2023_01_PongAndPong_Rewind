@@ -2,18 +2,26 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-public class SaveDataManager : MonoBehaviour
+public class SaveDataManager : MonoSingleTon<SaveDataManager>
 {
     private ChapterStageCollectionData _chapterStageCollectionData;
+    public ChapterStageCollectionData ChapterStageCollectionData => _chapterStageCollectionData;
+
+
     private StageCollectionData _stageCollectionData;
+    public StageCollectionData StageCollectionData => _stageCollectionData;
+
+    public List<StageCollectionData> stageCollectionDataList;
+
     private AllChapterDataBase _allChapterDataBase;
+    public AllChapterDataBase AllChapterDataBase => _allChapterDataBase;
 
     [SerializeField] StageDatabase stageDatabase;
     private void Awake()
     {
         LoadCollectionJSON();
     }
-    void LoadCollectionJSON()
+    public void LoadCollectionJSON()
     {
         string path = Application.dataPath + "/Save/ChapterCollection.json";
         if (File.Exists(path))
@@ -25,6 +33,15 @@ public class SaveDataManager : MonoBehaviour
         {
             //클래스 New하는거
             NewData();
+
+            for (int i = 0; i < stageDatabase.worldList.Count; i++)
+            {
+                for (int j = 0; j < stageDatabase.worldList[i].stageList.Count; j++)
+                {
+                    stageCollectionDataList.Add(new StageCollectionData());
+                }
+            }
+         
 
             for (int i = 0; i < stageDatabase.worldList.Count; i++)
             {
@@ -41,24 +58,23 @@ public class SaveDataManager : MonoBehaviour
                     {
                         _allChapterDataBase.stageCollectionDataDic[stageDatabase.worldList[i].worldName].stageCollectionDataList = new();
                     }
-                    _allChapterDataBase.stageCollectionDataDic[stageDatabase.worldList[i].worldName].stageCollectionDataList.Add(_stageCollectionData.collectionBoolDataList);
+                    _allChapterDataBase.stageCollectionDataDic[stageDatabase.worldList[i].worldName].stageCollectionDataList.
+                        Add(_stageCollectionData);
                 }
             }
 
 
             for (int i = 0; i < stageDatabase.worldList.Count; i++) //3
             {
-                for (int j = 0; j < _allChapterDataBase.stageCollectionDataDic[stageDatabase.worldList[i].worldName].stageCollectionDataList.Count; j++) //8 / 1/ 1
+                for (int j = 0; j < _allChapterDataBase.stageCollectionDataDic[stageDatabase.worldList[i].worldName].stageCollectionDataList.Count; j++)
                 {
-                    // 8 1 1
-                    Debug.Log($"{stageDatabase.worldList[i].worldName}");
                     if (_allChapterDataBase.stageCollectionDataDic[stageDatabase.worldList[i].worldName].stageCollectionDataList[j] == null)
                     {
-                        Debug.Log("생성이 왜 한번만될까"); //1
                         _allChapterDataBase.stageCollectionDataDic[stageDatabase.worldList[i].worldName].stageCollectionDataList[j] = new();
                     }
 
-                     _allChapterDataBase.stageCollectionDataDic[stageDatabase.worldList[i].worldName].stageCollectionDataList[j] = stageDatabase.worldList[i].stageList[j].stageCollection;
+                     _allChapterDataBase.stageCollectionDataDic[stageDatabase.worldList[i].worldName].stageCollectionDataList[j].collectionBoolDataList
+                        = stageDatabase.worldList[i].stageList[j].stageCollection;
                 }
             }
 
@@ -80,11 +96,7 @@ public class SaveDataManager : MonoBehaviour
             }
         }
 
-        if (_stageCollectionData == null)
-        {
-            _stageCollectionData = new StageCollectionData();
-        }
-
+        
         if (_chapterStageCollectionData == null)
         {
             _chapterStageCollectionData = new ChapterStageCollectionData();
@@ -94,5 +106,13 @@ public class SaveDataManager : MonoBehaviour
         {
             _chapterStageCollectionData.stageCollectionDataList = new();
         }
+    }
+
+   public void SaveCollectionJSON()
+    {
+        string path = Application.dataPath + "/Save/ChapterCollection.json";
+        string json = Newtonsoft.Json.JsonConvert.SerializeObject(_allChapterDataBase);
+
+        File.WriteAllText(path, json);
     }
 }
