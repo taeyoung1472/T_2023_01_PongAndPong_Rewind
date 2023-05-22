@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Events;
+using static Unity.VisualScripting.Member;
 
 public class PlayerObjectPush : PlayerAction
 {
@@ -9,6 +10,19 @@ public class PlayerObjectPush : PlayerAction
     private UnityEvent OnEnterCollider = null;
     [SerializeField]
     private UnityEvent OnExitCollider = null;
+
+    private AudioSource source;
+
+    protected override void Awake()
+    {
+        base.Awake();
+        source = gameObject.AddComponent<AudioSource>();
+        source.clip = AudioManager.DataBase.GetAudio(SoundType.OnDragingObject);
+        source.volume = 0;
+        source.loop = true;
+        source.outputAudioMixerGroup = AudioManager.Mixer.FindMatchingGroups("SFX")[0];
+        source.Play();
+    }
 
     public override void ActionExit()
     {
@@ -43,6 +57,7 @@ public class PlayerObjectPush : PlayerAction
 
     private void PushEnd()
     {
+        source.volume = 0;
         _pushingCollider = null;
         Debug.Log("오브젝트 밀기 끝");
         OnExitCollider?.Invoke();
@@ -63,6 +78,12 @@ public class PlayerObjectPush : PlayerAction
     {
         if (other.CompareTag("PushTrigger") == false || _pushingCollider != null  )
             return;
+
+        if (!RewindManager.Instance.IsBeingRewinded)
+            source.volume = 0.5f;
+        else
+            return;
+
         _pushingCollider = other.transform.gameObject;
         MassChange();
         Debug.Log("오브젝트 밀기 시작");

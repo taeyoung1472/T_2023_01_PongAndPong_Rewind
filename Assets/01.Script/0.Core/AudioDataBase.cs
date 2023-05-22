@@ -40,5 +40,15 @@ public enum SoundType
     Attack = 300,
 
     Jump = 400,
-    OnGrounded = 401
+    OnGrounded = 401,
+
+    OnReplay = 500,
+    OnJumpPad = 501,
+    OnPortal = 502,
+    OnActiveButton = 511,
+    OnDeActiveButton = 512,
+
+    OnDragingObject = 600,
+    OnGameStart = 601,
+    OnGame
 }

@@ -101,6 +101,7 @@ public class StageManager : MonoSingleTon<StageManager>
     }
     public void OnFreeLookCam(bool isOn)
     {
+        AudioManager.PlayAudio(SoundType.OnGameStart);
         Debug.Log(isOn);
         if (isOn) //자유시점 온
         {

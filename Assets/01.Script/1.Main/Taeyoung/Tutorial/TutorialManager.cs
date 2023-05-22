@@ -5,7 +5,19 @@ using UnityEngine.InputSystem;
 
 public class TutorialManager : MonoSingleTon<TutorialManager>
 {
-    public static TutorialInfo curTutoInfo;
+    private static TutorialInfo curTutoInfo;
+    public static TutorialInfo CurTutoInfo
+    {
+        get { return curTutoInfo; }
+        set
+        {
+            curTutoInfo = value;
+            if (curTutorialState == TutorialState.None)
+            {
+                curTutorialState = TutorialState.Title;
+            }
+        }
+    }
     private static TutorialState curTutorialState;
 
     [SerializeField] private GameObject gameCam;
@@ -100,8 +112,8 @@ public class TutorialManager : MonoSingleTon<TutorialManager>
         gameCam.gameObject.SetActive(true);
         yield return new WaitForSeconds(1.5f);
         StageManager.stageDataSO = curTutoInfo.stageData;
-        LoadingSceneManager.LoadScene(10);
         curTutorialState = TutorialState.End;
+        LoadingSceneManager.LoadScene(10);
     }
 
     public IEnumerator OnEnd()

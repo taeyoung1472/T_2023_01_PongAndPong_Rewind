@@ -9,7 +9,7 @@ public class Stage : MonoBehaviour
 
     [SerializeField] private StageDataSO stageData;
 
-    public StageArea curArea;
+    [HideInInspector] public StageArea curArea;
 
     public void Init()
     {

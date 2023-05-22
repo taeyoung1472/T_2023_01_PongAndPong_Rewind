@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class PushableObject : MonoBehaviour
 {
-
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player") == false)
