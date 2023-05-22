@@ -13,11 +13,16 @@ public class PlayerAttack : PlayerAction, IPlayerEnableResetable
     private UnityEvent OnRangeAttack = null;
 
     private int _attackIndex = -1; // 함수에 들어가서 +1 해주기에 -1부터 시작
-    private readonly int _maxAttackIndex = 2;
+    [SerializeField]
+    private readonly int _maxAttackIndex = 3;
     private bool _delayLock = false;
 
     private AttackState _attackState = AttackState.Melee;
     private Coroutine _attackDelayCo = null;
+
+    [SerializeField]
+    private float _meleeAttackResetTime = 0.5f;
+    private Coroutine _meleeAttackResetCo = null;
 
     #region 스위칭
     private bool _switchingable = true;
@@ -70,12 +75,21 @@ public class PlayerAttack : PlayerAction, IPlayerEnableResetable
     private void MeleeAttack()
     {
         // 타격 처리
+        if (_meleeAttackResetCo != null)
+            StopCoroutine(_meleeAttackResetCo);
+        _meleeAttackResetCo = StartCoroutine(MeleeAttackResetCoroutine());
         _attackIndex = (_attackIndex + 1) % _maxAttackIndex;
         OnMeleeAttack?.Invoke(_attackIndex);
         _player.playerAudio.AttackAudio();
 
 
         AttackCollider.Create(0, ColliderType.PlayerMelee, null, _player.transform.position + _player.PlayerRenderer.Forward, 0.9f, 0.5f, false, null);
+    }
+
+    private IEnumerator MeleeAttackResetCoroutine()
+    {
+        yield return new WaitForSeconds(_meleeAttackResetTime);
+        _attackIndex = -1;
     }
 
     private void RangeAttack()
@@ -203,6 +217,8 @@ public class PlayerAttack : PlayerAction, IPlayerEnableResetable
         if (_switchingable == false)
             return;
 
+        if (_meleeAttackResetCo != null)
+            StopCoroutine(_meleeAttackResetCo);
         ActionExit();
         _attackState = _attackState == AttackState.Melee ? AttackState.Range : AttackState.Melee;
         if (_attackState == AttackState.Range)
@@ -250,6 +266,8 @@ public class PlayerAttack : PlayerAction, IPlayerEnableResetable
 
     public override void ActionExit()
     {
+        if (_meleeAttackResetCo != null)
+            StopCoroutine(_meleeAttackResetCo);
         if (_switchingCo != null)
             StopCoroutine(_switchingCo);
         if (_attackDelayCo != null)
