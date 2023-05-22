@@ -18,7 +18,7 @@ public class Bullet : PoolAbleObject
         if (_rigid == null)
             _rigid = GetComponent<Rigidbody>();
         _rigid.velocity = transform.right * _speed;
-        AttackCollider.Create(_destroyMask, ColliderOwnerType.Player, transform, transform.position, transform.localScale.x, null, true, Callback);
+        AttackCollider.Create(_destroyMask, ColliderType.PlayerBullet, transform, transform.position, transform.localScale.x, null, true, Callback);
     }
 
     public override void Init_Pop()
@@ -31,7 +31,6 @@ public class Bullet : PoolAbleObject
 
     private void Callback(Collider col)
     {
-        Debug.LogWarning(col);
         PoolManager.Push(poolType, gameObject);
     }
 }

@@ -2,11 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class AttackCollider : PoolAbleObject
 {
-    private ColliderOwnerType _ownerType = ColliderOwnerType.None;
-    public ColliderOwnerType OwnerType => _ownerType;
+    private ColliderType _colliderType = ColliderType.None;
+    public ColliderType colliderType => _colliderType;
 
     private SphereCollider _col = null;
 
@@ -30,18 +31,19 @@ public class AttackCollider : PoolAbleObject
     /// <param name="지속시간"></param>
     /// <param name="한 번만 터치하면 끝인가요?"></param>
     /// <param name="이벤트"></param>
-    public static void Create(LayerMask mask, ColliderOwnerType ownerType, Transform parent, Vector3 pos, float radius, float? lifeTime, bool onceTouch, Action<Collider> CallbackAction)
+    public static void Create(LayerMask mask, ColliderType ownerType, Transform parent, Vector3 pos, float radius, float? lifeTime, bool onceTouch, Action<Collider> CallbackAction)
     {
         AttackCollider collider = PoolManager.Pop(PoolType.AttackCollider).GetComponent<AttackCollider>();
         collider.InitCollider(mask, ownerType, parent, pos, radius, lifeTime, onceTouch, CallbackAction);
     }
 
-    public void InitCollider(LayerMask mask, ColliderOwnerType ownerType, Transform parent, Vector3 pos, float radius, float? lifeTime, bool onceTouch, Action<Collider> CallbackAction)
+    public void InitCollider(LayerMask mask, ColliderType ownerType, Transform parent, Vector3 pos, float radius, float? lifeTime, bool onceTouch, Action<Collider> CallbackAction)
     {
         _mask = mask;
-        _ownerType = ownerType;
+        _colliderType = ownerType;
         transform.position = pos;
         _col.radius = radius;
+        _col.isTrigger = true;
         _lifeTime = lifeTime;
         transform.SetParent(parent);
         _isOnceTouch = onceTouch;
@@ -51,13 +53,13 @@ public class AttackCollider : PoolAbleObject
 
     private void OnTriggerEnter(Collider other)
     {
-        if ((other.gameObject.layer & _mask) == 0)
-            return;
-
-        other.GetComponent<IDamageable>()?.Damaged(_ownerType);
-        _callback?.Invoke(other);
-        if (_isOnceTouch)
-            PoolManager.Push(poolType, gameObject);
+        if (_mask == (_mask | (1 << other.gameObject.layer)))
+        {
+            other.GetComponent<IDamageable>()?.Damaged(_colliderType);
+            _callback?.Invoke(other);
+            if (_isOnceTouch)
+                PoolManager.Push(poolType, gameObject);
+        }
     }
 
     private void Update()

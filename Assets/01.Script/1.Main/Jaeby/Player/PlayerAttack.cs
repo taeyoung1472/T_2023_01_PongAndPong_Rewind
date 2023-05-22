@@ -75,7 +75,7 @@ public class PlayerAttack : PlayerAction, IPlayerEnableResetable
         _player.playerAudio.AttackAudio();
 
 
-        AttackCollider.Create(0, ColliderOwnerType.Player, null, _player.transform.position + _player.PlayerRenderer.Forward, 0.9f, 0.5f, false, null);
+        AttackCollider.Create(0, ColliderType.PlayerMelee, null, _player.transform.position + _player.PlayerRenderer.Forward, 0.9f, 0.5f, false, null);
     }
 
     private void RangeAttack()
