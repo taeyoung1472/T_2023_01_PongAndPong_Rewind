@@ -90,6 +90,7 @@ public class PlayerAttack : PlayerAction, IPlayerEnableResetable
     {
         yield return new WaitForSeconds(_meleeAttackResetTime);
         _attackIndex = -1;
+        _player.PlayerAnimation.animator.SetInteger("AttackIndex", _attackIndex);
     }
 
     private void RangeAttack()
@@ -230,6 +231,7 @@ public class PlayerAttack : PlayerAction, IPlayerEnableResetable
             _pistolObj.SetActive(false);
         }
         _attackIndex = -1;
+        _player.PlayerAnimation.animator.SetInteger("AttackIndex", _attackIndex);
         if (_switchingCo != null)
             StopCoroutine(_switchingCo);
         StartCoroutine(SwitchingCoroutine());

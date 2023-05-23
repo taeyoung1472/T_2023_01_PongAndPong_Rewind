@@ -7,12 +7,16 @@ public class Bullet : PoolAbleObject
     private Rigidbody _rigid = null;
     [SerializeField]
     private LayerMask _destroyMask = 0;
+    private TrailRenderer _trailRenderer = null;
 
     public void Init(Vector3 pos, Quaternion rot, float speed, int dmg)
     {
         Transform effectTrm = PoolManager.Pop(PoolType.BulletEffect).transform;
         transform.SetPositionAndRotation(pos, rot);
-        effectTrm.SetPositionAndRotation(pos, rot);
+        effectTrm.SetPositionAndRotation(pos + transform.forward * 0.12f, rot);
+        if (_trailRenderer == null)
+            _trailRenderer = GetComponent<TrailRenderer>();
+        _trailRenderer.Clear();
         _speed = speed;
         _dmg = dmg;
         if (_rigid == null)
