@@ -124,7 +124,7 @@ public abstract class RewindAbstract : MonoBehaviour
         }
         else
         {
-            Debug.LogError("TrackVelocity()가 호출되는 동안 개체에서 Rigidbody를 찾을 수 없다고!!!");
+            Debug.Log("TrackVelocity()가 호출되는 동안 개체에서 Rigidbody를 찾을 수 없다고!!!");
         }
     }
     /// <summary>
@@ -159,7 +159,7 @@ public abstract class RewindAbstract : MonoBehaviour
     {
         if(animator == null)
         {
-            Debug.LogError("TrackAnimator()가 호출되는 동안 개체에서 Animator를 찾을 수 없음");
+            Debug.Log("TrackAnimator()가 호출되는 동안 개체에서 Animator를 찾을 수 없음");
             return;
         }
 
@@ -225,7 +225,7 @@ public abstract class RewindAbstract : MonoBehaviour
     {
         if(audioSource==null)
         {
-            Debug.LogError("TrackAudio()가 호출되는 동안 개체에서 AudioSource를 찾을 수 없음");
+            Debug.Log("TrackAudio()가 호출되는 동안 개체에서 AudioSource를 찾을 수 없음");
             return;
         }
 
@@ -308,7 +308,7 @@ public abstract class RewindAbstract : MonoBehaviour
     {
         if(particleSettings.particlesData.Any(x=>x.particleSystemEnabler==null||x.particleSystem==null))
         {
-            Debug.LogError("초기화된 파티클 시스템에 데이터가 없음. 일부 값에 대해 파티클 시스템 또는 파티클 시스템 인에이블러가 채워지지 않음");
+            Debug.Log("초기화된 파티클 시스템에 데이터가 없음. 일부 값에 대해 파티클 시스템 또는 파티클 시스템 인에이블러가 채워지지 않음");
         }
         particleSystemsData = particleSettings.particlesData;
         //particleTimeLimiter = particleSettings.particleLimiter;
@@ -331,11 +331,11 @@ public abstract class RewindAbstract : MonoBehaviour
     {
         if(particleSystemsData==null)
         {
-            Debug.LogError("파티클이 초기화되지 않았음 추적이 시작되기 전에 InitializeParticles()를 호출해야함.");
+            Debug.Log("파티클이 초기화되지 않았음 추적이 시작되기 전에 InitializeParticles()를 호출해야함.");
             return;
         }
         if(particleSystemsData.Count==0)
-            Debug.LogError("파티클 데이터가 채워지지 않았음 Unity 에디터에서 파티클 데이터 채우기");
+            Debug.Log("파티클 데이터가 채워지지 않았음 Unity 에디터에서 파티클 데이터 채우기");
 
         try
         {
@@ -371,7 +371,7 @@ public abstract class RewindAbstract : MonoBehaviour
         }
         catch
         {     
-            Debug.LogError("파티클 데이터가 제대로 채워지지 않았음" +
+            Debug.Log("파티클 데이터가 제대로 채워지지 않았음" +
                 " 각 요소에 대해 파티클 시스템 및 파티클 시스템 인에이블러 필드를 모두 채워");
         }
 

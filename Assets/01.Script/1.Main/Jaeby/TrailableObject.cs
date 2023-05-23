@@ -16,7 +16,21 @@ public class TrailableObject : MonoBehaviour
         set
         {
             _isMotionTrail = value;
-            TrailManager.Instance.TrailTimerReset(this);
+            if (!IsRewindMotionTrail)
+            {
+                TrailManager.Instance.TrailTimerReset(this);
+            }
+        }
+    }
+
+    [SerializeField]
+    private bool _isRewindMotionTrail = false;
+    public bool IsRewindMotionTrail
+    {
+        get => _isRewindMotionTrail;
+        set
+        {
+            _isRewindMotionTrail = value;
         }
     }
 

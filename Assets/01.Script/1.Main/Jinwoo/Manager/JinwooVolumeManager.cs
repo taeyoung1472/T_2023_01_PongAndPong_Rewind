@@ -16,7 +16,7 @@ public class JinwooVolumeManager : MonoSingleTon<JinwooVolumeManager>
     private Noise noise;
     private TVEffect tvEffect;
 
-    [HideInInspector] private float barAmount;
+    private float barAmount = 0.15f;
     private void Start()
     {
         volume.profile.TryGet(out cinematicBars);
@@ -34,6 +34,8 @@ public class JinwooVolumeManager : MonoSingleTon<JinwooVolumeManager>
 
         noise.enable.value = false;
         tvEffect.enable.value = false;
+
+        barAmount = 0.15f;
     }
     public void EnableGlitch()
     {

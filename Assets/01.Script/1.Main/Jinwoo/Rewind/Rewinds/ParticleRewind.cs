@@ -21,6 +21,8 @@ public class ParticleRewind : RewindAbstract
     }
     public void InitParticle(ParticlesSetting setting)
     {
+        
+
         InitializeParticles(setting);
         trackParticles = true;
     }
