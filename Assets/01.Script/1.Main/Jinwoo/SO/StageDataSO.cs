@@ -19,7 +19,8 @@ public class StageDataSO : ScriptableObject
     public string stageExplain;
     public int stageIndex;
 
-
+    public string chapterStageName;
     //¼öÁıÇ°
     public List<bool> stageCollection;
+
 }

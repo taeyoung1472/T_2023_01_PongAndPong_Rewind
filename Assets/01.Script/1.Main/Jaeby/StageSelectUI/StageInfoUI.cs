@@ -1,3 +1,4 @@
+using System.IO;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -32,6 +33,9 @@ public class StageInfoUI : MonoBehaviour
         _stageImage.sprite = data.stageSprite;
         _stageNameText.SetText(data.stageName);
 
+        SaveDataManager.Instance.LoadCollectionJSON();
+
+
         int colllectionCnt = 0;
         foreach (var item in data.stageCollection)
         {
@@ -40,6 +44,7 @@ public class StageInfoUI : MonoBehaviour
                 colllectionCnt++;
             }
         }
+
         _collectionText.SetText("수집품 개수[" + colllectionCnt + "/" + data.stageCollection.Count + "]");
 
         if (_animator == null)
