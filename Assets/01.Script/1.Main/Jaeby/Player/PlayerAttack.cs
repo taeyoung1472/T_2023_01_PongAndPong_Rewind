@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 using static Define;
 using static UnityEngine.Rendering.DebugUI.Table;
 
-public class PlayerAttack : PlayerAction, IPlayerResetable
+public class PlayerAttack : PlayerAction, IPlayerEnableResetable
 {
     [SerializeField]
     private UnityEvent<int> OnMeleeAttack = null;
@@ -37,6 +37,7 @@ public class PlayerAttack : PlayerAction, IPlayerResetable
     private float _ikEndAnimationTime = 0.3f;
     private Transform _mousePositionTrm = null;
     private bool _shooting = false;
+    public bool Shooting => _shooting;
     [SerializeField]
     private float _ikCancelMaxAngle = 30f;
     private bool _observerStarting = false;
@@ -271,10 +272,5 @@ public class PlayerAttack : PlayerAction, IPlayerResetable
     {
         _pistolObj.SetActive(false);
         WeaponSwitching(AttackState.Melee, true);
-    }
-
-    public void DisableReset()
-    {
-
     }
 }

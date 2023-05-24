@@ -2,8 +2,9 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Rendering;
 
-public class PlayerJump : PlayerAction, IPlayerResetable
+public class PlayerJump : PlayerAction, IPlayerEnableResetable
 {
     private int _curJumpCount = 0; // 현재 점프 횟수
     public int CurJumpCount { get => _curJumpCount; set => _curJumpCount = value; }
@@ -127,8 +128,9 @@ public class PlayerJump : PlayerAction, IPlayerResetable
             _player.GetPlayerAction<PlayerWallGrab>().WallExit();
             _player.VeloCityResetImm(x: true, y: true);
             _player.PlayerRenderer.ForceFlip();
-            Vector2 jumpDir = _player.playerMovementSO.wallJumpPower;
-            jumpDir.x *= _player.PlayerRenderer.Forward.x;
+            float originAngle = Vector2.Angle(Vector2.right, _player.playerMovementSO.wallJumpPower);
+            Vector2 jumpDir = Quaternion.AngleAxis(originAngle, _player.transform.right * -1f) * _player.PlayerRenderer.Forward;
+            Debug.Log("점프 Dir = " + jumpDir);
             _jumpCoroutine = StartCoroutine(JumpCoroutine(jumpDir, _player.playerMovementSO.wallGrabJumpPower, _player.playerMovementSO.jumpHoldTime));
             _moveLockCoroutine = StartCoroutine(MoveLockCoroutine());
             OnWallGrabJump?.Invoke();
@@ -231,9 +233,5 @@ public class PlayerJump : PlayerAction, IPlayerResetable
     public void EnableReset()
     {
         _curJumpCount = 0;
-    }
-
-    public void DisableReset()
-    {
     }
 }

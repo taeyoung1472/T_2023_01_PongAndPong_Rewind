@@ -12,7 +12,7 @@ public class CollectionGUI : Editor
 
         if (GUILayout.Button("InitCollectionJson"))
         {
-            CollectionManager.Instance.InitSaveJSON();
+            //CollectionManager.Instance.InitSaveJSON();
         }
     }
 

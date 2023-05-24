@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class PlayerDash : PlayerAction, IPlayerResetable
+public class PlayerDash : PlayerAction, IPlayerEnableResetable
 {
     [SerializeField]
     private UnityEvent<Vector2> OnDashStarted = null;
@@ -133,9 +133,5 @@ public class PlayerDash : PlayerAction, IPlayerResetable
     public void EnableReset()
     {
         _curDashCount = 0;
-    }
-
-    public void DisableReset()
-    {
     }
 }

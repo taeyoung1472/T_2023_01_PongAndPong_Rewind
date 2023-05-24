@@ -9,7 +9,6 @@ public class MovePlatform : GimmickObject
 {
     [SerializeField, Header("null¿Ã∏È root")]
     private Transform _parentTrm = null;
-    private Rigidbody _rigid = null;
 
     private List<GameObject> _objList = new List<GameObject>();
 
@@ -27,7 +26,6 @@ public class MovePlatform : GimmickObject
     {
         if (_parentTrm == null)
             _parentTrm = transform.root;
-        //_rigid = GetComponentInParent<Rigidbody>();
     }
 
     public override void InitOnPlay()

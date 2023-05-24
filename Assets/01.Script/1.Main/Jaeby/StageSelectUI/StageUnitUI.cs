@@ -44,7 +44,8 @@ public class StageUnitUI : MonoBehaviour
         _seq.Join(_glowImage.DOColor(endColor, duration));
         _seq.Join(_inIconImage.DOColor(endColor, duration));
         _seq.Join(_inGlowImage.DOColor(endColor, duration));
-        _animator.SetBool("Loop", animationLoop);
+        if(gameObject.activeSelf)
+            _animator.SetBool("Loop", animationLoop);
     }
 
     public void AccectReset()
