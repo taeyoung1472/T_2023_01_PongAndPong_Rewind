@@ -8,6 +8,8 @@ public class StageWorldUI : MonoBehaviour
 {
     private StageSelectUI _stageSelectUI = null;
 
+    public RectTransform viewPort = null;
+
     [SerializeField] private List<StageUnitUI> _stages = new List<StageUnitUI>();
     private List<RectTransform> _stageTrms = new List<RectTransform>();
     private RectTransform _thisTrm = null;
@@ -46,24 +48,7 @@ public class StageWorldUI : MonoBehaviour
             Lis(_stageSelectUI, i);
         TrmSet();
 
-        #region UI에서 선 부분
 
-        _uiLineRenderer = GetComponent<UILineRenderer>();
-        var anchored = from v in _stageTrms
-                       select v.anchoredPosition;
-
-        List<Vector2> pointList = anchored.ToList();
-
-        foreach (var item in pointList)
-        {
-            Debug.Log(item);
-        }
-        //pointList.RemoveRange(activeCount, 2); //2부터 6개삭제
-
-        //Vector2[] points = anchored.ToArray();
-
-        _uiLineRenderer.Points = anchored.ToArray();
-        #endregion
 
         SetMapeActive();
     }
@@ -114,7 +99,32 @@ public class StageWorldUI : MonoBehaviour
             _stages[i].gameObject.SetActive(false);
         }
 
-       
+        #region UI에서 선 부분
+
+        _uiLineRenderer = GetComponent<UILineRenderer>();
+        var anchored = from v in _stageTrms
+                       select v.anchoredPosition;
+
+        List<Vector2> pointList = anchored.ToList();
+        int deleteCnt = _stages.Count - activeCount;
+        pointList.RemoveRange(activeCount, deleteCnt); //2부터 6개삭제
+
+        Vector2[] pointArray = pointList.ToArray();
+
+        _uiLineRenderer.Points = pointArray;
+        #endregion
+
+
+        #region 뷰포트 크기 설정
+
+        viewPort = _uiLineRenderer.GetComponent<RectTransform>();
+        if (viewPort)
+        {
+            viewPort.sizeDelta = new Vector2(280 * activeCount, 300);
+        }
+        #endregion
+
+
     }
 
     private void TrmSet()
