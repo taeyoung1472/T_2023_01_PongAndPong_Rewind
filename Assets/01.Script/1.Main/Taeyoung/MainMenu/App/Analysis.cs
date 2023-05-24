@@ -125,12 +125,10 @@ public class Analysis : MonoBehaviour
 
         //_maxCount = _curData.rewardCount;
         ChapterStageCollectionData chapter = SaveDataManager.Instance.AllChapterDataBase.stageCollectionDataDic[_curData.worldName];
-
         _maxCount = 0;
         foreach (var i in chapter.stageCollectionDataList)
-        {
             _maxCount += i.collectionBoolDataList.Count;
-        }
+        fill.DashSize = background.DashSize = 1256f / _maxCount - background.DashSpacing;
 
         _curCount = 0;
         foreach (var i in chapter.stageCollectionDataList)
@@ -182,20 +180,22 @@ public class Analysis : MonoBehaviour
 
         if (_countUpSeq != null)
             _countUpSeq.Kill();
-        _countUpSeq = DOTween.Sequence();
-        _countUpSeq.Append(DOTween.To(() => fill.AngRadiansEnd, x => fill.AngRadiansEnd = x, (90f + (_curCount * (360f / _maxCount))) * Mathf.Deg2Rad, _uiAnimationTime));
-        _countUpSeq.AppendCallback(() =>
+        if(_curCount > 0)
         {
-
-            string functionName = _curData.GetFunctionName(_curCount);
-            if (functionName != null)
+            _countUpSeq = DOTween.Sequence();
+            _countUpSeq.Append(DOTween.To(() => fill.AngRadiansEnd, x => fill.AngRadiansEnd = x, (88f + (_curCount * (360f / _maxCount))) * Mathf.Deg2Rad, _uiAnimationTime));
+            _countUpSeq.AppendCallback(() =>
             {
-                if (PlayerPrefs.GetInt(functionName, 0) == 0)
+                string functionName = _curData.GetFunctionName(_curCount);
+                if (functionName != null)
                 {
-                    PlayerPrefs.SetInt(functionName, 1);
-                    FunctionManager.Instance.GetEvent(_curData.GetFunctionName(_curCount))?.Invoke();
+                    if (PlayerPrefs.GetInt(functionName, 0) == 0)
+                    {
+                        PlayerPrefs.SetInt(functionName, 1);
+                        FunctionManager.Instance.GetEvent(_curData.GetFunctionName(_curCount))?.Invoke();
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 }
