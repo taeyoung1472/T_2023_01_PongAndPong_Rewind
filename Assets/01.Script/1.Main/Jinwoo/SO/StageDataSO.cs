@@ -17,6 +17,7 @@ public class StageDataSO : ScriptableObject
     [HideInInspector] public int stageIndex;
     public TutorialInfo tutorialInfo;
 
+    public string chapterStageName;
     //¼öÁýÇ°
     public List<bool> stageCollection;
 }
