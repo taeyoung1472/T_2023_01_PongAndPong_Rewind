@@ -5,22 +5,18 @@ using UnityEngine;
 public class StageDataSO : ScriptableObject
 {
     public string stageName;
-    public int stageNumber;
-    public bool isClear = false;
+    [HideInInspector] public int stageNumber;
+    [HideInInspector] public bool isClear = false;
     public Stage stagePrefab;
     public StageDataSO nextStageData;
 
-    public string stageInfo;
-
+    //public string stageInfo;
     public Sprite stageSprite;
     public Sprite closerStageSprite;
 
-    public string stageSubTitle;
-    public string stageExplain;
-    public int stageIndex;
+    [HideInInspector] public int stageIndex;
+    public TutorialInfo tutorialInfo;
 
-    public string chapterStageName;
     //¼öÁýÇ°
     public List<bool> stageCollection;
-
 }

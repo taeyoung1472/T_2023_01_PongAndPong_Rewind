@@ -1,24 +1,52 @@
-using System;
 using System.Collections;
+using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class TutorialManager : MonoSingleTon<TutorialManager>
 {
-    private TutorialState curTutorialState;
+    private static TutorialInfo curTutoInfo;
+    public static TutorialInfo CurTutoInfo
+    {
+        get { return curTutoInfo; }
+        set
+        {
+            curTutoInfo = value;
+            if (curTutorialState == TutorialState.None)
+            {
+                curTutorialState = TutorialState.Title;
+            }
+        }
+    }
+    private static TutorialState curTutorialState;
 
+    [SerializeField] private GameObject gameCam;
+    [SerializeField] private GameObject tutoCam;
+
+    [Space(15)]
+
+    [Header("제목")]
     [SerializeField] private Transform titlePanel;
-    [SerializeField] private Transform startPanel;
-    [SerializeField] private Transform videoPanel;
-    [SerializeField] private Transform endPanel;
-    [SerializeField] private Transform choicePanel;
-    [SerializeField] private Transform endTitlePanel;
+    [SerializeField] private TextMeshPro titleText;
+    [SerializeField] private TextMeshPro subTitleText;
 
-    private bool isChoice;
-    private bool isReplayVideo;
+    [Header("끝")]
+    [SerializeField] private Transform endTitlePanel;
+    [SerializeField] private TextMeshPro endTitleText;
+
+    [Header("끝")]
+    [SerializeField] private TextAnim_Tuto textAnim;
 
     public void Start()
     {
-        ChangeState(TutorialState.Title);
+        if(curTutoInfo != null)
+        {
+            ChangeState(curTutorialState);
+            if(curTutorialState != TutorialState.None)
+            {
+                tutoCam.SetActive(true);
+            }
+        }
     }
 
     #region FSM
@@ -33,14 +61,11 @@ public class TutorialManager : MonoSingleTon<TutorialManager>
             case TutorialState.Start:
                 StartCoroutine(OnStart());
                 break;
-            case TutorialState.Video:
-                StartCoroutine(OnVideo());
+            case TutorialState.Game:
+                StartCoroutine(OnGame());
                 break;
             case TutorialState.End:
                 StartCoroutine(OnEnd());
-                break;
-            case TutorialState.Choice:
-                StartCoroutine(OnChoice());
                 break;
             case TutorialState.EndTitle:
                 StartCoroutine(OnEndTitle());
@@ -52,100 +77,87 @@ public class TutorialManager : MonoSingleTon<TutorialManager>
     {
         titlePanel.gameObject.SetActive(true);
 
+        titleText.SetText(curTutoInfo.tutoTitle);
+        subTitleText.SetText(curTutoInfo.tutoSubTitle);
+
         yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space));
         yield return null;
 
-        titlePanel.gameObject.SetActive(false);
         ChangeState(TutorialState.Start);
     }
 
     public IEnumerator OnStart()
     {
-        startPanel.gameObject.SetActive(true);
+        int textLength = curTutoInfo.startNpcText.Length;
+
+        for (int i = 0; i < textLength; i++)
+        {
+            textAnim.SetText(curTutoInfo.startNpcText[i]);
+
+            yield return new WaitUntil(() => textAnim.IsEnd());
+
+            yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space));
+        }
 
         yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space));
+
         yield return null;
 
-        startPanel.gameObject.SetActive(false);
-        ChangeState(TutorialState.Video);
+        titlePanel.gameObject.SetActive(false);
+        ChangeState(TutorialState.Game);
     }
 
-    public IEnumerator OnVideo()
+    public IEnumerator OnGame()
     {
-        videoPanel.gameObject.SetActive(true);
-
-        // 영상 처음부터 끝 까지
-        // 프레임 단위로 조작 가능한 상태
-
-        yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space));
-        yield return null;
-
-        videoPanel.gameObject.SetActive(false);
-        ChangeState(TutorialState.End);
+        gameCam.gameObject.SetActive(true);
+        yield return new WaitForSeconds(1.5f);
+        StageManager.stageDataSO = curTutoInfo.stageData;
+        curTutorialState = TutorialState.End;
+        LoadingSceneManager.LoadScene(10);
     }
 
     public IEnumerator OnEnd()
     {
-        endPanel.gameObject.SetActive(true);
+        endTitlePanel.gameObject.SetActive(true);
+        endTitleText.SetText($"[{curTutoInfo.tutoTitle}] 학습 완료");
+
+        int textLength = curTutoInfo.endNpcText.Length;
+
+        for (int i = 0; i < textLength; i++)
+        {
+            textAnim.SetText(curTutoInfo.endNpcText[i]);
+
+            yield return new WaitUntil(() => textAnim.IsEnd());
+
+            yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space));
+        }
 
         yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space));
         yield return null;
 
-        endPanel.gameObject.SetActive(false);
-        ChangeState(TutorialState.Choice);
-    }
-
-    public IEnumerator OnChoice()
-    {
-        choicePanel.gameObject.SetActive(true);
-        isChoice = false;
-
-        yield return new WaitUntil(() => isChoice);
-        yield return null;
-
-        choicePanel.gameObject.SetActive(false);
-        if (isReplayVideo)
-        {
-            ChangeState(TutorialState.Video);
-        }
-        else
-        {
-            ChangeState(TutorialState.EndTitle);
-        }
-
-        isChoice = false;
+        ChangeState(TutorialState.EndTitle);
     }
 
     public IEnumerator OnEndTitle()
     {
-        endTitlePanel.gameObject.SetActive(true);
-
         yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space));
         yield return null;
+
+        curTutoInfo = null;
+        curTutorialState = TutorialState.None;
+        tutoCam.SetActive(false);
 
         endTitlePanel.gameObject.SetActive(false);
     }
 
     #endregion
-
-    [ContextMenu("Choice")]
-    public void A()
-    {
-        Choice(false);
-    }
-
-    public void Choice(bool value)
-    {
-        isChoice = true;
-        isReplayVideo = value;
-    }
 }
 public enum TutorialState
 {
+    None,
     Title,
     Start,
-    Video,
+    Game,
     End,
-    Choice,
     EndTitle
 }

@@ -42,6 +42,7 @@ public class BreakScreenController : MonoSingleTon<BreakScreenController>
         shatterMaterial.SetTexture("_BaseMap", screenshotTexture2D);
 
         //블럭들 설정
+        AudioManager.PlayAudioRandPitch(SoundType.OnReplayDisplay);
         yield return new WaitForSeconds(1f);
         slicesPrefabs.BreakScreen(slicesPrefabs.transform);
         yield return new WaitForSeconds(1.5f);

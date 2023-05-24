@@ -1,11 +1,11 @@
 using DG.Tweening;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class SceneChangeCanvas : MonoBehaviour
 {
-    static CanvasGroup group;
     static Sequence loadingSeq = null;
 
     static bool isEndSequence = true;
@@ -14,6 +14,8 @@ public class SceneChangeCanvas : MonoBehaviour
 
     static float masterVolume;
     static float timer;
+
+    static List<RectTransform> rectList = new();
 
     const string MASTER = "Master";
 
@@ -24,13 +26,19 @@ public class SceneChangeCanvas : MonoBehaviour
             Destroy(gameObject);
         }
         hasInstance = true;
+
+        if(rectList.Count == 0)
+        {
+            for (int i = 0; i < transform.childCount; i++)
+            {
+                rectList.Add(transform.GetChild(i).GetComponent<RectTransform>());
+            }
+        }
     }
 
     public void Start()
     {
         DontDestroyOnLoad(gameObject);
-        group = GetComponent<CanvasGroup>();
-        DeActive();
         StartCoroutine(ChangeVolume());
     }
 
@@ -75,7 +83,10 @@ public class SceneChangeCanvas : MonoBehaviour
 
         Time.timeScale = 1.0f;
         loadingSeq = DOTween.Sequence();
-        loadingSeq.Append(DOTween.To(() => group.alpha, x => group.alpha = x, 1, 0.5f)).SetUpdate(true);
+        for (int i = 0; i < rectList.Count; i++)
+        {
+            loadingSeq.Insert(i * 0.1f, rectList[i].DOAnchorPosX(0, 0.3f)).SetEase(Ease.Linear);
+        }
         loadingSeq.AppendInterval(1.5f).SetUpdate(true);
         loadingSeq.AppendCallback(() => { callbackAction?.Invoke(); });
     }
@@ -86,7 +97,18 @@ public class SceneChangeCanvas : MonoBehaviour
         timer = 0;
 
         loadingSeq = DOTween.Sequence();
-        loadingSeq.Append(DOTween.To(() => group.alpha, x => group.alpha = x, 0, 0.5f)).SetUpdate(true);
         loadingSeq.AppendCallback(() => { callbackAction?.Invoke(); });
+        for (int i = rectList.Count - 1; i >= 0; i--)
+        {
+            loadingSeq.Insert(i * 0.1f, rectList[i].DOAnchorPosX(Screen.width, 0.3f)).SetEase(Ease.Linear);
+        }
+        loadingSeq.AppendInterval(rectList.Count * 0.1f);
+        loadingSeq.AppendCallback(() =>
+        {
+            for (int i = 0; i < rectList.Count; i++)
+            {
+                rectList[i].anchoredPosition = new Vector2(-Screen.width, rectList[i].anchoredPosition.y);
+            }
+        });
     }
 }

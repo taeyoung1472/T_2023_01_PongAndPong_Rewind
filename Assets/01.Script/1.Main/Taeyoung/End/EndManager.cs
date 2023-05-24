@@ -106,6 +106,7 @@ public class EndManager : MonoSingleTon<EndManager>
         timePieceText.SetText("È¹µæÇÑ ½Ã°£ÀÇ Á¶°¢" + eatCollectionCnt + "/" + StageManager.Instance.CurStageDataSO.stageCollection.Count);
         currentStageNumberText.SetText(StageManager.stageDataSO.stageNumber.ToString());
 
+        TutorialManager.CurTutoInfo = StageManager.Instance.CurStageDataSO.tutorialInfo;
         nextStageBtn.interactable = StageManager.stageDataSO.nextStageData != null;
         nextStageBtn.onClick.AddListener(() => nextStageBtn.interactable = false);
     }

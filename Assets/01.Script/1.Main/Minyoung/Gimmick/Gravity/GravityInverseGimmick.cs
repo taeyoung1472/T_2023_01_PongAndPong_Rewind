@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,66 +8,21 @@ public class GravityInverseGimmick : ControlAbleObjcet
     public DirectionType gravityDirState;
     public Dictionary<float, DirectionType> dirChangeDic = new Dictionary<float, DirectionType>();
 
-    //[SerializeField]
-    //private float _coolTime = 0.2f;
-    //private bool _locked = false;
-
-    [SerializeField]
-    private LayerMask _groundMask = 0;
-
     public Player player;
     public Player rewindPlayer;
 
+    private DirectionType curDirection;
+
     private bool isRewind = false;
-
-    RaycastHit hit;
-
-    private void OnTriggerEnter(Collider other)
-    {
-        //if (_locked)
-        //    return;
-
-        //if (other.CompareTag("Player"))
-        //{
-        //    if (player == null)
-        //        player = other.GetComponent<Player>();
-
-        //    player.GravityModule.GravityScale = _gravityScale;
-        //    PlayerGravitySet(gravityDirState, rewindPlayer);
-        //}
-        /*if (other.gameObject.TryGetComponent<GravityGimmickObject>
-            (out GravityGimmickObject gravityGimmick))
-        {
-            gravityGimmick.GravityDir = Utility.GetDirToVector(gravityDirState) * 9.8f;
-            gravityGimmick.GravityScale = _gravityScale;
-        }*/
-    }
-
-    //private void OnTriggerExit(Collider other)
-    //{
-    //    if (_locked)
-    //        return;
-
-    //    if (player == null)
-    //    {
-    //        return;
-    //    }
-    //    player.GravityModule.GravityScale = player.GravityModule.OriginGravityScale;
-    //    PlayerGravitySet(DirectionType.Down);
-    //    player = null;
-    //    //module.GravityScale = module.OriginGravityScale;
-
-    //    /*if (other.gameObject.TryGetComponent<GravityGimmickObject>
-    //              (out GravityGimmickObject gravityGimmick))
-    //    {
-    //        gravityGimmick.GravityDir = Utility.GetDirToVector(FlipDirection.Down) * 9.8f;
-    //        gravityGimmick.GravityScale = gravityGimmick.OrignGravityScale;
-    //    }*/
-    //}
-
 
     private void PlayerGravitySet(DirectionType direction, Player player)
     {
+        if (curDirection != direction)
+        {
+            AudioManager.PlayAudioRandPitch(SoundType.OnChangeGravity);
+        }
+        curDirection = direction;
+
         player.ForceStop();
         player.ColliderSet(PlayerColliderType.Normal);
 
@@ -88,32 +42,12 @@ public class GravityInverseGimmick : ControlAbleObjcet
                 {
                     player.ColliderSet(PlayerColliderType.Normal);
                     player.transform.position += (Vector3)(Utility.GetDirToVector(direction) * player.Col.height);
-                    //player.transform.Translate(Vector2.down * player.Col.height);
                 }
                 break;
             case DirectionType.Down:
-                if (isRewind)
-                {
-                    //player.ColliderSet(PlayerColliderType.Normal);
-                    //player.transform.Translate(Vector2.down * player.Col.height);
-                }
                 break;
         }
     }
-
-    private bool RayCheck(Vector3 dir, CapsuleCollider playerCol)
-    {
-        if (player == null)
-            return false;
-        return Physics.Raycast(player.transform.position, dir, out hit, playerCol.height, _groundMask);
-    }
-
-    //private IEnumerator CooltimeCoroutine()
-    //{
-    //    _locked = true;
-    //    yield return new WaitForSeconds(_coolTime);
-    //    _locked = false;
-    //}
 
     public override void Control(ControlType controlType, bool isLever, Player player, DirectionType dirType)
     {
@@ -133,7 +67,6 @@ public class GravityInverseGimmick : ControlAbleObjcet
                 }
                 break;
             case ControlType.None:
-                // PlayerGravitySet(DirectionType.Down);
                 break;
             case ControlType.ReberseControl:
                 break;
@@ -145,7 +78,6 @@ public class GravityInverseGimmick : ControlAbleObjcet
         {
             RewindManager.Instance.InitRewind += InitOnRewind;
             RewindManager.Instance.InitPlay += InitOnPlay;
-            //RewindManager.Instance.RestartPlay += InitOnPlay;
         }
 
     }

@@ -9,7 +9,7 @@ public class Stage : MonoBehaviour
 
     [SerializeField] private StageDataSO stageData;
 
-    public StageArea curArea;
+    [HideInInspector] public StageArea curArea;
 
     public void Init()
     {
@@ -77,9 +77,10 @@ public class Stage : MonoBehaviour
 
             TimerManager.Instance.EndRewind();
         }
-
-        CollectionManager.Instance.SaveClearCollection();
-        ClearManager.Instance.SaveClearData();
+        if (CollectionManager.Instance)
+        {
+            CollectionManager.Instance.SaveCollection();
+        }
         EndManager.Instance.End();
     }
 }
