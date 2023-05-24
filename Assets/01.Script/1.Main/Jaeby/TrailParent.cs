@@ -89,7 +89,7 @@ public class TrailParent : MonoBehaviour
         Debug.Log("리와인드 트레일");
         if (_readyTrails.Count == 0) // 새로 만들엉
         {
-            SpawnTrail();
+            //SpawnTrail();
         }
 
         if (_rewindTrails.Count <= 0)

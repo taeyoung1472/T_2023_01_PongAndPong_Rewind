@@ -40,7 +40,7 @@ public class PlayerRewind : RewindAbstract
         trackMotionTrail = new CircularBuffer<bool>();
         trackMotionTrailData = new CircularBuffer<TrackMotionTrailData>();
 
-        InitializeParticles(particleSettings);
+        //InitializeParticles(particleSettings);
     }
 
     protected override void InitOnPlay()
@@ -49,6 +49,8 @@ public class PlayerRewind : RewindAbstract
         trackMotionTrail.InitBuffer();
         trackMotionTrailData.InitBuffer();
         InitBuffer();
+
+        InitializeParticles(particleSettings);
 
         foreach (var item in enableList)
         {
