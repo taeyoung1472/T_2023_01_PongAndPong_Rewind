@@ -1,6 +1,7 @@
 using System;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public class ButtonGimmick : GimmickObject
@@ -32,6 +33,11 @@ public class ButtonGimmick : GimmickObject
     private float timer = 0f;
     [SerializeField] private DirectionType preDirType;
 
+    #region 토글 슬라이더 관련
+    private Slider toggleSlider = null;
+
+    #endregion
+
     [ContextMenu("Gen Color")]
     public void GenColor()
     {
@@ -46,6 +52,9 @@ public class ButtonGimmick : GimmickObject
     public void Start()
     {
         animator = GetComponent<Animator>();
+
+        SetSlider();
+
         if (RewindManager.Instance)
         {
             RewindManager.Instance.RestartPlay += () =>
@@ -66,6 +75,17 @@ public class ButtonGimmick : GimmickObject
         if (gravityButton)
         {
             gravityInverseGimmick = FindObjectOfType<GravityInverseGimmick>();
+        }
+    }
+    private void SetSlider()
+    {
+        toggleSlider = GetComponentInChildren<Slider>();
+        toggleSlider.maxValue = origntToggleTime;
+        toggleSlider.value = toggleSlider.maxValue;
+
+        if (isToggle == false)
+        {
+            toggleSlider.gameObject.SetActive(false);
         }
     }
     private void InitInfo()
@@ -145,7 +165,6 @@ public class ButtonGimmick : GimmickObject
             isActivePlayer = true;
             toggleing = true;
             toggleTime = origntToggleTime;
-            //gravityInverseGimmick.dirChangeDic.Add(2, gravitChangeDirState);
             if (this.player == null)
             {
                 this.player = player;
