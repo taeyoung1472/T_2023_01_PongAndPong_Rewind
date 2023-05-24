@@ -1,4 +1,4 @@
 public interface IDamageable
 {
-    public void Damaged(ColliderOwnerType owner);
+    public void Damaged(ColliderType colliderType);
 }

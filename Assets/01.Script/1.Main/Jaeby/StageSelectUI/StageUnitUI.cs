@@ -57,8 +57,7 @@ public class StageUnitUI : MonoBehaviour
         _glowImage.color = Color.white;
         _inIconImage.color = Color.white;
         _inGlowImage.color = Color.white;
-        if (gameObject.activeSelf)
-            _animator.SetBool("Loop", false);
+        _animator.SetBool("Loop", false);
     }
 
     public void SetStageData()
