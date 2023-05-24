@@ -18,7 +18,7 @@ public class CollectionManager : MonoSingleTon<CollectionManager>
 
     private void InitOnPlay()
     {
-        SaveDataManager.Instance.LoadCollectionJSON();
+        SetCollection();
     }
 
     private void InitOnReplay()

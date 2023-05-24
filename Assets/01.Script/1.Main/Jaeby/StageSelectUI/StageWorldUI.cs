@@ -120,7 +120,7 @@ public class StageWorldUI : MonoBehaviour
         viewPort = _uiLineRenderer.GetComponent<RectTransform>();
         if (viewPort)
         {
-            viewPort.sizeDelta = new Vector2(280 * activeCount, 300);
+            //viewPort.sizeDelta = new Vector2(280 * activeCount, 300);
         }
         #endregion
 
