@@ -8,7 +8,7 @@ public class StageWorldUI : MonoBehaviour
 {
     private StageSelectUI _stageSelectUI = null;
 
-    private List<StageUnitUI> _stages = new List<StageUnitUI>();
+    [SerializeField] private List<StageUnitUI> _stages = new List<StageUnitUI>();
     private List<RectTransform> _stageTrms = new List<RectTransform>();
     private RectTransform _thisTrm = null;
     private UILineRenderer _uiLineRenderer = null;
@@ -38,14 +38,83 @@ public class StageWorldUI : MonoBehaviour
     {
         _stageSelectUI = ui;
         _stages.AddRange(GetComponentsInChildren<StageUnitUI>());
+
+       
+
+
         for (int i = 0; i < _stages.Count; i++)
             Lis(_stageSelectUI, i);
         TrmSet();
+
+        #region UI에서 선 부분
+
         _uiLineRenderer = GetComponent<UILineRenderer>();
         var anchored = from v in _stageTrms
                        select v.anchoredPosition;
-        Vector2[] points = anchored.ToArray();
-        _uiLineRenderer.Points = points;
+
+        List<Vector2> pointList = anchored.ToList();
+
+        foreach (var item in pointList)
+        {
+            Debug.Log(item);
+        }
+        //pointList.RemoveRange(activeCount, 2); //2부터 6개삭제
+
+        //Vector2[] points = anchored.ToArray();
+
+        _uiLineRenderer.Points = anchored.ToArray();
+        #endregion
+
+        SetMapeActive();
+    }
+  
+    /// <summary>
+    /// UI에서 동그라미 엑티브 세팅
+    /// </summary>
+    private void SetMapeActive()
+    {
+        SaveDataManager.Instance.LoadStageClearJSON();
+
+        int clearCount = 0;
+
+        for (int i = 0; i < SaveDataManager.Instance.AllChapterClearDataBase.stageClearDataDic[_worldName].stageClearDataList.Count; i++)
+        {
+            if (SaveDataManager.Instance.AllChapterClearDataBase.stageClearDataDic[_worldName].stageClearDataList[i].stageClearBoolData)
+            {
+                clearCount++;
+            }
+        }
+
+        int activeCount = 0;
+
+        if (clearCount == 0)
+        {
+            activeCount = 1;
+            for (int i = 0; i < activeCount; i++)
+            {
+                _stages[i].gameObject.SetActive(true);
+            }
+
+
+
+            Debug.Log(clearCount + "클리어카운트가 0임");
+        }
+        else
+        {
+            Debug.Log(clearCount + "클리어카운트가 알잘딱");
+            activeCount = clearCount + 1;
+            for (int i = 0; i < activeCount; i++)
+            {
+                _stages[i].gameObject.SetActive(true);
+            }
+        }
+
+        for (int i = activeCount; i < _stages.Count; i++)
+        {
+            _stages[i].gameObject.SetActive(false);
+        }
+
+       
     }
 
     private void TrmSet()

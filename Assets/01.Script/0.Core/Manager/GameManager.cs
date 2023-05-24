@@ -34,4 +34,9 @@ public class GameManager : MonoSingleTon<GameManager>
         StageManager.stageDataSO = StageManager.stageDataSO.nextStageData;
         LoadingSceneManager.LoadScene(1);
     }
+
+    public void LoadCurrentScene()
+    {
+        LoadingSceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
 }

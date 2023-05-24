@@ -7,6 +7,7 @@ public class ButtonGimmick : GimmickObject
 {
     bool isActive = false;
     bool isActivePlayer = false;
+    bool curActive;
 
     [SerializeField] private ControlData[] controlDataArr;
     [SerializeField] private GimmickVisualLink visualLinkPrefab;
@@ -178,6 +179,12 @@ public class ButtonGimmick : GimmickObject
         ControlType controlType = ControlType.Control;
         if (isFunc == false)
             controlType = ControlType.None;
+
+        if (isFunc != curActive)
+        {
+            AudioManager.PlayAudio(SoundType.OnActiveButton);
+            curActive = isFunc;
+        }
 
         foreach (var control in controlDataArr)
         {

@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Events;
+using static Unity.VisualScripting.Member;
 
 public class PlayerObjectPush : PlayerAction
 {
@@ -10,6 +11,19 @@ public class PlayerObjectPush : PlayerAction
     [SerializeField]
     private UnityEvent OnExitCollider = null;
 
+    private AudioSource source;
+
+    protected override void Awake()
+    {
+        base.Awake();
+        source = gameObject.AddComponent<AudioSource>();
+        source.clip = AudioManager.DataBase.GetAudio(SoundType.OnDragingObject);
+        source.volume = 0;
+        source.loop = true;
+        source.outputAudioMixerGroup = AudioManager.Mixer.FindMatchingGroups("SFX")[0];
+        source.Play();
+    }
+
     public override void ActionExit()
     {
         _excuting = false;
@@ -19,7 +33,35 @@ public class PlayerObjectPush : PlayerAction
 
     private void Update()
     {
+        MassChange();
         ObjExitCheck();
+    }
+
+    private void MassChange()
+    {
+        if (_pushingCollider != null)
+        {
+            if (_player.PlayerActionCheck(PlayerActionType.Dash))
+            {
+                Debug.Log("대시");
+                _pushingCollider.GetComponentInParent<Rigidbody>().mass = 90f;
+            }
+            else
+            {
+                Debug.Log("아니");
+                _pushingCollider.GetComponentInParent<Rigidbody>().mass = 1f;
+            }
+            Debug.Log(_pushingCollider.GetComponentInParent<Rigidbody>().mass);
+        }
+    }
+
+    private void PushEnd()
+    {
+        source.volume = 0;
+        _pushingCollider = null;
+        Debug.Log("오브젝트 밀기 끝");
+        OnExitCollider?.Invoke();
+        _excuting = false;
     }
 
     private void ObjExitCheck()
@@ -28,28 +70,33 @@ public class PlayerObjectPush : PlayerAction
             return;
         if (Vector3.Dot(_pushingCollider.transform.position - _player.transform.position, _player.PlayerRenderer.Forward) < 0f)
         {
-            _pushingCollider = null;
-            Debug.Log("오브젝트 밀기 끝");
-            OnExitCollider?.Invoke();
+            PushEnd();
         }
     }
 
     public void PushStart(GameObject other)
     {
-        if (other.CompareTag("PushTrigger") == false || _pushingCollider != null)
+        if (other.CompareTag("PushTrigger") == false || _pushingCollider != null  )
             return;
+
+        if (!RewindManager.Instance.IsBeingRewinded)
+            source.volume = 0.5f;
+        else
+            return;
+
         _pushingCollider = other.transform.gameObject;
+        MassChange();
         Debug.Log("오브젝트 밀기 시작");
         OnEnterCollider?.Invoke();
+        _excuting = true;
     }
 
     public void PushEnd(GameObject other)
     {
         if (other.CompareTag("PushTrigger") == false || _pushingCollider == null)
             return;
-        _pushingCollider = null;
-        Debug.Log("오브젝트 밀기 끝");
-        OnExitCollider?.Invoke();
+        MassChange();
+        PushEnd();
     }
 
     public void PushSlowBuff(bool val)

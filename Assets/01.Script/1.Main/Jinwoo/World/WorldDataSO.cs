@@ -29,6 +29,15 @@ public class WorldDataSO : ScriptableObject
         }
         return null;
     }
+
+    private void OnValidate()
+    {
+        for (int i = 0; i < stageList.Count; i++)
+        {
+            stageList[i].stageNumber = i + 1;
+            stageList[i].stageIndex = i;
+        }
+    }
 }
 
 [System.Serializable]
