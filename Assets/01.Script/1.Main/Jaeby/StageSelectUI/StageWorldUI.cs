@@ -3,9 +3,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UI.Extensions;
 using System.Linq;
+using Unity.VisualScripting;
 
 public class StageWorldUI : MonoBehaviour
 {
+    private readonly float BOX_WIDTH = 960f;
+
     private StageSelectUI _stageSelectUI = null;
 
     [SerializeField] private List<StageUnitUI> _stages = new List<StageUnitUI>();
@@ -39,9 +42,6 @@ public class StageWorldUI : MonoBehaviour
         _stageSelectUI = ui;
         _stages.AddRange(GetComponentsInChildren<StageUnitUI>());
 
-       
-
-
         for (int i = 0; i < _stages.Count; i++)
             Lis(_stageSelectUI, i);
         TrmSet();
@@ -66,6 +66,28 @@ public class StageWorldUI : MonoBehaviour
         #endregion
 
         SetMapeActive();
+
+        BoxSizeSetting();
+    }
+
+    //뷰포트 크기 조정
+    private void BoxSizeSetting()
+    {
+        RectTransform stageParentTrm = transform.Find("StageParent").GetComponent<RectTransform>();
+        Vector2 an = stageParentTrm.anchoredPosition;
+        an.x = BOX_WIDTH * 0.5f;
+        stageParentTrm.anchoredPosition = an;
+
+        RectTransform lastTrm = _stageTrms[0];
+        for(int i = 0; i< _stageTrms.Count; i++)
+        {
+            if (_stageTrms[i].gameObject.activeSelf == false)
+            {
+                lastTrm = _stageTrms[i - 1];
+                break;
+            }
+        }
+        GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, BOX_WIDTH + lastTrm.anchoredPosition.x);
     }
   
     /// <summary>
@@ -149,11 +171,17 @@ public class StageWorldUI : MonoBehaviour
     public StageUnitUI MouseUp(Color accentColor, Color subAccentColor, Color deAccentColor, float sizeUpAmount, float sizeSubAmount, float sizeDownAmount, float sizeChangeDuration, StageUnitUI ui = null)
     {
         int minIndex = 0;
+
         if (ui == null)
         {
             float minX = Mathf.Abs(_stageTrms[0].anchoredPosition.x + _thisTrm.anchoredPosition.x);
             for (int i = 1; i < _stages.Count; i++)
             {
+                if (_stageTrms[i].gameObject.activeSelf == false)
+                {
+                    break;
+                }
+
                 float curX = Mathf.Abs(_stageTrms[i].anchoredPosition.x + _thisTrm.anchoredPosition.x);
                 if (minX > curX)
                 {
