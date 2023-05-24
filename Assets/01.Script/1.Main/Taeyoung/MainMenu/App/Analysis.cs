@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using System.Linq;
 using static Define;
 
 public class Analysis : MonoBehaviour
@@ -119,8 +120,21 @@ public class Analysis : MonoBehaviour
         if (prevIndex != _curIndex)
             return;
         _curData = _worldDatabase.worldList[_curIndex];
-        _maxCount = _curData.rewardCount;
-        _curCount = player.playerJsonData.collectDatas[_curData.worldName];
+
+        SaveDataManager.Instance.LoadCollectionJSON();
+
+        //_maxCount = _curData.rewardCount;
+        ChapterStageCollectionData chapter = SaveDataManager.Instance.AllChapterDataBase.stageCollectionDataDic[_curData.worldName];
+
+        _maxCount = 0;
+        foreach (var i in chapter.stageCollectionDataList)
+        {
+            _maxCount += i.collectionBoolDataList.Count;
+        }
+
+        _curCount = 0;
+        foreach (var i in chapter.stageCollectionDataList)
+            _curCount += i.collectionBoolDataList.FindAll(x => x == true).Count;
 
         for (int i = 0; i < _curCollectObj.Count; i++)
             Destroy(_curCollectObj[i]);
