@@ -52,9 +52,8 @@ public class ButtonGimmick : GimmickObject
     public void Start()
     {
         animator = GetComponent<Animator>();
-
+        toggleSlider = GetComponentInChildren<Slider>();
         SetSlider();
-
         if (RewindManager.Instance)
         {
             RewindManager.Instance.RestartPlay += () =>
@@ -79,7 +78,6 @@ public class ButtonGimmick : GimmickObject
     }
     private void SetSlider()
     {
-        toggleSlider = GetComponentInChildren<Slider>();
         toggleSlider.maxValue = origntToggleTime;
         toggleSlider.value = toggleSlider.maxValue;
 
@@ -91,6 +89,7 @@ public class ButtonGimmick : GimmickObject
     private void InitInfo()
     {
         Control(false);
+        SetSlider();
         foreach (var control in controlDataArr)
         {
             control.target.isLocked = false;
@@ -149,6 +148,7 @@ public class ButtonGimmick : GimmickObject
             if (isActive == false)
             {
                 toggleTime -= Time.deltaTime;
+                toggleSlider.value -= Time.deltaTime;
             }
             if (toggleTime <= 0.0f)
             {
@@ -165,6 +165,8 @@ public class ButtonGimmick : GimmickObject
             isActivePlayer = true;
             toggleing = true;
             toggleTime = origntToggleTime;
+            SetSlider();
+
             if (this.player == null)
             {
                 this.player = player;
@@ -175,6 +177,9 @@ public class ButtonGimmick : GimmickObject
         if (other.TryGetComponent<GimmickObject>(out GimmickObject gimmickObject))
         {
             Debug.Log(gimmickObject);
+
+            SetSlider();
+
             isActive = true;
             toggleing = true;
             toggleTime = origntToggleTime;
