@@ -22,4 +22,5 @@ public class StageDataSO : ScriptableObject
     public string chapterStageName;
     //¼öÁıÇ°
     public List<bool> stageCollection;
+
 }

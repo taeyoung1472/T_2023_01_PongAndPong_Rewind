@@ -79,6 +79,7 @@ public class Stage : MonoBehaviour
         }
 
         CollectionManager.Instance.SaveClearCollection();
+        ClearManager.Instance.SaveClearData();
         EndManager.Instance.End();
     }
 }

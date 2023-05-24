@@ -82,8 +82,6 @@ public class CollectionManager : MonoSingleTon<CollectionManager>
                 stageDatabase.worldList[i].stageList[j].stageCollection =
                     SaveDataManager.Instance.AllChapterDataBase.stageCollectionDataDic[StageManager.Instance.CurStageDataSO.chapterStageName].
                     stageCollectionDataList[j].collectionBoolDataList;
-
-                Debug.Log(stageDatabase.worldList[i].stageList[j].stageCollection);
             }
         }
     }
