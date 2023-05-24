@@ -32,6 +32,8 @@ public class AudioDataBase : ScriptableObject
 
 public enum SoundType
 {
+    OnObjectImpact = 0,
+
     Footstep = 100,
 
     DashAir = 200,
@@ -42,13 +44,14 @@ public enum SoundType
     Jump = 400,
     OnGrounded = 401,
 
-    OnReplay = 500,
     OnJumpPad = 501,
     OnPortal = 502,
+    OnChangeGravity = 503,  
     OnActiveButton = 511,
     OnDeActiveButton = 512,
+    OnReplayBreak = 520,
+    OnReplayDisplay = 521,
 
     OnDragingObject = 600,
     OnGameStart = 601,
-    OnGame
 }

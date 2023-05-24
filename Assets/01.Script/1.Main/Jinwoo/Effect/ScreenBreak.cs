@@ -17,7 +17,7 @@ public class ScreenBreak : MonoBehaviour
     
     public void BreakScreen(Transform trm)
     {
-        AudioManager.PlayAudioRandPitch(SoundType.OnReplay);
+        AudioManager.PlayAudioRandPitch(SoundType.OnReplayBreak);
         foreach (Transform child in transform)
         {
             if (child.TryGetComponent<Rigidbody>(out Rigidbody childRigidbody))

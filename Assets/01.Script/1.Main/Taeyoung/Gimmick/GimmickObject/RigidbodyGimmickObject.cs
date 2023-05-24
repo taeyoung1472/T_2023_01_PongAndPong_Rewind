@@ -33,7 +33,7 @@ public class RigidbodyGimmickObject : GimmickObject
         rb = GetComponent<Rigidbody>();
         if (rb != null)
             constraints = rb.constraints;
-        
+
     }
 
     public void FixedUpdate()
@@ -67,6 +67,13 @@ public class RigidbodyGimmickObject : GimmickObject
     {
         if (RewindManager.Instance != null)
             RewindManager.Instance.RestartPlay -= DisFreeze;
+    }
 
+    public void OnCollisionEnter(Collision collision)
+    {
+        if (transform.position.y - recordPosY < -3f)
+        {
+            AudioManager.PlayAudioRandPitch(SoundType.OnObjectImpact);
+        }
     }
 }
