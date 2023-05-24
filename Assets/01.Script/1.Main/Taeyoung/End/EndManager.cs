@@ -87,6 +87,11 @@ public class EndManager : MonoSingleTon<EndManager>
     }
     public void End()
     {
+        if(!isEnd)
+        {
+            AudioManager.PlayAudio(SoundType.OnStageClear);
+        }
+
         isEnd = true;
         onEnd?.Invoke();
         nextStagePanel.SetActive(false);

@@ -51,6 +51,7 @@ public class SpringGimmick : GimmickObject
             recordPosY = Mathf.Clamp(recordPosY, 0, 17.5f);
             obj.Init();
             obj.AddForce(Vector3.up, recordPosY, ForceMode.VelocityChange);
+            AudioManager.PlayAudioRandPitch(SoundType.OnJumpPad);
         }
     }
     private void ColEffect()

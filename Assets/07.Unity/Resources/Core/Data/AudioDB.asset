@@ -13,7 +13,12 @@ MonoBehaviour:
   m_Name: AudioDB
   m_EditorClassIdentifier: 
   soundDataArr:
-  - type: 100
+  - name: 0_OnObjectImpact
+    type: 0
+    clips:
+    - {fileID: 8300000, guid: 8fa8de63806a5a84d8ddbd50c33fc93c, type: 3}
+  - name: 100_Footstep
+    type: 100
     clips:
     - {fileID: 8300000, guid: 63665ce7b59ca4640914559a7689b291, type: 3}
     - {fileID: 8300000, guid: 5e7ff10fb473bb64f9913bf25b0d8045, type: 3}
@@ -25,39 +30,83 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 29dd92a498a657e4d83e1f2633d1e86d, type: 3}
     - {fileID: 8300000, guid: 7fb6aa073bc89b94f9702b5077662867, type: 3}
     - {fileID: 8300000, guid: 7ba3fccc38c85cf4b9b7906d663adff0, type: 3}
-  - type: 200
+  - name: 200_DashAir
+    type: 200
     clips:
     - {fileID: 8300000, guid: 960105d4e6f21a14cae3b753631e5a65, type: 3}
-  - type: 201
+  - name: 201_DashGround
+    type: 201
     clips:
     - {fileID: 8300000, guid: 960105d4e6f21a14cae3b753631e5a65, type: 3}
-  - type: 300
+  - name: 300_Attack
+    type: 300
     clips:
     - {fileID: 8300000, guid: 112ef04ce0b81da4eb88480c55ee093f, type: 3}
-  - type: 400
+  - name: 400_Jump
+    type: 400
     clips:
     - {fileID: 8300000, guid: b87b4412f78f548429ce645065852f6a, type: 3}
-  - type: 401
+  - name: 401_OnGrounded
+    type: 401
     clips:
     - {fileID: 8300000, guid: a9b0340dd353d114c87ab8c8e31dee3f, type: 3}
-  - type: 520
+  - name: 501_OnJumpPad
+    type: 501
     clips:
-    - {fileID: 8300000, guid: 12099fcdb25093d4a8bc5e2a00b7f5f2, type: 3}
-  - type: 521
+    - {fileID: 8300000, guid: fa47151c00505e646ba29a01c4c2b294, type: 3}
+  - name: 502_OnPortal
+    type: 502
     clips:
-    - {fileID: 8300000, guid: 3fca9edb320520e4bafa1166a567bc08, type: 3}
-  - type: 600
-    clips:
-    - {fileID: 8300000, guid: de2ddcc4fd141154c8753a23d8132273, type: 3}
-  - type: 601
-    clips:
-    - {fileID: 8300000, guid: 6a487ec6a3eb3dd43aebfb700e428a4e, type: 3}
-  - type: 511
-    clips:
-    - {fileID: 8300000, guid: 6de999861f652374dbec14fc918d09e1, type: 3}
-  - type: 0
-    clips:
-    - {fileID: 8300000, guid: 32df4f62cdef96349ac83185e32d5746, type: 3}
-  - type: 503
+    - {fileID: 8300000, guid: 55593fffbaea45d4980689b5ef648dfc, type: 3}
+  - name: 503_OnChangeGravity
+    type: 503
     clips:
     - {fileID: 8300000, guid: e38960500f7c30b43812bbdce01412d5, type: 3}
+  - name: 511_OnActiveButton
+    type: 511
+    clips:
+    - {fileID: 8300000, guid: 6de999861f652374dbec14fc918d09e1, type: 3}
+  - name: 520_OnReplayBreak
+    type: 520
+    clips:
+    - {fileID: 8300000, guid: 12099fcdb25093d4a8bc5e2a00b7f5f2, type: 3}
+  - name: 521_OnReplayDisplay
+    type: 521
+    clips:
+    - {fileID: 8300000, guid: 3fca9edb320520e4bafa1166a567bc08, type: 3}
+  - name: 600_OnDragingObject
+    type: 600
+    clips:
+    - {fileID: 8300000, guid: de2ddcc4fd141154c8753a23d8132273, type: 3}
+  - name: 601_OnGameStart
+    type: 601
+    clips:
+    - {fileID: 8300000, guid: 6a487ec6a3eb3dd43aebfb700e428a4e, type: 3}
+  - name: 602_OnCollect
+    type: 602
+    clips:
+    - {fileID: 8300000, guid: 0ec2af0bf081f78499666e5f45c7ec2d, type: 3}
+  - name: 603_OnGameEnd
+    type: 603
+    clips:
+    - {fileID: 8300000, guid: 2022da7491a9cb442adc3f235e3f2069, type: 3}
+  - name: 604_OnStageClear
+    type: 604
+    clips:
+    - {fileID: 8300000, guid: 0b8f7609708d2eb4694e6a28404ef275, type: 3}
+  - name: 605_OnSceneChange
+    type: 605
+    clips:
+    - {fileID: 8300000, guid: e1c60b8f1a060c34b935e9d1e6d95f20, type: 3}
+  - name: 700_OnNPCSpeak
+    type: 700
+    clips:
+    - {fileID: 8300000, guid: 6c17f44777b636547bc439091e4cfe7b, type: 3}
+  - name: 701_OnLabDoorOpen
+    type: 701
+    clips:
+    - {fileID: 8300000, guid: f9fabaddacf29e648a5d98d975f05112, type: 3}
+  - name: 702_OnLabDoorClose
+    type: 702
+    clips:
+    - {fileID: 8300000, guid: f9fabaddacf29e648a5d98d975f05112, type: 3}
