@@ -5,7 +5,6 @@ using UnityEngine.Events;
 public class PlayerAnimation : MonoBehaviour
 {
     private Animator _animator = null;
-    public Animator animator => _animator;
 
     private Coroutine _attackAniCo = null;
 
@@ -110,15 +109,15 @@ public class PlayerAnimation : MonoBehaviour
 
     public void MeleeAttackAnimation(int index)
     {
-        Debug.Log(index);
-        _animator.SetInteger("AttackIndex", index);
-        _animator.SetTrigger("AttackStart");
-        //string name = $"PlayerMeleeAttack{index}";
-        //_animator.Play(name);
+        string name = $"MeleeAttack{index}";
+        //isground 
+        if ((_player.PlayerActionCheck(PlayerActionType.Move) && _player.IsGrounded) == false)
+            name += "Stand";
+        _animator.Play(name);
         _animator.Update(0);
         if (_attackAniCo != null)
             StopCoroutine(_attackAniCo);
-        //_attackAniCo = StartCoroutine(AttackAnimationEndWaitCoroutine(name, AttackState.Melee));
+        _attackAniCo = StartCoroutine(AttackAnimationEndWaitCoroutine(name, AttackState.Melee));
     }
 
     public void RangeAttackAnimation()

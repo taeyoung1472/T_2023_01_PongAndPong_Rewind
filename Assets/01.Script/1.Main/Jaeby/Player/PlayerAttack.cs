@@ -13,7 +13,6 @@ public class PlayerAttack : PlayerAction, IPlayerEnableResetable
     private UnityEvent OnRangeAttack = null;
 
     private int _attackIndex = -1; // 함수에 들어가서 +1 해주기에 -1부터 시작
-    [SerializeField]
     private readonly int _maxAttackIndex = 3;
     private bool _delayLock = false;
 
@@ -41,8 +40,6 @@ public class PlayerAttack : PlayerAction, IPlayerEnableResetable
     [SerializeField]
     private float _ikEndAnimationTime = 0.3f;
     private Transform _mousePositionTrm = null;
-    private bool _shooting = false;
-    public bool Shooting => _shooting;
     [SerializeField]
     private float _ikCancelMaxAngle = 30f;
     private bool _observerStarting = false;
@@ -50,7 +47,6 @@ public class PlayerAttack : PlayerAction, IPlayerEnableResetable
 
     private void Start()
     {
-
         _pistolObj.SetActive(false);
     }
 
@@ -60,8 +56,6 @@ public class PlayerAttack : PlayerAction, IPlayerEnableResetable
             return;
 
         _excuting = true;
-        _player.VelocitySetMove(0f, 0f);
-
         if (_attackState == AttackState.Melee)
             MeleeAttack();
         else
@@ -78,10 +72,10 @@ public class PlayerAttack : PlayerAction, IPlayerEnableResetable
         if (_meleeAttackResetCo != null)
             StopCoroutine(_meleeAttackResetCo);
         _meleeAttackResetCo = StartCoroutine(MeleeAttackResetCoroutine());
+
         _attackIndex = (_attackIndex + 1) % _maxAttackIndex;
         OnMeleeAttack?.Invoke(_attackIndex);
         _player.playerAudio.AttackAudio();
-
 
         AttackCollider.Create(0, ColliderType.PlayerMelee, null, _player.transform.position + _player.PlayerRenderer.Forward, 0.9f, 0.5f, false, null);
     }
@@ -90,12 +84,11 @@ public class PlayerAttack : PlayerAction, IPlayerEnableResetable
     {
         yield return new WaitForSeconds(_meleeAttackResetTime);
         _attackIndex = -1;
-        _player.PlayerAnimation.animator.SetInteger("AttackIndex", _attackIndex);
     }
 
     private void RangeAttack()
     {
-        _shooting = true;
+        _excuting = true;
         _observerStarting = false;
         if (_iKEndAnimationCoroutine != null)
             StopCoroutine(_iKEndAnimationCoroutine);
@@ -183,7 +176,6 @@ public class PlayerAttack : PlayerAction, IPlayerEnableResetable
         _iKEndAnimationCoroutine = StartCoroutine(EndIkCoroutine());
 
         _player.PlayerAnimation.MoveFlipLock = false;
-        _shooting = false;
         _excuting = false;
         _observerStarting = false;
     }
@@ -231,7 +223,7 @@ public class PlayerAttack : PlayerAction, IPlayerEnableResetable
             _pistolObj.SetActive(false);
         }
         _attackIndex = -1;
-        _player.PlayerAnimation.animator.SetInteger("AttackIndex", _attackIndex);
+        _excuting = false;
         if (_switchingCo != null)
             StopCoroutine(_switchingCo);
         StartCoroutine(SwitchingCoroutine());
@@ -281,7 +273,6 @@ public class PlayerAttack : PlayerAction, IPlayerEnableResetable
         _switchingable = true;
         _delayLock = false;
         _excuting = false;
-        _shooting = false;
         _observerStarting = false;
         _player.animationIK.SetIKWeightZero();
         _player.animationIK.RotationLock = false;
