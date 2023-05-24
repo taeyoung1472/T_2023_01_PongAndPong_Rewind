@@ -4,10 +4,14 @@ using UnityEngine.UI;
 using UnityEngine.UI.Extensions;
 using System.Linq;
 using Unity.VisualScripting;
+using System;
+using TMPro.Examples;
 
 public class StageWorldUI : MonoBehaviour
 {
     private readonly float BOX_WIDTH = 960f;
+    private RectTransform _stageParentTrm = null;
+    int clearCount = 1;
 
     private StageSelectUI _stageSelectUI = null;
 
@@ -43,28 +47,41 @@ public class StageWorldUI : MonoBehaviour
     {
         _stageSelectUI = ui;
         _stages.AddRange(GetComponentsInChildren<StageUnitUI>());
+        _stageParentTrm = transform.Find("StageParent").GetComponent<RectTransform>();
 
         for (int i = 0; i < _stages.Count; i++)
             Lis(_stageSelectUI, i);
         TrmSet();
 
-
-
         SetMapeActive();
-
         BoxSizeSetting();
+        LineSet();
+    }
+
+    private void LineSet()
+    {
+        _uiLineRenderer = GetComponent<UILineRenderer>();
+        var anchored = from v in _stageTrms
+                       select v.anchoredPosition + _stageParentTrm.anchoredPosition;
+
+        List<Vector2> pointList = anchored.ToList();
+        int deleteCnt = _stages.Count - clearCount; //4 9
+        pointList.RemoveRange(clearCount, deleteCnt); //2부터 6개삭제
+
+        Vector2[] pointArray = pointList.ToArray();
+
+        _uiLineRenderer.Points = pointArray;
     }
 
     //뷰포트 크기 조정
     private void BoxSizeSetting()
     {
-        RectTransform stageParentTrm = transform.Find("StageParent").GetComponent<RectTransform>();
-        Vector2 an = stageParentTrm.anchoredPosition;
+        Vector2 an = _stageParentTrm.anchoredPosition;
         an.x = BOX_WIDTH * 0.5f;
-        stageParentTrm.anchoredPosition = an;
+        _stageParentTrm.anchoredPosition = an;
 
         RectTransform lastTrm = _stageTrms[0];
-        for(int i = 0; i< _stageTrms.Count; i++)
+        for (int i = 0; i < _stageTrms.Count; i++)
         {
             if (_stageTrms[i].gameObject.activeSelf == false)
             {
@@ -74,16 +91,13 @@ public class StageWorldUI : MonoBehaviour
         }
         GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, BOX_WIDTH + lastTrm.anchoredPosition.x);
     }
-  
+
     /// <summary>
     /// UI에서 동그라미 엑티브 세팅
     /// </summary>
     private void SetMapeActive()
     {
         SaveDataManager.Instance.LoadStageClearJSON();
-
-        int clearCount = 0;
-
         for (int i = 0; i < SaveDataManager.Instance.AllChapterClearDataBase.stageClearDataDic[_worldName].stageClearDataList.Count; i++)
         {
             if (SaveDataManager.Instance.AllChapterClearDataBase.stageClearDataDic[_worldName].stageClearDataList[i].stageClearBoolData)
@@ -92,61 +106,10 @@ public class StageWorldUI : MonoBehaviour
             }
         }
 
-        int activeCount = 0;
-
-        if (clearCount == 0)
+        for (int i = 0; i < _stageTrms.Count; i++)
         {
-            activeCount = 1;
-            for (int i = 0; i < activeCount; i++)
-            {
-                _stages[i].gameObject.SetActive(true);
-            }
-
-
-
-            Debug.Log(clearCount + "클리어카운트가 0임");
+            _stageTrms[i].gameObject.SetActive(i < clearCount);
         }
-        else
-        {
-            Debug.Log(clearCount + "클리어카운트가 알잘딱");
-            activeCount = clearCount + 1;
-            for (int i = 0; i < activeCount; i++)
-            {
-                _stages[i].gameObject.SetActive(true);
-            }
-        }
-
-        for (int i = activeCount; i < _stages.Count; i++)
-        {
-            _stages[i].gameObject.SetActive(false);
-        }
-
-        #region UI에서 선 부분
-
-        _uiLineRenderer = GetComponent<UILineRenderer>();
-        var anchored = from v in _stageTrms
-                       select v.anchoredPosition;
-
-        List<Vector2> pointList = anchored.ToList();
-        int deleteCnt = _stages.Count - activeCount;
-        pointList.RemoveRange(activeCount, deleteCnt); //2부터 6개삭제
-
-        Vector2[] pointArray = pointList.ToArray();
-
-        _uiLineRenderer.Points = pointArray;
-        #endregion
-
-
-        #region 뷰포트 크기 설정
-
-        viewPort = _uiLineRenderer.GetComponent<RectTransform>();
-        if (viewPort)
-        {
-            //viewPort.sizeDelta = new Vector2(280 * activeCount, 300);
-        }
-        #endregion
-
-
     }
 
     private void TrmSet()
