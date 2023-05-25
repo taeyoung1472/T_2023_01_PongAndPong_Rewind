@@ -1,9 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 
 public class UIManager : MonoSingleTon<UIManager>
 {
@@ -42,7 +39,7 @@ public class UIManager : MonoSingleTon<UIManager>
                 pauseImg.gameObject.SetActive(true);
                 Time.timeScale = 0f;
             }
-            else if(!EndManager.Instance.IsEnd)
+            else if (!EndManager.Instance.IsEnd)
             {
                 PauseResume();
             }

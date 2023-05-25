@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Text;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class DialogManager : MonoSingleTon<DialogManager>
 {
@@ -136,6 +135,7 @@ public class DialogManager : MonoSingleTon<DialogManager>
                     _dialogText.SetText(targetText);
                     break;
                 }
+                AudioManager.PlayAudioRandPitch(SoundType.OnNPCSpeak);
                 _sb.Append(targetText[j]);
                 _dialogText.SetText(_sb.ToString());
                 yield return new WaitForSeconds(data.nextCharDelay);
