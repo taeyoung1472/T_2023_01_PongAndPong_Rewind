@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 using static Unity.VisualScripting.Member;
@@ -12,6 +13,7 @@ public class PlayerObjectPush : PlayerAction
     private UnityEvent OnExitCollider = null;
 
     private AudioSource source;
+    private bool isPushing;
 
     protected override void Awake()
     {
@@ -20,7 +22,7 @@ public class PlayerObjectPush : PlayerAction
         source.clip = AudioManager.DataBase.GetAudio(SoundType.OnDragingObject);
         source.volume = 0;
         source.loop = true;
-        source.outputAudioMixerGroup = AudioManager.Mixer.FindMatchingGroups("SFX")[0];
+        source.outputAudioMixerGroup = AudioManager.MixerDic["SFX"];
         source.Play();
     }
 
@@ -35,6 +37,26 @@ public class PlayerObjectPush : PlayerAction
     {
         MassChange();
         ObjExitCheck();
+        Sound();
+    }
+
+    private void Sound()
+    {
+        if (!isPushing)
+        {
+            source.volume = 0;
+        }
+        else
+        {
+            if (_player.Rigid.velocity.magnitude >= 0.2f)
+            {
+                source.volume = 0.5f;
+            }
+            else
+            {
+                source.volume = 0;
+            }
+        }
     }
 
     private void MassChange()
@@ -57,7 +79,7 @@ public class PlayerObjectPush : PlayerAction
 
     private void PushEnd()
     {
-        source.volume = 0;
+        isPushing = false;
         _pushingCollider = null;
         Debug.Log("오브젝트 밀기 끝");
         OnExitCollider?.Invoke();
@@ -80,7 +102,7 @@ public class PlayerObjectPush : PlayerAction
             return;
 
         if (!RewindManager.Instance.IsBeingRewinded)
-            source.volume = 0.5f;
+            isPushing = true;
         else
             return;
 

@@ -66,7 +66,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 111a6d0f133da466ea75a477b28f142e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 6313afb57611b48a1b51657a51c4af26, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -89,6 +89,7 @@ GameObject:
   - component: {fileID: 3533532803760993971}
   - component: {fileID: 9019723548592028235}
   - component: {fileID: 9019723548592028233}
+  - component: {fileID: 8283170275562878626}
   m_Layer: 5
   m_Name: DialogOption
   m_TagString: Untagged
@@ -214,7 +215,41 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 9019723548592028235}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: DialogManager, Assembly-CSharp
+        m_MethodName: DialogForceExit
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &8283170275562878626
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9019723548592028278}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7df401cdbaeaf5341803b4e2a23c31fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  originColor: {r: 1, g: 1, b: 1, a: 1}
+  activeColor: {r: 1, g: 1, b: 0.29411766, a: 1}
+  activeMoveValue: 0
+  activeSizeValue: 1.05
+  hoverClip: {fileID: 8300000, guid: 13b748dec1a4e284090e9c9c6be0e4a8, type: 3}
+  clickClip: {fileID: 8300000, guid: 8acfa21e5ee13fe469f0b88f836f98b0, type: 3}
+  isMove: 0
+  textList:
+  - {fileID: 9019723548701775069}
+  imageList: []
 --- !u!1 &9019723548701775071
 GameObject:
   m_ObjectHideFlags: 0
@@ -281,7 +316,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uD3EC\uD0C8\uC744 \uC5F4\uC5B4\uC8FC\uC138\uC694."
+  m_text: "\uB300\uD654 \uB05D\uB0B4\uAE30"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1db2fc2799786cf459c6f1980b9b5a69, type: 2}
   m_sharedMaterial: {fileID: -6284783603158016475, guid: 1db2fc2799786cf459c6f1980b9b5a69, type: 2}
