@@ -29,7 +29,7 @@ public class LabtopStart : MonoBehaviour
             loadingDisc.DashOffset += Time.deltaTime * loadingSpeed * loadingSpeedCurve.Evaluate(Time.time % 1);
             if (loadingDisc.DashOffset > 9)
             {
-                AudioManager.PlayAudio(loadingEnd);
+                //AudioManager.PlayAudio(loadingEnd);
                 DOTween.To(() => loadingDisc.Color, x => loadingDisc.Color = x, new Color(1, 1, 1, 0), 1f);
                 DOTween.To(() => loadingDisc.Radius, x => loadingDisc.Radius = x, loadingDisc.Radius * 2.5f, 1f);
                 DOTween.To(() => loadingDisc.DashOffset, x => loadingDisc.DashOffset = x, loadingDisc.DashOffset + 2, 1f);
