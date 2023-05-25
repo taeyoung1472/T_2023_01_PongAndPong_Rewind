@@ -7,6 +7,7 @@ using TMPro;
 using UnityEngine;
 using System.Linq;
 using static Define;
+using Random = UnityEngine.Random;
 
 public class Analysis : MonoBehaviour
 {
@@ -142,12 +143,13 @@ public class Analysis : MonoBehaviour
         {
             float targetPercent = ((float)_curCount / _maxCount) * 100f;
             int count = (int)(targetPercent / 12.5f);
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < count + 1; i++)
             {
-                Vector3 localPos = UnityEngine.Random.insideUnitSphere * 0.1f;
-                localPos.z = 0f;
                 GameObject obj = Instantiate(_curData.collectObject, _collectObjParent);
-                obj.transform.localPosition = localPos;
+                Vector3 localPos = Random.insideUnitSphere * 0.06f;
+                localPos.z = -0.03f;
+                Quaternion rot = Quaternion.Euler(Random.Range(0f, 360f), -90f, 0f);
+                obj.transform.SetLocalPositionAndRotation(localPos, rot);
                 _curCollectObj.Add(obj);
             }
         }
@@ -176,26 +178,23 @@ public class Analysis : MonoBehaviour
 
     private void UIAnimation()
     {
-        fill.AngRadiansEnd = 90 * Mathf.Deg2Rad;
-
+        //fill.AngRadiansEnd = 90 * Mathf.Deg2Rad;
+        float endRadius = ((_curCount > 0 ? 88f : 90f) + (_curCount * (360f / _maxCount))) * Mathf.Deg2Rad;
         if (_countUpSeq != null)
             _countUpSeq.Kill();
-        if(_curCount > 0)
+        _countUpSeq = DOTween.Sequence();
+        _countUpSeq.Append(DOTween.To(() => fill.AngRadiansEnd, x => fill.AngRadiansEnd = x, endRadius, _uiAnimationTime));
+        _countUpSeq.AppendCallback(() =>
         {
-            _countUpSeq = DOTween.Sequence();
-            _countUpSeq.Append(DOTween.To(() => fill.AngRadiansEnd, x => fill.AngRadiansEnd = x, (88f + (_curCount * (360f / _maxCount))) * Mathf.Deg2Rad, _uiAnimationTime));
-            _countUpSeq.AppendCallback(() =>
+            string functionName = _curData.GetFunctionName(_curCount);
+            if (functionName != null)
             {
-                string functionName = _curData.GetFunctionName(_curCount);
-                if (functionName != null)
+                if (PlayerPrefs.GetInt(functionName, 0) == 0)
                 {
-                    if (PlayerPrefs.GetInt(functionName, 0) == 0)
-                    {
-                        PlayerPrefs.SetInt(functionName, 1);
-                        FunctionManager.Instance.GetEvent(_curData.GetFunctionName(_curCount))?.Invoke();
-                    }
+                    PlayerPrefs.SetInt(functionName, 1);
+                    FunctionManager.Instance.GetEvent(_curData.GetFunctionName(_curCount))?.Invoke();
                 }
-            });
-        }
+            }
+        });
     }
 }
