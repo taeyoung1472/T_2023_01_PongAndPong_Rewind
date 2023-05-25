@@ -1,76 +1,54 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class PlayerWallGrab : PlayerAction
 {
     [SerializeField]
-    private LayerMask _wallMask = 0;
-    [SerializeField]
-    private float _rayLength = 0.1f;
-    [SerializeField]
     private UnityEvent<bool> OnWallGrabed = null;
+    [SerializeField]
+    private float _wallgrabCooltime = 0.4f;
+    private Coroutine _wallGrabCoroutine = null;
 
-    private void FixedUpdate()
+    public void WallEnter(GameObject wallObj, Vector3 wallPosition)
     {
-        WallCheck();
-    }
-
-    private void Update()
-    {
-        Ray ray = new Ray(_player.transform.position + _player.characterController.center, _player.PlayerRenderer.Forward);
-        Debug.DrawRay(ray.origin, ray.direction * ((_player.characterController.radius) + _rayLength + _player.characterController.contactOffset), Color.red);
-    }
-
-    private void WallCheck()
-    {
-        if (_player.IsGrounded)
-        {
-            if (_excuting)
-            {
-                ActionExit();
-                _player.PlayerAnimation.FallOrIdleAnimation(_player.IsGrounded);
-            }
-
+        if (_locked || _player.IsGrounded)
             return;
-        }
+        _excuting = true;
 
-        bool lastCheck = _excuting;
-        Ray ray = new Ray(_player.transform.position + _player.characterController.center, _player.PlayerRenderer.Forward);
-        _excuting = (Physics.Raycast(ray, _player.characterController.radius + _rayLength + _player.characterController.contactOffset, _wallMask)) && (_player.IsGrounded == false);
-        if (lastCheck == _excuting) return;
-
-        if (_excuting)
-            WallGrabEnter();
-        else
-            WallGrabExit();
-        OnWallGrabed?.Invoke(_excuting);
-    }
-
-    private void WallGrabExit() // 벽에서 나가!
-    {
-        _player.PlayerActionLock(false, PlayerActionType.Dash, PlayerActionType.Move, PlayerActionType.WallGrab);
-        _player.GravityModule.GravityScale = _player.GravityModule.OriginGravityScale;
-        _player.GravityModule.UseGravity = true;
-    }
-
-    private void WallGrabEnter()
-    {
-        if (_locked) return;
-        _player.PlayerActionExit(PlayerActionType.Dash, PlayerActionType.Jump);
-        _player.VeloCityResetImm(true, true);
+        _player.ForceStop();
         _player.PlayerActionLock(true, PlayerActionType.Dash, PlayerActionType.Move, PlayerActionType.WallGrab);
+        _player.PlayerRenderer.Flip(wallPosition - _player.transform.position, false);
+        _player.GravityModule.UseGravity = false;
+        _player.GetPlayerAction<PlayerJump>().MoreJump(1);
+        OnWallGrabed?.Invoke(true);
+    }
+
+    public void WallExit()
+    {
+        _excuting = false;
+        _player.PlayerActionLock(false, PlayerActionType.Dash);
         _player.GravityModule.UseGravity = true;
-        _player.GravityModule.GravityScale = _player.playerMovementSO.wallSlideGravityScale;
-        if (_player.playerMovementSO.wallSlideGravityScale < 0.02f)
-            _player.GravityModule.UseGravity = false;
+        if (_wallGrabCoroutine != null)
+            StopCoroutine(_wallGrabCoroutine);
+        _wallGrabCoroutine = StartCoroutine(WallGrabCoroutine());
+        OnWallGrabed?.Invoke(false);
+    }
+
+    private IEnumerator WallGrabCoroutine()
+    {
+        yield return new WaitForSeconds(_wallgrabCooltime);
+        _player.PlayerActionLock(false, PlayerActionType.WallGrab, PlayerActionType.Move);
     }
 
     public override void ActionExit()
     {
         _excuting = false;
-        WallGrabExit();
+        _player.GravityModule.UseGravity = true;
+        if (_wallGrabCoroutine != null)
+            StopCoroutine(_wallGrabCoroutine);
+        _player.PlayerActionLock(false, PlayerActionType.WallGrab, PlayerActionType.Move, PlayerActionType.Dash);
+        OnWallGrabed?.Invoke(false);
     }
 }

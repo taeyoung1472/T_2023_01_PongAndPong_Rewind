@@ -1,80 +1,45 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 
 public class UIManager : MonoSingleTon<UIManager>
 {
     [Header("[Clock]")]
-    [SerializeField] private Image clockFill;
+    [SerializeField] private Slider clockFill;
     [SerializeField] private TextMeshProUGUI clockTimeText;
-    [SerializeField] private Color[] clockColorArray;
 
-    //private int totalTIme { get { return RewindManager.Instance.CurStageRecordCount; } }
-    private int totalTIme { get { return (int)RewindManager.Instance.howManySecondsToTrack -1; } }
+    private float totalTIme { get { return RewindManager.Instance.howManySecondsToTrack; } }
 
     private bool isPause = false;
 
     public bool IsPause => isPause;
 
-    [SerializeField] private Image pauseImg;
+    [SerializeField] private GameObject pauseImg;
 
-    public void Init()
+    public void OnPlayTimeChange(float time)
     {
-        //RewindManager.Instance.OnTimeChanging += OnTimeChange;
-        
+        clockFill.value = time / totalTIme;
+        clockTimeText.SetText($"{(int)time}");
     }
 
-    public void OnPlayTimeChange(int time)
+    public void OnRewindTimeChange(float time)
     {
-        clockFill.fillAmount = time / (float)(totalTIme);
-        clockTimeText.SetText($"{time}");
-
-        int clockTime = totalTIme / clockColorArray.Length;
-        int tempTime = 0;
-        for (int i = 0; i < clockColorArray.Length; i++)
-        {
-            if (time >= tempTime)
-            {
-                clockFill.color = Color.Lerp(clockColorArray[i], clockColorArray[Mathf.Clamp(i + 1, 0, clockColorArray.Length - 1)], (float)(time % clockTime) / (float)clockTime);
-            }
-            tempTime += clockTime;
-        }
-    }
-
-    public void OnRewindTimeChange(int time)
-    {
-        clockFill.fillAmount = (time / (float)(totalTIme));
-        clockTimeText.SetText($"{time}");
-
-        int clockTime = totalTIme / clockColorArray.Length;
-        int tempTime = totalTIme;
-        for (int i = clockColorArray.Length -1; i > 0; i--)
-        {
-            if (time <= tempTime)
-            {
-                clockFill.color =
-                    Color.Lerp(clockColorArray[i], clockColorArray[Mathf.Clamp(i - 1, 0, clockColorArray.Length - 1)], 
-                    (float)(time % clockTime) / (float)clockTime);
-            }
-            tempTime -= clockTime;
-        }
+        clockFill.value = (time / totalTIme);
+        clockTimeText.SetText($"{(int)time}");
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) && !BreakScreenController.Instance.isBreaking)
         {
-            if (!isPause)
+            if (!isPause && !EndManager.Instance.IsEnd)
             {
                 isPause = true;
                 TimerManager.Instance.ChangeOnTimer(false);
                 pauseImg.gameObject.SetActive(true);
                 Time.timeScale = 0f;
             }
-            else
+            else if (!EndManager.Instance.IsEnd)
             {
                 PauseResume();
             }
@@ -83,18 +48,18 @@ public class UIManager : MonoSingleTon<UIManager>
 
     public void PauseResume()
     {
-        Debug.Log("클릭");
         isPause = false;
-        TimerManager.Instance.ChangeOnTimer(true);
+        if (StageManager.Instance.GetAreaPlayCheck()) //게임 시작 도중이였을 때
+        {
+            TimerManager.Instance.ChangeOnTimer(true);
+        }
         pauseImg.gameObject.SetActive(false);
         Time.timeScale = 1f;
     }
-    public void PauseSetting()
-    {
 
-    }
     public void PauseMenu()
     {
-        SceneManager.LoadScene(0);
+        LoadingSceneManager.LoadScene(0);
+        Time.timeScale = 1;
     }
 }

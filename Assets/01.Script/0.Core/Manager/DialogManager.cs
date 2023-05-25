@@ -1,27 +1,29 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class DialogManager : MonoSingleTon<DialogManager>
 {
+    [SerializeField]
+    private Sprite _dialogOptionDefaultIcon = null;
+
     private Coroutine _dialogCoroutine = null;
     private bool _excuting = false;
     private bool _input = false;
     private StringBuilder _sb = null;
 
     [SerializeField]
-    private DialogOptionManager _dialogOptionEventManager = null;
-
-    [SerializeField]
     private float _dialogCooltime = 0.6f;
     private bool _dialogLock = false;
 
     [SerializeField]
-    private GameObject _dialogCanvas = null;
+    private float _dialogCanvasAnimationTime = 0.25f;
+    [SerializeField]
+    private CanvasGroup _dialogCanvas = null;
     [SerializeField]
     private TextMeshProUGUI _nextText = null;
     [SerializeField]
@@ -44,7 +46,24 @@ public class DialogManager : MonoSingleTon<DialogManager>
     private void Start()
     {
         _sb = new StringBuilder();
-        _dialogCanvas.SetActive(false);
+        DialogCanvasAnimation(false, false);
+    }
+
+    private void DialogCanvasAnimation(bool value, bool smoothing = true)
+    {
+        _dialogCanvas.interactable = value;
+        _dialogCanvas.blocksRaycasts = value;
+
+        _dialogCanvas.DOKill();
+        if(smoothing)
+        {
+            _dialogCanvas.alpha = value ? 0f : 1f;
+            _dialogCanvas.DOFade(value ? 1f : 0f, _dialogCanvasAnimationTime);
+        }
+        else
+        {
+            _dialogCanvas.alpha = value ? 1f : 0f;
+        }
     }
 
     public void DialogForceExit()
@@ -76,7 +95,7 @@ public class DialogManager : MonoSingleTon<DialogManager>
             _titleText.SetText("");
         }
 
-        _dialogCanvas.SetActive(true);
+        DialogCanvasAnimation(true);
         _curDialogInteract = dialogInteract;
         _dialogCoroutine = StartCoroutine(DialogCoroutine(dialogInteract, data, dialogOptions, Callback));
         return true;
@@ -89,8 +108,8 @@ public class DialogManager : MonoSingleTon<DialogManager>
         _input = false;
         _curNPCData = null;
         _curDialogInteract = null;
-        _dialogCanvas.SetActive(false);
-        if(_dialogLock == false)
+        DialogCanvasAnimation(false);
+        if (_dialogLock == false)
             StartCoroutine(DialogCooltimeCoroutine());
     }
 
@@ -116,6 +135,7 @@ public class DialogManager : MonoSingleTon<DialogManager>
                     _dialogText.SetText(targetText);
                     break;
                 }
+                AudioManager.PlayAudioRandPitch(SoundType.OnNPCSpeak);
                 _sb.Append(targetText[j]);
                 _dialogText.SetText(_sb.ToString());
                 yield return new WaitForSeconds(data.nextCharDelay);
@@ -125,7 +145,7 @@ public class DialogManager : MonoSingleTon<DialogManager>
             _sb.Clear();
         }
         // end
-        if(dialogOptions.Count > 0)
+        if (dialogOptions.Count > 0)
         {
             for (int i = 0; i < dialogOptions.Count; i++)
             {
@@ -146,7 +166,7 @@ public class DialogManager : MonoSingleTon<DialogManager>
         DialogOptionUI optionUI = Instantiate(_optionPrefab, _optionParentTrm);
         Sprite icon = dialogOptions[index].icon;
         if (icon == null)
-            icon = _dialogOptionEventManager.DefaultIcon;
+            icon = _dialogOptionDefaultIcon;
         optionUI.Init(icon, dialogOptions[index].explainText, () =>
         {
             for (int i = 0; i < _curOptions.Count; i++)
@@ -162,7 +182,7 @@ public class DialogManager : MonoSingleTon<DialogManager>
                 dialogInteract.InteractEnd(dialogOptions[index].actionExit);
                 DialogEnd();
             }
-            _dialogOptionEventManager.GetEvent(dialogOptions[index].eventKey)?.Invoke();
+            FunctionManager.Instance.GetEvent(dialogOptions[index].eventKey)?.Invoke();
         });
         _curOptions.Add(optionUI.gameObject);
     }
@@ -171,9 +191,9 @@ public class DialogManager : MonoSingleTon<DialogManager>
     {
         if (_excuting == false || _input)
             return;
-        if (Input.GetKeyDown(KeyManager.keys[InputType.Interact]) || 
-            Input.GetKeyDown(KeyCode.Mouse0) || 
-            Input.GetKeyDown(KeyCode.Return) || 
+        if (Input.GetKeyDown(KeyManager.keys[InputType.Interact]) ||
+            Input.GetKeyDown(KeyCode.Mouse0) ||
+            Input.GetKeyDown(KeyCode.Return) ||
             Input.GetKeyDown(KeyCode.Space))
         {
             _input = true;

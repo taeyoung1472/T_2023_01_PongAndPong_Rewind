@@ -1,13 +1,14 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Rendering;
 
-public class PlayerJump : PlayerAction
+public class PlayerJump : PlayerAction, IPlayerEnableResetable
 {
     private int _curJumpCount = 0; // 현재 점프 횟수
+    public int CurJumpCount { get => _curJumpCount; set => _curJumpCount = value; }
+
     private bool _jumpEndCheck = false; // 점프를 한 뒤 시간이 지난 것과 바닥에 닿았을 때 둘 중 체크되면 하나가 안 되게
 
     [SerializeField]
@@ -19,8 +20,15 @@ public class PlayerJump : PlayerAction
     private Coroutine _jumpCoroutine = null;
     private Coroutine _moveLockCoroutine = null;
 
+    [SerializeField]
+    private float _upLayLength = 0.1f;
+    [SerializeField]
+    private LayerMask _upLayerMask = 0;
+
     private float _jumpInputTime = 0f;
     private bool _jumpKeyUped = false;
+
+    private bool _firstJump = true;
 
     private void Update()
     {
@@ -34,6 +42,27 @@ public class PlayerJump : PlayerAction
         }
     }
 
+    private void FixedUpdate()
+    {
+        HeadTouchCheck();
+    }
+
+    private void HeadTouchCheck()
+    {
+        if (_excuting == false)
+            return;
+
+        bool result = Physics.Raycast(_player.transform.position,
+            _player.transform.up, _upLayLength + _player.Col.height, _upLayerMask);
+        if (result)
+        {
+            Debug.Log("머리 꽁");
+            ActionExit();
+            _player.PlayerAnimation.Rebind();
+            _player.PlayerAnimation.FallOrIdleAnimation(_player.IsGrounded);
+        }
+    }
+
     public void JumpKeyUp()
     {
         _jumpKeyUped = true;
@@ -43,12 +72,13 @@ public class PlayerJump : PlayerAction
     {
         if (val == false)
             return;
+        _firstJump = true;
         _jumpKeyUped = false;
         _jumpInputTime = 0f;
         _curJumpCount = 0;
         _player.GravityModule.GravityScale = _player.GravityModule.OriginGravityScale;
     }
-    public void ForceJump(Vector2 dir, float jumpPower)
+    public void ForceJump(Vector2 dir, float jumpPower, float jumpHoldTime)
     {
         _jumpEndCheck = false;
         _excuting = true;
@@ -60,13 +90,22 @@ public class PlayerJump : PlayerAction
             _player.PlayerActionLock(false, PlayerActionType.Move);
         }
         _player.VeloCityResetImm(y: true);
-        _jumpCoroutine = StartCoroutine(JumpCoroutine(dir, jumpPower));
+
+        _jumpCoroutine = StartCoroutine(JumpCoroutine(dir, jumpPower, jumpHoldTime));
         OnJump?.Invoke();
     }
 
     public void JumpStart()
     {
-        if (_locked || _curJumpCount >= _player.playerMovementSO.jumpCount)
+        if (_locked)
+            return;
+        if (_firstJump)
+        {
+            if (_player.IsGrounded == false)
+                _curJumpCount++;
+            _firstJump = false;
+        }
+        if (_curJumpCount >= _player.playerMovementSO.jumpCount)
             return;
 
         _jumpEndCheck = false;
@@ -84,18 +123,22 @@ public class PlayerJump : PlayerAction
         }
 
         OnJump?.Invoke();
-        if (_player.PlayeActionCheck(PlayerActionType.WallGrab)) // 월점프!!
+        if (_player.PlayerActionCheck(PlayerActionType.WallGrab)) // 월점프!!
         {
-            _player.PlayerActionExit(PlayerActionType.WallGrab);
+            _player.GetPlayerAction<PlayerWallGrab>().WallExit();
             _player.VeloCityResetImm(x: true, y: true);
             _player.PlayerRenderer.ForceFlip();
-            _jumpCoroutine = StartCoroutine(JumpCoroutine(_player.playerMovementSO.wallJumpPower * _player.PlayerRenderer.Forward.x, _player.playerMovementSO.wallGrabJumpPower));
+            float originAngle = Vector2.Angle(Vector2.right, _player.playerMovementSO.wallJumpPower);
+            Vector2 jumpDir = Quaternion.AngleAxis(originAngle, _player.transform.right * -1f) * _player.PlayerRenderer.Forward;
+            Debug.Log("점프 Dir = " + jumpDir);
+            _jumpCoroutine = StartCoroutine(JumpCoroutine(jumpDir, _player.playerMovementSO.wallGrabJumpPower, _player.playerMovementSO.jumpHoldTime));
             _moveLockCoroutine = StartCoroutine(MoveLockCoroutine());
+            OnWallGrabJump?.Invoke();
         }
         else
         {
             _player.VeloCityResetImm(y: true);
-            _jumpCoroutine = StartCoroutine(JumpCoroutine(transform.up, _player.playerMovementSO.jumpPower));
+            _jumpCoroutine = StartCoroutine(JumpCoroutine(_player.transform.up, _player.playerMovementSO.jumpPower, _player.playerMovementSO.jumpHoldTime));
         }
     }
 
@@ -106,18 +149,14 @@ public class PlayerJump : PlayerAction
         _player.PlayerActionLock(false, PlayerActionType.Move);
     }
 
-    private IEnumerator JumpCoroutine(Vector2 dir, float jumpPower)
+    private IEnumerator JumpCoroutine(Vector2 dir, float jumpPower, float jumpHoldTime)
     {
         float time = 1f;
         while (time > 0f)
         {
-            //_player.GravityModule.GravityScale = _player.GravityModule.OriginGravityScale;
-            //sqrt(1 - Math.pow(x - 1, 2));
             Vector2 final = new Vector2(Mathf.Sqrt(1 - (float)Math.Pow(time - 1, 2)) * dir.x * jumpPower, Mathf.Sqrt(1 - (float)Math.Pow(time - 1, 2)) * dir.y * jumpPower);
-            //Vector2 final = Vector2.up *  _player.GravityModule.GetGravity().y * (_fallMultiplier - 1) * Time.deltaTime;
-            //Vector2 final = new Vector2(dir.x * jumpPower * (time * Mathf.PI) * 0.5f, dir.y * jumpPower * (time * Mathf.PI) * 0.5f);
             _player.VelocitySetExtra(final.x, final.y);
-            time -= Time.deltaTime * (1f / _player.playerMovementSO.jumpHoldTime);
+            time -= Time.deltaTime * (1f / jumpHoldTime);
             yield return null;
         }
         JumpEnd();
@@ -141,20 +180,25 @@ public class PlayerJump : PlayerAction
             OnGrounded(true);
     }
 
-    public void MoreJump()
+    public void JumpCountSetting(int cnt)
     {
-        JumpEnd();
+        _firstJump = false;
+        _curJumpCount = cnt;
+        if (_curJumpCount < 0)
+            _curJumpCount = 0;
     }
 
-    public void JumpCountUp()
+    public void MoreJump(int cnt)
     {
-        _curJumpCount--;
-        _curJumpCount = Mathf.Clamp(_curJumpCount, 0, _player.playerMovementSO.jumpCount);
+        _firstJump = false;
+        _curJumpCount -= cnt;
+        if (_curJumpCount < 0)
+            _curJumpCount = 0;
     }
 
     public void TryGravityUp(Vector2 input)
     {
-        if (_player.IsGrounded || input.y > -0.1f || _player.PlayeActionCheck(PlayerActionType.WallGrab))
+        if (_player.IsGrounded || input.y > -0.1f || _player.PlayerActionCheck(PlayerActionType.WallGrab))
             return;
         _player.GravityModule.GravityScale = _player.playerMovementSO.downGravityScale;
     }
@@ -165,8 +209,6 @@ public class PlayerJump : PlayerAction
         _jumpInputTime = 0f;
         _jumpKeyUped = false;
         JumpEnd();
-        if (_player.PlayeActionCheck(PlayerActionType.WallGrab))
-            JumpCountUp();
     }
 
     public void SpawnJumpEffect()
@@ -176,15 +218,20 @@ public class PlayerJump : PlayerAction
         Vector3 pos = _jumpEffectPos.position;
         Quaternion rot = Quaternion.identity;
         Transform trm = PoolManager.Pop(PoolType.JumpEffect).transform;
-        if (_player.PlayeActionCheck(PlayerActionType.WallGrab))
+        if (_player.PlayerActionCheck(PlayerActionType.WallGrab))
         {
             rot = _player.PlayerRenderer.GetFlipedRotation(DirType.Forward, RotAxis.Z);
             pos += transform.up * 0.5f;
         }
-        if (_player.PlayerRenderer.flipDirection == FlipDirection.Up)
+        if (_player.PlayerRenderer.flipDirection == DirectionType.Up)
         {
             rot = Quaternion.Euler(180f, 0f, 0f);
         }
         trm.SetPositionAndRotation(pos, rot);
+    }
+
+    public void EnableReset()
+    {
+        _curJumpCount = 0;
     }
 }

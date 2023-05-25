@@ -1,15 +1,18 @@
 using System.Collections;
 using UnityEngine;
 
-public class GravityModule : MonoBehaviour
+public class GravityModule : MonoBehaviour, IPlayerEnableResetable, IPlayerDisableResetable
 {
     [SerializeField]
     private float _originGravity = 1f;
-    public float OriginGravityScale { get => _originGravity; set => _originGravity = value; }
+    public float OriginGravityScale { get => _originGravity; }
 
     [SerializeField]
     private float _maxGravityAcceleration = 1f;
     public float MaxGravityAcceleration { get => _maxGravityAcceleration; set => _maxGravityAcceleration = value; }
+
+    [SerializeField]
+    private float _gravityAccelerationTime = 2f;
 
     private float _gravityScale = 1f;
     public float GravityScale { get => _gravityScale; set => _gravityScale = value; }
@@ -22,17 +25,15 @@ public class GravityModule : MonoBehaviour
     public float CurGravityAcceleration => _curGravityAcceleration;
     private Coroutine _accelCo = null;
 
-    private Vector3 _gravityDir;
+    private Vector3 _gravityDir = new Vector3(0, -9.8f, 0);
     public Vector3 GravityDir { get => _gravityDir; set => _gravityDir = value; }
 
-    private void Start()
-    {
-        _gravityScale = _originGravity;
-    }
+    private bool _isMovePlatform = false;
+    public bool IsMovePlatform { get => _isMovePlatform; set => _isMovePlatform = value; }
 
     public Vector3 GetGravity()
     {
-        if (_useGravity)
+        if (_useGravity && _isMovePlatform == false)
         {
             return _gravityDir * (_gravityScale + _curGravityAcceleration);
         }
@@ -63,10 +64,24 @@ public class GravityModule : MonoBehaviour
         float x = 0f;
         while (x <= 1f)
         {
-            x += Time.deltaTime;
             _curGravityAcceleration = _maxGravityAcceleration * x;
+            x += Time.deltaTime * (1 / _gravityAccelerationTime);
             yield return null;
         }
         _curGravityAcceleration = _maxGravityAcceleration;
+    }
+
+    public void EnableReset()
+    {
+        _gravityDir = new Vector3(0, -9.8f, 0);
+        _gravityScale = _originGravity;
+        OnGrounded(true);
+    }
+
+    public void DisableReset()
+    {
+        if (_accelCo != null)
+            StopCoroutine(_accelCo);
+        _isMovePlatform = false;
     }
 }

@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
@@ -57,9 +56,7 @@ public class ElevatorManager : MonoSingleTon<ElevatorManager>
 
     public void PlayerPositionChangeToTarget()
     {
-        player.characterController.enabled = false;
         player.transform.position =TargetElevator.PlayerPosition.position;
-        player.characterController.enabled = true;
     }
 
     public void ElevatorInteractEnd()

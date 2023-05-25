@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -8,19 +6,14 @@ using System.IO;
 
 public class Player : MonoBehaviour
 {
-    private void OnEnable()
-    {
-        CamManager.Instance.AddTargetGroup(transform);
-    }
-
-    private void OnDisable()
-    {
-        CamManager.Instance.RemoveTargetGroup(transform);
-    }
-
     private List<PlayerAction> _playerActions = new List<PlayerAction>();
+    private List<IPlayerEnableResetable> _enableResetables = new List<IPlayerEnableResetable>();
+    private List<IPlayerDisableResetable> _disableResetables = new List<IPlayerDisableResetable>();
 
     #region SO
+    [SerializeField]
+    private StageDatabase _worldsDatabase = null;
+
     [SerializeField]
     private PlayerHealthSO _playerHealthSO = null;
     [SerializeField]
@@ -36,11 +29,13 @@ public class Player : MonoBehaviour
     private PlayerRenderer _playerRenderer = null;
     private GravityModule _gravityModule = null;
     private PlayerInput _playerInput = null;
-    private CharacterController _characterController = null;
-    private PlayerTrail _playerTrail = null;
+    private TrailableObject _playerTrail = null;
+    private Rigidbody _rigid = null;
     private PlayerAudio _playerAudio = null;
     private PlayerBuff _playerBuff = null;
     private PlayerHP _playerHP = null;
+    private CapsuleCollider _col = null;
+    private AnimationIK _animationIK = null;
     #endregion
 
     #region 프로퍼티
@@ -51,10 +46,13 @@ public class Player : MonoBehaviour
     public PlayerMovementSO playerMovementSO => _playerMovementSO;
     public PlayerAttackSO playerAttackSO => _playerAttackSO;
     public PlayerHealthSO playerHealthSO => _playerHealthSO;
-    public CharacterController characterController => _characterController;
+    public Rigidbody Rigid => _rigid;
+    public TrailableObject playerTrail => _playerTrail;
     public PlayerAudio playerAudio => _playerAudio;
     public PlayerBuff playerBuff => _playerBuff;
     public PlayerHP playerHP => _playerHP;
+    public CapsuleCollider Col => _col;
+    public AnimationIK animationIK => _animationIK;
     #endregion
 
     #region Json 저장 데이터
@@ -71,7 +69,6 @@ public class Player : MonoBehaviour
     public Vector3 ExtraMoveAmount => _extraMoveAmount;
     private Vector3 _characterMoveAmount = Vector3.zero;
     public Vector3 CharacterMoveAmount => _characterMoveAmount;
-    private CollisionFlags _collisionFlag = CollisionFlags.None;
     #endregion
 
     #region 바닥 체크용 박스캐스트 관련
@@ -79,10 +76,12 @@ public class Player : MonoBehaviour
     private float _groundCheckRayLength = 0.225f;
     [SerializeField]
     private LayerMask _groundMask = 0;
-    private Collider _col = null;
     private bool _isGrounded = false;
-    public bool IsGrounded => _isGrounded;
+    public bool IsGrounded { get => _isGrounded; set => _isGrounded = value; }
     #endregion
+    [SerializeField]
+    private float _maxSlopeAngle = 10f;
+    RaycastHit _slopeHit;
 
     private void Awake()
     {
@@ -90,26 +89,49 @@ public class Player : MonoBehaviour
         //액션 초기화
         List<PlayerAction> tempActions = new List<PlayerAction>(GetComponents<PlayerAction>());
         _playerActions = (from action in tempActions orderby action.ActionType ascending select action).ToList();
+        _enableResetables = new List<IPlayerEnableResetable>(GetComponents<IPlayerEnableResetable>());
+        _disableResetables = new List<IPlayerDisableResetable>(GetComponents<IPlayerDisableResetable>());
         //캐싱
         _playerBuff = GetComponent<PlayerBuff>();
         _playerHP = GetComponent<PlayerHP>();
-        _characterController = GetComponent<CharacterController>();
+        _rigid = GetComponent<Rigidbody>();
         _playerInput = GetComponent<PlayerInput>();
         _playerAnimation = transform.Find("AgentRenderer").GetComponent<PlayerAnimation>();
         _playerRenderer = _playerAnimation.GetComponent<PlayerRenderer>();
         _gravityModule = GetComponent<GravityModule>();
-        _col = GetComponent<Collider>();
-        _playerTrail = GetComponent<PlayerTrail>();
+        _playerTrail = GetComponent<TrailableObject>();
         _playerAudio = transform.Find("AgentSound").GetComponent<PlayerAudio>();
+        _col = GetComponent<CapsuleCollider>();
+        _animationIK = _playerRenderer.GetComponent<AnimationIK>();
+    }
+
+    public void WorldCollectionsCountSet(WorldType key, int value)
+    {
+        WorldCollectionsCountSet(_worldsDatabase.GetWorldData(key), value);
+    }
+
+    public void WorldCollectionsCountSet(WorldDataSO key, int value)
+    {
+        if (_playerJsonData.collectDatas.ContainsKey(key.worldName))
+            _playerJsonData.collectDatas[key.worldName] = value;
+        SaveJsonData();
     }
 
     private void LoadJson()
     {
         string path = Application.dataPath + "/Save/JsonData.json";
         string json = File.ReadAllText(path);
-        _playerJsonData = JsonUtility.FromJson<PlayerJsonData>(json);
+        _playerJsonData = Newtonsoft.Json.JsonConvert.DeserializeObject<PlayerJsonData>(json);
         if (_playerJsonData == null)
+        {
             _playerJsonData = new PlayerJsonData();
+        }
+        if (_playerJsonData.collectDatas == null)
+        {
+            _playerJsonData.collectDatas = new Dictionary<string, int>();
+            for (int i = 0; i < _worldsDatabase.worldList.Count; i++)
+                _playerJsonData.collectDatas.Add(_worldsDatabase.worldList[i].worldName, 0);
+        }
         _playerInventory = GetComponent<PlayerInventory>();
         _playerInventory.LoadInventory();
     }
@@ -118,19 +140,39 @@ public class Player : MonoBehaviour
     public void SaveJsonData()
     {
         string path = Application.dataPath + "/Save/JsonData.json";
-        string json = JsonUtility.ToJson(_playerJsonData);
+        string json = Newtonsoft.Json.JsonConvert.SerializeObject(_playerJsonData);
         File.WriteAllText(path, json);
         _playerInventory.SaveInventory();
+
+#if UNITY_EDITOR
+        string debugString = "";
+        foreach (var a in _playerJsonData.collectDatas)
+            debugString += a.Key + "   " + a.Value + " ";
+        Debug.Log("수집품 " + debugString);
+#endif
     }
 
-    private void LateUpdate()
+    public void EnableReset()
     {
-        Move();
+        for (int i = 0; i < _playerActions.Count; i++)
+            _playerActions[i].ActionExit();
+        for (int i = 0; i < _enableResetables.Count; i++)
+            _enableResetables[i].EnableReset();
+
+        if(_playerRenderer != null)
+            _playerRenderer.FlipDirectionChange(DirectionType.Down, true);
+    }
+
+    public void DisableReset()
+    {
+        for (int i = 0; i < _disableResetables.Count; i++)
+            _disableResetables[i].DisableReset();
     }
 
     private void FixedUpdate()
     {
         GroundCheck();
+        Move();
     }
 
     public void VelocitySetMove(float? x = null, float? y = null)
@@ -202,7 +244,7 @@ public class Player : MonoBehaviour
     /// </summary>
     /// <param name="types"></param>
     /// <returns></returns>
-    public bool PlayeActionCheck(params PlayerActionType[] types)
+    public bool PlayerActionCheck(params PlayerActionType[] types)
     {
         for (int i = 0; i < types.Length; i++)
             if (GetPlayerAction(types[i]).Excuting)
@@ -244,17 +286,46 @@ public class Player : MonoBehaviour
         return null;
     }
 
+
     private void GroundCheck()
     {
+        //if (PlayerActionCheck(PlayerActionType.WallGrab, PlayerActionType.Dash))
+        //    return;
+
         bool lastGrounded = _isGrounded;
         Vector3 boxCenter = _col.bounds.center;
         Vector3 halfExtents = _col.bounds.extents;
-        halfExtents.y = _groundCheckRayLength;
-        float maxDistance = _col.bounds.extents.y;
-        _isGrounded = Physics.BoxCast(boxCenter, halfExtents, -transform.up, transform.rotation, maxDistance, _groundMask);
+        float maxDistance = 0f;
+        if (_playerRenderer.flipDirection == DirectionType.Left || _playerRenderer.flipDirection == DirectionType.Right)
+        {
+            maxDistance = _col.bounds.extents.x;
+            halfExtents.y = _groundCheckRayLength;
+        }
+        else
+        {
+            maxDistance = _col.bounds.extents.y;
+            halfExtents.y = _groundCheckRayLength;
+        }
+        _isGrounded = Physics.BoxCast(boxCenter, halfExtents, -transform.up, out _slopeHit, transform.rotation, maxDistance, _groundMask);
         if (lastGrounded == _isGrounded)
             return;
         OnIsGrounded?.Invoke(_isGrounded);
+    }
+
+    private bool OnSlope()
+    {
+        if (_slopeHit.collider != null)
+        {
+            float angle = Vector3.Angle(transform.up, _slopeHit.normal);
+            return angle < _maxSlopeAngle && angle != 0 && _isGrounded
+                 && PlayerActionCheck(PlayerActionType.Jump, PlayerActionType.Dash) == false;
+        }
+        return false;
+    }
+
+    private Vector3 GetSlopeMoveDirection()
+    {
+        return Vector3.ProjectOnPlane(_moveAmount.normalized, _slopeHit.normal).normalized;
     }
 
     private void Move()
@@ -262,11 +333,15 @@ public class Player : MonoBehaviour
         _characterMoveAmount = ((_moveAmount + _extraMoveAmount) +
             ((_isGrounded == false && _gravityModule.UseGravity) ? _gravityModule.GetGravity() : Vector3.zero))
             ;
-        if (_characterController.velocity.y < 0f)
+        if (_isGrounded == false)
         {
-            _characterMoveAmount += Vector3.up * GravityModule.GetGravity().y * (_playerMovementSO.fallMultiplier - 1) * Time.deltaTime;
+            _characterMoveAmount += transform.up * GravityModule.GetGravity().y * (_playerMovementSO.fallMultiplier - 1) * Time.deltaTime;
         }
-        _collisionFlag = _characterController.Move(_characterMoveAmount * Time.deltaTime);
+        if (OnSlope())
+        {
+            _characterMoveAmount = Quaternion.FromToRotation(transform.forward, GetSlopeMoveDirection()) * _characterMoveAmount;
+        }
+        _rigid.velocity = _characterMoveAmount;
     }
 
     public void PlayerInteractActionExit()
@@ -280,6 +355,12 @@ public class Player : MonoBehaviour
         VeloCityResetImm(true, true);
         _playerInput.InputVectorReset();
         _playerAnimation.FallOrIdleAnimation(IsGrounded);
+        _characterMoveAmount = Vector3.zero;
+    }
+
+    public void TrailDisable()
+    {
+        _playerTrail.TrailDisable();
     }
 
     public void AfterImageEnable(bool value)
@@ -287,9 +368,29 @@ public class Player : MonoBehaviour
         if (_playerTrail == null)
             return;
 
-        if (value)
-            _playerTrail.StartTrail();
-        else
-            _playerTrail.EndTrail();
+        _playerTrail.IsMotionTrail = value;
+    }
+
+    public void ColliderSet(PlayerColliderType type)
+    {
+        Vector3 center = Vector3.zero;
+        float height = 0f;
+        switch (type)
+        {
+            case PlayerColliderType.None:
+                break;
+            case PlayerColliderType.Normal:
+                center.y = 0.92f;
+                height = 1.9f;
+                break;
+            case PlayerColliderType.Dash:
+                center.y = 0.35f;
+                height = 0.8f;
+                break;
+            default:
+                break;
+        }
+        _col.center = center;
+        _col.height = height;
     }
 }

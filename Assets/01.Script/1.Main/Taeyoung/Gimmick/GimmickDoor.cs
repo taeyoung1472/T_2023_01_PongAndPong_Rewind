@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GimmickDoor : ControlAbleObjcet
@@ -9,14 +7,16 @@ public class GimmickDoor : ControlAbleObjcet
     [SerializeField] private float speed = 1;
     private Vector3 originPos;
 
-    public override void Control(ControlType controlType)
+    public override void Control(ControlType controlType, bool isLever, Player player, DirectionType dirType)
     {
         curControlType = controlType;
     }
 
     private void Awake()
     {
-        originPos = transform.position;
+        originPos = transform.localPosition;
+        RewindManager.Instance.InitPlay += () => this.enabled = true;
+        RewindManager.Instance.InitRewind += () => this.enabled = false;
     }
 
     private void Update()
@@ -35,6 +35,6 @@ public class GimmickDoor : ControlAbleObjcet
                 break;
         }
 
-        transform.position = Vector3.Lerp(transform.position, targetPos, Time.deltaTime * speed);
+        transform.localPosition = Vector3.Lerp(transform.localPosition, targetPos, Time.deltaTime * speed) ;
     }
 }

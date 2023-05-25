@@ -1,13 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 
 public class LabDoor : MonoBehaviour
 {
     private Transform playerTrans;
 
-    [SerializeField] private float openMin;
-    [SerializeField] private float openStart;
+    [SerializeField] private float openDist;
+    [SerializeField] private float closeDist;
+    private bool isOpen;
 
     [SerializeField] private Transform[] pivots;
 
@@ -16,13 +16,45 @@ public class LabDoor : MonoBehaviour
         playerTrans = FindObjectOfType<Player>().transform;
     }
 
-    void Update()
+    void FixedUpdate()
     {
         float dist = Mathf.Abs(transform.position.x - playerTrans.position.x);
 
+        if (isOpen)
+        {
+            if (dist > closeDist)
+            {
+                Close();
+            }
+        }
+        else
+        {
+            if (dist < openDist)
+            {
+                Open();
+            }
+        }
+    }
+
+    void Open()
+    {
+        AudioManager.PlayAudio(SoundType.OnLabDoorOpen);
+        isOpen = true;
+
         foreach (var pivot in pivots)
         {
-            pivot.transform.localScale = new Vector3(1, 1, dist < openMin ? 0 : dist < (openMin + openStart) ? (dist - openMin) / openStart : 1);
+            pivot.DOScale(new Vector3(1, 1, 0), 0.4f);
+        }
+    }
+
+    void Close()
+    {
+        AudioManager.PlayAudio(SoundType.OnLabDoorClose, 1.75f);
+        isOpen = false;
+
+        foreach (var pivot in pivots)
+        {
+            pivot.DOScale(new Vector3(1, 1, 1), 0.3f);
         }
     }
 }

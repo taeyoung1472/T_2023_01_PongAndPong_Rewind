@@ -1,5 +1,5 @@
+using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -25,8 +25,8 @@ public class PlayerMove : PlayerAction
         {
             return;
         }
-        Vector2 moveInputVector = _player.PlayerInput.InputVector;
-
+        //Vector2 moveInputVector = new Vector2(_player.PlayerInput.InputVector.x, 0f);
+        Vector2 moveInputVector = _player.PlayerInput.RotatedInputVector;
         Move(moveInputVector);
     }
 
@@ -37,8 +37,8 @@ public class PlayerMove : PlayerAction
         if (_player.playerBuff.BuffCheck(PlayerBuffType.Slow))
             dir *= _slowSpeed;
 
-        _player.VelocitySetMove(x: dir.x * _player.playerMovementSO.speed);
-        _excuting = Mathf.Abs(dir.x) > 0f;
+        _player.VelocitySetMove(dir.x * _player.playerMovementSO.speed, dir.y * _player.playerMovementSO.speed);
+        _excuting = dir.sqrMagnitude > 0f;
         if (_excuting && _player.IsGrounded && _player.playerBuff.BuffCheck(PlayerBuffType.PushSlow) == false && _player.playerBuff.BuffCheck(PlayerBuffType.Slow) == false)
         {
             if (_dustParticle.isPlaying == false)
@@ -64,7 +64,7 @@ public class PlayerMove : PlayerAction
     {
         _excuting = false;
         _dustParticle.Stop();
-        _player.VelocitySetMove(x: 0f);
+        _player.VelocitySetMove(0f, 0f);
         if (_moveAudioCoroutine != null)
             StopCoroutine(_moveAudioCoroutine);
     }

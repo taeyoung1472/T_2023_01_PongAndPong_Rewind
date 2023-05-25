@@ -29,7 +29,7 @@ public class LoadingSceneManager : MonoBehaviour
         if (isLoading) return;
         isLoading = true;
         Time.timeScale = 1;
-        nextScene = sceneIndex;
+        nextScene = sceneIndex + 1;
         SceneChangeCanvas.Active(() =>
         {
             SceneManager.LoadScene("Loading");
@@ -38,7 +38,6 @@ public class LoadingSceneManager : MonoBehaviour
 
     IEnumerator LoadScene()
     {
-        SceneChangeCanvas.DeActive();
         yield return null;
         AsyncOperation op = SceneManager.LoadSceneAsync(nextScene);
         op.allowSceneActivation = false;
@@ -49,12 +48,9 @@ public class LoadingSceneManager : MonoBehaviour
                 AudioManager.PlayAudio(getLatterClip);
 
                 yield return new WaitForSeconds(0.35f);
-                SceneChangeCanvas.Active(() =>
-                {
-                    isLoading = false;
-                    op.allowSceneActivation = true;
-                    SceneChangeCanvas.DeActive();
-                });
+                isLoading = false;
+                op.allowSceneActivation = true;
+                SceneChangeCanvas.DeActive();
                 yield break;
             }
             yield return null;

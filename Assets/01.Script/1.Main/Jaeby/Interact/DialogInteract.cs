@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
 public class DialogInteract : Interact
@@ -60,15 +58,5 @@ public class DialogInteract : Interact
     public void DialogChange(DialogDataSO data)
     {
         _curDialogData = data;
-    }
-
-    public override void InteractEnter()
-    {
-        UIGetter.Instance.GetInteractUI(_interactUIPos.position, _interactSprite, KeyManager.keys[InputType.Interact]);
-    }
-
-    public override void InteractExit()
-    {
-        UIGetter.Instance.PushUIs();
     }
 }

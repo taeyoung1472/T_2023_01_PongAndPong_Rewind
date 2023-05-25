@@ -1,9 +1,8 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class PlayerDash : PlayerAction
+public class PlayerDash : PlayerAction, IPlayerEnableResetable
 {
     [SerializeField]
     private UnityEvent<Vector2> OnDashStarted = null;
@@ -14,10 +13,19 @@ public class PlayerDash : PlayerAction
     private Coroutine _dashCoroutine = null; // 대시
     private Coroutine _dashChargeCoroutine = null; // 땅에 닿아있을 때 일정 시간 뒤에 대시 가능하게
 
-    public void Dash()
+    public void DashWithInput()
     {
-        if (_locked || _curDashCount >= _player.playerMovementSO.dashCount || _player.PlayerInput.InputVectorNorm.sqrMagnitude == 0f || (Mathf.Abs(_player.PlayerInput.InputVector.x) > 0f == false))
+        Dash(_player.PlayerInput.RotatedInputVector);
+    }
+
+    public void Dash(Vector2 dir)
+    {
+        if (_locked || _excuting || _curDashCount >= _player.playerMovementSO.dashCount ||
+            dir.sqrMagnitude == 0f ||
+            (Mathf.Abs(dir.x) > 0f == false) ||
+            _player.PlayerActionCheck(PlayerActionType.ObjectPush, PlayerActionType.WallGrab))
             return;
+
         bool slide = _player.IsGrounded;
 
         if (_dashChargeCoroutine != null)
@@ -30,35 +38,43 @@ public class PlayerDash : PlayerAction
             DashExit();
         }
 
-        _dashCoroutine = StartCoroutine(DashCoroutine(slide));
+        _excuting = true;
+        _dashCoroutine = StartCoroutine(DashCoroutine(slide, dir));
 
         GameObject effectObj = PoolManager.Pop(PoolType.DashEffect);
-        effectObj.transform.SetPositionAndRotation(transform.position + transform.up * 0.3f + transform.forward * 0.15f, _player.PlayerRenderer.GetFlipedRotation(DirType.Back, RotAxis.Y));
-        OnDashStarted?.Invoke(_player.PlayerInput.InputVectorNorm);
+        effectObj.transform.SetPositionAndRotation(transform.position + transform.up * 0.65f + transform.forward * 0.15f, _player.PlayerRenderer.GetFlipedRotation(DirType.Back, RotAxis.Y));
+        OnDashStarted?.Invoke(dir);
     }
 
-    private IEnumerator DashCoroutine(bool slide)
+    public void MoreDash(int cnt)
     {
-        _player.PlayerActionExit(PlayerActionType.Jump, PlayerActionType.Move, PlayerActionType.WallGrab);
+        _curDashCount = cnt;
+        if (_curDashCount < 0)
+            _curDashCount = 0;
+    }
+
+    private IEnumerator DashCoroutine(bool slide, Vector2 dir)
+    {
+        _player.PlayerActionExit(PlayerActionType.Jump, PlayerActionType.Move);
         _player.PlayerActionLock(true, PlayerActionType.Jump, PlayerActionType.Move);
         _player.VeloCityResetImm(true, true);
-        _excuting = true;
         Vector2 dashVector = Vector2.zero;
         _curDashCount++;
         if (slide)
         {
+            _player.ColliderSet(PlayerColliderType.Dash);
             _player.PlayerAnimation.SlideAnimation();
             _player.GravityModule.UseGravity = true;
-            dashVector = _player.PlayerInput.InputVector * _player.playerMovementSO.dashPower;
-            dashVector.y = 0f;
+            dashVector = dir * _player.playerMovementSO.dashPower;
+            //dashVector.y = 0f;
         }
         else
         {
-            _player.PlayerAnimation.DashAnimation(_player.PlayerInput.InputVectorNorm);
+            _player.PlayerAnimation.DashAnimation(dir);
             _player.GravityModule.UseGravity = false;
-            dashVector = _player.PlayerInput.InputVectorNorm * _player.playerMovementSO.dashPower;
+            dashVector = dir * _player.playerMovementSO.dashPower;
         }
-        _player.VelocitySetExtra(dashVector.x);
+        _player.VelocitySetExtra(dashVector.x, dashVector.y);
         _player.AfterImageEnable(true);
         yield return new WaitForSeconds(_player.playerMovementSO.dashContinueTime);
         DashExit();
@@ -72,12 +88,13 @@ public class PlayerDash : PlayerAction
 
     public void DashExit()
     {
-        _player.AfterImageEnable(false);
         _excuting = false;
+        _player.ColliderSet(PlayerColliderType.Normal);
+        _player.AfterImageEnable(false);
         _player.PlayerActionLock(false, PlayerActionType.Jump, PlayerActionType.Move);
         _player.GravityModule.UseGravity = true;
         _player.VelocitySetExtra(0f, 0f);
-        if (_player.PlayeActionCheck(PlayerActionType.WallGrab) == false)
+        if (_player.PlayerActionCheck(PlayerActionType.WallGrab) == false)
         {
             _player.PlayerAnimation.FallOrIdleAnimation(_player.IsGrounded);
         }
@@ -111,5 +128,10 @@ public class PlayerDash : PlayerAction
             StopCoroutine(_dashCoroutine);
         }
         DashExit();
+    }
+
+    public void EnableReset()
+    {
+        _curDashCount = 0;
     }
 }

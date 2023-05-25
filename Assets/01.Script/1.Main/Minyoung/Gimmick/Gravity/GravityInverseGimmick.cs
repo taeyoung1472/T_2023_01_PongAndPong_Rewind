@@ -1,101 +1,123 @@
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
-public class GravityInverseGimmick : GimmickObject
+public class GravityInverseGimmick : ControlAbleObjcet
 {
-    public override void Init()
+    public DirectionType gravityDirState;
+    public Dictionary<float, DirectionType> dirChangeDic = new Dictionary<float, DirectionType>();
+
+    public Player player;
+    public Player rewindPlayer;
+
+    private DirectionType curDirection;
+
+    private bool isRewind = false;
+
+    private void PlayerGravitySet(DirectionType direction, Player player)
     {
-    }
-    Player player = null;
-
-    GravityModule module;
-
-    public enum GravityDirState
-    {
-        Up,
-        Down,
-        Left,
-        Right,
-    }
-
-    public GravityDirState gravityDirState;
-
-
-    private void OnTriggerStay(Collider other)
-    {
-        /*
-        if (other.CompareTag("GimmickPlayerCol"))
+        if (curDirection != direction)
         {
-            player.GravityModule.GravityScale = 0.2f;
-
-            switch (gravityDirState)
-            {
-                case GravityDirState.Up:
-                    module.GravityDir = new Vector3(0f, 9.8f, 0f);
-                    player.transform.rotation = Quaternion.Euler(180f, player.transform.rotation.y, player.transform.rotation.z);
-                    break;
-                case GravityDirState.Down:
-                    module.GravityDir = new Vector3(0f, -9.8f, 0f);
-                    player.transform.rotation = Quaternion.Euler(0f, player.transform.rotation.y, player.transform.rotation.z); 
-                    break;
-                case GravityDirState.Left:
-                    module.GravityDir = new Vector3(-9.8f, 0f, 0f);
-                    player.transform.rotation = Quaternion.Euler(player.transform.rotation.x, player.transform.rotation.y, -90f);
-                    break;
-                case GravityDirState.Right:
-                    module.GravityDir = new Vector3(9.8f, 0f, 0f);
-                    player.transform.rotation = Quaternion.Euler(player.transform.rotation.x, player.transform.rotation.y, 90f);
-                    break;
-            }
-
+            AudioManager.PlayAudioRandPitch(SoundType.OnChangeGravity);
         }
+        curDirection = direction;
 
-        if (other.gameObject.TryGetComponent<GravityGimmickObject>(out GravityGimmickObject gravityGimmick))
+        player.ForceStop();
+        player.ColliderSet(PlayerColliderType.Normal);
+
+        player.PlayerRenderer.FlipDirectionChange(direction, false);
+        player.GravityModule.GravityDir = Utility.GetDirToVector(direction) * 9.8f;
+
+        CapsuleCollider col = player.Col;
+        Vector3 newPos = Vector3.zero;
+        switch (direction)
         {
-           // gravityGimmick.GravityScale = 0.5f;
-            switch (gravityDirState)
-            {
-                case GravityDirState.Up:
-                    gravityGimmick.GravityVec = new Vector3(0, 9.8f, 0);
-                    break;
-                case GravityDirState.Down:
-                    gravityGimmick.GravityVec = new Vector3(0, -9.8f, 0);
-                    break;
-                case GravityDirState.Left:
-                    gravityGimmick.GravityVec = new Vector3(-9.8f, 0, 0);
-                    break;
-                case GravityDirState.Right:
-                    gravityGimmick.GravityVec = new Vector3(9.8f, 0, 0);
-                    break;
-            }
-        }
-        */
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("GimmickPlayerCol"))
-        {
-            if (module == null)
-                module = other.GetComponentInParent<GravityModule>();
-            if (player == null)
-                player = other.GetComponentInParent<Player>();
-
-            player.PlayerRenderer.flipDirection = FlipDirection.Up;
-            module.GravityScale = 0.8f;
-            module.GravityDir = new Vector3(0f, 9.8f, 0f);
+            case DirectionType.Left:
+                break;
+            case DirectionType.Right:
+                break;
+            case DirectionType.Up:
+                if (isRewind)
+                {
+                    player.ColliderSet(PlayerColliderType.Normal);
+                    player.transform.position += (Vector3)(Utility.GetDirToVector(direction) * player.Col.height);
+                }
+                break;
+            case DirectionType.Down:
+                break;
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    public override void Control(ControlType controlType, bool isLever, Player player, DirectionType dirType)
     {
-        if (module == null)
+        curControlType = controlType;
+
+        switch (controlType)
         {
-            return;
+            case ControlType.Control:
+                if (rewindPlayer != null)
+                {
+                    gravityDirState = dirType;
+                    PlayerGravitySet(gravityDirState, rewindPlayer);
+                }
+                else
+                {
+                    PlayerGravitySet(dirType, player);
+                }
+                break;
+            case ControlType.None:
+                break;
+            case ControlType.ReberseControl:
+                break;
         }
-        module.GravityScale = module.OriginGravityScale;
-        module.GravityDir = new Vector3(0f, -9.8f, 0f);
-        player.PlayerRenderer.flipDirection = FlipDirection.Down;
+    }
+    private void Awake()
+    {
+        if (RewindManager.Instance)
+        {
+            RewindManager.Instance.InitRewind += InitOnRewind;
+            RewindManager.Instance.InitPlay += InitOnPlay;
+        }
 
+    }
 
+    private void InitOnPlay()
+    {
+        rewindPlayer = null;
+        isRewind = false;
+        StopAllCoroutines();
+        dirChangeDic.Clear();
+        dirChangeDic.Add(0, gravityDirState);
+        if (player == null)
+        {
+            player = FindObjectOfType<Player>();
+            Debug.Log(player);
+        }
+    }
+
+    private void InitOnRewind()
+    {
+        player = null;
+        isRewind = true;
+        if (rewindPlayer == null)
+        {
+            rewindPlayer = FindObjectOfType<Player>();
+            Debug.Log(gravityDirState);
+            StartCoroutine(DirChangeCo());
+        }
+    }
+    private IEnumerator DirChangeCo()
+    {
+        yield return null;
+        dirChangeDic = dirChangeDic.OrderByDescending(x => x.Key).ToDictionary(x => x.Key, x => x.Value);
+
+        float beforeKey = 11f;
+        foreach (var item in dirChangeDic)
+        {
+            PlayerGravitySet(item.Value, rewindPlayer);
+            yield return new WaitForSeconds(beforeKey - item.Key);
+            beforeKey = item.Key;
+        }
     }
 }

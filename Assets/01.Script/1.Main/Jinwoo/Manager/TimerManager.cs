@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using TMPro;
+using DigitalRuby.ThunderAndLightning;
 
 public class TimerManager : MonoSingleTon<TimerManager>
 {
     #region 변수들
-    [SerializeField] private TextMeshProUGUI timeText;
     public float CurrentTimer { get; set; }
 
 
@@ -25,13 +25,13 @@ public class TimerManager : MonoSingleTon<TimerManager>
         }
     }
 
-    public bool isOnTimer = false;
+    [HideInInspector] public bool isOnTimer = false;
 
 
     private bool isRewindStart = false;
-    public bool isRewinding = false;
+    [HideInInspector] public bool isRewinding = false;
 
-    [SerializeField] private float rewindIntensity = 0.01f;          //되감기 속도를 변경하는 변수
+    private float rewindIntensity = 0.02f;          //되감기 속도를 변경하는 변수
     private float rewindValue = 0;
 
     [Header("[Volume]")]
@@ -78,14 +78,13 @@ public class TimerManager : MonoSingleTon<TimerManager>
     {
         defaultVolume.SetActive(isDefault);
         rewindVolume.SetActive(!isDefault);
-
     }
     public void UpdateText()
     {
         if (!isRewinding)
-            UIManager.Instance.OnPlayTimeChange((int)CurrentTimer);
+            UIManager.Instance.OnPlayTimeChange(CurrentTimer);
         else
-            UIManager.Instance.OnRewindTimeChange((int)(RewindingTime - CurrentTimer));
+            UIManager.Instance.OnRewindTimeChange((RewindingTime - CurrentTimer));
     }
     private void UpdateTime()
     {
@@ -95,7 +94,10 @@ public class TimerManager : MonoSingleTon<TimerManager>
         CurrentTimer += Time.deltaTime;
 
         UpdateText();
-
+        //if (CurrentTimer > RewindingTime - 0.5f)
+        //{
+        //    StageManager.Instance.PlayShockWave();
+        //}
         if (CurrentTimer > RewindingTime) //시간이 다 달음
         {
             //StageTestManager.Instance.curArea.Rewind();

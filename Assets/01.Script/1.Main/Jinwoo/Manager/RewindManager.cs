@@ -23,7 +23,7 @@ public class RewindManager : MonoSingleTon<RewindManager>
     /// <summary>
     /// 과거까지 얼마나 추적해야 하는지를 정의하는 변수, 설정된 한계에 도달한 후 순환 버퍼에서 이전 값을 덮어씀
     /// </summary>
-    public float howManySecondsToTrack = 10;
+    [HideInInspector] public float howManySecondsToTrack = 10;
 
     /// <summary>
     /// 이 변수는 되감기에 사용할 수 있는 시간(초)을 반환함 (그니깐 시간이 지날수록 커지는 거임)
@@ -55,12 +55,12 @@ public class RewindManager : MonoSingleTon<RewindManager>
     {
         if(seconds>HowManySecondsAvailableForRewind)
         {
-            Debug.LogError("저장된 추적 값이 충분하지 않음!!! 잘못된 색인에 도달. 호출된 되감기는 HowManySecondsAvailableForRewind 속성보다 작아야 함.");
+            Debug.Log("저장된 추적 값이 충분하지 않음!!! 잘못된 색인에 도달. 호출된 되감기는 HowManySecondsAvailableForRewind 속성보다 작아야 함.");
             return;
         }
         if(seconds<0)
         {
-            Debug.LogError("RewindTimeBySeconds()의 매개변수는 양수 값이어야 함!!!");
+            Debug.Log("RewindTimeBySeconds()의 매개변수는 양수 값이어야 함!!!");
             return;
         }
         InitRewind?.Invoke();
@@ -83,12 +83,12 @@ public class RewindManager : MonoSingleTon<RewindManager>
     {
         if (seconds > HowManySecondsAvailableForRewind)
         {
-            Debug.LogError("저장된 추적 값이 충분하지 않음!!! 잘못된 색인에 도달. 호출된 되감기는 HowManySecondsAvailableForRewind 속성보다 작아야 함");
+            Debug.Log("저장된 추적 값이 충분하지 않음!!! 잘못된 색인에 도달. 호출된 되감기는 HowManySecondsAvailableForRewind 속성보다 작아야 함");
             return;
         }
         if (seconds < 0)
         {
-            Debug.LogError("StartRewindTimeBySeconds()의 매개변수는 양수 값이어야 함!!!");
+            Debug.Log("StartRewindTimeBySeconds()의 매개변수는 양수 값이어야 함!!!");
             return;
         }
 
@@ -123,13 +123,13 @@ public class RewindManager : MonoSingleTon<RewindManager>
     {
         if (seconds > HowManySecondsAvailableForRewind)
         {
-            Debug.LogError("저장된 추적 값이 충분하지 않음!!! 잘못된 색인에 도달함. 호출된 되감기는 HowManySecondsAvailableForRewind 보다 작아야 함.");
+            Debug.Log("저장된 추적 값이 충분하지 않음!!! 잘못된 색인에 도달함. 호출된 되감기는 HowManySecondsAvailableForRewind 보다 작아야 함.");
             return;
         }
 
         if (seconds < 0)
         {
-            Debug.LogError("SetTimeSecondsInRewind()의 매개변수는 양수 값이어야 함!!!");
+            Debug.Log("SetTimeSecondsInRewind()의 매개변수는 양수 값이어야 함!!!");
             return;
         }
         rewindSeconds = seconds;

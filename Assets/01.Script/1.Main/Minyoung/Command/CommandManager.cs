@@ -6,7 +6,6 @@ public class CommandManager : MonoSingleTon<CommandManager>
 {
     private Stack<Command> commandStack = new();
     private Stack<Command> undoStack = new();
-
     private void Update()
     {
         if (Utility.ComboKeyCheck(KeyCode.LeftControl, KeyCode.Z))
@@ -18,28 +17,23 @@ public class CommandManager : MonoSingleTon<CommandManager>
             Redo();
         }
     }
-
     public void ExcuteCommand(Command cmd)
     {
         cmd.Execute();
         commandStack.Push(cmd);
     }
-
-    private void Redo()
+    private void Redo()     //컨트롤Y
     {
         if (undoStack.Count == 0)
-            return;
-
-        Command cmd = undoStack.Pop();
+                return;
+            Command cmd = undoStack.Pop();
         cmd.Execute();
         commandStack.Push(cmd);
     }
-
-    private void Undo()
+    private void Undo()    //컨트롤Z
     {
         if (commandStack.Count == 0)
             return;
-
         Command cmd = commandStack.Pop();
         cmd.Undo();
         undoStack.Push(cmd);

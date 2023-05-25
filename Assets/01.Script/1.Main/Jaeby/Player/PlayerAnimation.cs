@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -16,6 +15,9 @@ public class PlayerAnimation : MonoBehaviour
 
     private Player _player = null;
 
+    private bool _moveFlipLock = false;
+    public bool MoveFlipLock { get => _moveFlipLock; set => _moveFlipLock = value; }
+
     private void Awake()
     {
         _player = GetComponentInParent<Player>();
@@ -25,7 +27,8 @@ public class PlayerAnimation : MonoBehaviour
     public void MoveAnimation(Vector2 input)
     {
         _animator.SetBool("Move", Mathf.Abs(input.x) > 0f);
-        _player.PlayerRenderer.Flip(input);
+        if(_moveFlipLock == false)
+            _player.PlayerRenderer.Flip(input);
     }
 
     public void SlideAnimation()
@@ -37,6 +40,13 @@ public class PlayerAnimation : MonoBehaviour
     public void DashAnimation(Vector2 input)
     {
         _animator.SetTrigger("Dash");
+        _animator.Update(0);
+    }
+
+    public void DieAnimation()
+    {
+        _animator.Rebind();
+        _animator.Play("PlayerDie");
         _animator.Update(0);
     }
 
@@ -57,7 +67,7 @@ public class PlayerAnimation : MonoBehaviour
     {
         if (val == false)
             return;
-        if (_player.PlayeActionCheck(PlayerActionType.Attack))
+        if (_player.PlayerActionCheck(PlayerActionType.Attack))
         {
             _player.PlayerActionExit(PlayerActionType.Attack);
             _animator.SetTrigger("AttackForceExit");
@@ -70,6 +80,12 @@ public class PlayerAnimation : MonoBehaviour
     {
         _animator.Play("PlayerIdle");
         _animator.Update(0);
+    }
+
+    public void Rebind()
+    {
+        if (gameObject.activeSelf)
+            _animator.Rebind();
     }
 
     public void FallOrIdleAnimation(bool isGround)
@@ -93,7 +109,10 @@ public class PlayerAnimation : MonoBehaviour
 
     public void MeleeAttackAnimation(int index)
     {
-        string name = $"PlayerMeleeAttack{index}";
+        string name = $"MeleeAttack{index}";
+        //isground 
+        if ((_player.PlayerActionCheck(PlayerActionType.Move) && _player.IsGrounded) == false)
+            name += "Stand";
         _animator.Play(name);
         _animator.Update(0);
         if (_attackAniCo != null)
@@ -108,6 +127,16 @@ public class PlayerAnimation : MonoBehaviour
         if (_attackAniCo != null)
             StopCoroutine(_attackAniCo);
         _attackAniCo = StartCoroutine(AttackAnimationEndWaitCoroutine("PlayerRangeAttack", AttackState.Range));
+    }
+
+    public void DieStartAnimation()
+    {
+        _player.playerHP.DieStart();
+    }
+
+    public void DieEndAnimation()
+    {
+        _player.playerHP.Restart();
     }
 
     private IEnumerator AttackAnimationEndWaitCoroutine(string aniName, AttackState attackState)
@@ -126,6 +155,48 @@ public class PlayerAnimation : MonoBehaviour
 
     private void Update()
     {
-        _animator.SetFloat("VelocityY", _player.characterController.velocity.y);
+        _animator.SetFloat("VelocityY", _player.Rigid.velocity.y);
     }
+
+    #region Event
+    float landedTime = 0.0f;
+    public void OnLanded()
+    {
+        if (Time.time < landedTime + 0.2f)
+            return;
+
+        landedTime = Time.time;
+        _player.playerAudio.OnGroundedAudio();
+    }
+
+    float jumpTime = 0.0f;
+    public void OnJump()
+    {
+        if (Time.time < jumpTime + 0.2f)
+            return;
+
+        jumpTime = Time.time;
+        _player.playerAudio.JumpAudio();
+    }
+
+    float dashAirTime = 0.0f;
+    public void OnDashAir()
+    {
+        if (Time.time < dashAirTime + 0.2f)
+            return;
+
+        dashAirTime = Time.time;
+        _player.playerAudio.DashAirAudio();
+    }
+
+    float dashGroundTime = 0.0f;
+    public void OnDashGround()
+    {
+        if (Time.time < dashGroundTime + 0.2f)
+            return;
+
+        dashGroundTime = Time.time;
+        _player.playerAudio.DashGroundAudio();
+    }
+    #endregion
 }

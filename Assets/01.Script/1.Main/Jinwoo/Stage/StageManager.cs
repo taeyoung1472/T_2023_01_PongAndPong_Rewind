@@ -1,13 +1,11 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
-
 public class StageManager : MonoSingleTon<StageManager>
 {
     [Header("스테이지 관련")]
     public static StageDataSO stageDataSO;
+    [SerializeField] private StageDataSO demoStageDataSO;
 
     //[SerializeField] private StageDatabase stageDatabase;
     private StageDataSO curStageDataSO;
@@ -25,8 +23,21 @@ public class StageManager : MonoSingleTon<StageManager>
 
     public Image fadeImg;
 
+    [HideInInspector] public bool isGameStart = false;
+    [HideInInspector] public bool isDownButton = false;
     private float reStartCoolTime = 1f;
+    private float freelookCoolTime = 2f;
     private bool isRestartPossible = false;
+    private bool inputLock = false;
+    public bool InputLock { get => inputLock; set => inputLock = value; }
+
+    [Header("카메라 관련")]
+    [SerializeField]
+    private FreeLookCamera freeLookCam;
+
+    [Header("효과 관련")]
+    [SerializeField]
+    private ShockWaveController shockWave;
 
     private void Awake()
     {
@@ -35,6 +46,9 @@ public class StageManager : MonoSingleTon<StageManager>
     }
     public void Update()
     {
+        if (UIManager.Instance.IsPause)
+            return;
+
         if (!isRestartPossible)
         {
             reStartCoolTime -= Time.deltaTime;
@@ -43,15 +57,79 @@ public class StageManager : MonoSingleTon<StageManager>
                 isRestartPossible = true;
             }
         }
-        
-        if (Input.GetKeyDown(KeyCode.R) && isRestartPossible)
+        if (isDownButton)
         {
-            RewindManager.Instance.RestartPlay?.Invoke();
-            curStage.ReStartArea();
-            isRestartPossible = false;
-            reStartCoolTime = 1f;
+            freelookCoolTime -= Time.deltaTime;
+            if (freelookCoolTime < 0f)
+            {
+                isDownButton = false;
+            }
         }
 
+        if (Input.GetKeyDown(KeyCode.R) && isRestartPossible && !freeLookCam._isActivated &&
+            !BreakScreenController.Instance.isBreaking && !EndManager.Instance.IsEnd && !inputLock)
+        {
+            OnReStartArea();
+        }
+
+        if (Input.GetKeyDown(KeyCode.T) && isRestartPossible && !isDownButton && !EndManager.Instance.IsEnd && !inputLock)
+        {
+            isDownButton = true;
+            GlitchManager.Instance.CoroutineColorDrift();
+            OnFreeLookCam(!freeLookCam._isActivated);
+        }
+
+    }
+    public void SetAreaPlay(bool isPlay)
+    {
+        curStage.curArea.IsAreaPlay = isPlay;
+    }
+    public bool GetAreaPlayCheck()
+    {
+        return CurStage.curArea.IsAreaPlay;
+    }
+    public void PlayShockWave()
+    {
+        shockWave.StartShockWave();
+    }
+    public void OnReStartArea()
+    {
+        curStage.ReStartArea(true);
+
+        TimerManager.Instance.ChangeOnTimer(false);
+
+        isRestartPossible = false;
+        reStartCoolTime = 1f;
+    }
+    public void OnFreeLookCam(bool isOn)
+    {
+        AudioManager.PlayAudio(SoundType.OnGameStart);
+        Debug.Log(isOn);
+        if (isOn) //자유시점 온
+        {
+            SetAreaPlay(false);
+            freeLookCam.gameObject.SetActive(true);
+            freeLookCam.Activate(true);
+            if (TimerManager.Instance.isRewinding)
+            {
+                RewindManager.Instance.StopRewindTimeBySeconds();
+            }
+            InitPlayer(false);
+
+            TimerManager.Instance.InitTimer();
+            TimerManager.Instance.ChangeOnTimer(false);
+            TimerManager.Instance.UpdateText();
+
+            RewindManager.Instance.RestartPlay?.Invoke();
+        }
+        else //자유 시점 오프
+        {
+            freeLookCam.gameObject.SetActive(false);
+            freeLookCam.Activate(false);
+
+            curStage.ReStartArea(false);
+        }
+        freelookCoolTime = 2f;
     }
     public StageArea GetCurArea()
     {
@@ -67,16 +145,28 @@ public class StageManager : MonoSingleTon<StageManager>
 
     public void SpawnStage()
     {
+        if (stageDataSO == null)
+        {
+            stageDataSO = demoStageDataSO;
+        }
         curStageDataSO = stageDataSO;
 
         curStage = Instantiate(curStageDataSO.stagePrefab, Vector3.zero, Quaternion.identity);
+        
         curStage.Init();
+
+        OnFreeLookCam(true);
     }
     public void NextStage()
     {
 
     }
+    public void InitTransform()
+    {
+        CurStage.transform.DOKill();
+        // CurStage.transform.rotation = Quaternion.Euler(0, 0, 0);
 
+    }
     public void SpawnPlayer(Transform spawnPos, bool isDefaultPlayer, bool isFirst = false)
     {
 
@@ -84,26 +174,25 @@ public class StageManager : MonoSingleTon<StageManager>
         {
             //playerObj = Instantiate(playerPrefab, spawnPos.position, Quaternion.identity);
             playerObj = PoolManager.Pop(PoolType.Player);
-            playerObj.GetComponent<CharacterController>().enabled = false;
+            if (rePlayerObj != null)
+                rePlayerObj.GetComponent<Player>().DisableReset();
+            playerObj.GetComponent<Player>().EnableReset();
             playerObj.transform.position = spawnPos.position;
-            playerObj.GetComponent<CharacterController>().enabled = true;
             //TestParticleSpawn.Instance.playerPos = playerObj.transform;
         }
         else
         {
             rePlayerObj = PoolManager.Pop(PoolType.RewindPlayer);
-            rePlayerObj.GetComponent<CharacterController>().enabled = false;
+            if (playerObj != null)
+                playerObj.GetComponent<Player>().DisableReset();
+            rePlayerObj.GetComponent<Player>().EnableReset();
             rePlayerObj.transform.position = spawnPos.position;
-            rePlayerObj.GetComponent<CharacterController>().enabled = true;
         }
-            
-            //rePlayerObj = Instantiate(rewindPlayerPrefab, spawnPos.position, Quaternion.identity);
-                    
     }
 
     public void InitPlayer(bool isClear)
     {
-        if(rePlayerObj != null)
+        if (rePlayerObj != null)
         {
             PoolManager.Push(PoolType.RewindPlayer, rePlayerObj);
         }
@@ -128,5 +217,17 @@ public class StageManager : MonoSingleTon<StageManager>
         //    rePlayerObj.SetActive(false);
 
         //}
+    }
+
+    public GameObject GetCurrentPlayer()
+    {
+        if (TimerManager.Instance.isRewinding)
+        {
+            return rePlayerObj;
+        }
+        else
+        {
+            return playerObj;
+        }
     }
 }

@@ -1,30 +1,44 @@
 using DG.Tweening;
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using static Define;
 
 public class StageSelectUI : MonoBehaviour
 {
     [SerializeField]
-    private StageInfoUI _stageInfoUI = null;
+    private GameObject _chapterSelectUI = null;
     [SerializeField]
-    private GameObject _marker = null;
+    private GameObject _worldUI = null;
 
-    private ScrollRect _scrollRect = null;
+    [SerializeField]
+    private StageInfoUI _stageInfoUI = null;
+
+    [SerializeField]
+    private ScrollRect _worldScrollRect = null;
+    [SerializeField]
+    private ScrollRect _chapterScrollRect = null;
     [SerializeField]
     private TextMeshProUGUI _worldNameText = null;
     private StageWorldUI _curStageWorld = null;
+    public StageWorldUI CurStageWorld => _curStageWorld;
+
+    [SerializeField]
+    private Transform _worldTrm = null;
+    [SerializeField]
+    private Transform _chapterTrm = null;
+    [SerializeField]
+    private GameObject _chapterButtonPrefab = null;
+
     private List<StageWorldUI> _stageWorlds = new List<StageWorldUI>();
+    private List<GameObject> _chapterButtons = new List<GameObject>();
 
     private StageUnitUI _curStage = null;
     private StageUnitUI _prevStage = null;
 
     private int _worldIndex = 0;
+    public int WorldIndex => _worldIndex;
     private bool _lock = false;
     public bool Lock { get => _lock; set => _lock = value; }
     private bool _moveLock = false;
@@ -36,29 +50,45 @@ public class StageSelectUI : MonoBehaviour
     [SerializeField]
     private Color _accentColor = Color.white;
     [SerializeField]
+    private Color _subAccentColor = Color.white;
+    [SerializeField]
     private Color _deAccentColor = Color.white;
     [SerializeField]
     private float _sizeUpAmount = 1.3f;
     [SerializeField]
+    private float _sizeSubAmount = 1.2f;
+    [SerializeField]
     private float _sizeDownAmount = 0.8f;
 
-    private void Awake()
+    public void Init(List<GameObject> worlds)
     {
-        Init();
-    }
-
-    private void Init()
-    {
-        _scrollRect = GetComponent<ScrollRect>();
-        _stageWorlds.AddRange(GetComponentsInChildren<StageWorldUI>());
+        _worldIndex = 0;
         for (int i = 0; i < _stageWorlds.Count; i++)
         {
-            _stageWorlds[i].gameObject.SetActive(false);
-            _stageWorlds[i].Init(this);
+            Destroy(_stageWorlds[i].gameObject);
+            Destroy(_chapterButtons[i].gameObject);
         }
-        _curStageWorld = _stageWorlds[0];
-        WorldChange(0);
-        WorldUISet();
+        _stageWorlds.Clear();
+        _chapterButtons.Clear();
+
+        GridLayoutGroup gridGroup = _chapterScrollRect.content.GetComponent<GridLayoutGroup>();
+        float padding = gridGroup.padding.left + gridGroup.spacing.x;
+        float width = padding * 2 + gridGroup.cellSize.x * worlds.Count;
+        _chapterScrollRect.content.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, width);
+
+        List<StageWorldUI> newWorlds = new List<StageWorldUI>();
+        for (int i = 0; i < worlds.Count; i++)
+        {
+            StageWorldUI ui = Instantiate(worlds[i], _worldTrm).GetComponent<StageWorldUI>();
+            newWorlds.Add(ui);
+            ui.Init(this);
+            ui.gameObject.SetActive(false);
+            Button chapter = Instantiate(_chapterButtonPrefab, _chapterTrm).GetComponent<Button>();
+            chapter.onClick.AddListener(() => { WorldChange(ui); });
+            chapter.GetComponent<ChapterButtonUI>().NameSet(ui);
+            _chapterButtons.Add(chapter.gameObject);
+        }
+        _stageWorlds = newWorlds;
     }
 
     public void WorldUp()
@@ -76,17 +106,21 @@ public class StageSelectUI : MonoBehaviour
         if (_worldUIMoveSeq != null)
             _worldUIMoveSeq.Kill();
         _moveLock = false;
-        _curStageWorld.ResetWorld();
-        _curStageWorld.gameObject.SetActive(false);
-        _scrollRect.content.anchoredPosition = Vector3.zero;
+        if (_curStageWorld != null)
+        {
+            _curStageWorld.ResetWorld();
+            _curStageWorld.gameObject.SetActive(false);
+        }
+        if (_worldScrollRect.content != null)
+            _worldScrollRect.content.anchoredPosition = Vector3.zero;
         _curStage = _prevStage = null;
 
         _worldIndex = value;
         _worldIndex = Mathf.Clamp(_worldIndex, 0, _stageWorlds.Count - 1);
         _curStageWorld = _stageWorlds[_worldIndex];
         _curStageWorld.gameObject.SetActive(true);
-        _scrollRect.content = _curStageWorld.GetComponent<RectTransform>();
-        _worldNameText.SetText(_curStageWorld.WorldType.ToString());
+        _worldScrollRect.content = _curStageWorld.GetComponent<RectTransform>();
+        _worldNameText.SetText(_curStageWorld.WorldName);
 
         _curStage = _curStageWorld.GetStage(0);
         float target = _curStage.GetComponent<RectTransform>().anchoredPosition.x * -1f;
@@ -94,6 +128,17 @@ public class StageSelectUI : MonoBehaviour
         Vector2 anPos = trm.anchoredPosition;
         anPos.x = target;
         trm.anchoredPosition = anPos;
+
+        _worldUI.SetActive(true);
+        _chapterSelectUI.SetActive(false);
+        _worldNameText.gameObject.SetActive(true);
+    }
+
+    public void WorldChange(StageWorldUI ui)
+    {
+        int index = _stageWorlds.FindIndex(x => x == ui);
+        Debug.Log(index);
+        WorldChange(index);
     }
 
     public void StageChange()
@@ -106,10 +151,37 @@ public class StageSelectUI : MonoBehaviour
         LoadingSceneManager.LoadScene(2);
     }
 
+    public void UIOn()
+    {
+        _worldUI.SetActive(false);
+        _chapterSelectUI.SetActive(true);
+        _worldNameText.gameObject.SetActive(false);
+        gameObject.SetActive(true);
+        _curStage = _prevStage = null;
+        _moveLock = false;
+        _curStageWorld = null;
+    }
+
     public void UIDown()
     {
-        player.PlayerActionExit(PlayerActionType.Interact);
-        gameObject.SetActive(false);
+        if (_chapterSelectUI.activeSelf)
+        {
+            player.PlayerActionExit(PlayerActionType.Interact);
+            if (_curStageWorld != null)
+            {
+                _curStageWorld.ResetWorld();
+                _curStageWorld.gameObject.SetActive(false);
+            }
+            _curStage = _prevStage = null;
+            _curStageWorld = null;
+            gameObject.SetActive(false);
+        }
+        else if (_worldUI.activeSelf)
+        {
+            _worldUI.SetActive(false);
+            _chapterSelectUI.SetActive(true);
+            _worldNameText.gameObject.SetActive(false);
+        }
     }
 
     private void Update()
@@ -144,7 +216,7 @@ public class StageSelectUI : MonoBehaviour
     {
         _moveLock = true;
         _prevStage = _curStage;
-        _curStage = _curStageWorld.MouseUp(_deAccentColor, _sizeDownAmount, _sizeChangeDuration, _accentColor, _sizeUpAmount, ui);
+        _curStage = _curStageWorld.MouseUp(_accentColor, _subAccentColor, _deAccentColor, _sizeUpAmount, _sizeSubAmount, _sizeDownAmount, _sizeChangeDuration, ui);
         if (_worldUIMoveSeq != null)
             _worldUIMoveSeq.Kill();
         _worldUIMoveSeq = DOTween.Sequence();
@@ -158,16 +230,18 @@ public class StageSelectUI : MonoBehaviour
         if (_curStage == ui)
         {
             _stageInfoUI.gameObject.SetActive(true);
-            _stageInfoUI.UISet(ui);
+            _stageInfoUI.UIOn(ui.StageDataSO);
         }
         else
         {
+            if (_stageInfoUI.IsEnable)
+                _stageInfoUI.UIDown();
             WorldUISet(ui);
         }
     }
     public void RoadGameScene()
     {
         _curStage.SetStageData();
-        SceneManager.LoadScene(1);
+        LoadingSceneManager.LoadScene(1);
     }
 }

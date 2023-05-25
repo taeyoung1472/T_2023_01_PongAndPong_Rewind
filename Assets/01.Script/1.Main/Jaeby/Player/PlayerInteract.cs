@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerInteract : PlayerAction
+public class PlayerInteract : PlayerAction, IPlayerDisableResetable
 {
     private Interact _curInteract = null;
 
@@ -10,8 +8,8 @@ public class PlayerInteract : PlayerAction
     {
         if(other.CompareTag("Interact"))
         {
-
-            Debug.Log("상호작용 가능");
+            if(_curInteract != null)
+                _curInteract?.InteractExit();
             _curInteract = other.GetComponentInParent<Interact>();
             _curInteract.InteractEnter();
         }
@@ -19,7 +17,6 @@ public class PlayerInteract : PlayerAction
 
     private void OnTriggerExit(Collider other)
     {
-        Debug.Log("상호작용 불가");
         _curInteract?.InteractExit();
         _curInteract = null;
     }
@@ -39,5 +36,10 @@ public class PlayerInteract : PlayerAction
     {
         _player.PlayerInput.enabled = true;
         _excuting = false;
+    }
+
+    public void DisableReset()
+    {
+        _curInteract = null;
     }
 }

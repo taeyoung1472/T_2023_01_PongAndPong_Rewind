@@ -1,14 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class PlayerHP : MonoBehaviour
+public class PlayerHP : MonoBehaviour, IPlayerEnableResetable
 {
     [SerializeField]
     private Slider _hpSlider = null;
     private Player _player = null;
+
+    [SerializeField]
+    private GameObject _dieParticlePrefab = null;
 
     [SerializeField]
     private UnityEvent OnDie = null;
@@ -27,20 +28,15 @@ public class PlayerHP : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
-        _player = GetComponent<Player>();
-        _curHP = _player.playerHealthSO.maxHP;
-        if (_hpSlider != null)
-        {
-            _hpSlider.minValue = 0;
-            _hpSlider.maxValue = _player.playerHealthSO.maxHP;
-        }
-    }
-
     public void AddDamage(int damage)
     {
         CurHP -= damage;
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Y))
+            Die();
     }
 
     public void Die()
@@ -49,5 +45,34 @@ public class PlayerHP : MonoBehaviour
         _player.ForceStop();
         _player.PlayerInput.enabled = false;
         OnDie?.Invoke();
+    }
+
+    public void DieStart()
+    {
+        if (StageManager.Instance == null)
+            return;
+        StageManager.Instance.InputLock = true;
+        Instantiate(_dieParticlePrefab, _player.transform.position + _player.Col.center, _player.transform.rotation);
+    }
+
+    public void Restart()
+    {
+        if (StageManager.Instance == null)
+            return;
+        StageManager.Instance.InputLock = false;
+        _player.PlayerInput.enabled = true;
+        StageManager.Instance.OnReStartArea();
+    }
+
+    public void EnableReset()
+    {
+        if (_player == null)
+            _player = GetComponent<Player>();
+        _curHP = _player.playerHealthSO.maxHP;
+        if (_hpSlider != null)
+        {
+            _hpSlider.minValue = 0;
+            _hpSlider.maxValue = _player.playerHealthSO.maxHP;
+        }
     }
 }

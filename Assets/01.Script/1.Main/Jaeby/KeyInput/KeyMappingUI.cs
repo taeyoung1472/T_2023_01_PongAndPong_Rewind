@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -19,8 +18,6 @@ public class KeyMappingUI : MonoBehaviour
     private GameObject _mainPanel = null;
     [SerializeField]
     private GameObject _keyMappingPanel = null;
-    [SerializeField]
-    private GameObject _startButton = null;
     [SerializeField]
     private GameObject _mappingStartUI = null;
 
@@ -73,14 +70,14 @@ public class KeyMappingUI : MonoBehaviour
             keyUI[(InputType)i].DisplayData((InputType)i, KeyManager.keys[(InputType)i]);
         }
         _mainPanel.SetActive(true);
-        _startButton.SetActive(false);
+        //_startButton.SetActive(false);
     }
 
     public void UIOff()
     {
         _saveKeys.Clear();
         _mainPanel.SetActive(false);
-        _startButton.SetActive(true);
+       // _startButton.SetActive(true);
     }
 
     public void KeyMappingStart(InputType type)
@@ -88,7 +85,7 @@ public class KeyMappingUI : MonoBehaviour
         if (_keyMapping)
             return;
         _mappingStartUI.SetActive(true);
-        _mappingStartUI.GetComponentInChildren<TextMeshProUGUI>().SetText($"원하는 버튼을\n준내게 누르세요\n<버튼 : {type.ToString()}>");
+        _mappingStartUI.GetComponentInChildren<TextMeshProUGUI>().SetText($"Press A Key To Re-Map (Key-Name): {type.ToString()}");
         StartCoroutine(KeyMappingCoroutine(type));
     }
 
@@ -146,7 +143,6 @@ public class KeyMappingUI : MonoBehaviour
         SaveAllKey();
 
     }
-
     private void OnGUI()
     {
         keyEvent = Event.current;

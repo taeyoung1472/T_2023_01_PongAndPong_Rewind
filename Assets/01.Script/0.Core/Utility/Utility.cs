@@ -74,6 +74,34 @@ public static class Utility
         }
         return new Vector3(Mathf.Sin(degrees * Mathf.Deg2Rad), 0, Mathf.Cos(degrees * Mathf.Deg2Rad));
     }
+
+    public static Vector2 GetDirToVector(DirectionType dir)
+    {
+        switch (dir)
+        {
+            case DirectionType.None:
+                break;
+            case DirectionType.Left:
+                return Vector2.left;
+            case DirectionType.Right:
+                return Vector2.right;
+            case DirectionType.Up:
+                return Vector2.up;
+            case DirectionType.Down:
+                return Vector2.down;
+            case DirectionType.LeftUp:
+                return new Vector2(-1, 1);
+            case DirectionType.RightUp:
+                return new Vector2(1, 1);
+            case DirectionType.LeftDown:
+                return new Vector2(-1, -1);
+            case DirectionType.RightDown:
+                return new Vector2(1, -1);
+            default:
+                break;
+        }
+        return Vector2.zero;
+    }
     #endregion
 
     #region Search

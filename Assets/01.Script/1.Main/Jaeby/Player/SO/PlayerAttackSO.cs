@@ -10,5 +10,4 @@ public class PlayerAttackSO : ScriptableObject
     public int meleeAttackPower = 1;
     public int rangeAttackPower = 1;
     public float bulletSpeed = 3f;
-    public GameObject bulletPrefab = null;
 }

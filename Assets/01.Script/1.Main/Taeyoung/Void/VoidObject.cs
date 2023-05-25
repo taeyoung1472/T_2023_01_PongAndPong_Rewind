@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class VoidObject : MonoBehaviour
@@ -11,6 +9,7 @@ public class VoidObject : MonoBehaviour
     [SerializeField, Range(0.0f, 10.0f)] private float sizeFrequency = 1;
 
     private float originY;
+    private Vector3 originScale;
     private float randSeed;
     private float time { get { return Time.time + randSeed; } }
 
@@ -18,12 +17,16 @@ public class VoidObject : MonoBehaviour
     {
         randSeed = Random.Range(0.0f, Mathf.PI);
         originY = transform.position.y;
+        originScale = transform.localScale;
     }
 
     public void Update()
     {
+        if (EndManager.Instance.IsEnd)
+            return;
+
         transform.Rotate(rotVec * Time.deltaTime);
-        transform.position = new Vector3(transform.position.x, originY + (moveYIntensity * Mathf.Sin(time * moveYIntensity)), transform.position.z);
-        transform.localScale = Vector3.one - Vector3.one * (sizeIntensity * Mathf.Sin(time * sizeFrequency));
+        transform.position = new Vector3(transform.position.x, originY + (moveYIntensity * Mathf.Sin(time * moveYFrequency)), transform.position.z);
+        transform.localScale = originScale - originScale * (sizeIntensity * Mathf.Sin(time * sizeFrequency));
     }
 }

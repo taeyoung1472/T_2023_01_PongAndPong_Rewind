@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -10,7 +8,8 @@ public class KeyInputUI : MonoBehaviour
 
     public void DisplayData(InputType inputType, KeyCode keyCode)
     {
-        funtionText.SetText($"기능 : {inputType}");
+        funtionText.SetText($"{inputType}");
+        //funtionText.SetText($"기능 : {inputType}");
         keyText.SetText(keyCode.ToString());
     }
 }

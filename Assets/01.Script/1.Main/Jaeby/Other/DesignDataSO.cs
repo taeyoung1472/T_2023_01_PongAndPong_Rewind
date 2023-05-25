@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "SO/Data/DesignData")]
@@ -26,6 +24,16 @@ public class DesignDataSO : ScriptableObject
                 return portalIcon;
             case IconType.Trader:
                 return traderIcon;
+            case IconType.Bujang:
+                return researcherIcon;
+            case IconType.Sajang:
+                return researcherIcon;
+            case IconType.Secretary:
+                return researcherIcon;
+            case IconType.Investor:
+                return researcherIcon;
+            case IconType.Employee:
+                return researcherIcon;
             default:
                 break;
         }
@@ -44,6 +52,16 @@ public class DesignDataSO : ScriptableObject
                 return "포탈 관리인";
             case IconType.Trader:
                 return "상인";
+            case IconType.Bujang:
+                return "부장";
+            case IconType.Sajang:
+                return "사장";
+            case IconType.Secretary:
+                return "비서";
+            case IconType.Investor:
+                return "투자자";
+            case IconType.Employee:
+                return "직원";
             default:
                 break;
         }

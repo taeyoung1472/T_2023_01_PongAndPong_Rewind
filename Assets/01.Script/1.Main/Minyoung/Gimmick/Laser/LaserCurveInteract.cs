@@ -7,8 +7,9 @@ public class LaserCurveInteract : Interact
     private ShootLaser shootLaser;
 
     public float rotateValue = 45f;
-    private void Awake()
+    public override void Awake()
     {
+        base.Awake();
         shootLaser = FindObjectOfType<ShootLaser>();   
     }
 
@@ -21,16 +22,5 @@ public class LaserCurveInteract : Interact
         transform.Rotate(Vector3.up * rotateValue * Time.deltaTime);
         shootLaser.SetLine();
         InteractEnd(true);
-    }
-
-    public override void InteractEnter()
-    {
-        UIGetter.Instance.GetInteractUI(_interactUIPos.position, _interactSprite, KeyManager.keys[InputType.Interact]);
-
-    }
-
-    public override void InteractExit()
-    {
-        UIGetter.Instance.PushUIs();
     }
 }

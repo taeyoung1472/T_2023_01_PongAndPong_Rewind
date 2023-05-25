@@ -1,83 +1,124 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.Events;
+using static Unity.VisualScripting.Member;
 
 public class PlayerObjectPush : PlayerAction
 {
-    private List<ControllerColliderHit> _hits = new List<ControllerColliderHit>();
-    private List<int> _hitsHashs = new List<int>();
-    [SerializeField]
-    private UnityEvent<List<ControllerColliderHit>> OnEnterCollider = null;
-    [SerializeField]
-    private UnityEvent<List<ControllerColliderHit>> OnExitCollider = null;
+    private GameObject _pushingCollider = null;
 
     [SerializeField]
-    private float _pushPower = 2f;
+    private UnityEvent OnEnterCollider = null;
     [SerializeField]
-    private float _littleBitMore = 0.2f;
+    private UnityEvent OnExitCollider = null;
+
+    private AudioSource source;
+    private bool isPushing;
+
+    protected override void Awake()
+    {
+        base.Awake();
+        source = gameObject.AddComponent<AudioSource>();
+        source.clip = AudioManager.DataBase.GetAudio(SoundType.OnDragingObject);
+        source.volume = 0;
+        source.loop = true;
+        source.outputAudioMixerGroup = AudioManager.MixerDic["SFX"];
+        source.Play();
+    }
 
     public override void ActionExit()
     {
         _excuting = false;
-        _hits.Clear();
-        _hitsHashs.Clear();
-        OnExitCollider?.Invoke(_hits);
+        _pushingCollider = null;
+        OnExitCollider?.Invoke();
     }
 
     private void Update()
     {
-        if (_hits.Count == 0)
-        {
-            _excuting = false;
-            return;
-        }
+        MassChange();
+        ObjExitCheck();
+        Sound();
+    }
 
-        List<ControllerColliderHit> removeList = null;
-        foreach (var hit in _hits)
+    private void Sound()
+    {
+        if (!isPushing)
         {
-            Vector3 distanceDir = (hit.transform.position - _player.transform.position).normalized;
-            Vector3 dir = Vector3.zero;
-            float distance = 0f;
-            bool result = Physics.ComputePenetration(_player.characterController, _player.transform.position + (distanceDir * _littleBitMore), _player.transform.rotation,
-                hit.collider, hit.transform.position, hit.transform.rotation, out dir, out distance);
-            if (result == false || Vector3.Dot(_player.PlayerRenderer.Forward, hit.transform.position - _player.transform.position) < 0f) // 충돌 끝
-            {
-                if (removeList == null)
-                    removeList = new List<ControllerColliderHit>();
-                removeList.Add(hit);
-                Debug.Log("오브젝트 밀기 빠져나감");
-                OnExitCollider?.Invoke(_hits);
-            }
+            source.volume = 0;
         }
-        if (removeList != null)
+        else
         {
-            for (int i = 0; i < removeList.Count; i++)
+            if (_player.Rigid.velocity.magnitude >= 0.2f)
             {
-                _hitsHashs.Remove(removeList[i].gameObject.GetHashCode());
-                _hits.Remove(removeList[i]);
+                source.volume = 0.5f;
+            }
+            else
+            {
+                source.volume = 0;
             }
         }
     }
 
-    private void OnControllerColliderHit(ControllerColliderHit hit)
+    private void MassChange()
     {
-        if (_locked)
+        if (_pushingCollider != null)
+        {
+            if (_player.PlayerActionCheck(PlayerActionType.Dash))
+            {
+                Debug.Log("대시");
+                _pushingCollider.GetComponentInParent<Rigidbody>().mass = 90f;
+            }
+            else
+            {
+                Debug.Log("아니");
+                _pushingCollider.GetComponentInParent<Rigidbody>().mass = 1f;
+            }
+            Debug.Log(_pushingCollider.GetComponentInParent<Rigidbody>().mass);
+        }
+    }
+
+    private void PushEnd()
+    {
+        isPushing = false;
+        _pushingCollider = null;
+        Debug.Log("오브젝트 밀기 끝");
+        OnExitCollider?.Invoke();
+        _excuting = false;
+    }
+
+    private void ObjExitCheck()
+    {
+        if (_pushingCollider == null)
+            return;
+        if (Vector3.Dot(_pushingCollider.transform.position - _player.transform.position, _player.PlayerRenderer.Forward) < 0f)
+        {
+            PushEnd();
+        }
+    }
+
+    public void PushStart(GameObject other)
+    {
+        if (other.CompareTag("PushTrigger") == false || _pushingCollider != null  )
             return;
 
-        Rigidbody rb = hit.collider.GetComponent<Rigidbody>();
-        if (rb == null)
+        if (!RewindManager.Instance.IsBeingRewinded)
+            isPushing = true;
+        else
             return;
-        Vector3 forceDir = (hit.gameObject.transform.position - transform.position).normalized;
-        rb.AddForceAtPosition(forceDir * _pushPower, transform.position, ForceMode.Force);
-        if (_hitsHashs.Contains(hit.gameObject.GetHashCode()) == false)
-        {
-            _hitsHashs.Add(hit.gameObject.GetHashCode());
-            Debug.Log("오브젝트 밀기 시작");
-            _excuting = true;
-            _hits.Add(hit);
-            OnEnterCollider?.Invoke(_hits);
-        }
+
+        _pushingCollider = other.transform.gameObject;
+        MassChange();
+        Debug.Log("오브젝트 밀기 시작");
+        OnEnterCollider?.Invoke();
+        _excuting = true;
+    }
+
+    public void PushEnd(GameObject other)
+    {
+        if (other.CompareTag("PushTrigger") == false || _pushingCollider == null)
+            return;
+        MassChange();
+        PushEnd();
     }
 
     public void PushSlowBuff(bool val)

@@ -1,5 +1,7 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Audio;
+using static Unity.VisualScripting.Member;
 
 [RequireComponent(typeof(AudioSource))]
 public class AudioPoolObject : PoolAbleObject
@@ -21,12 +23,13 @@ public class AudioPoolObject : PoolAbleObject
     /// <param name="clip"></param>
     /// <param name="volume"></param>
     /// <param name="pitch"></param>
-    public void Play(AudioClip clip, float pitch = 1f, float volume = 1f)
+    public void Play(AudioClip clip, float pitch = 1f, float volume = 1f, AudioMixerGroup mixerGroup = null)
     {
         source.Stop();
         source.clip = clip;
         source.volume = volume;
         source.pitch = pitch;
+        source.outputAudioMixerGroup = mixerGroup;
         source.Play();
 
         if(pitch < 0)

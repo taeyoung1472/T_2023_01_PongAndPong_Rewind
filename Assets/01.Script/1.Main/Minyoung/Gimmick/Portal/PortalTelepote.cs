@@ -4,140 +4,166 @@ using UnityEngine;
 using Cinemachine;
 using DG.Tweening;
 
-public class PortalTelepote : MonoBehaviour
+public class PortalTelepote : GimmickObject
 {
+    #region Player
     public Transform playerTrm;
-    public Transform reciverTrm;
+    public  bool playerIsOverlapping = false;
+    #endregion
 
-    private Collider _col;
-    private bool isPlayerOverlapping;
-    public float rayDistance = 1f;
-    public bool isFront;
-    public CinemachineVirtualCamera Vcam;
+    public float cross;
+    public Transform reciever;
+    public Transform objreciever;
 
-    public Transform renderTrm;
+    #region 물체
+    public bool objIsOverlapping = false;
+    public List<Transform> telObjList;
+    #endregion
+    private Collider col;
 
-    public bool isRight = true;
-    float dotProduct;
+    [SerializeField] private bool isRight;
 
-
-    public List<Material> playerSkinedMatList = new List<Material>();
-
-    Sequence _seq = null;
-
-
-    private void Awake()
+    [SerializeField] private float telValue = 2f;
+    public override void Awake()
     {
-        _col = GetComponent<Collider>();
-        playerSkinedMatList.AddRange(playerTrm.Find("AgentRenderer/Model/man-mafia_Rig/man-mafia_Rig").GetComponentInChildren<SkinnedMeshRenderer>().materials);
+        base.Awake();
+        Init();
     }
-    private void Update()
+    public override void Init()
     {
-
-        if (isPlayerOverlapping)
+        col = GetComponent<Collider>();
+    }
+    public override void InitOnPlay()
+    {
+        base.InitOnPlay();
+        playerTrm = null;
+        if (playerTrm == null)
         {
-            playerTrm.GetComponent<CharacterController>().enabled = false;
-            Vector3 portalToPlayer = playerTrm.position - transform.position;
+            playerTrm = FindObjectOfType<Player>().transform;
+        }
+        cross = 0f;
+    }
+    public override void InitOnRewind()
+    {
+        base.InitOnRewind();
+    }
+    void Update()
+    {
+        if (isRewind)
+        {
+            return;
+        }
+        PlayerTelPo();
+        TelPoObj();
+    }
+    void TelPoObj()
+    {
+        if (objIsOverlapping)
+        {
+            Vector3 centerPos = Vector3.zero;
+            Vector3 diffVec = Vector3.zero;
+            AudioManager.PlayAudioRandPitch(SoundType.OnPortal);
+            foreach (Transform trm in telObjList)
+            {
+                Collider col = trm.GetComponent<Collider>();
 
+                if (col is BoxCollider)
+                {
+                    centerPos = col.bounds.center;
+                    diffVec = centerPos - trm.position;
+                    diffVec.z = 0;
+                    float offset = trm.GetComponent<Collider>().bounds.size.x;
+                    if (isRight)
+                    {
+                        trm.position = (reciever.position + new Vector3(offset * telValue, 0, 0)) - diffVec;
+                    }
+                    else
+                    {
+                        trm.position = (reciever.position + new Vector3(-offset * telValue, 0, 0)) - diffVec;
+                    }
+                }
+                else if (col is CapsuleCollider)
+                {
+
+                }
+                else if (col is SphereCollider)
+                {
+
+                }
+            }
+        }
+    }
+    void PlayerTelPo()
+    {
+        if (playerIsOverlapping)
+        {
+            Vector3 offset = new Vector3(player.GetComponent<CapsuleCollider>().radius * 2.5f, 0, 0);
             if (isRight)
             {
-                dotProduct = Vector3.Dot(transform.right * 1f, portalToPlayer);
-
-                foreach (var mat in playerSkinedMatList)
-                {
-                    mat.SetVector("_DissolveDirection", new Vector3(1, 0, 0));
-                }
+                playerTrm.position = reciever.position + offset;
             }
             else
             {
-                dotProduct = Vector3.Dot(transform.right * -1f, portalToPlayer);
-
-                foreach (var mat in playerSkinedMatList)
-                {
-                    mat.SetVector("_DissolveDirection", new Vector3(-1, 0, 0));
-                }
+                playerTrm.position = reciever.position + -offset;
             }
+            AudioManager.PlayAudioRandPitch(SoundType.OnPortal);
+            Debug.Log(offset);
+            playerIsOverlapping = false;
+            DeleteBuff();
+        }
+    }
+    
+    public void DeleteBuff()
+    {
+        if (player == null)
+            return;
 
+        player.playerBuff.DeleteBuff(PlayerBuffType.Reverse);
+    }
+    void OnTriggerEnter(Collider other)
+    {
+        if (isRewind)
+        {
+            return;
+        }
 
-            Debug.Log(dotProduct);
-            if (dotProduct > 0f)
+        if (other.gameObject.CompareTag("Player"))
+        {
+            Vector3 portalToPlayer = playerTrm.position - transform.position;
+            Vector3 crossVec = Vector3.Cross(transform.forward, portalToPlayer);
+            cross = crossVec.y;
+            if (cross >= 0f)
             {
-
-
-
-                float rotationDiff = -Quaternion.Angle(transform.rotation, reciverTrm.rotation);
-                rotationDiff += 180;
-                playerTrm.Rotate(Vector3.up, rotationDiff);
-
-                Vector3 positionOffset = Quaternion.Euler(0f, rotationDiff, 0f) * portalToPlayer;
-                playerTrm.position = reciverTrm.position + positionOffset + (Vector3.right * (positionOffset.x * 0.5f));
-
-                DissolveSeq();
-
-                isPlayerOverlapping = false;
+                playerIsOverlapping = true;
+                player.playerBuff.AddBuff(PlayerBuffType.Reverse);
             }
         }
-        else
+
+        if (other.gameObject.CompareTag("TelObj"))
         {
-            playerTrm.GetComponent<CharacterController>().enabled = true;
-        }
+            Vector3 objToPlayer = playerTrm.position - transform.position;
+            Vector3 crossVec = Vector3.Cross(transform.forward, objToPlayer);
+            cross = crossVec.y;
+            if (cross >= 0f)
+            {
+                telObjList.Add(other.gameObject.transform);
+                objIsOverlapping = true;
+            }
+
+        }     
     }
 
-    private void DissolveSeq()
+    void OnTriggerExit(Collider other)
     {
-        if (_seq != null)
-            _seq.Kill();
-        _seq = DOTween.Sequence();
-        //_seq.Append(DoFade(1f, 0f, 2f, playerSkinedMatList[0]));
-        for(int i = 0; i < playerSkinedMatList.Count; i++)
-            _seq.Join(DoFade(1f, 0f, 2f, playerSkinedMatList[i]));
-    }
-
-    public Tween DoFade(float start, float dest, float time, Material dissolveMat)
-    {
-        return DOTween.To(() => start, x => { start = x; dissolveMat.SetFloat("_Dissolve", start); }, dest, time);
-    }
-    private void OnTriggerEnter(Collider other)
-    {
-        Debug.Log("잉이이");
-        if (other.CompareTag("GimmickPlayerCol"))
+        if (other.gameObject.CompareTag("Player"))
         {
-            Debug.Log("플레이어와 충돌함");
-            isPlayerOverlapping = true;
+            playerIsOverlapping = false;
         }
-        if (other.gameObject.layer == LayerMask.NameToLayer("Gimmick"))
+        if (other.gameObject.CompareTag("TelObj"))
         {
-            TelObj(other.transform);
-        }
-    }
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("GimmickPlayerCol"))
-        {
-            isPlayerOverlapping = false;
-        }
-        if (other.gameObject.layer == LayerMask.NameToLayer("Gimmick"))
-        {
-            Debug.Log("물체와 충돌함");
-        }
-    }
-    private void TelObj(Transform colTrm)
-    {
-        Debug.Log("텔오비지");
-        Vector3 portalToObj = colTrm.position - transform.position;
-
-        if (isRight)
-        {
-            dotProduct = Vector3.Dot(transform.right * 1f, portalToObj);
-        }
-        else
-        {
-            dotProduct = Vector3.Dot(transform.right * -1f, portalToObj);
+            telObjList.Remove(other.gameObject.transform);
+            objIsOverlapping = false;
         }
 
-        if (dotProduct > 0f)
-        {
-            colTrm.position = reciverTrm.position + new Vector3(5, 0, 0);
-        }
     }
 }

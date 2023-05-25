@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -7,8 +6,6 @@ public static class KeyManager
 {
     public static KeyCode[] defaultKeys = new KeyCode[]
     {
-        KeyCode.W,
-        KeyCode.S,
         KeyCode.A,
         KeyCode.D,
         KeyCode.Space,
