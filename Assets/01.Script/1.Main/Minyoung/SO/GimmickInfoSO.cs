@@ -3,11 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "SO/Gimmick/Info")]
-
 public class GimmickInfoSO : ScriptableObject
 {
-
-    public GameObject prefab;
-    public Sprite sprite;
-    public string nameStr;
+    public string gimmickHame;
+    public Sprite gimmickIcon;
 }
