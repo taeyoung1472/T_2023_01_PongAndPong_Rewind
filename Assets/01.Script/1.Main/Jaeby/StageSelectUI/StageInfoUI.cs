@@ -6,6 +6,8 @@ using UnityEngine.UI;
 public class StageInfoUI : MonoBehaviour
 {
     [SerializeField]
+    private CanvasGroup _canvasGroup = null;
+    [SerializeField]
     private StageSelectUI _stageSelectUI = null;
     [SerializeField]
     private TextMeshProUGUI _collectionText = null;
@@ -25,10 +27,10 @@ public class StageInfoUI : MonoBehaviour
 
     public void UIOn(StageDataSO data)
     {
-        if (data == null)
+        if (data == null && _canvasGroup.alpha > 0.01f)
             return;
 
-        AudioManager.PlayAudio(SoundType.OnOpenStageInfo);
+        //AudioManager.PlayAudio(SoundType.OnOpenStageInfo);
         _stageSelectUI.Lock = true;
         _chapterNameText.SetText("ц╘ем " + _stageSelectUI.CurStageWorld.ChapterName);
         _worldNameText.SetText(_stageSelectUI.CurStageWorld.WorldName);
@@ -57,7 +59,7 @@ public class StageInfoUI : MonoBehaviour
 
     public void UIDown()
     {
-        AudioManager.PlayAudio(SoundType.OnCloseStageInfo);
+        //AudioManager.PlayAudio(SoundType.OnCloseStageInfo);
         _animator.Play("Disable");
         _isEnable = false;
     }
@@ -75,7 +77,7 @@ public class StageInfoUI : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape) && _isEnable)
+        if (Input.GetKeyDown(KeyCode.Escape) && _isEnable && _canvasGroup.alpha > 0.01f)
         {
             UIDown();
         }
