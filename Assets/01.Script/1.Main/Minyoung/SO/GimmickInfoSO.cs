@@ -5,6 +5,6 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "SO/Gimmick/Info")]
 public class GimmickInfoSO : ScriptableObject
 {
-    public string gimmickHame;
+    public string gimmickName;
     public Sprite gimmickIcon;
 }

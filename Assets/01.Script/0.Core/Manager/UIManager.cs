@@ -16,8 +16,17 @@ public class UIManager : MonoSingleTon<UIManager>
     private bool isPause = false;
 
     public bool IsPause => isPause;
+    [SerializeField] private FreeLookCamera freeLookCamera;
 
     [SerializeField] private GameObject pauseImg;
+    [SerializeField] private GameObject collectionImg;    
+    #region ±â¹Í µµ°¨
+    [Header("[Gimmick]")]
+    [SerializeField] private GimmickEncyclopediaSO gimmickEncyclopediaSO;
+    [SerializeField] private GameObject gimmickInfoPrefab;
+    [SerializeField] private GameObject gimmickEncyclopediaImage;
+    [SerializeField] private Transform gimmickInfoParentTrm;
+    #endregion
 
     public void OnPlayTimeChange(float time)
     {
@@ -40,9 +49,11 @@ public class UIManager : MonoSingleTon<UIManager>
                 isPause = true;
                 TimerManager.Instance.ChangeOnTimer(false);
                 pauseImg.gameObject.SetActive(true);
+                freeLookCamera.Rig.transform.position = new Vector3(0f, 3.35f, -13f);
+                freeLookCamera._isActivated = false;
                 Time.timeScale = 0f;
             }
-            else if(!EndManager.Instance.IsEnd)
+            else if (!EndManager.Instance.IsEnd)
             {
                 PauseResume();
             }
@@ -64,5 +75,31 @@ public class UIManager : MonoSingleTon<UIManager>
     {
         LoadingSceneManager.LoadScene(0);
         Time.timeScale = 1;
+    }
+    public void PauseStage()
+    {
+
+    }
+    public void PauseCollection()
+    {
+        pauseImg.SetActive(false); 
+        collectionImg.SetActive(true);
+        PhoneCollection.Instance.OnCollectionMenu();
+    }
+    public void PauseGimmick()
+    {
+        pauseImg.SetActive(false);
+        gimmickEncyclopediaImage.SetActive(true);
+
+        if (gimmickInfoParentTrm.childCount <= 0)
+        {
+            for (int i = 0; i < gimmickEncyclopediaSO.gimmickEncyclopedia.Count; i++)
+            {
+                GameObject obj = Instantiate(gimmickInfoPrefab, gimmickInfoParentTrm);
+
+                obj.transform.GetChild(0).GetComponentInChildren<Image>().sprite = gimmickEncyclopediaSO.gimmickEncyclopedia[i].gimmickIcon;
+                obj.GetComponentInChildren<TextMeshProUGUI>().text = gimmickEncyclopediaSO.gimmickEncyclopedia[i].gimmickName;
+            }
+        }
     }
 }
