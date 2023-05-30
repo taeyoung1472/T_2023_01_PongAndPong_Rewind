@@ -21,6 +21,8 @@ public class StageSelectUI : MonoBehaviour
     private ScrollRect _chapterScrollRect = null;
     [SerializeField]
     private TextMeshProUGUI _worldNameText = null;
+    [SerializeField]
+    private TextMeshProUGUI _worldChapterNameText = null;
     private StageWorldUI _curStageWorld = null;
     public StageWorldUI CurStageWorld => _curStageWorld;
 
@@ -121,6 +123,7 @@ public class StageSelectUI : MonoBehaviour
         _curStageWorld.gameObject.SetActive(true);
         _worldScrollRect.content = _curStageWorld.GetComponent<RectTransform>();
         _worldNameText.SetText(_curStageWorld.WorldName);
+        _worldChapterNameText.SetText("ц╘ем " + _curStageWorld.ChapterName);
 
         _curStage = _curStageWorld.GetStage(0);
         float target = _curStage.GetComponent<RectTransform>().anchoredPosition.x * -1f;
@@ -132,6 +135,7 @@ public class StageSelectUI : MonoBehaviour
         _worldUI.SetActive(true);
         _chapterSelectUI.SetActive(false);
         _worldNameText.gameObject.SetActive(true);
+        _worldChapterNameText.gameObject.SetActive(true);
     }
 
     public void WorldChange(StageWorldUI ui)
@@ -156,6 +160,7 @@ public class StageSelectUI : MonoBehaviour
         _worldUI.SetActive(false);
         _chapterSelectUI.SetActive(true);
         _worldNameText.gameObject.SetActive(false);
+        _worldChapterNameText.gameObject.SetActive(false);
         gameObject.SetActive(true);
         _curStage = _prevStage = null;
         _moveLock = false;
@@ -181,6 +186,7 @@ public class StageSelectUI : MonoBehaviour
             _worldUI.SetActive(false);
             _chapterSelectUI.SetActive(true);
             _worldNameText.gameObject.SetActive(false);
+            _worldChapterNameText.gameObject.SetActive(false);
         }
     }
 
@@ -229,13 +235,14 @@ public class StageSelectUI : MonoBehaviour
     {
         if (_curStage == ui)
         {
-            _stageInfoUI.gameObject.SetActive(true);
             _stageInfoUI.UIOn(ui.StageDataSO);
         }
         else
         {
-            if (_stageInfoUI.IsEnable)
-                _stageInfoUI.UIDown();
+            if (_stageInfoUI.state == StageInfoUIState.Animation)
+                return;
+
+            _stageInfoUI.UIDown();
             WorldUISet(ui);
         }
     }

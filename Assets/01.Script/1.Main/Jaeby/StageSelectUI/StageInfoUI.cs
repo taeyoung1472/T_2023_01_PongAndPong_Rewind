@@ -28,7 +28,7 @@ public class StageInfoUI : MonoBehaviour
         if (data == null)
             return;
 
-        AudioManager.PlayAudio(SoundType.OnOpenStageInfo);
+        //AudioManager.PlayAudio(SoundType.OnOpenStageInfo);
         _stageSelectUI.Lock = true;
         _chapterNameText.SetText("ц╘ем " + _stageSelectUI.CurStageWorld.ChapterName);
         _worldNameText.SetText(_stageSelectUI.CurStageWorld.WorldName);
@@ -57,7 +57,7 @@ public class StageInfoUI : MonoBehaviour
 
     public void UIDown()
     {
-        AudioManager.PlayAudio(SoundType.OnCloseStageInfo);
+        //AudioManager.PlayAudio(SoundType.OnCloseStageInfo);
         _animator.Play("Disable");
         _isEnable = false;
     }

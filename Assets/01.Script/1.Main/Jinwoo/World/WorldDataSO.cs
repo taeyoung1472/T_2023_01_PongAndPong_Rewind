@@ -8,7 +8,7 @@ public class WorldDataSO : ScriptableObject
     public WorldType worldType;
     public List<StageDataSO> stageList;
 
-    public int rewardCount = 8;
+    public int rewardCount = 10;
     public string collectObjectName = "";
     public GameObject collectObject = null;
 

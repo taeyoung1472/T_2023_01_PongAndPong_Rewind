@@ -109,7 +109,10 @@ public class PlayerAnimation : MonoBehaviour
 
     public void MeleeAttackAnimation(int index)
     {
-        string name = $"PlayerMeleeAttack{index}";
+        string name = $"MeleeAttack{index}";
+        //isground 
+        if ((_player.PlayerActionCheck(PlayerActionType.Move) && _player.IsGrounded) == false)
+            name += "Stand";
         _animator.Play(name);
         _animator.Update(0);
         if (_attackAniCo != null)

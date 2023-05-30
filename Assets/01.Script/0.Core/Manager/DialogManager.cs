@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -20,7 +21,9 @@ public class DialogManager : MonoSingleTon<DialogManager>
     private bool _dialogLock = false;
 
     [SerializeField]
-    private GameObject _dialogCanvas = null;
+    private float _dialogCanvasAnimationTime = 0.25f;
+    [SerializeField]
+    private CanvasGroup _dialogCanvas = null;
     [SerializeField]
     private TextMeshProUGUI _nextText = null;
     [SerializeField]
@@ -43,7 +46,24 @@ public class DialogManager : MonoSingleTon<DialogManager>
     private void Start()
     {
         _sb = new StringBuilder();
-        _dialogCanvas.SetActive(false);
+        DialogCanvasAnimation(false, false);
+    }
+
+    private void DialogCanvasAnimation(bool value, bool smoothing = true)
+    {
+        _dialogCanvas.interactable = value;
+        _dialogCanvas.blocksRaycasts = value;
+
+        _dialogCanvas.DOKill();
+        if(smoothing)
+        {
+            _dialogCanvas.alpha = value ? 0f : 1f;
+            _dialogCanvas.DOFade(value ? 1f : 0f, _dialogCanvasAnimationTime);
+        }
+        else
+        {
+            _dialogCanvas.alpha = value ? 1f : 0f;
+        }
     }
 
     public void DialogForceExit()
@@ -75,7 +95,7 @@ public class DialogManager : MonoSingleTon<DialogManager>
             _titleText.SetText("");
         }
 
-        _dialogCanvas.SetActive(true);
+        DialogCanvasAnimation(true);
         _curDialogInteract = dialogInteract;
         _dialogCoroutine = StartCoroutine(DialogCoroutine(dialogInteract, data, dialogOptions, Callback));
         return true;
@@ -88,7 +108,7 @@ public class DialogManager : MonoSingleTon<DialogManager>
         _input = false;
         _curNPCData = null;
         _curDialogInteract = null;
-        _dialogCanvas.SetActive(false);
+        DialogCanvasAnimation(false);
         if (_dialogLock == false)
             StartCoroutine(DialogCooltimeCoroutine());
     }
