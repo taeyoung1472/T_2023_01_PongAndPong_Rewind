@@ -189,7 +189,14 @@ public class DialogManager : MonoSingleTon<DialogManager>
 
     private void Update()
     {
-        if (_excuting == false || _input)
+        if (_excuting == false)
+            return;
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            DialogForceExit();
+        }
+
+        if (_input)
             return;
         if (Input.GetKeyDown(KeyManager.keys[InputType.Interact]) ||
             Input.GetKeyDown(KeyCode.Mouse0) ||

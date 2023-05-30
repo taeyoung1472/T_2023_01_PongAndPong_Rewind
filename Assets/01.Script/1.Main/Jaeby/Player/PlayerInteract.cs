@@ -17,8 +17,11 @@ public class PlayerInteract : PlayerAction, IPlayerDisableResetable
 
     private void OnTriggerExit(Collider other)
     {
-        _curInteract?.InteractExit();
-        _curInteract = null;
+        if (other.CompareTag("Interact"))
+        {
+            _curInteract?.InteractExit();
+            _curInteract = null;
+        }
     }
 
     public bool TryInteract()

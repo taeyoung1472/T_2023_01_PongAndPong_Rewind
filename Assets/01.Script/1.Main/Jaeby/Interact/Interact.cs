@@ -73,10 +73,12 @@ public abstract class Interact : MonoBehaviour
     public void InteractEnter()
     {
         UIGetter.Instance.GetInteractUI(_interactUIPos.position, _interactSprite, KeyManager.keys[InputType.Interact]);
+        ChildInteractEnter();
     }
 
     public void InteractExit()
     {
         UIGetter.Instance.PushUIs();
+        ChildInteractExit();
     }
 }
