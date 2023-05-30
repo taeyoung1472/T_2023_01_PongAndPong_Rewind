@@ -6,8 +6,6 @@ using UnityEngine.UI;
 public class StageInfoUI : MonoBehaviour
 {
     [SerializeField]
-    private CanvasGroup _canvasGroup = null;
-    [SerializeField]
     private StageSelectUI _stageSelectUI = null;
     [SerializeField]
     private TextMeshProUGUI _collectionText = null;
@@ -25,11 +23,14 @@ public class StageInfoUI : MonoBehaviour
     private bool _isEnable = false;
     public bool IsEnable => _isEnable;
 
+    public StageInfoUIState state = StageInfoUIState.None;
+
     public void UIOn(StageDataSO data)
     {
-        if (data == null && _canvasGroup.alpha > 0.01f)
+        if (data == null || state == StageInfoUIState.Animation || state == StageInfoUIState.On)
             return;
 
+        gameObject.SetActive(true);
         //AudioManager.PlayAudio(SoundType.OnOpenStageInfo);
         _stageSelectUI.Lock = true;
         _chapterNameText.SetText("ц╘ем " + _stageSelectUI.CurStageWorld.ChapterName);
@@ -59,9 +60,16 @@ public class StageInfoUI : MonoBehaviour
 
     public void UIDown()
     {
+        if (state == StageInfoUIState.Animation || state == StageInfoUIState.Off)
+            return;
         //AudioManager.PlayAudio(SoundType.OnCloseStageInfo);
         _animator.Play("Disable");
         _isEnable = false;
+    }
+
+    public void StateChange(StageInfoUIState sta)
+    {
+        state = sta;
     }
 
     public void GameObjectEnable()
@@ -77,7 +85,7 @@ public class StageInfoUI : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape) && _isEnable && _canvasGroup.alpha > 0.01f)
+        if (Input.GetKeyDown(KeyCode.Escape) && _isEnable && !(state == StageInfoUIState.Animation))
         {
             UIDown();
         }

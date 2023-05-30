@@ -235,13 +235,14 @@ public class StageSelectUI : MonoBehaviour
     {
         if (_curStage == ui)
         {
-            _stageInfoUI.gameObject.SetActive(true);
             _stageInfoUI.UIOn(ui.StageDataSO);
         }
         else
         {
-            if (_stageInfoUI.IsEnable)
-                _stageInfoUI.UIDown();
+            if (_stageInfoUI.state == StageInfoUIState.Animation)
+                return;
+
+            _stageInfoUI.UIDown();
             WorldUISet(ui);
         }
     }
