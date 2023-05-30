@@ -144,15 +144,16 @@ public class ButtonGimmick : GimmickObject
         }
         if (toggleing == true && isToggle == true)
         {
-            Control();
             if (isActive == false)
             {
+                Control();
                 toggleTime -= Time.deltaTime;
                 toggleSlider.value -= Time.deltaTime;
             }
             if (toggleTime <= 0.0f)
             {
                 Control(false);
+                toggleing = false;
             }
         }
     }
@@ -206,6 +207,7 @@ public class ButtonGimmick : GimmickObject
 
         if (isFunc != curActive)
         {
+            Debug.Log(curActive);
             AudioManager.PlayAudio(SoundType.OnActiveButton);
             curActive = isFunc;
         }
