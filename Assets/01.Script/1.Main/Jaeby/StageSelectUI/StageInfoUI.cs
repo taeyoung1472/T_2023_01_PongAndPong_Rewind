@@ -23,11 +23,14 @@ public class StageInfoUI : MonoBehaviour
     private bool _isEnable = false;
     public bool IsEnable => _isEnable;
 
+    public StageInfoUIState state = StageInfoUIState.None;
+
     public void UIOn(StageDataSO data)
     {
-        if (data == null)
+        if (data == null || state == StageInfoUIState.Animation || state == StageInfoUIState.On)
             return;
 
+        gameObject.SetActive(true);
         //AudioManager.PlayAudio(SoundType.OnOpenStageInfo);
         _stageSelectUI.Lock = true;
         _chapterNameText.SetText("ц╘ем " + _stageSelectUI.CurStageWorld.ChapterName);
@@ -57,9 +60,18 @@ public class StageInfoUI : MonoBehaviour
 
     public void UIDown()
     {
+        if (state == StageInfoUIState.Animation || state == StageInfoUIState.Off)
+            return;
         //AudioManager.PlayAudio(SoundType.OnCloseStageInfo);
         _animator.Play("Disable");
         _isEnable = false;
+    }
+
+    public void StateChange(StageInfoUIState sta)
+    {
+        state = sta;
+        if(sta == StageInfoUIState.Off)
+            _stageSelectUI.Lock = false;
     }
 
     public void GameObjectEnable()
@@ -69,13 +81,12 @@ public class StageInfoUI : MonoBehaviour
 
     public void GameObjectDisable()
     {
-        _stageSelectUI.Lock = false;
         gameObject.SetActive(false);
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape) && _isEnable)
+        if (Input.GetKeyDown(KeyCode.Escape) && _isEnable && !(state == StageInfoUIState.Animation))
         {
             UIDown();
         }
