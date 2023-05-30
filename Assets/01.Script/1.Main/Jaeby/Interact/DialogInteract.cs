@@ -28,29 +28,28 @@ public class DialogInteract : Interact
         if (_curDialogData == null)
             return;
         InteractExit();
-        bool result = DialogManager.Instance.DialogStart(_myNPC.npcData, this, _curDialogData, _dialogOptions,
-            () =>
-            {
-                if (_dialogOptions.Count == 0)
-                {
-                    if (_chainInteract != null)
-                    {
-                        _chainInteract.Init(_player);
-                        _chainInteract.InteractStart();
-                    }
-                }
-            }
-            );
-        if (result == false)
-        {
-            InteractEnd(true);
-        }
-        else
+        if(DialogManager.Instance.DialogStart(_myNPC.npcData, this, _curDialogData, _dialogOptions, EndAction ))
         {
             if (_animator != null)
             {
                 _animator.Play("DialogStart");
                 _animator.Update(0);
+            }
+        }
+        else
+        {
+            InteractEnd(true);
+        }
+    }
+
+    private void EndAction()
+    {
+        if (_dialogOptions.Count == 0)
+        {
+            if (_chainInteract != null)
+            {
+                _chainInteract.Init(_player);
+                _chainInteract.InteractStart();
             }
         }
     }
