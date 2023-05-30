@@ -239,8 +239,8 @@ public class StageSelectUI : MonoBehaviour
         }
         else
         {
-            if (_stageInfoUI.state == StageInfoUIState.Animation)
-                return;
+            //if (_stageInfoUI.state == StageInfoUIState.Animation)
+            //    return;
 
             _stageInfoUI.UIDown();
             WorldUISet(ui);
