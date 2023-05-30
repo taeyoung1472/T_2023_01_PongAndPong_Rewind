@@ -70,6 +70,8 @@ public class StageInfoUI : MonoBehaviour
     public void StateChange(StageInfoUIState sta)
     {
         state = sta;
+        if(sta == StageInfoUIState.Off)
+            _stageSelectUI.Lock = false;
     }
 
     public void GameObjectEnable()
@@ -79,7 +81,6 @@ public class StageInfoUI : MonoBehaviour
 
     public void GameObjectDisable()
     {
-        _stageSelectUI.Lock = false;
         gameObject.SetActive(false);
     }
 

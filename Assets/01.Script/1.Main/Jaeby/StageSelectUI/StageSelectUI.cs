@@ -42,7 +42,12 @@ public class StageSelectUI : MonoBehaviour
     private int _worldIndex = 0;
     public int WorldIndex => _worldIndex;
     private bool _lock = false;
-    public bool Lock { get => _lock; set => _lock = value; }
+    public bool Lock { get => _lock; set
+        {
+            _lock = value;
+            //_worldScrollRect.enabled = !value;
+        }
+    }
     private bool _moveLock = false;
 
     private Sequence _worldUIMoveSeq = null;
@@ -192,10 +197,10 @@ public class StageSelectUI : MonoBehaviour
 
     private void Update()
     {
-        if (_lock) return;
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
+            if (_lock) return;
             UIDown();
             return;
         }
@@ -213,7 +218,7 @@ public class StageSelectUI : MonoBehaviour
             }
             else if (Input.GetMouseButtonUp(0))
             {
-                WorldUISet();
+                    WorldUISet();
             }
         }
     }
@@ -223,6 +228,8 @@ public class StageSelectUI : MonoBehaviour
         _moveLock = true;
         _prevStage = _curStage;
         _curStage = _curStageWorld.MouseUp(_accentColor, _subAccentColor, _deAccentColor, _sizeUpAmount, _sizeSubAmount, _sizeDownAmount, _sizeChangeDuration, ui);
+        if (_stageInfoUI.state == StageInfoUIState.On && _prevStage != _curStage)
+            _stageInfoUI.UIDown();
         if (_worldUIMoveSeq != null)
             _worldUIMoveSeq.Kill();
         _worldUIMoveSeq = DOTween.Sequence();
@@ -241,8 +248,6 @@ public class StageSelectUI : MonoBehaviour
         {
             if (_stageInfoUI.state == StageInfoUIState.Animation)
                 return;
-
-            _stageInfoUI.UIDown();
             WorldUISet(ui);
         }
     }
