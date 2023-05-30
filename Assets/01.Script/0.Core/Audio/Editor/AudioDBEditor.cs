@@ -65,8 +65,8 @@ public class AudioDBEditor : Editor
                     AssetDatabase.Refresh();
                 }
 
-                //AssetDatabase.MoveAsset(oldPath, newPath);
-                //AssetDatabase.Refresh();
+                AssetDatabase.MoveAsset(oldPath, newPath);
+                AssetDatabase.Refresh();
             }
         }
     }

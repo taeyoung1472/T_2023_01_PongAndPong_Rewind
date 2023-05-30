@@ -1,9 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.Events;
-using TMPro;
-using DigitalRuby.ThunderAndLightning;
 
 public class TimerManager : MonoSingleTon<TimerManager>
 {
@@ -11,7 +8,7 @@ public class TimerManager : MonoSingleTon<TimerManager>
     public float CurrentTimer { get; set; }
 
 
-    private float rewindingTime = 0; 
+    private float rewindingTime = 0;
     public float RewindingTime
     {
         get
@@ -39,6 +36,7 @@ public class TimerManager : MonoSingleTon<TimerManager>
     [SerializeField] private GameObject rewindVolume;
 
     public UnityEvent startRewind;
+    public Action<float> OnTimeChange;
     #endregion
     private void Awake()
     {
@@ -82,9 +80,9 @@ public class TimerManager : MonoSingleTon<TimerManager>
     public void UpdateText()
     {
         if (!isRewinding)
-            UIManager.Instance.OnPlayTimeChange(CurrentTimer);
+            OnTimeChange.Invoke(CurrentTimer);
         else
-            UIManager.Instance.OnRewindTimeChange((RewindingTime - CurrentTimer));
+            OnTimeChange.Invoke(RewindingTime - CurrentTimer);
     }
     private void UpdateTime()
     {
@@ -154,5 +152,5 @@ public class TimerManager : MonoSingleTon<TimerManager>
         RewindManager.Instance.StopRewindTimeBySeconds();
         StageManager.Instance.CurStage.curArea.ExitArea();
     }
-    
+
 }
