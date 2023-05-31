@@ -21,6 +21,8 @@ public class StageSelectUI : MonoBehaviour
     private ScrollRect _chapterScrollRect = null;
     [SerializeField]
     private TextMeshProUGUI _worldNameText = null;
+    [SerializeField]
+    private TextMeshProUGUI _worldChapterNameText = null;
     private StageWorldUI _curStageWorld = null;
     public StageWorldUI CurStageWorld => _curStageWorld;
 
@@ -40,7 +42,12 @@ public class StageSelectUI : MonoBehaviour
     private int _worldIndex = 0;
     public int WorldIndex => _worldIndex;
     private bool _lock = false;
-    public bool Lock { get => _lock; set => _lock = value; }
+    public bool Lock { get => _lock; set
+        {
+            _lock = value;
+            //_worldScrollRect.enabled = !value;
+        }
+    }
     private bool _moveLock = false;
 
     private Sequence _worldUIMoveSeq = null;
@@ -121,6 +128,7 @@ public class StageSelectUI : MonoBehaviour
         _curStageWorld.gameObject.SetActive(true);
         _worldScrollRect.content = _curStageWorld.GetComponent<RectTransform>();
         _worldNameText.SetText(_curStageWorld.WorldName);
+        _worldChapterNameText.SetText("ц╘ем " + _curStageWorld.ChapterName);
 
         _curStage = _curStageWorld.GetStage(0);
         float target = _curStage.GetComponent<RectTransform>().anchoredPosition.x * -1f;
@@ -132,6 +140,7 @@ public class StageSelectUI : MonoBehaviour
         _worldUI.SetActive(true);
         _chapterSelectUI.SetActive(false);
         _worldNameText.gameObject.SetActive(true);
+        _worldChapterNameText.gameObject.SetActive(true);
     }
 
     public void WorldChange(StageWorldUI ui)
@@ -156,6 +165,7 @@ public class StageSelectUI : MonoBehaviour
         _worldUI.SetActive(false);
         _chapterSelectUI.SetActive(true);
         _worldNameText.gameObject.SetActive(false);
+        _worldChapterNameText.gameObject.SetActive(false);
         gameObject.SetActive(true);
         _curStage = _prevStage = null;
         _moveLock = false;
@@ -181,15 +191,16 @@ public class StageSelectUI : MonoBehaviour
             _worldUI.SetActive(false);
             _chapterSelectUI.SetActive(true);
             _worldNameText.gameObject.SetActive(false);
+            _worldChapterNameText.gameObject.SetActive(false);
         }
     }
 
     private void Update()
     {
-        if (_lock) return;
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
+            if (_lock) return;
             UIDown();
             return;
         }
@@ -207,7 +218,7 @@ public class StageSelectUI : MonoBehaviour
             }
             else if (Input.GetMouseButtonUp(0))
             {
-                WorldUISet();
+                    WorldUISet();
             }
         }
     }
@@ -217,6 +228,8 @@ public class StageSelectUI : MonoBehaviour
         _moveLock = true;
         _prevStage = _curStage;
         _curStage = _curStageWorld.MouseUp(_accentColor, _subAccentColor, _deAccentColor, _sizeUpAmount, _sizeSubAmount, _sizeDownAmount, _sizeChangeDuration, ui);
+        if (_stageInfoUI.state == StageInfoUIState.On && _prevStage != _curStage)
+            _stageInfoUI.UIDown();
         if (_worldUIMoveSeq != null)
             _worldUIMoveSeq.Kill();
         _worldUIMoveSeq = DOTween.Sequence();
@@ -229,13 +242,12 @@ public class StageSelectUI : MonoBehaviour
     {
         if (_curStage == ui)
         {
-            _stageInfoUI.gameObject.SetActive(true);
             _stageInfoUI.UIOn(ui.StageDataSO);
         }
         else
         {
-            if (_stageInfoUI.IsEnable)
-                _stageInfoUI.UIDown();
+            if (_stageInfoUI.state == StageInfoUIState.Animation)
+                return;
             WorldUISet(ui);
         }
     }

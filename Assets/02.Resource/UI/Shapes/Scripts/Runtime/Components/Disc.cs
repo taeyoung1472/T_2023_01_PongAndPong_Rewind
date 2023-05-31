@@ -239,6 +239,7 @@ namespace Shapes {
 			float padding = thicknessSpace == ThicknessSpace.Meters ? thickness * .5f : 0f;
 			float apothem = HasThickness ? radius + padding : radius;
 			float size = apothem * 2;
+			
 			return new Bounds( Vector3.zero, new Vector3( size, size, 0f ) );
 		}
 

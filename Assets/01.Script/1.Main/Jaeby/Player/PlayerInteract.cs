@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerInteract : PlayerAction, IPlayerResetable
+public class PlayerInteract : PlayerAction, IPlayerDisableResetable
 {
     private Interact _curInteract = null;
 
@@ -17,8 +17,11 @@ public class PlayerInteract : PlayerAction, IPlayerResetable
 
     private void OnTriggerExit(Collider other)
     {
-        _curInteract?.InteractExit();
-        _curInteract = null;
+        if (other.CompareTag("Interact"))
+        {
+            _curInteract?.InteractExit();
+            _curInteract = null;
+        }
     }
 
     public bool TryInteract()
@@ -36,10 +39,6 @@ public class PlayerInteract : PlayerAction, IPlayerResetable
     {
         _player.PlayerInput.enabled = true;
         _excuting = false;
-    }
-
-    public void EnableReset()
-    {
     }
 
     public void DisableReset()

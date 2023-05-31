@@ -43,6 +43,13 @@ public class PlayerAnimation : MonoBehaviour
         _animator.Update(0);
     }
 
+    public void DieAnimation()
+    {
+        _animator.Rebind();
+        _animator.Play("PlayerDie");
+        _animator.Update(0);
+    }
+
     public void JumpAnimation()
     {
         _animator.Rebind();
@@ -102,7 +109,10 @@ public class PlayerAnimation : MonoBehaviour
 
     public void MeleeAttackAnimation(int index)
     {
-        string name = $"PlayerMeleeAttack{index}";
+        string name = $"MeleeAttack{index}";
+        //isground 
+        if ((_player.PlayerActionCheck(PlayerActionType.Move) && _player.IsGrounded) == false)
+            name += "Stand";
         _animator.Play(name);
         _animator.Update(0);
         if (_attackAniCo != null)
@@ -117,6 +127,16 @@ public class PlayerAnimation : MonoBehaviour
         if (_attackAniCo != null)
             StopCoroutine(_attackAniCo);
         _attackAniCo = StartCoroutine(AttackAnimationEndWaitCoroutine("PlayerRangeAttack", AttackState.Range));
+    }
+
+    public void DieStartAnimation()
+    {
+        _player.playerHP.DieStart();
+    }
+
+    public void DieEndAnimation()
+    {
+        _player.playerHP.Restart();
     }
 
     private IEnumerator AttackAnimationEndWaitCoroutine(string aniName, AttackState attackState)

@@ -5,6 +5,5 @@ using UnityEngine;
 [System.Serializable]
 public class StageCollectionData 
 {
-
-    public List<bool> collectionData;
+    public List<bool> collectionBoolDataList;
 }

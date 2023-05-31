@@ -44,19 +44,21 @@ public class StageUnitUI : MonoBehaviour
         _seq.Join(_glowImage.DOColor(endColor, duration));
         _seq.Join(_inIconImage.DOColor(endColor, duration));
         _seq.Join(_inGlowImage.DOColor(endColor, duration));
-        _animator.SetBool("Loop", animationLoop);
+        if (gameObject.activeSelf)
+            _animator.SetBool("Loop", animationLoop);
     }
 
     public void AccectReset()
     {
-        if(_seq != null)
+        if (_seq != null)
             _seq.Kill();
         transform.localScale = Vector3.one;
         _iconImage.color = Color.white;
         _glowImage.color = Color.white;
         _inIconImage.color = Color.white;
         _inGlowImage.color = Color.white;
-        _animator.SetBool("Loop", false);
+        if (gameObject.activeSelf)
+            _animator.SetBool("Loop", false);
     }
 
     public void SetStageData()

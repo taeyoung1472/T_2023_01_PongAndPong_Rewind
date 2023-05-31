@@ -28,6 +28,8 @@ public class StageManager : MonoSingleTon<StageManager>
     private float reStartCoolTime = 1f;
     private float freelookCoolTime = 2f;
     private bool isRestartPossible = false;
+    private bool inputLock = false;
+    public bool InputLock { get => inputLock; set => inputLock = value; }
 
     [Header("카메라 관련")]
     [SerializeField]
@@ -65,12 +67,12 @@ public class StageManager : MonoSingleTon<StageManager>
         }
 
         if (Input.GetKeyDown(KeyCode.R) && isRestartPossible && !freeLookCam._isActivated &&
-            !BreakScreenController.Instance.isBreaking && !EndManager.Instance.IsEnd)
+            !BreakScreenController.Instance.isBreaking && !EndManager.Instance.IsEnd && !inputLock)
         {
             OnReStartArea();
         }
 
-        if (Input.GetKeyDown(KeyCode.T) && isRestartPossible && !isDownButton && !EndManager.Instance.IsEnd)
+        if (Input.GetKeyDown(KeyCode.T) && isRestartPossible && !isDownButton && !EndManager.Instance.IsEnd && !inputLock)
         {
             isDownButton = true;
             GlitchManager.Instance.CoroutineColorDrift();
@@ -102,6 +104,7 @@ public class StageManager : MonoSingleTon<StageManager>
     }
     public void OnFreeLookCam(bool isOn)
     {
+        AudioManager.PlayAudio(SoundType.OnGameStart);
         Debug.Log(isOn);
         if (isOn) //자유시점 온
         {

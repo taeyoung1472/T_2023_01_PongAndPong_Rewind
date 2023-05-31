@@ -17,7 +17,6 @@ public abstract class GimmickObject : MonoBehaviour
         {
             player = FindObjectOfType<Player>();
         }
-        //Debug.Log(isRewind);
     }
     public virtual void InitOnRestart()
     {

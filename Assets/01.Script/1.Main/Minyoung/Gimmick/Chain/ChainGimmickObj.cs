@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ChainGimmickObj : GimmickObject
+public class ChainGimmickObj : GimmickObject, IDamageable
 {
     ChainGimmick chainGimmick;
     List<ChainGimmickObj> chainGimmickObjList = new List<ChainGimmickObj>();
@@ -11,14 +11,10 @@ public class ChainGimmickObj : GimmickObject
         base.Awake();
         Init();
     }
-    public override void Init()
-    {
-        chainGimmick = FindObjectOfType<ChainGimmick>();
-    }
 
-    private void OnTriggerEnter(Collider other)
+    public void Damaged(ColliderType colliderType)
     {
-        if (other.gameObject.CompareTag("Bullet"))
+        if (colliderType == ColliderType.PlayerBullet)
         {
             int index = chainGimmick.chainList.FindIndex(x => x == this);
             Debug.Log(index);
@@ -28,9 +24,15 @@ public class ChainGimmickObj : GimmickObject
                 chainGimmick.chainList[i].GetComponent<Rigidbody>().freezeRotation = true;
                 chainGimmick.chainList[i].GetComponent<Rigidbody>().useGravity = true;
             }
-            //chainGimmick.chainList.Remove(this);
-           // Destroy(gameObject);
         }
-        //ºÒ·¿°ú¸ÂÀ¸¸é »ç¶óÁü       
+    }
+
+    public override void Init()
+    {
+        chainGimmick = FindObjectOfType<ChainGimmick>();
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
     }
 }

@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 using static Define;
 using static UnityEngine.Rendering.DebugUI.Table;
 
-public class PlayerAttack : PlayerAction, IPlayerResetable
+public class PlayerAttack : PlayerAction, IPlayerEnableResetable
 {
     [SerializeField]
     private UnityEvent<int> OnMeleeAttack = null;
@@ -18,6 +18,10 @@ public class PlayerAttack : PlayerAction, IPlayerResetable
 
     private AttackState _attackState = AttackState.Melee;
     private Coroutine _attackDelayCo = null;
+
+    [SerializeField]
+    private float _meleeAttackResetTime = 0.5f;
+    private Coroutine _meleeAttackResetCo = null;
 
     #region 스위칭
     private bool _switchingable = true;
@@ -36,7 +40,6 @@ public class PlayerAttack : PlayerAction, IPlayerResetable
     [SerializeField]
     private float _ikEndAnimationTime = 0.3f;
     private Transform _mousePositionTrm = null;
-    private bool _shooting = false;
     [SerializeField]
     private float _ikCancelMaxAngle = 30f;
     private bool _observerStarting = false;
@@ -44,7 +47,6 @@ public class PlayerAttack : PlayerAction, IPlayerResetable
 
     private void Start()
     {
-
         _pistolObj.SetActive(false);
     }
 
@@ -54,8 +56,6 @@ public class PlayerAttack : PlayerAction, IPlayerResetable
             return;
 
         _excuting = true;
-        _player.VelocitySetMove(0f, 0f);
-
         if (_attackState == AttackState.Melee)
             MeleeAttack();
         else
@@ -69,17 +69,26 @@ public class PlayerAttack : PlayerAction, IPlayerResetable
     private void MeleeAttack()
     {
         // 타격 처리
+        if (_meleeAttackResetCo != null)
+            StopCoroutine(_meleeAttackResetCo);
+        _meleeAttackResetCo = StartCoroutine(MeleeAttackResetCoroutine());
+
         _attackIndex = (_attackIndex + 1) % _maxAttackIndex;
         OnMeleeAttack?.Invoke(_attackIndex);
         _player.playerAudio.AttackAudio();
 
+        AttackCollider.Create(0, ColliderType.PlayerMelee, null, _player.transform.position + _player.PlayerRenderer.Forward, 0.9f, 0.5f, false, null);
+    }
 
-        AttackCollider.Create(0, ColliderOwnerType.Player, null, _player.transform.position + _player.PlayerRenderer.Forward, 0.9f, 0.5f, false, null);
+    private IEnumerator MeleeAttackResetCoroutine()
+    {
+        yield return new WaitForSeconds(_meleeAttackResetTime);
+        _attackIndex = -1;
     }
 
     private void RangeAttack()
     {
-        _shooting = true;
+        _excuting = true;
         _observerStarting = false;
         if (_iKEndAnimationCoroutine != null)
             StopCoroutine(_iKEndAnimationCoroutine);
@@ -167,7 +176,6 @@ public class PlayerAttack : PlayerAction, IPlayerResetable
         _iKEndAnimationCoroutine = StartCoroutine(EndIkCoroutine());
 
         _player.PlayerAnimation.MoveFlipLock = false;
-        _shooting = false;
         _excuting = false;
         _observerStarting = false;
     }
@@ -202,6 +210,8 @@ public class PlayerAttack : PlayerAction, IPlayerResetable
         if (_switchingable == false)
             return;
 
+        if (_meleeAttackResetCo != null)
+            StopCoroutine(_meleeAttackResetCo);
         ActionExit();
         _attackState = _attackState == AttackState.Melee ? AttackState.Range : AttackState.Melee;
         if (_attackState == AttackState.Range)
@@ -213,6 +223,7 @@ public class PlayerAttack : PlayerAction, IPlayerResetable
             _pistolObj.SetActive(false);
         }
         _attackIndex = -1;
+        _excuting = false;
         if (_switchingCo != null)
             StopCoroutine(_switchingCo);
         StartCoroutine(SwitchingCoroutine());
@@ -249,6 +260,8 @@ public class PlayerAttack : PlayerAction, IPlayerResetable
 
     public override void ActionExit()
     {
+        if (_meleeAttackResetCo != null)
+            StopCoroutine(_meleeAttackResetCo);
         if (_switchingCo != null)
             StopCoroutine(_switchingCo);
         if (_attackDelayCo != null)
@@ -260,7 +273,6 @@ public class PlayerAttack : PlayerAction, IPlayerResetable
         _switchingable = true;
         _delayLock = false;
         _excuting = false;
-        _shooting = false;
         _observerStarting = false;
         _player.animationIK.SetIKWeightZero();
         _player.animationIK.RotationLock = false;
@@ -271,10 +283,5 @@ public class PlayerAttack : PlayerAction, IPlayerResetable
     {
         _pistolObj.SetActive(false);
         WeaponSwitching(AttackState.Melee, true);
-    }
-
-    public void DisableReset()
-    {
-
     }
 }

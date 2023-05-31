@@ -1,11 +1,11 @@
 using DG.Tweening;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class SceneChangeCanvas : MonoBehaviour
 {
-    static CanvasGroup group;
     static Sequence loadingSeq = null;
 
     static bool isEndSequence = true;
@@ -15,7 +15,10 @@ public class SceneChangeCanvas : MonoBehaviour
     static float masterVolume;
     static float timer;
 
-    const string MASTER = "Master";
+    static List<RectTransform> rectList = new();
+
+    const string SFX = "SFX";
+    const string BGM = "BGM";
 
     public void Awake()
     {
@@ -24,13 +27,19 @@ public class SceneChangeCanvas : MonoBehaviour
             Destroy(gameObject);
         }
         hasInstance = true;
+
+        if(rectList.Count == 0)
+        {
+            for (int i = 0; i < transform.childCount; i++)
+            {
+                rectList.Add(transform.GetChild(i).GetComponent<RectTransform>());
+            }
+        }
     }
 
     public void Start()
     {
         DontDestroyOnLoad(gameObject);
-        group = GetComponent<CanvasGroup>();
-        DeActive();
         StartCoroutine(ChangeVolume());
     }
 
@@ -41,8 +50,10 @@ public class SceneChangeCanvas : MonoBehaviour
             yield return new WaitUntil(() => !isEndSequence);
             timer = 0;
 
-            float startVol;
-            AudioManager.Mixer.GetFloat(MASTER, out startVol);
+            float sfxVol;
+            float bgmVol;
+            AudioManager.Mixer.GetFloat(SFX, out sfxVol);
+            AudioManager.Mixer.GetFloat(BGM, out bgmVol);
 
             float targetVol = 0;
             if (isFade)
@@ -53,12 +64,13 @@ public class SceneChangeCanvas : MonoBehaviour
             {
                 timer += Time.deltaTime;
 
-                AudioManager.Mixer.SetFloat(MASTER, Mathf.Lerp(startVol, targetVol, timer));
+                AudioManager.Mixer.SetFloat(SFX, Mathf.Lerp(sfxVol, targetVol, timer));
+                AudioManager.Mixer.SetFloat(BGM, Mathf.Lerp(bgmVol, targetVol, timer));
 
                 if (timer > 1)
                 {
-
-                    AudioManager.Mixer.SetFloat(MASTER, targetVol);
+                    AudioManager.Mixer.SetFloat(SFX, targetVol);
+                    AudioManager.Mixer.SetFloat(BGM, targetVol);
                     isEndSequence = true;
                 }
                 yield return null;
@@ -71,11 +83,14 @@ public class SceneChangeCanvas : MonoBehaviour
         isEndSequence = false;
         isFade = true;
         timer = 0;
-        AudioManager.Mixer.GetFloat(MASTER, out masterVolume);
 
         Time.timeScale = 1.0f;
         loadingSeq = DOTween.Sequence();
-        loadingSeq.Append(DOTween.To(() => group.alpha, x => group.alpha = x, 1, 0.5f)).SetUpdate(true);
+        for (int i = 0; i < rectList.Count; i++)
+        {
+            loadingSeq.InsertCallback(i * 0.1f, () => AudioManager.PlayAudio(SoundType.OnSceneChange, 1 + i / 10f, 1, "Another"));
+            loadingSeq.Insert(i * 0.1f, rectList[i].DOAnchorPosX(0, 0.3f)).SetEase(Ease.Linear);
+        }
         loadingSeq.AppendInterval(1.5f).SetUpdate(true);
         loadingSeq.AppendCallback(() => { callbackAction?.Invoke(); });
     }
@@ -86,7 +101,19 @@ public class SceneChangeCanvas : MonoBehaviour
         timer = 0;
 
         loadingSeq = DOTween.Sequence();
-        loadingSeq.Append(DOTween.To(() => group.alpha, x => group.alpha = x, 0, 0.5f)).SetUpdate(true);
         loadingSeq.AppendCallback(() => { callbackAction?.Invoke(); });
+        for (int i = rectList.Count - 1; i >= 0; i--)
+        {
+            loadingSeq.InsertCallback(i * 0.1f, () => AudioManager.PlayAudio(SoundType.OnSceneChange, 1 + (i / 10f), 1, "Another"));
+            loadingSeq.Insert(i * 0.1f, rectList[i].DOAnchorPosX(Screen.width, 0.3f)).SetEase(Ease.Linear);
+        }
+        loadingSeq.AppendInterval(rectList.Count * 0.1f);
+        loadingSeq.AppendCallback(() =>
+        {
+            for (int i = 0; i < rectList.Count; i++)
+            {
+                rectList[i].anchoredPosition = new Vector2(-Screen.width, rectList[i].anchoredPosition.y);
+            }
+        });
     }
 }

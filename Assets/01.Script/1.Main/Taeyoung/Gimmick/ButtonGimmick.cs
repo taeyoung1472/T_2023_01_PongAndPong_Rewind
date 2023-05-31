@@ -1,12 +1,14 @@
 using System;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public class ButtonGimmick : GimmickObject
 {
     bool isActive = false;
     bool isActivePlayer = false;
+    bool curActive;
 
     [SerializeField] private ControlData[] controlDataArr;
     [SerializeField] private GimmickVisualLink visualLinkPrefab;
@@ -31,6 +33,11 @@ public class ButtonGimmick : GimmickObject
     private float timer = 0f;
     [SerializeField] private DirectionType preDirType;
 
+    #region 토글 슬라이더 관련
+    private Slider toggleSlider = null;
+
+    #endregion
+
     [ContextMenu("Gen Color")]
     public void GenColor()
     {
@@ -45,6 +52,8 @@ public class ButtonGimmick : GimmickObject
     public void Start()
     {
         animator = GetComponent<Animator>();
+        toggleSlider = GetComponentInChildren<Slider>();
+        SetSlider();
         if (RewindManager.Instance)
         {
             RewindManager.Instance.RestartPlay += () =>
@@ -67,9 +76,20 @@ public class ButtonGimmick : GimmickObject
             gravityInverseGimmick = FindObjectOfType<GravityInverseGimmick>();
         }
     }
+    private void SetSlider()
+    {
+        toggleSlider.maxValue = origntToggleTime;
+        toggleSlider.value = toggleSlider.maxValue;
+
+        if (isToggle == false)
+        {
+            toggleSlider.gameObject.SetActive(false);
+        }
+    }
     private void InitInfo()
     {
         Control(false);
+        SetSlider();
         foreach (var control in controlDataArr)
         {
             control.target.isLocked = false;
@@ -124,14 +144,16 @@ public class ButtonGimmick : GimmickObject
         }
         if (toggleing == true && isToggle == true)
         {
-            Control();
             if (isActive == false)
             {
+                Control();
                 toggleTime -= Time.deltaTime;
+                toggleSlider.value -= Time.deltaTime;
             }
             if (toggleTime <= 0.0f)
             {
                 Control(false);
+                toggleing = false;
             }
         }
     }
@@ -144,7 +166,8 @@ public class ButtonGimmick : GimmickObject
             isActivePlayer = true;
             toggleing = true;
             toggleTime = origntToggleTime;
-            //gravityInverseGimmick.dirChangeDic.Add(2, gravitChangeDirState);
+            SetSlider();
+
             if (this.player == null)
             {
                 this.player = player;
@@ -155,6 +178,9 @@ public class ButtonGimmick : GimmickObject
         if (other.TryGetComponent<GimmickObject>(out GimmickObject gimmickObject))
         {
             Debug.Log(gimmickObject);
+
+            SetSlider();
+
             isActive = true;
             toggleing = true;
             toggleTime = origntToggleTime;
@@ -178,6 +204,13 @@ public class ButtonGimmick : GimmickObject
         ControlType controlType = ControlType.Control;
         if (isFunc == false)
             controlType = ControlType.None;
+
+        if (isFunc != curActive)
+        {
+            Debug.Log(curActive);
+            AudioManager.PlayAudio(SoundType.OnActiveButton);
+            curActive = isFunc;
+        }
 
         foreach (var control in controlDataArr)
         {

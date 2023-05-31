@@ -60,10 +60,9 @@ public class PortalTelepote : GimmickObject
     {
         if (objIsOverlapping)
         {
-
             Vector3 centerPos = Vector3.zero;
             Vector3 diffVec = Vector3.zero;
-
+            AudioManager.PlayAudioRandPitch(SoundType.OnPortal);
             foreach (Transform trm in telObjList)
             {
                 Collider col = trm.GetComponent<Collider>();
@@ -91,20 +90,13 @@ public class PortalTelepote : GimmickObject
                 {
 
                 }
-
-                //float reciPosX = objreciever.position.x;
-                //trm.position = new Vector3(reciPosX, trm.position.y, trm.position.z );
-
-
             }
         }
-
     }
     void PlayerTelPo()
     {
         if (playerIsOverlapping)
         {
-
             Vector3 offset = new Vector3(player.GetComponent<CapsuleCollider>().radius * 2.5f, 0, 0);
             if (isRight)
             {
@@ -114,10 +106,10 @@ public class PortalTelepote : GimmickObject
             {
                 playerTrm.position = reciever.position + -offset;
             }
+            AudioManager.PlayAudioRandPitch(SoundType.OnPortal);
             Debug.Log(offset);
             playerIsOverlapping = false;
             DeleteBuff();
-            //Invoke("DeleteBuff", 0.1f);
         }
     }
     
@@ -140,7 +132,6 @@ public class PortalTelepote : GimmickObject
             Vector3 portalToPlayer = playerTrm.position - transform.position;
             Vector3 crossVec = Vector3.Cross(transform.forward, portalToPlayer);
             cross = crossVec.y;
-            Debug.Log("작동 잘하나요" + cross);
             if (cross >= 0f)
             {
                 playerIsOverlapping = true;

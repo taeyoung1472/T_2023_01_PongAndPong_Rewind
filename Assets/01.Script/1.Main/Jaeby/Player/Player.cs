@@ -7,7 +7,8 @@ using System.IO;
 public class Player : MonoBehaviour
 {
     private List<PlayerAction> _playerActions = new List<PlayerAction>();
-    private List<IPlayerResetable> _resetables = new List<IPlayerResetable>();
+    private List<IPlayerEnableResetable> _enableResetables = new List<IPlayerEnableResetable>();
+    private List<IPlayerDisableResetable> _disableResetables = new List<IPlayerDisableResetable>();
 
     #region SO
     [SerializeField]
@@ -88,7 +89,8 @@ public class Player : MonoBehaviour
         //액션 초기화
         List<PlayerAction> tempActions = new List<PlayerAction>(GetComponents<PlayerAction>());
         _playerActions = (from action in tempActions orderby action.ActionType ascending select action).ToList();
-        _resetables = new List<IPlayerResetable>(GetComponents<IPlayerResetable>());
+        _enableResetables = new List<IPlayerEnableResetable>(GetComponents<IPlayerEnableResetable>());
+        _disableResetables = new List<IPlayerDisableResetable>(GetComponents<IPlayerDisableResetable>());
         //캐싱
         _playerBuff = GetComponent<PlayerBuff>();
         _playerHP = GetComponent<PlayerHP>();
@@ -152,11 +154,10 @@ public class Player : MonoBehaviour
 
     public void EnableReset()
     {
-        //Debug.Log("EnableReset");
         for (int i = 0; i < _playerActions.Count; i++)
             _playerActions[i].ActionExit();
-        for (int i = 0; i < _resetables.Count; i++)
-            _resetables[i].EnableReset();
+        for (int i = 0; i < _enableResetables.Count; i++)
+            _enableResetables[i].EnableReset();
 
         if(_playerRenderer != null)
             _playerRenderer.FlipDirectionChange(DirectionType.Down, true);
@@ -164,9 +165,8 @@ public class Player : MonoBehaviour
 
     public void DisableReset()
     {
-        Debug.Log("DisableReset");
-        for (int i = 0; i < _resetables.Count; i++)
-            _resetables[i].DisableReset();
+        for (int i = 0; i < _disableResetables.Count; i++)
+            _disableResetables[i].DisableReset();
     }
 
     private void FixedUpdate()
@@ -298,7 +298,7 @@ public class Player : MonoBehaviour
         float maxDistance = 0f;
         if (_playerRenderer.flipDirection == DirectionType.Left || _playerRenderer.flipDirection == DirectionType.Right)
         {
-            maxDistance = _col.bounds.extents.x - 0.2f;
+            maxDistance = _col.bounds.extents.x;
             halfExtents.y = _groundCheckRayLength;
         }
         else
@@ -310,10 +310,6 @@ public class Player : MonoBehaviour
         if (lastGrounded == _isGrounded)
             return;
         OnIsGrounded?.Invoke(_isGrounded);
-    }
-
-    private void Update()
-    {
     }
 
     private bool OnSlope()
@@ -337,9 +333,9 @@ public class Player : MonoBehaviour
         _characterMoveAmount = ((_moveAmount + _extraMoveAmount) +
             ((_isGrounded == false && _gravityModule.UseGravity) ? _gravityModule.GetGravity() : Vector3.zero))
             ;
-        if (_rigid.velocity.y < 0f)
+        if (_isGrounded == false)
         {
-            _characterMoveAmount += Vector3.up * GravityModule.GetGravity().y * (_playerMovementSO.fallMultiplier - 1) * Time.deltaTime;
+            _characterMoveAmount += transform.up * GravityModule.GetGravity().y * (_playerMovementSO.fallMultiplier - 1) * Time.deltaTime;
         }
         if (OnSlope())
         {

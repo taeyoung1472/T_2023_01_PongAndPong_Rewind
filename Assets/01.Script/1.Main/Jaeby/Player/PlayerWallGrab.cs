@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class PlayerWallGrab : PlayerAction, IPlayerResetable
+public class PlayerWallGrab : PlayerAction
 {
     [SerializeField]
     private UnityEvent<bool> OnWallGrabed = null;
@@ -19,7 +19,7 @@ public class PlayerWallGrab : PlayerAction, IPlayerResetable
 
         _player.ForceStop();
         _player.PlayerActionLock(true, PlayerActionType.Dash, PlayerActionType.Move, PlayerActionType.WallGrab);
-        _player.PlayerRenderer.Flip(wallPosition - _player.transform.position);
+        _player.PlayerRenderer.Flip(wallPosition - _player.transform.position, false);
         _player.GravityModule.UseGravity = false;
         _player.GetPlayerAction<PlayerJump>().MoreJump(1);
         OnWallGrabed?.Invoke(true);
@@ -50,13 +50,5 @@ public class PlayerWallGrab : PlayerAction, IPlayerResetable
             StopCoroutine(_wallGrabCoroutine);
         _player.PlayerActionLock(false, PlayerActionType.WallGrab, PlayerActionType.Move, PlayerActionType.Dash);
         OnWallGrabed?.Invoke(false);
-    }
-
-    public void EnableReset()
-    {
-    }
-
-    public void DisableReset()
-    {
     }
 }

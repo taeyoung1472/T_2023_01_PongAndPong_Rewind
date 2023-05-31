@@ -294,6 +294,7 @@ GameObject:
   - component: {fileID: 1262395316360919863}
   - component: {fileID: 1262395316360919857}
   - component: {fileID: 6136319133893209008}
+  - component: {fileID: 4677962446999410292}
   m_Layer: 5
   m_Name: Chapter Button
   m_TagString: Untagged
@@ -402,6 +403,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _worldNameText: {fileID: 1262395316247586827}
   _chapterNameText: {fileID: 1262395317512274882}
+--- !u!114 &4677962446999410292
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1262395316360919859}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7df401cdbaeaf5341803b4e2a23c31fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  originColor: {r: 1, g: 1, b: 1, a: 1}
+  activeColor: {r: 1, g: 1, b: 0.29411766, a: 1}
+  activeMoveValue: 0
+  activeSizeValue: 1.1
+  hoverClip: {fileID: 8300000, guid: 13b748dec1a4e284090e9c9c6be0e4a8, type: 3}
+  clickClip: {fileID: 8300000, guid: 8acfa21e5ee13fe469f0b88f836f98b0, type: 3}
+  isMove: 0
+  textList:
+  - {fileID: 1262395317512274882}
+  - {fileID: 1262395316247586827}
+  imageList: []
 --- !u!1 &1262395316371652487
 GameObject:
   m_ObjectHideFlags: 0
@@ -966,7 +990,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 953160aad749d4445804d6221300168e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0791be47744ac53419a4f7ae625fbdd1, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1

@@ -9,6 +9,7 @@ public class ClearPoint : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             StageManager.Instance.GetCurArea().isAreaClear = true;
+            AudioManager.PlayAudioRandPitch(SoundType.OnGameEnd);
         }
     }
 }

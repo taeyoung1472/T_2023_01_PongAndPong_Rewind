@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerBuff : MonoBehaviour, IPlayerResetable
+public class PlayerBuff : MonoBehaviour, IPlayerEnableResetable, IPlayerDisableResetable
 {
     private int _buff = 0;
 

@@ -11,44 +11,49 @@ public class CollectionManager : MonoSingleTon<CollectionManager>
 
     public Transform collectionParentTrm;
 
-    private StageCollectionData _stageCollectionData;
-
-    private ChapterStageCollectionData _chapterStageCollectionData;
-    public ChapterStageCollectionData ChapterStageCollectionData => _chapterStageCollectionData;
-
-    public WorldDataSO worldDataSO;
-
+    [SerializeField] private StageDatabase stageDatabase;
     private void Awake()
     {
-
-        if (RewindManager.Instance)
-        {
-            RewindManager.Instance.InitPlay += InitOnPlay;
-        }
     }
 
     private void InitOnPlay()
     {
-        LoadCollectionJson();
+        SetCollection();
+    }
+
+    private void InitOnReplay()
+    {
+        SetCollection();
     }
 
     private void Start()
     {
-
         collectionParentTrm = GameObject.Find("Collection").transform;
         if (collectionParentTrm == null)
         {
             return;
         }
-        Debug.Log("콜렉션트랜스폼있음");
+
         foreach (var item in collectionParentTrm.GetComponentsInChildren<Collection>())
         {
-            collectionObj.Add(item);
-            Debug.Log(item);
+            collectionObj.Add(item); //add를 해주는데 add를 하기전에
         }
-        LoadCollectionJson();
+
+        if (RewindManager.Instance)
+        {
+            RewindManager.Instance.InitPlay += InitOnPlay;
+            RewindManager.Instance.RestartPlay += InitOnReplay;
+        }
+
+        SetCollection();
     }
 
+    public void SetCollection()
+    {
+        SaveDataManager.Instance.LoadCollectionJSON();
+        SetStageCollecitonSO();
+        SetCollectionActive();
+    }
     public void SetCollectionActive()
     {
         if (StageManager.Instance.CurStageDataSO == null)
@@ -68,94 +73,24 @@ public class CollectionManager : MonoSingleTon<CollectionManager>
             }
         }
     }
-
-
     public void SetStageCollecitonSO()
     {
-        for (int i = 0; i < _chapterStageCollectionData.stageCollectionDatas.Count; i++)
+        for (int i = 0; i < stageDatabase.worldList.Count; i++) //3
         {
-            worldDataSO.stageList[i].stageCollection = _chapterStageCollectionData.stageCollectionDatas[i].collectionData;
-        }
-    }
-
-    public void LoadCollectionJson()
-    {
-        string path = Application.dataPath + "/Save/ChapterCollection.json";
-        if (File.Exists(path))
-        {
-            string json = File.ReadAllText(path);
-            _chapterStageCollectionData = Newtonsoft.Json.JsonConvert.DeserializeObject<ChapterStageCollectionData>(json);
-
-            SetStageCollecitonSO();
-            SetCollectionActive();
-        }
-        else
-        {
-            Debug.Log("콜렉션제이슨데이터생성");
-
-            if (_chapterStageCollectionData == null)
+            for (int j = 0; j < stageDatabase.worldList[i].stageList.Count; j++) // 8 1 1
             {
-                _chapterStageCollectionData = new ChapterStageCollectionData();
-                Debug.Log("널이니까 새로만듬 챕터를" + _chapterStageCollectionData);
-            }
-
-
-            if (_chapterStageCollectionData.stageCollectionDatas == null)
-            {
-                _chapterStageCollectionData.stageCollectionDatas = new List<StageCollectionData>();
-
-                if (_stageCollectionData == null)
-                {
-                    _stageCollectionData = new StageCollectionData();
-                    Debug.Log("널이니까 새로만듬 스테이지를" + _stageCollectionData);
-                }
-
-                for (int i = 0; i < worldDataSO.stageList.Count; i++)
-                {
-                    _chapterStageCollectionData.stageCollectionDatas.Add(_stageCollectionData);
-                    _chapterStageCollectionData.stageCollectionDatas[i].collectionData = worldDataSO.stageList[i].stageCollection;
-                }
-                Debug.Log("처음 JSON 데이터 생성할때는 모든 false");
-
-                File.WriteAllText(path, Newtonsoft.Json.JsonConvert.SerializeObject(_chapterStageCollectionData));
+                stageDatabase.worldList[i].stageList[j].stageCollection =
+                    SaveDataManager.Instance.AllChapterDataBase.stageCollectionDataDic[StageManager.Instance.CurStageDataSO.chapterStageName].
+                    stageCollectionDataList[j].collectionBoolDataList;
             }
         }
     }
 
-    public void SaveCollection()
+    public void SaveClearCollection()
     {
-        SaveStageCollecitonActive();
-
-        string path = Application.dataPath + "/Save/ChapterCollection.json";
-        string json = Newtonsoft.Json.JsonConvert.SerializeObject(_chapterStageCollectionData);
-
-        File.WriteAllText(path, json);
+        SaveDataManager.Instance.AllChapterDataBase.stageCollectionDataDic[StageManager.Instance.CurStageDataSO.chapterStageName].
+            stageCollectionDataList[StageManager.Instance.CurStageDataSO.stageIndex].collectionBoolDataList
+            = StageManager.Instance.CurStageDataSO.stageCollection;
+        SaveDataManager.Instance.SaveCollectionJSON();
     }
-    public void SaveStageCollecitonActive()
-    {
-        _chapterStageCollectionData.stageCollectionDatas[StageManager.Instance.CurStageDataSO.stageIndex].collectionData = StageManager.Instance.CurStageDataSO.stageCollection;
-    }
-    public void InitSaveJSON()
-    {
-        LoadCollectionJson();
-        for (int i = 0; i < worldDataSO.stageList.Count; i++)
-        {
-            for (int j = 0; j < _chapterStageCollectionData.stageCollectionDatas[i].collectionData.Count; j++)
-            {
-                _chapterStageCollectionData.stageCollectionDatas[i].collectionData[j] = false;
-                worldDataSO.stageList[i].stageCollection[j] = false;
-            }
-        }
-
-        string path = Application.dataPath + "/Save/ChapterCollection.json";
-        string json = Newtonsoft.Json.JsonConvert.SerializeObject(_chapterStageCollectionData);
-        File.WriteAllText(path, json);
-    }
-
-    private void OnApplicationQuit()
-    {
-        Debug.Log("이게실행되");
-        InitSaveJSON();        
-    }
-
 }
