@@ -47,8 +47,8 @@ public class ClickDragCamMove : MonoBehaviour
             transform.position = Origin - Difference;
         }
 
-        if (Input.GetMouseButton(1))
-            transform.position = ResetCamera;
+        //if (Input.GetMouseButton(1))
+        //    transform.position = ResetCamera;
 
     }
 }

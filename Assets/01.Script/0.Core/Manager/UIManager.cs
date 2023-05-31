@@ -1,13 +1,23 @@
-using System;
+using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using UnityEditor.Rendering;
+using UnityEngine.Events;
 
 public class UIManager : MonoSingleTon<UIManager>
 {
     [Header("[Clock]")]
     [SerializeField] private Slider clockFill;
-    [SerializeField] private TextMeshProUGUI clockTimeText;
+
+    [Header("[FastTime]")]
+    [SerializeField] private Image fastTimeImg;
+    //[SerializeField] private Toggle fastTimebtn;
+    [SerializeField] private bool isFastTime = false;
+    [SerializeField] private TextMeshProUGUI fastTimeText;
+    private int fastTime = 1;
 
     private float totalTIme { get { return RewindManager.Instance.howManySecondsToTrack; } }
 
@@ -38,10 +48,24 @@ public class UIManager : MonoSingleTon<UIManager>
                 pauseImg.gameObject.SetActive(true);
                 Time.timeScale = 0f;
             }
-            else if (!EndManager.Instance.IsEnd)
+            else if(!EndManager.Instance.IsEnd)
             {
                 PauseResume();
             }
+        }
+
+        if(Input.GetKeyDown(KeyCode.Q) && !isPause && !EndManager.Instance.IsEnd)
+        {
+            if(isFastTime)
+            {
+                ResetFastForwardTime();
+            }
+            else
+            {
+                isFastTime = true;
+                FastForwardTime();
+            }
+
         }
     }
 
@@ -53,12 +77,40 @@ public class UIManager : MonoSingleTon<UIManager>
             TimerManager.Instance.ChangeOnTimer(true);
         }
         pauseImg.gameObject.SetActive(false);
-        Time.timeScale = 1f;
+        Time.timeScale = fastTime;
     }
 
     public void PauseMenu()
     {
         LoadingSceneManager.LoadScene(0);
         Time.timeScale = 1;
+    }
+    
+    public void FastForwardTime()
+    {
+        if (!TimerManager.Instance.isOnTimer || TimerManager.Instance.isRewinding)
+            return;
+
+        if (isFastTime)
+        {
+            fastTime = 2;
+            TimerManager.Instance.FastForwardTimeIntensity();
+            fastTimeImg.gameObject.SetActive(true);
+        }
+        else
+        {
+            fastTime = 1;
+            TimerManager.Instance.ResetFastForwardTime();
+            fastTimeImg.gameObject.SetActive(false);
+
+        }
+        
+        
+        fastTimeText.SetText($"{fastTime}");
+    }
+    public void ResetFastForwardTime()
+    {
+        isFastTime = false;
+        FastForwardTime();
     }
 }

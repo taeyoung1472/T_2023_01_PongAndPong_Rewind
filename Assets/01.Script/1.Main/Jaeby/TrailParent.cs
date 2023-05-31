@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Rendering;
 using UnityEngine;
+using static PlayerRewind;
 
 public class TrailParent : MonoBehaviour
 {
@@ -14,17 +16,21 @@ public class TrailParent : MonoBehaviour
     private Queue<MeshTrailStruct> _readyTrails = new Queue<MeshTrailStruct>(); // 나올 수 있는 애들
     private Queue<MeshTrailStruct> _enalbeTrails = new Queue<MeshTrailStruct>(); // 꺼지고 있는 애들
 
+    private Stack<TrackMotionTrailData> _rewindTrails = new Stack<TrackMotionTrailData>(); // 대쉬 역행
+
     private float _spawnTimer = 0f;
     public float SpawnTimer { get => _spawnTimer; set => _spawnTimer = value; }
     private float _trailSpawnTime = 0f;
 
     private MeshFilter _meshFilter = null;
 
+
     public void Init(TrailableObject obj)
     {
         _trailableObject = obj;
         _data = obj.trailData;
         _trailSpawnTime = _data.trailSpawnTime;
+        //_trailableObject.IsRewindMotionTrail = false;
     }
 
     public void ForceDeleteTrail()
@@ -74,15 +80,53 @@ public class TrailParent : MonoBehaviour
         MeshSet(trail);
         trail.myObj.SetActive(true);
         trail.myObj.transform.SetPositionAndRotation(_data.spawnTrm.position, _data.spawnTrm.rotation);
-        StartCoroutine(FadeCoroutine(trail));
-    }
 
+        StartCoroutine(FadeCoroutine(trail));
+
+    }
+    private void RewindPopTrail()
+    {
+        Debug.Log("리와인드 트레일");
+        if (_readyTrails.Count == 0) // 새로 만들엉
+        {
+            //SpawnTrail();
+        }
+
+        if (_rewindTrails.Count <= 0)
+        {
+            Debug.Log("리와인드 트레일 없음");
+            return;
+        }
+        MeshTrailStruct trail = _readyTrails.Dequeue();
+        TrackMotionTrailData trailData = _rewindTrails.Pop();
+
+        
+        trail.bodyMesh = trailData.mesh;
+        trail.BodyMeshFilter.mesh = trail.bodyMesh;
+        //RewindMeshSet(trail);
+
+        trail.myObj.SetActive(true);
+        trail.myObj.transform.SetPositionAndRotation(trailData.position, trailData.rotation);
+        StartCoroutine(FadeOutCoroutine(trail));
+       
+    }
     private void MeshSet(MeshTrailStruct trail)
     {
         if (_data._skinnedMeshRenderer != null)
         {
             _data._skinnedMeshRenderer.BakeMesh(trail.bodyMesh);
             trail.BodyMeshFilter.mesh = trail.bodyMesh;
+
+            if (!_trailableObject.IsRewindMotionTrail)
+            {
+                TrackMotionTrailData data = new TrackMotionTrailData();
+
+                data.mesh = trail.bodyMesh;
+                data.meshFilter = trail.BodyMeshFilter;
+                data.position = _data.spawnTrm.position;
+                data.rotation = _data.spawnTrm.rotation;
+                _rewindTrails.Push(data);
+            }
         }
         else if (_data._meshRenderer != null)
         {
@@ -91,7 +135,11 @@ public class TrailParent : MonoBehaviour
             trail.BodyMeshFilter.mesh = _meshFilter.mesh;
         }
     }
-
+    //private void RewindMeshSet(MeshTrailStruct trail)
+    //{
+        
+        
+    //}
     private IEnumerator FadeCoroutine(MeshTrailStruct trail)
     {
         _enalbeTrails.Enqueue(trail);
@@ -107,11 +155,31 @@ public class TrailParent : MonoBehaviour
         }
 
         _enalbeTrails.Dequeue();
+        
         trail.myObj.SetActive(false);
         _readyTrails.Enqueue(trail);
         yield break;
     }
 
+    private IEnumerator FadeOutCoroutine(MeshTrailStruct trail)
+    {
+        _enalbeTrails.Enqueue(trail);
+        float time = 0f;
+        while (time <= 1f)
+        {
+            MeshRenderer renderer = trail.BodyMeshFilter.GetComponent<MeshRenderer>();
+            Color fresnelColor = Color.Lerp(_data.endFresnelColor, _data.startFresnelColor, time);
+            Color baseColor = Color.Lerp(_data.endBaseColor, _data.startBaseColor, time);
+            materialUpdate(renderer, time, fresnelColor, baseColor);
+            time += Time.deltaTime * (1 / _data.fadeDuration);
+            yield return null;
+        }
+
+        _enalbeTrails.Dequeue();
+        trail.myObj.SetActive(false);
+        _readyTrails.Enqueue(trail);
+        yield break;
+    }
     private void materialUpdate(MeshRenderer renderer, float alpha, Color fresnelColor, Color baseColor)
     {
         for (int i = 0; i < renderer.materials.Length; i++)
@@ -126,12 +194,19 @@ public class TrailParent : MonoBehaviour
     {
         if (_trailableObject.IsMotionTrail == false || _died)
             return;
-
+        
         _spawnTimer += Time.deltaTime;
         if (_spawnTimer >= _trailSpawnTime) // 소환띠
         {
             _spawnTimer = 0f;
-            PopTrail();
+            if (!_trailableObject.IsRewindMotionTrail)
+            {
+                PopTrail();
+            }
+            else
+            {
+                RewindPopTrail();
+            }
         }
     }
 }

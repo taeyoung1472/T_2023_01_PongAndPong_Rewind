@@ -1,6 +1,10 @@
-using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using TMPro;
+using DigitalRuby.ThunderAndLightning;
+using System;
 
 public class TimerManager : MonoSingleTon<TimerManager>
 {
@@ -8,7 +12,7 @@ public class TimerManager : MonoSingleTon<TimerManager>
     public float CurrentTimer { get; set; }
 
 
-    private float rewindingTime = 0;
+    private float rewindingTime = 0; 
     public float RewindingTime
     {
         get
@@ -21,6 +25,7 @@ public class TimerManager : MonoSingleTon<TimerManager>
             rewindingTime = value;
         }
     }
+    private Player player;
 
     [HideInInspector] public bool isOnTimer = false;
 
@@ -28,6 +33,7 @@ public class TimerManager : MonoSingleTon<TimerManager>
     private bool isRewindStart = false;
     [HideInInspector] public bool isRewinding = false;
 
+    private float fastTimeIntensity = 1f;
     private float rewindIntensity = 0.02f;          //되감기 속도를 변경하는 변수
     private float rewindValue = 0;
 
@@ -37,6 +43,7 @@ public class TimerManager : MonoSingleTon<TimerManager>
 
     public UnityEvent startRewind;
     public Action<float> OnTimeChange;
+
     #endregion
     private void Awake()
     {
@@ -46,6 +53,7 @@ public class TimerManager : MonoSingleTon<TimerManager>
     {
         isOnTimer = false;
 
+        UIManager.Instance.ResetFastForwardTime();
         CurrentTimer = 0;
         rewindValue = 0;
 
@@ -62,6 +70,29 @@ public class TimerManager : MonoSingleTon<TimerManager>
     private void FixedUpdate()
     {
         StartRewindTime();
+    }
+    public void FastForwardTimeIntensity()
+    {
+        JinwooVolumeManager.Instance.EnableFastTimeEffect();
+        player = StageManager.Instance.GetCurrentPlayer().GetComponent<Player>();
+        Time.timeScale = 2f;
+        //fastTimeIntensity = 2f;
+        if (player != null)
+        {
+            player.PlayerInput.InputVectorReset();
+            player.PlayerInput.enabled = false;
+        }
+    }
+    public void ResetFastForwardTime()
+    {
+        JinwooVolumeManager.Instance.DisableFastTimeEffect();
+        //fastTimeIntensity = 1f;
+        Time.timeScale = 1f;
+        if (player != null)
+        {
+            player.PlayerInput.InputVectorReset();
+            player.PlayerInput.enabled = true;
+        }
     }
     public void ChangeOnTimer(bool isOn)
     {
@@ -89,7 +120,7 @@ public class TimerManager : MonoSingleTon<TimerManager>
         if (!isOnTimer)                       //되감기에서 FixedUpdate로 업데이트 싸움을 해결하는 간단한 솔루션
             return;
 
-        CurrentTimer += Time.deltaTime;
+        CurrentTimer += Time.deltaTime * fastTimeIntensity;
 
         UpdateText();
         //if (CurrentTimer > RewindingTime - 0.5f)
@@ -107,6 +138,7 @@ public class TimerManager : MonoSingleTon<TimerManager>
             else
             {
                 StageManager.Instance.CurStage.curArea.Rewind();
+                UIManager.Instance.ResetFastForwardTime();
                 UpdateVolume(false);
                 isRewindStart = true;
             }
@@ -152,5 +184,5 @@ public class TimerManager : MonoSingleTon<TimerManager>
         RewindManager.Instance.StopRewindTimeBySeconds();
         StageManager.Instance.CurStage.curArea.ExitArea();
     }
-
+    
 }

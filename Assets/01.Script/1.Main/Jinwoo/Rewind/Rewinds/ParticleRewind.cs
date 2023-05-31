@@ -17,10 +17,12 @@ public class ParticleRewind : RewindAbstract
     {
         base.Init();
 
-        //InitializeParticles(particleSettings);
+        InitializeParticles(particleSettings);
     }
     public void InitParticle(ParticlesSetting setting)
     {
+        
+
         InitializeParticles(setting);
         trackParticles = true;
     }

@@ -620,6 +620,7 @@ MonoBehaviour:
   isRewind: 0
   isRewindPlayer: 0
   _springAmplification: 5
+  _springTime: 1
 --- !u!114 &2107113398
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -661,11 +662,11 @@ MonoBehaviour:
   trackAnimator: 1
   trackAudio: 0
   trackParticles: 0
+  trackDashTrail: 0
   particleSettings:
     particlesData: []
   enableList:
   - {fileID: 6691628707489746807}
-  - {fileID: 6691628707489746805}
   - {fileID: 6691628707631861890}
 --- !u!114 &589124879754571262
 MonoBehaviour:
@@ -1046,6 +1047,9 @@ MonoBehaviour:
   OnFliped:
     m_PersistentCalls:
       m_Calls: []
+  _flipTime: 1
+  _rotationSpeed: 20
+  _camShakePower: 5
 --- !u!95 &6691628707631861948
 Animator:
   serializedVersion: 5
