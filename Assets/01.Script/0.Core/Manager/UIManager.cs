@@ -15,7 +15,8 @@ public class UIManager : MonoSingleTon<UIManager>
 
     [Header("[FastTime]")]
     [SerializeField] private Image fastTimeImg;
-    [SerializeField] private Toggle fastTimebtn;
+    //[SerializeField] private Toggle fastTimebtn;
+    [SerializeField] private bool isFastTime = false;
     [SerializeField] private TextMeshProUGUI fastTimeText;
     private int fastTime = 1;
 
@@ -55,6 +56,20 @@ public class UIManager : MonoSingleTon<UIManager>
                 PauseResume();
             }
         }
+
+        if(Input.GetKeyDown(KeyCode.Q) && !isPause && !EndManager.Instance.IsEnd)
+        {
+            if(isFastTime)
+            {
+                ResetFastForwardTime();
+            }
+            else
+            {
+                isFastTime = true;
+                FastForwardTime();
+            }
+
+        }
     }
 
     public void PauseResume()
@@ -79,7 +94,7 @@ public class UIManager : MonoSingleTon<UIManager>
         if (!TimerManager.Instance.isOnTimer || TimerManager.Instance.isRewinding)
             return;
 
-        if(fastTimebtn.isOn)
+        if (isFastTime)
         {
             fastTime = 2;
             TimerManager.Instance.FastForwardTimeIntensity();
@@ -91,14 +106,14 @@ public class UIManager : MonoSingleTon<UIManager>
             TimerManager.Instance.ResetFastForwardTime();
             fastTimeImg.gameObject.SetActive(false);
 
-
         }
+        
         
         fastTimeText.SetText($"{fastTime}");
     }
     public void ResetFastForwardTime()
     {
-        fastTimebtn.isOn = false;
+        isFastTime = false;
         FastForwardTime();
     }
 }
