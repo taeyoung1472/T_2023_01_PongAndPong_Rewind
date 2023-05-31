@@ -11,7 +11,6 @@ public class UIManager : MonoSingleTon<UIManager>
 {
     [Header("[Clock]")]
     [SerializeField] private Slider clockFill;
-    [SerializeField] private TextMeshProUGUI clockTimeText;
 
     [Header("[FastTime]")]
     [SerializeField] private Image fastTimeImg;
@@ -28,16 +27,14 @@ public class UIManager : MonoSingleTon<UIManager>
 
     [SerializeField] private GameObject pauseImg;
 
-    public void OnPlayTimeChange(float time)
+    private void Awake()
     {
-        clockFill.value = time / totalTIme;
-        clockTimeText.SetText($"{(int)time}");
+        TimerManager.Instance.OnTimeChange += OnTimeChange;
     }
 
-    public void OnRewindTimeChange(float time)
+    public void OnTimeChange(float time)
     {
-        clockFill.value = (time / totalTIme);
-        clockTimeText.SetText($"{(int)time}");
+        clockFill.value = time / totalTIme;
     }
 
     private void Update()
