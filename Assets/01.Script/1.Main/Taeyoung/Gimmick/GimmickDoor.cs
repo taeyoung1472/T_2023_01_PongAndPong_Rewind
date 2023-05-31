@@ -9,6 +9,17 @@ public class GimmickDoor : ControlAbleObjcet
 
     public override void Control(ControlType controlType, bool isLever, Player player, DirectionType dirType)
     {
+        if (curControlType != controlType)
+        {
+            if(controlType != ControlType.None)
+            {
+                TimeStampManager.Instance.SetStamp(StampType.doorOpen, controlColor);
+            }
+            else
+            {
+                TimeStampManager.Instance.SetStamp(StampType.doorClose, controlColor);
+            }
+        }
         curControlType = controlType;
     }
 

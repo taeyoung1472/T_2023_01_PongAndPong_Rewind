@@ -68,6 +68,7 @@ public class ButtonGimmick : GimmickObject
             {
                 GimmickVisualLink link = Instantiate(visualLinkPrefab);
                 link.Link(transform, data.target.transform, color);
+                data.target.controlColor = color;
             }
         }
 
