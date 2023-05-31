@@ -74,6 +74,7 @@ public class RigidbodyGimmickObject : GimmickObject
         if (transform.position.y - recordPosY < -3f)
         {
             AudioManager.PlayAudioRandPitch(SoundType.OnObjectImpact);
+            TimeStampManager.Instance.SetStamp(StampType.dropBox);
         }
     }
 }

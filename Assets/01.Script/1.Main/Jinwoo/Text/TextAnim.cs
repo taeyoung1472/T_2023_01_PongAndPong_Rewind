@@ -86,6 +86,7 @@ public class TextAnim : MonoBehaviour
             counter += 1;
             if (!isSkip)
             {
+                AudioManager.PlayAudioRandPitch(SoundType.OnNPCSpeak);
                 yield return new WaitForSeconds(textData.timeBtwnChars);
             }
 
