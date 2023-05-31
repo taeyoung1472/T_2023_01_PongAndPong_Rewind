@@ -286,6 +286,16 @@ public class Player : MonoBehaviour
         return null;
     }
 
+    public PlayerAction[] GetAllActionsArray()
+    {
+        return _playerActions.ToArray();
+    }
+
+    public PlayerActionType[] GetAllActionTypesArray()
+    {
+        var Q = from a in _playerActions select a.ActionType;
+        return Q.ToArray();
+    }
 
     private void GroundCheck()
     {
