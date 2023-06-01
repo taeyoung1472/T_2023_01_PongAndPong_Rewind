@@ -1,7 +1,6 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class TutorialManager : MonoSingleTon<TutorialManager>
 {
@@ -22,7 +21,7 @@ public class TutorialManager : MonoSingleTon<TutorialManager>
 
     [SerializeField] private GameObject gameCam;
     [SerializeField] private GameObject tutoCam;
-    [SerializeField] private GameObject player;
+    [SerializeField] private PlayerInput playerInput;
 
     [Space(15)]
 
@@ -40,16 +39,27 @@ public class TutorialManager : MonoSingleTon<TutorialManager>
 
     public void Start()
     {
-        if(curTutoInfo != null)
+        if (curTutoInfo != null)
         {
             ChangeState(curTutorialState);
-            player.gameObject.SetActive(false);
             if (curTutorialState != TutorialState.None)
             {
                 tutoCam.SetActive(true);
             }
         }
     }
+
+    //private void Update()
+    //{
+    //    if (curTutorialState != TutorialState.None)
+    //    {
+    //        playerInput.enabled = false;
+    //    }
+    //    else
+    //    {
+    //        playerInput.enabled = true;
+    //    }
+    //}
 
     #region FSM
     public void ChangeState(TutorialState state)
@@ -148,7 +158,7 @@ public class TutorialManager : MonoSingleTon<TutorialManager>
         curTutoInfo = null;
         curTutorialState = TutorialState.None;
         tutoCam.SetActive(false);
-        player.gameObject.SetActive(true);
+        playerInput.enabled = true;
 
         endTitlePanel.gameObject.SetActive(false);
     }

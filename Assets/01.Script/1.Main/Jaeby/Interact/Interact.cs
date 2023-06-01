@@ -41,8 +41,6 @@ public abstract class Interact : MonoBehaviour
     }
     public void InteractStart(Player player)
     {
-        if (_interactable == false)
-            return;
         _player = player;
         OnInteractStart?.Invoke();
         ChildInteractStart();

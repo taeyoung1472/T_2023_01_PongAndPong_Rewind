@@ -1,8 +1,5 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class PlayerRewind : RewindAbstract
 {
@@ -103,14 +100,14 @@ public class PlayerRewind : RewindAbstract
             TrackParticles();
         if (trackAudio)
             TrackAudio();
-        if(trackDashTrail)
+        if (trackDashTrail)
             TrackDashTrail();
     }
 
     public void TrackDashTrail()
     {
         trackMotionTrail.WriteLastValue(player.playerTrail.IsMotionTrail);
-        
+
     }
     public void RestoreDashTrail(float seconds)
     {
@@ -119,10 +116,10 @@ public class PlayerRewind : RewindAbstract
 
         player.playerTrail.IsMotionTrail =
             trackMotionTrail.ReadFromBuffer(seconds + player.playerTrail.trailData.trailSpawnTime);
-        
+
     }
     private void Update()
     {
-        
+
     }
 }

@@ -22,10 +22,12 @@ public class NotifyManager : MonoSingleTon<NotifyManager>
 
     public void Notify(string text)
     {
-        //Notify obj = Instantiate(notify, notifyParent);
-        //obj.gameObject.SetActive(true);
-        //obj.SetNotify(text);
-        //notifyQueue.Enqueue(obj);
+        return;
+
+        Notify obj = Instantiate(notify, notifyParent);
+        obj.gameObject.SetActive(true);
+        obj.SetNotify(text);
+        notifyQueue.Enqueue(obj);
     }
 
     public void CloseNotify()

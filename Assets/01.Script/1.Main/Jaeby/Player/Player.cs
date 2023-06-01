@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using System.Linq;
 using System.IO;
+using System;
 
 public class Player : MonoBehaviour
 {
@@ -79,9 +80,12 @@ public class Player : MonoBehaviour
     private bool _isGrounded = false;
     public bool IsGrounded { get => _isGrounded; set => _isGrounded = value; }
     #endregion
+
+    #region 경사면 관련
     [SerializeField]
     private float _maxSlopeAngle = 10f;
     RaycastHit _slopeHit;
+    #endregion
 
     private void Awake()
     {
@@ -96,77 +100,14 @@ public class Player : MonoBehaviour
         _playerHP = GetComponent<PlayerHP>();
         _rigid = GetComponent<Rigidbody>();
         _playerInput = GetComponent<PlayerInput>();
-        _playerAnimation = transform.Find("AgentRenderer").GetComponent<PlayerAnimation>();
-        _playerRenderer = _playerAnimation.GetComponent<PlayerRenderer>();
         _gravityModule = GetComponent<GravityModule>();
         _playerTrail = GetComponent<TrailableObject>();
-        _playerAudio = transform.Find("AgentSound").GetComponent<PlayerAudio>();
         _col = GetComponent<CapsuleCollider>();
+
+        _playerAudio = transform.Find("AgentSound").GetComponent<PlayerAudio>();
+        _playerRenderer = transform.Find("AgentRenderer").GetComponent<PlayerRenderer>();;
+        _playerAnimation = _playerRenderer.GetComponent<PlayerAnimation>();
         _animationIK = _playerRenderer.GetComponent<AnimationIK>();
-    }
-
-    public void WorldCollectionsCountSet(WorldType key, int value)
-    {
-        WorldCollectionsCountSet(_worldsDatabase.GetWorldData(key), value);
-    }
-
-    public void WorldCollectionsCountSet(WorldDataSO key, int value)
-    {
-        if (_playerJsonData.collectDatas.ContainsKey(key.worldName))
-            _playerJsonData.collectDatas[key.worldName] = value;
-        SaveJsonData();
-    }
-
-    private void LoadJson()
-    {
-        string path = Application.dataPath + "/Save/JsonData.json";
-        string json = File.ReadAllText(path);
-        _playerJsonData = Newtonsoft.Json.JsonConvert.DeserializeObject<PlayerJsonData>(json);
-        if (_playerJsonData == null)
-        {
-            _playerJsonData = new PlayerJsonData();
-        }
-        if (_playerJsonData.collectDatas == null)
-        {
-            _playerJsonData.collectDatas = new Dictionary<string, int>();
-            for (int i = 0; i < _worldsDatabase.worldList.Count; i++)
-                _playerJsonData.collectDatas.Add(_worldsDatabase.worldList[i].worldName, 0);
-        }
-        _playerInventory = GetComponent<PlayerInventory>();
-        _playerInventory.LoadInventory();
-    }
-
-    [ContextMenu("데이터 세이브")]
-    public void SaveJsonData()
-    {
-        string path = Application.dataPath + "/Save/JsonData.json";
-        string json = Newtonsoft.Json.JsonConvert.SerializeObject(_playerJsonData);
-        File.WriteAllText(path, json);
-        _playerInventory.SaveInventory();
-
-#if UNITY_EDITOR
-        string debugString = "";
-        foreach (var a in _playerJsonData.collectDatas)
-            debugString += a.Key + "   " + a.Value + " ";
-        Debug.Log("수집품 " + debugString);
-#endif
-    }
-
-    public void EnableReset()
-    {
-        for (int i = 0; i < _playerActions.Count; i++)
-            _playerActions[i].ActionExit();
-        for (int i = 0; i < _enableResetables.Count; i++)
-            _enableResetables[i].EnableReset();
-
-        if(_playerRenderer != null)
-            _playerRenderer.FlipDirectionChange(DirectionType.Down, true);
-    }
-
-    public void DisableReset()
-    {
-        for (int i = 0; i < _disableResetables.Count; i++)
-            _disableResetables[i].DisableReset();
     }
 
     private void FixedUpdate()
@@ -175,6 +116,7 @@ public class Player : MonoBehaviour
         Move();
     }
 
+    #region 플레이어 이동
     public void VelocitySetMove(float? x = null, float? y = null)
     {
         if (x == null)
@@ -205,6 +147,23 @@ public class Player : MonoBehaviour
         }
     }
 
+    private void Move()
+    {
+        _characterMoveAmount = ((_moveAmount + _extraMoveAmount) +
+            ((_isGrounded == false && _gravityModule.UseGravity) ? _gravityModule.GetGravity() : Vector3.zero))
+            ;
+        if (_isGrounded == false)
+        {
+            _characterMoveAmount += transform.up * GravityModule.GetGravity().y * (_playerMovementSO.fallMultiplier - 1) * Time.deltaTime;
+        }
+        if (OnSlope())
+        {
+            _characterMoveAmount = Quaternion.FromToRotation(transform.forward, GetSlopeMoveDirection()) * _characterMoveAmount;
+        }
+        _rigid.velocity = _characterMoveAmount;
+    }
+    #endregion
+    #region 플레이어 액션
     /// <summary>
     /// 인자로 넘긴 액션들을 강제 종료
     /// </summary>
@@ -286,12 +245,30 @@ public class Player : MonoBehaviour
         return null;
     }
 
+    public T GetPlayerAction<T>(PlayerActionType type) where T : PlayerAction
+    {
+        return GetPlayerAction(type) as T;
+    }
 
+    public PlayerAction[] GetAllActionsArray()
+    {
+        return _playerActions.ToArray();
+    }
+
+    public PlayerActionType[] GetAllActionTypesArray()
+    {
+        var Q = from a in _playerActions select a.ActionType;
+        return Q.ToArray();
+    }
+
+    public void PlayerInteractActionExit()
+    {
+        PlayerActionExit(PlayerActionType.Interact);
+    }
+    #endregion
+    #region 바닥 체크 및 경사
     private void GroundCheck()
     {
-        //if (PlayerActionCheck(PlayerActionType.WallGrab, PlayerActionType.Dash))
-        //    return;
-
         bool lastGrounded = _isGrounded;
         Vector3 boxCenter = _col.bounds.center;
         Vector3 halfExtents = _col.bounds.extents;
@@ -327,35 +304,17 @@ public class Player : MonoBehaviour
     {
         return Vector3.ProjectOnPlane(_moveAmount.normalized, _slopeHit.normal).normalized;
     }
-
-    private void Move()
-    {
-        _characterMoveAmount = ((_moveAmount + _extraMoveAmount) +
-            ((_isGrounded == false && _gravityModule.UseGravity) ? _gravityModule.GetGravity() : Vector3.zero))
-            ;
-        if (_isGrounded == false)
-        {
-            _characterMoveAmount += transform.up * GravityModule.GetGravity().y * (_playerMovementSO.fallMultiplier - 1) * Time.deltaTime;
-        }
-        if (OnSlope())
-        {
-            _characterMoveAmount = Quaternion.FromToRotation(transform.forward, GetSlopeMoveDirection()) * _characterMoveAmount;
-        }
-        _rigid.velocity = _characterMoveAmount;
-    }
-
-    public void PlayerInteractActionExit()
-    {
-        PlayerActionExit(PlayerActionType.Interact);
-    }
-
+    #endregion
+    #region 유틸리티
     public void ForceStop()
     {
         PlayerActionExit(PlayerActionType.Move, PlayerActionType.Dash, PlayerActionType.Jump);
         VeloCityResetImm(true, true);
         _playerInput.InputVectorReset();
-        _playerAnimation.FallOrIdleAnimation(IsGrounded);
         _characterMoveAmount = Vector3.zero;
+        _rigid.velocity = Vector3.zero;
+        GroundCheck();
+        _playerAnimation.FallOrIdleAnimation(IsGrounded);
     }
 
     public void TrailDisable()
@@ -392,5 +351,70 @@ public class Player : MonoBehaviour
         }
         _col.center = center;
         _col.height = height;
+    }
+    #endregion
+
+    public void EnableReset()
+    {
+        for (int i = 0; i < _playerActions.Count; i++)
+            _playerActions[i].ActionExit();
+        for (int i = 0; i < _enableResetables.Count; i++)
+            _enableResetables[i].EnableReset();
+
+        if (_playerRenderer != null)
+            _playerRenderer.FlipDirectionChange(DirectionType.Down, true);
+    }
+
+    public void DisableReset()
+    {
+        for (int i = 0; i < _disableResetables.Count; i++)
+            _disableResetables[i].DisableReset();
+    }
+
+    public void WorldCollectionsCountSet(WorldType key, int value)
+    {
+        WorldCollectionsCountSet(_worldsDatabase.GetWorldData(key), value);
+    }
+
+    public void WorldCollectionsCountSet(WorldDataSO key, int value)
+    {
+        if (_playerJsonData.collectDatas.ContainsKey(key.worldName))
+            _playerJsonData.collectDatas[key.worldName] = value;
+        SaveJsonData();
+    }
+
+    private void LoadJson()
+    {
+        string path = Application.dataPath + "/Save/JsonData.json";
+        string json = File.ReadAllText(path);
+        _playerJsonData = Newtonsoft.Json.JsonConvert.DeserializeObject<PlayerJsonData>(json);
+        if (_playerJsonData == null)
+        {
+            _playerJsonData = new PlayerJsonData();
+        }
+        if (_playerJsonData.collectDatas == null)
+        {
+            _playerJsonData.collectDatas = new Dictionary<string, int>();
+            for (int i = 0; i < _worldsDatabase.worldList.Count; i++)
+                _playerJsonData.collectDatas.Add(_worldsDatabase.worldList[i].worldName, 0);
+        }
+        _playerInventory = GetComponent<PlayerInventory>();
+        _playerInventory.LoadInventory();
+    }
+
+    [ContextMenu("데이터 세이브")]
+    public void SaveJsonData()
+    {
+        string path = Application.dataPath + "/Save/JsonData.json";
+        string json = Newtonsoft.Json.JsonConvert.SerializeObject(_playerJsonData);
+        File.WriteAllText(path, json);
+        _playerInventory.SaveInventory();
+
+#if UNITY_EDITOR
+        string debugString = "";
+        foreach (var a in _playerJsonData.collectDatas)
+            debugString += a.Key + "   " + a.Value + " ";
+        Debug.Log("수집품 " + debugString);
+#endif
     }
 }

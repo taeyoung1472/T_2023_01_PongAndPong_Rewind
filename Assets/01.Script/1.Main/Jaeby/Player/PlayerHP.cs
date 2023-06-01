@@ -1,3 +1,5 @@
+using DG.Tweening;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -7,6 +9,12 @@ public class PlayerHP : MonoBehaviour, IPlayerEnableResetable
     [SerializeField]
     private Slider _hpSlider = null;
     private Player _player = null;
+    [SerializeField]
+    private SkinnedMeshRenderer _meshRenderer = null;
+    [SerializeField]
+    private float _dissolveTime = 0.5f;
+    private List<Material> _materials = new List<Material>();
+    private Sequence _dissolSeq = null;
 
     [SerializeField]
     private GameObject _dieParticlePrefab = null;
@@ -28,6 +36,12 @@ public class PlayerHP : MonoBehaviour, IPlayerEnableResetable
         }
     }
 
+    private void Start()
+    {
+        if(_meshRenderer != null)
+            _materials.AddRange(_meshRenderer.materials);
+    }
+
     public void AddDamage(int damage)
     {
         CurHP -= damage;
@@ -35,6 +49,7 @@ public class PlayerHP : MonoBehaviour, IPlayerEnableResetable
 
     private void Update()
     {
+        //µπˆ±◊øÎ ƒ⁄µÂ
         if (Input.GetKeyDown(KeyCode.Y))
             Die();
     }
@@ -43,7 +58,10 @@ public class PlayerHP : MonoBehaviour, IPlayerEnableResetable
     {
         Debug.Log("ªÁ∏¡!!");
         _player.ForceStop();
+        _player.PlayerActionExit(_player.GetAllActionTypesArray());
+        _player.PlayerActionLock(true, _player.GetAllActionTypesArray());
         _player.PlayerInput.enabled = false;
+        _player.GravityModule.UseGravity = false;
         OnDie?.Invoke();
     }
 
@@ -53,6 +71,13 @@ public class PlayerHP : MonoBehaviour, IPlayerEnableResetable
             return;
         StageManager.Instance.InputLock = true;
         Instantiate(_dieParticlePrefab, _player.transform.position + _player.Col.center, _player.transform.rotation);
+        if (_dissolSeq != null)
+            _dissolSeq.Kill();
+        _dissolSeq = DOTween.Sequence();
+        foreach (var mat in _materials)
+        {
+            _dissolSeq.Join(DOTween.To(() => 0f, x => mat.SetFloat("_Dissolve", x), 0.3f, _dissolveTime)).SetUpdate(true);
+        }
     }
 
     public void Restart()
@@ -60,8 +85,10 @@ public class PlayerHP : MonoBehaviour, IPlayerEnableResetable
         if (StageManager.Instance == null)
             return;
         StageManager.Instance.InputLock = false;
-        _player.PlayerInput.enabled = true;
         StageManager.Instance.OnReStartArea();
+        _player.PlayerActionLock(false, _player.GetAllActionTypesArray());
+        _player.PlayerInput.enabled = true;
+        _player.GravityModule.UseGravity = true;
     }
 
     public void EnableReset()
@@ -73,6 +100,22 @@ public class PlayerHP : MonoBehaviour, IPlayerEnableResetable
         {
             _hpSlider.minValue = 0;
             _hpSlider.maxValue = _player.playerHealthSO.maxHP;
+        }
+        if (_dissolSeq != null)
+            _dissolSeq.Kill();
+        foreach (var mat in _materials)
+        {
+            mat.SetFloat("_Dissolve", 0f);
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        return;
+        // ∏  ≈ª√‚, ∞Ê∞Ë π€
+        if(other.CompareTag("Die"))
+        {
+            Die();
         }
     }
 }

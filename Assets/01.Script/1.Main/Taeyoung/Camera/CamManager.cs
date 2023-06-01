@@ -37,7 +37,8 @@ public class CamManager : MonoSingleTon<CamManager>
 
     private void Start()
     {
-        _vCamPerlin = VCam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+        if(GameObject.Find("VCam") != null)
+            _vCamPerlin = VCam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
     }
 
     public void AddTargetGroup(Transform target, float weight = 1f, float radius = 3f)
@@ -79,6 +80,11 @@ public class CamManager : MonoSingleTon<CamManager>
 
     public void CameraShake(float time, float emp, float fre)
     {
+        if(_vCamPerlin == null)
+        {
+            Debug.LogWarning("_vCamPerlin ¾øÀ½.");
+            return;
+        }    
         if (_shakeCoroutine != null)
             StopCoroutine(_shakeCoroutine);
         _shakeCoroutine = StartCoroutine(CameraShakeCoroutine(time, emp, fre));

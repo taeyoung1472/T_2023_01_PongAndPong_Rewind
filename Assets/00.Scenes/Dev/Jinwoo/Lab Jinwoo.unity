@@ -10130,7 +10130,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _dialogOptionDefaultIcon: {fileID: 21300000, guid: f1d6982b036a7479f9f9c948c83eedbd, type: 3}
   _dialogCooltime: 0.5
-  _dialogCanvas: {fileID: 416204170}
+  _dialogCanvasAnimationTime: 0.25
+  _dialogCanvas: {fileID: 416204175}
   _nextText: {fileID: 896298129}
   _nameText: {fileID: 527577402}
   _titleText: {fileID: 2093284076}
@@ -10255,7 +10256,7 @@ GameObject:
   - component: {fileID: 398402673}
   - component: {fileID: 398402672}
   m_Layer: 0
-  m_Name: PlayerCam
+  m_Name: VCam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10360,7 +10361,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   volume: {fileID: 1902929093}
-  barAmount: 0.15
 --- !u!1001 &401439553
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11075,13 +11075,14 @@ GameObject:
   - component: {fileID: 416204173}
   - component: {fileID: 416204172}
   - component: {fileID: 416204171}
+  - component: {fileID: 416204175}
   m_Layer: 5
   m_Name: DialogCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &416204171
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11164,6 +11165,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!225 &416204175
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 416204170}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1 &420655871
 GameObject:
   m_ObjectHideFlags: 0
@@ -55825,7 +55838,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9019723548592028277, guid: 40c53cdfe257b87419688c18870cf6f3, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9019723548592028277, guid: 40c53cdfe257b87419688c18870cf6f3, type: 3}
       propertyPath: m_AnchorMin.x
@@ -55833,15 +55846,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9019723548592028277, guid: 40c53cdfe257b87419688c18870cf6f3, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9019723548592028277, guid: 40c53cdfe257b87419688c18870cf6f3, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 450
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9019723548592028277, guid: 40c53cdfe257b87419688c18870cf6f3, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 65
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9019723548592028277, guid: 40c53cdfe257b87419688c18870cf6f3, type: 3}
       propertyPath: m_LocalPosition.x
@@ -55873,11 +55886,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9019723548592028277, guid: 40c53cdfe257b87419688c18870cf6f3, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -225
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9019723548592028277, guid: 40c53cdfe257b87419688c18870cf6f3, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 32.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9019723548592028277, guid: 40c53cdfe257b87419688c18870cf6f3, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -62815,7 +62828,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isTalk: 0
-  myCol: {fileID: 0}
 --- !u!114 &3995696053562594840 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6298037152543837843, guid: b93105fca1bc6c84eae22d11957a7f15, type: 3}
@@ -62840,6 +62852,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _hpSlider: {fileID: 0}
+  _meshRenderer: {fileID: 0}
+  _dissolveTime: 0.5
+  _dieParticlePrefab: {fileID: 0}
   OnDie:
     m_PersistentCalls:
       m_Calls: []
@@ -63817,7 +63832,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isTalk: 0
-  myCol: {fileID: 0}
 --- !u!114 &5375796483555448324 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6298037152543837843, guid: c60d1c3cc98375c4591cce01182748d1, type: 3}
@@ -64804,7 +64818,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isTalk: 0
-  myCol: {fileID: 0}
 --- !u!114 &6051307365639765308 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6298037152543837843, guid: a36a3dfa9a09eae4dba1a71b1c2c46ed, type: 3}
@@ -71852,6 +71865,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _originGravity: 0.8
   _maxGravityAcceleration: 0.1
+  _gravityAccelerationTime: 2
   _useGravity: 1
 --- !u!114 &6691628707624568058
 MonoBehaviour:
@@ -71896,6 +71910,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  _meleeAttackResetTime: 0.5
   _pistolObj: {fileID: 1864941553872042199, guid: ff129cf4cb92bde4e958c43c9366a3cc, type: 3}
   _shootingPointTrm: {fileID: 2004653700}
   _flipLockTime: 0.4
@@ -73071,7 +73086,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isTalk: 0
-  myCol: {fileID: 0}
 --- !u!114 &7065609949448844948 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6298037152543837843, guid: 61804a30510be994f9e8e9b1f30752e8, type: 3}
@@ -73121,6 +73135,7 @@ MonoBehaviour:
     _skinnedMeshRenderer: {fileID: 3772694320182655192}
     _meshRenderer: {fileID: 0}
   _isMotionTrail: 0
+  _isRewindMotionTrail: 0
 --- !u!114 &7175846074784275275
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -74269,7 +74284,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isTalk: 0
-  myCol: {fileID: 0}
 --- !u!114 &8039512545393282073 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6298037152543837843, guid: 4109375b525547d45b55bbcc4b828068, type: 3}

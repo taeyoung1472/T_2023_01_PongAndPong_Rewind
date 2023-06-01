@@ -13,7 +13,7 @@ public class BeadDash : GimmickObject
         if (other.gameObject.CompareTag("Player"))
         {
             Player player = other.GetComponent<Player>();
-            player.GetPlayerAction<PlayerDash>().MoreDash(0);
+            player.GetPlayerAction<PlayerDash>(PlayerActionType.Dash).MoreDash(0);
             gameObject.SetActive(false);
         }
     }

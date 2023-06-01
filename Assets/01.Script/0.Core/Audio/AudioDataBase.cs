@@ -73,4 +73,6 @@ public enum SoundType
     OnLabDoorClose = 702,
     OnOpenStageInfo = 703,
     OnCloseStageInfo = 704,
+    OnNotifyOpen = 710,
+    OnNotifyClose = 711
 }

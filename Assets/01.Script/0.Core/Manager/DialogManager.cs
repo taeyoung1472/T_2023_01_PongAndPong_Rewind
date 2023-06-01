@@ -154,7 +154,8 @@ public class DialogManager : MonoSingleTon<DialogManager>
         }
         else
         {
-            dialogInteract.InteractEnd(true);
+            Interact interact = dialogInteract;
+            interact.InteractEnd(true);
             DialogEnd();
         }
 
