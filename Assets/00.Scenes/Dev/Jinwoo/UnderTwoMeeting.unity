@@ -12059,7 +12059,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _dialogOptionDefaultIcon: {fileID: 0}
   _dialogCooltime: 0.5
-  _dialogCanvas: {fileID: 416204170}
+  _dialogCanvasAnimationTime: 0.25
+  _dialogCanvas: {fileID: 416204175}
   _nextText: {fileID: 896298129}
   _nameText: {fileID: 527577402}
   _titleText: {fileID: 2093284076}
@@ -12139,12 +12140,12 @@ GameObject:
   - component: {fileID: 398402673}
   - component: {fileID: 398402672}
   m_Layer: 0
-  m_Name: PlayerCam
+  m_Name: VCam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &398402672
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12161,7 +12162,7 @@ MonoBehaviour:
   - m_Script
   m_LockStageInInspector: 
   m_StreamingVersion: 20170927
-  m_Priority: 10
+  m_Priority: -999
   m_StandbyUpdate: 2
   m_LookAt: {fileID: 1636510176}
   m_Follow: {fileID: 1636510176}
@@ -12244,7 +12245,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   volume: {fileID: 1902929093}
-  barAmount: 0
 --- !u!1001 &401439553
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13401,13 +13401,14 @@ GameObject:
   - component: {fileID: 416204173}
   - component: {fileID: 416204172}
   - component: {fileID: 416204171}
+  - component: {fileID: 416204175}
   m_Layer: 5
   m_Name: DialogCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &416204171
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13490,6 +13491,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!225 &416204175
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 416204170}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1001 &417043445
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17460,8 +17473,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\uB370\uC774\uBE44\uB4DC"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: a640ec24d81d85546b8e0fa2878e98d0, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: 4c3bf98fc5bff84429d45efcebdf00c0, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -19225,8 +19238,8 @@ MonoBehaviour:
   m_text: "\uC544, \uC120\uBC30\uB2D8... \uC624\uB79C\uB9CC\uC774\uB124\uC694. \uC81C\uAC00
     \uD574\uC57C \uB420 \uC77C\uC774\uB77C\uB3C4 \uC788\uB098\uC694?"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: a640ec24d81d85546b8e0fa2878e98d0, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: 4c3bf98fc5bff84429d45efcebdf00c0, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -31153,8 +31166,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "F\uB97C \uB20C\uB7EC \uB2E4\uC74C\uC73C\uB85C"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: a640ec24d81d85546b8e0fa2878e98d0, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: 4c3bf98fc5bff84429d45efcebdf00c0, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -65391,8 +65404,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "< \uD3EC\uD0C8 \uAD00\uB9AC\uC778 >"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: a640ec24d81d85546b8e0fa2878e98d0, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: 4c3bf98fc5bff84429d45efcebdf00c0, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -67008,7 +67021,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9019723548592028277, guid: 40c53cdfe257b87419688c18870cf6f3, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9019723548592028277, guid: 40c53cdfe257b87419688c18870cf6f3, type: 3}
       propertyPath: m_AnchorMin.x
@@ -67016,15 +67029,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9019723548592028277, guid: 40c53cdfe257b87419688c18870cf6f3, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9019723548592028277, guid: 40c53cdfe257b87419688c18870cf6f3, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 450
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9019723548592028277, guid: 40c53cdfe257b87419688c18870cf6f3, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 65
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9019723548592028277, guid: 40c53cdfe257b87419688c18870cf6f3, type: 3}
       propertyPath: m_LocalPosition.x
@@ -67056,11 +67069,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9019723548592028277, guid: 40c53cdfe257b87419688c18870cf6f3, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -225
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9019723548592028277, guid: 40c53cdfe257b87419688c18870cf6f3, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 32.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9019723548592028277, guid: 40c53cdfe257b87419688c18870cf6f3, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
