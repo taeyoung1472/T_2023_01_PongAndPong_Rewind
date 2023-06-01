@@ -13,7 +13,7 @@ public class PlayerGimmickObject : RigidbodyGimmickObject
         //if (force <= _minSpringForce)
         //    force = _minSpringForce;
 
-        _player.GetPlayerAction<PlayerJump>().ForceJump(dir, _springAmplification, _springTime);
+        _player.GetPlayerAction<PlayerJump>(PlayerActionType.Jump).ForceJump(dir, _springAmplification, _springTime);
     }
 
     public override void Init()

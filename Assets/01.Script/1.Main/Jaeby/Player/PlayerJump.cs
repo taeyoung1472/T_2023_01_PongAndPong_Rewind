@@ -125,7 +125,7 @@ public class PlayerJump : PlayerAction, IPlayerEnableResetable
         OnJump?.Invoke();
         if (_player.PlayerActionCheck(PlayerActionType.WallGrab)) // ¿ùÁ¡ÇÁ!!
         {
-            _player.GetPlayerAction<PlayerWallGrab>().WallExit();
+            _player.GetPlayerAction<PlayerWallGrab>(PlayerActionType.WallGrab).WallExit();
             _player.VeloCityResetImm(x: true, y: true);
             _player.PlayerRenderer.ForceFlip();
             float originAngle = Vector2.Angle(Vector2.right, _player.playerMovementSO.wallJumpPower);

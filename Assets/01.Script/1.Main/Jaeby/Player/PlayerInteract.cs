@@ -8,10 +8,15 @@ public class PlayerInteract : PlayerAction, IPlayerDisableResetable
     {
         if(other.CompareTag("Interact"))
         {
-            if(_curInteract != null)
+            Interact interact = other.GetComponentInParent<Interact>();
+            if(interact != null)
+            {
+                if (interact.Interactable == false)
+                    return;
                 _curInteract?.InteractExit();
-            _curInteract = other.GetComponentInParent<Interact>();
-            _curInteract.InteractEnter();
+                _curInteract = interact;
+                _curInteract.InteractEnter();
+            }
         }
     }
 
@@ -28,6 +33,9 @@ public class PlayerInteract : PlayerAction, IPlayerDisableResetable
     {
         if (_curInteract == null || _locked)
             return false;
+        if (_curInteract.Interactable == false)
+            return false;
+
         _excuting = true;
         _player.PlayerInput.enabled = false;
         _player.ForceStop();

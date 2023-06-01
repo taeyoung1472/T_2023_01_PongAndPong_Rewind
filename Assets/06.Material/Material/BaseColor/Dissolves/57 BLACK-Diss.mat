@@ -1,5 +1,18 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-4957882494061045798
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 5
 --- !u!21 &2100000
 Material:
   serializedVersion: 8
@@ -7,14 +20,14 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Dissolve
-  m_Shader: {fileID: 4800000, guid: 8842c84d9ff79e24abe4295f91ae4a7a, type: 3}
+  m_Name: 57 BLACK-Diss
+  m_Shader: {fileID: -6465566751694194690, guid: 97c6dd483b7624141b388ba8d0a4290a, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
-  m_LightmapFlags: 4
+  m_LightmapFlags: 0
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
+  m_CustomRenderQueue: 2000
   stringTagMap: {}
   disabledShaderPasses: []
   m_SavedProperties:
@@ -40,23 +53,15 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _Dissolvenoise:
-        m_Texture: {fileID: 2800000, guid: daf7d52f981baf74b81da0b2bf841563, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - _EmissionMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 6e4f4c0390c77404fbc0e6716111c623, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _NoiseTex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -69,14 +74,6 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _TextureNoise:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _texcoord:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -97,57 +94,49 @@ Material:
     - _AlphaClip: 0
     - _Blend: 0
     - _BumpScale: 1
+    - _CastShadows: 1
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
     - _Cull: 2
-    - _Cutoff: 0.499
+    - _Cutoff: 0.5
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
+    - _Dissolve: 0
+    - _DissolveBeginOffset: 0.5
+    - _DissolveEndOffset: -5.55
     - _DstBlend: 0
-    - _EdgeWidth: 0.163
+    - _EdgeThicknessA: 0
+    - _EdgeThicknessB: 0
     - _EnvironmentReflections: 1
-    - _GlossMapScale: 0
+    - _GlossMapScale: 1
     - _Glossiness: 0
-    - _GlossyReflections: 0
-    - _InvFade: 1.33
+    - _GlossyReflections: 1
     - _Metallic: 0
+    - _Mode: 0
+    - _NoiseScale: 100
     - _OcclusionStrength: 1
-    - _Opacity: 1
-    - _Parallax: 0.005
-    - _QueueOffset: 7
+    - _Parallax: 0.02
+    - _QueueControl: 0
+    - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _Smoothness: 0.38
+    - _Smooth: 0
+    - _Smoothness: 0
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _Surface: 0
-    - _Usedepth: 0
-    - _Usetexturecolor: 0
-    - _Usetexturedissolve: 0
-    - _WorkflowMode: 1
+    - _UVSec: 0
+    - _WorkflowMode: 0
+    - _ZTest: 4
     - _ZWrite: 1
+    - _ZWriteControl: 0
     m_Colors:
-    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Color: {r: 0.8679245, g: 0.64275545, b: 0.64275545, a: 1}
-    - _Dissolvecolor: {r: 1, g: 1, b: 1, a: 1}
-    - _DissolvespeedXY: {r: 1.53, g: 0, b: 0, a: 0}
-    - _EdgeColor: {r: 1, g: 1, b: 1, a: 1}
+    - _BaseColor: {r: 0.073424645, g: 0.0775161, b: 0.10377356, a: 1}
+    - _Color: {r: 0.07342463, g: 0.07751607, b: 0.10377353, a: 1}
+    - _ColorA: {r: 1, g: 1, b: 1, a: 0}
+    - _ColorB: {r: 1, g: 1, b: 1, a: 0}
+    - _DissolveDirection: {r: 0, g: 1, b: 0, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _Maincolor: {r: 0.76094687, g: 0.8547776, b: 0.9433962, a: 1}
-    - _Noisecolor: {r: 0.24705875, g: 0.30123818, b: 0.36078426, a: 1}
-    - _NoisespeedXYEmissonZPowerW: {r: 0.47, g: 0, b: 2, a: 1}
-    - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
+    - _SpecColor: {r: 0.07352942, g: 0.07352942, b: 0.07352942, a: 1}
+    - _TintColor: {r: 0.07450979, g: 0.078431346, b: 0.101960756, a: 1}
   m_BuildTextureStacks: []
---- !u!114 &9023141340250362083
-MonoBehaviour:
-  m_ObjectHideFlags: 11
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  version: 5
