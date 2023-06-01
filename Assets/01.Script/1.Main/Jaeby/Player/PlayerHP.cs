@@ -47,13 +47,6 @@ public class PlayerHP : MonoBehaviour, IPlayerEnableResetable
         CurHP -= damage;
     }
 
-    private void Update()
-    {
-        //µð¹ö±×¿ë ÄÚµå
-        if (Input.GetKeyDown(KeyCode.Y))
-            Die();
-    }
-
     public void Die()
     {
         Debug.Log("»ç¸Á!!");
@@ -106,16 +99,6 @@ public class PlayerHP : MonoBehaviour, IPlayerEnableResetable
         foreach (var mat in _materials)
         {
             mat.SetFloat("_Dissolve", 0f);
-        }
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        return;
-        // ¸Ê Å»Ãâ, °æ°è ¹Û
-        if(other.CompareTag("Die"))
-        {
-            Die();
         }
     }
 }
