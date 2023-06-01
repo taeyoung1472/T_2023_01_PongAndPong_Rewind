@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security;
 using UnityEngine;
+using static RewindAbstract;
 
 public abstract class RewindAbstract : MonoBehaviour
 {
@@ -124,7 +126,7 @@ public abstract class RewindAbstract : MonoBehaviour
         }
         else
         {
-            Debug.LogError("TrackVelocity()가 호출되는 동안 개체에서 Rigidbody를 찾을 수 없다고!!!");
+            Debug.Log("TrackVelocity()가 호출되는 동안 개체에서 Rigidbody를 찾을 수 없다고!!!");
         }
     }
     /// <summary>
@@ -159,7 +161,7 @@ public abstract class RewindAbstract : MonoBehaviour
     {
         if(animator == null)
         {
-            Debug.LogError("TrackAnimator()가 호출되는 동안 개체에서 Animator를 찾을 수 없음");
+            Debug.Log("TrackAnimator()가 호출되는 동안 개체에서 Animator를 찾을 수 없음");
             return;
         }
 
@@ -225,7 +227,7 @@ public abstract class RewindAbstract : MonoBehaviour
     {
         if(audioSource==null)
         {
-            Debug.LogError("TrackAudio()가 호출되는 동안 개체에서 AudioSource를 찾을 수 없음");
+            Debug.Log("TrackAudio()가 호출되는 동안 개체에서 AudioSource를 찾을 수 없음");
             return;
         }
 
@@ -281,7 +283,7 @@ public abstract class RewindAbstract : MonoBehaviour
     [Serializable]
     public struct ParticleData
     {
-        
+
         public ParticleSystem particleSystem;
         [Tooltip("파티클 시스템 게임 개체 활성 상태를 추적하기 위한 입자 시스템 인에이블러")]
         public GameObject particleSystemEnabler;
@@ -306,9 +308,9 @@ public abstract class RewindAbstract : MonoBehaviour
     /// <param name="particleDataList">추적할 입자를 정의하는 데이터</param>
     protected void InitializeParticles(ParticlesSetting particleSettings)
     {
-        if(particleSettings.particlesData.Any(x=>x.particleSystemEnabler==null||x.particleSystem==null))
+        if (particleSettings.particlesData.Any(x => x.particleSystemEnabler == null || x.particleSystem == null))
         {
-            Debug.LogError("초기화된 파티클 시스템에 데이터가 없음. 일부 값에 대해 파티클 시스템 또는 파티클 시스템 인에이블러가 채워지지 않음");
+            Debug.Log("초기화된 파티클 시스템에 데이터가 없음. 일부 값에 대해 파티클 시스템 또는 파티클 시스템 인에이블러가 채워지지 않음");
         }
         particleSystemsData = particleSettings.particlesData;
         //particleTimeLimiter = particleSettings.particleLimiter;
@@ -329,13 +331,13 @@ public abstract class RewindAbstract : MonoBehaviour
     /// </summary>
     protected void TrackParticles()
     {
-        if(particleSystemsData==null)
+        if (particleSystemsData == null)
         {
-            Debug.LogError("파티클이 초기화되지 않았음 추적이 시작되기 전에 InitializeParticles()를 호출해야함.");
+            Debug.Log("파티클이 초기화되지 않았음 추적이 시작되기 전에 InitializeParticles()를 호출해야함.");
             return;
         }
-        if(particleSystemsData.Count==0)
-            Debug.LogError("파티클 데이터가 채워지지 않았음 Unity 에디터에서 파티클 데이터 채우기");
+        if (particleSystemsData.Count == 0)
+            Debug.Log("파티클 데이터가 채워지지 않았음 Unity 에디터에서 파티클 데이터 채우기");
 
         try
         {
@@ -350,28 +352,28 @@ public abstract class RewindAbstract : MonoBehaviour
                 ParticleTrackedData particleData;
                 particleData.isActive = particleSystemsData[i].particleSystemEnabler.activeInHierarchy;
 
+                //float addTime = particleSystemsData[i].particleSystem.time * particleSystemsData[i].particleSystem.duration;
+
+
                 if ((!lastValue.isActive) && (particleData.isActive))
                 {
                     particleData.particleTime = 0;
-
                 }
                 else if (!particleData.isActive)
                 {
-
                     particleData.particleTime = 0;
                 }
                 else
                 {
-
                     particleData.particleTime = addTime;
-                    //Debug.Log(particleData.particleTime+ " : " + addTime);
                 }
+                //Debug.Log("TrackParticleTime : " + particleData.particleTime);
                 trackedParticleTimes[i].WriteLastValue(particleData);
             }
         }
         catch
-        {     
-            Debug.LogError("파티클 데이터가 제대로 채워지지 않았음" +
+        {
+            Debug.Log("파티클 데이터가 제대로 채워지지 않았음" +
                 " 각 요소에 대해 파티클 시스템 및 파티클 시스템 인에이블러 필드를 모두 채워");
         }
 
@@ -395,18 +397,28 @@ public abstract class RewindAbstract : MonoBehaviour
                     particleEnabler.SetActive(true);
 
                 //Debug.Log("alkdfjklasf: "+particleTracked.particleTime);
-                particleSystemsData[i].particleSystem.Simulate(particleTracked.particleTime, true, true, true);
+                SetSeedParticle(particleSystemsData[i].particleSystem);
+                particleSystemsData[i].particleSystem.Simulate(particleTracked.particleTime, false, false, true);
             }
             else
             {
                 if (particleEnabler.activeSelf)
                     particleEnabler.SetActive(false);
             }
+            //Debug.Log("RestoreParticleTime : " + particleTracked.particleTime);
         }
+    }
+    public void SetSeedParticle(ParticleSystem particle)
+    {
+        particle.Stop();
+        particle.Clear();
+        particle.randomSeed = 1;
+        particle.Play();
+
     }
     #endregion
 
-   
+
     private void OnTrackingChange(bool val)
     {
         IsTracking = val;

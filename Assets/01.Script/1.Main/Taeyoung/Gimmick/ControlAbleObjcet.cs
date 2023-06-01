@@ -6,7 +6,7 @@ public abstract class ControlAbleObjcet : MonoBehaviour
     public abstract void Control(ControlType controlType, bool isLever, Player player, DirectionType dirType);
 
     public bool isLocked =false;
-
+    [HideInInspector] public Color controlColor;
  
 }
 public enum ControlType

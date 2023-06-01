@@ -60,6 +60,7 @@ public class TextAnim_Tuto : MonoBehaviour
             counter++;
             if (!isSkip)
             {
+                AudioManager.PlayAudioRandPitch(SoundType.OnNPCSpeak);
                 yield return new WaitForSeconds(0.1f);
             }
         }

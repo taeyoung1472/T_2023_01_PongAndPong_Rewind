@@ -22,6 +22,7 @@ public class TutorialManager : MonoSingleTon<TutorialManager>
 
     [SerializeField] private GameObject gameCam;
     [SerializeField] private GameObject tutoCam;
+    [SerializeField] private GameObject player;
 
     [Space(15)]
 
@@ -42,7 +43,8 @@ public class TutorialManager : MonoSingleTon<TutorialManager>
         if(curTutoInfo != null)
         {
             ChangeState(curTutorialState);
-            if(curTutorialState != TutorialState.None)
+            player.gameObject.SetActive(false);
+            if (curTutorialState != TutorialState.None)
             {
                 tutoCam.SetActive(true);
             }
@@ -146,6 +148,7 @@ public class TutorialManager : MonoSingleTon<TutorialManager>
         curTutoInfo = null;
         curTutorialState = TutorialState.None;
         tutoCam.SetActive(false);
+        player.gameObject.SetActive(true);
 
         endTitlePanel.gameObject.SetActive(false);
     }
