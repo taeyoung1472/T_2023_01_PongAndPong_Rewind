@@ -49,17 +49,17 @@ public class TutorialManager : MonoSingleTon<TutorialManager>
         }
     }
 
-    private void Update()
-    {
-        if (curTutorialState != TutorialState.None)
-        {
-            playerInput.enabled = false;
-        }
-        else
-        {
-            playerInput.enabled = true;
-        }
-    }
+    //private void Update()
+    //{
+    //    if (curTutorialState != TutorialState.None)
+    //    {
+    //        playerInput.enabled = false;
+    //    }
+    //    else
+    //    {
+    //        playerInput.enabled = true;
+    //    }
+    //}
 
     #region FSM
     public void ChangeState(TutorialState state)
