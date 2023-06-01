@@ -8,8 +8,6 @@ public class Notify : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI text;
     [SerializeField] private RectTransform content;
-    [SerializeField] private AudioClip open;
-    [SerializeField] private AudioClip close;
     private RectTransform myRect;
 
 
@@ -18,7 +16,7 @@ public class Notify : MonoBehaviour
         myRect = GetComponent<RectTransform>();
         text.SetText(notifyContent);
         content.anchoredPosition = new Vector2(-99999, -99999);
-        AudioManager.PlayAudio(open);
+        AudioManager.PlayAudio(SoundType.OnNotifyOpen);
         StartCoroutine(RegenRect());
     }
 
@@ -36,7 +34,7 @@ public class Notify : MonoBehaviour
     {
         Sequence seq = DOTween.Sequence();
 
-        AudioManager.PlayAudio(close);
+        AudioManager.PlayAudio(SoundType.OnNotifyClose);
         seq.Append(DOTween.To(() => content.anchoredPosition, x => content.anchoredPosition = x, new Vector2(content.sizeDelta.x * 1.5f, 0), 0.75f));
         seq.AppendCallback(() => Destroy(gameObject));
     }
