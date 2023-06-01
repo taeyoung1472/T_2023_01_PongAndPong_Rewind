@@ -38,7 +38,8 @@ public class PlayerHP : MonoBehaviour, IPlayerEnableResetable
 
     private void Start()
     {
-        _materials.AddRange(_meshRenderer.materials);
+        if(_meshRenderer != null)
+            _materials.AddRange(_meshRenderer.materials);
     }
 
     public void AddDamage(int damage)
@@ -48,6 +49,7 @@ public class PlayerHP : MonoBehaviour, IPlayerEnableResetable
 
     private void Update()
     {
+        //디버그용 코드
         if (Input.GetKeyDown(KeyCode.Y))
             Die();
     }
@@ -58,7 +60,6 @@ public class PlayerHP : MonoBehaviour, IPlayerEnableResetable
         _player.ForceStop();
         _player.PlayerActionExit(_player.GetAllActionTypesArray());
         _player.PlayerActionLock(true, _player.GetAllActionTypesArray());
-        _player.Rigid.velocity = Vector3.zero;
         _player.PlayerInput.enabled = false;
         _player.GravityModule.UseGravity = false;
         OnDie?.Invoke();
@@ -75,10 +76,7 @@ public class PlayerHP : MonoBehaviour, IPlayerEnableResetable
         _dissolSeq = DOTween.Sequence();
         foreach (var mat in _materials)
         {
-            _dissolSeq.Join(DOTween.To(() => 0f, x =>
-                {
-                    mat.SetFloat("_Dissolve", x);
-                }, 0.3f, _dissolveTime)).SetUpdate(true);
+            _dissolSeq.Join(DOTween.To(() => 0f, x => mat.SetFloat("_Dissolve", x), 0.3f, _dissolveTime)).SetUpdate(true);
         }
     }
 
@@ -108,6 +106,16 @@ public class PlayerHP : MonoBehaviour, IPlayerEnableResetable
         foreach (var mat in _materials)
         {
             mat.SetFloat("_Dissolve", 0f);
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        return;
+        // 맵 탈출, 경계 밖
+        if(other.CompareTag("Die"))
+        {
+            Die();
         }
     }
 }

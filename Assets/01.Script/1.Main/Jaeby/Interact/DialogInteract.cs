@@ -19,16 +19,15 @@ public class DialogInteract : Interact
     protected override void ChildInteractEnd()
     {
         _curDialogData = _curDialogData.nextData;
-        if (_curDialogData != null)
+        _interactable = _curDialogData != null;
+        if (_interactable)
             InteractEnter();
     }
 
     protected override void ChildInteractStart()
     {
-        if (_curDialogData == null)
-            return;
         InteractExit();
-        if(DialogManager.Instance.DialogStart(_myNPC.npcData, this, _curDialogData, _dialogOptions, EndAction ))
+        if (DialogManager.Instance.DialogStart(_myNPC.npcData, this, _curDialogData, _dialogOptions, EndAction))
         {
             if (_animator != null)
             {

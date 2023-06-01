@@ -100,12 +100,13 @@ public class Player : MonoBehaviour
         _playerHP = GetComponent<PlayerHP>();
         _rigid = GetComponent<Rigidbody>();
         _playerInput = GetComponent<PlayerInput>();
-        _playerAnimation = transform.Find("AgentRenderer").GetComponent<PlayerAnimation>();
-        _playerRenderer = _playerAnimation.GetComponent<PlayerRenderer>();
         _gravityModule = GetComponent<GravityModule>();
         _playerTrail = GetComponent<TrailableObject>();
-        _playerAudio = transform.Find("AgentSound").GetComponent<PlayerAudio>();
         _col = GetComponent<CapsuleCollider>();
+
+        _playerAudio = transform.Find("AgentSound").GetComponent<PlayerAudio>();
+        _playerRenderer = transform.Find("AgentRenderer").GetComponent<PlayerRenderer>();;
+        _playerAnimation = _playerRenderer.GetComponent<PlayerAnimation>();
         _animationIK = _playerRenderer.GetComponent<AnimationIK>();
     }
 
