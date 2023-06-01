@@ -6,18 +6,24 @@ using UnityEngine;
 public class EnemyDataSO : ScriptableObject
 {
     public string enemyName;
-    public LayerMask targetLayer;
-    public float walkSpeed;
-    public float runSpeed;
 
-    public float sightRange;
-    public float attackRange;
+    [Header("Range")]
+    public float _detectRange = 6f;
+    public float _meleeAttackRange = 2f;
+    public float fieldOfView = 180f;
 
-    public float attackDelay;
+    [Header("Movement")]
+    public float _runSpeed = 5f;
+    public float _walkSpeed = 3f;
+    public float _rotationSpeed = 40f;
 
-    public float attackDmg;
+    [Header("Health")]
+    public int health;
 
-    public float health;
+    public LayerMask targetLayer; // 추적 대상 레이어
 
+    public float idleTime = 1.5f;
+
+    [TextArea]
     public string info;
 }
