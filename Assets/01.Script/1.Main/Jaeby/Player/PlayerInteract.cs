@@ -37,8 +37,8 @@ public class PlayerInteract : PlayerAction, IPlayerDisableResetable
             return false;
 
         _excuting = true;
-        _player.PlayerInput.enabled = false;
         _player.ForceStop();
+        _player.PlayerInput.enabled = false;
         _curInteract.InteractStart(_player);
         return true;
     }
