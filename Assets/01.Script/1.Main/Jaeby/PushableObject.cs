@@ -8,13 +8,13 @@ public class PushableObject : MonoBehaviour
     {
         if (other.CompareTag("Player") == false)
             return;
-        other.GetComponent<Player>().GetPlayerAction<PlayerObjectPush>().PushStart(gameObject);
+        other.GetComponent<Player>().GetPlayerAction<PlayerObjectPush>(PlayerActionType.ObjectPush).PushStart(gameObject);
     }
 
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Player") == false)
             return;
-        other.GetComponent<Player>().GetPlayerAction<PlayerObjectPush>().PushEnd(gameObject);
+        other.GetComponent<Player>().GetPlayerAction<PlayerObjectPush>(PlayerActionType.ObjectPush).PushEnd(gameObject);
     }
 }

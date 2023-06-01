@@ -18,7 +18,7 @@ public class BeadJump : GimmickObject
         if (other.gameObject.CompareTag("Player"))
         {
             Player player = other.GetComponent<Player>();
-            player.GetPlayerAction<PlayerJump>().JumpCountSetting(0);
+            player.GetPlayerAction<PlayerJump>(PlayerActionType.Jump).JumpCountSetting(0);
             gameObject.SetActive(false);
         }
     }

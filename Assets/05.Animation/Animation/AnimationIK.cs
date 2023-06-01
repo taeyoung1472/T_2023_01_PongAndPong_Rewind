@@ -43,7 +43,7 @@ public class AnimationIK : MonoBehaviour
     public void TabletSetStart()
     {
         transform.GetComponentInParent<Player>().PlayerActionExit(PlayerActionType.Attack);
-        transform.GetComponentInParent<Player>().GetPlayerAction<PlayerAttack>().WeaponSwitching(AttackState.Melee, true);
+        transform.GetComponentInParent<Player>().GetPlayerAction<PlayerAttack>(PlayerActionType.Attack).WeaponSwitching(AttackState.Melee, true);
         lookTrm = null;
         HandL = tabletHandL;
         HandR = tabletHandR;
