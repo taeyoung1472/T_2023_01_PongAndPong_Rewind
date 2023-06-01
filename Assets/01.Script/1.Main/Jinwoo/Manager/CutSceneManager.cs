@@ -4,6 +4,7 @@ using UnityEngine.Playables;
 //using Cinemachine;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class CutSceneManager : MonoSingleTon<CutSceneManager>
 {
@@ -106,6 +107,7 @@ public class CutSceneManager : MonoSingleTon<CutSceneManager>
     {
         DisableCollider();
         elevatorCutScene.Play();
+        player.PlayerActionExit(PlayerActionType.Move);
     }
     public void DisableCollider()
     {
