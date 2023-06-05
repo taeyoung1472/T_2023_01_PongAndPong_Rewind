@@ -48,6 +48,7 @@ public class FreeLookCamera : MonoBehaviour
     private Vector3 _worldMoveDir;
 
     private Transform _rig;
+    public Transform Rig { get => _rig; set => _rig = value; }
     private Camera cam;
 
 
