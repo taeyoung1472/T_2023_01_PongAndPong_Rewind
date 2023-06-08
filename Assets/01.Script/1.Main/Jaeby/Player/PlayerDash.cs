@@ -27,6 +27,8 @@ public class PlayerDash : PlayerAction, IPlayerEnableResetable
             _player.PlayerActionCheck(PlayerActionType.ObjectPush, PlayerActionType.WallGrab))
             return;
 
+        _player.PlayerRenderer.Flip(dir, false);
+
         bool slide = _player.IsGrounded;
 
         if (_dashChargeCoroutine != null)
@@ -75,8 +77,16 @@ public class PlayerDash : PlayerAction, IPlayerEnableResetable
             _player.GravityModule.UseGravity = false;
             dashVector = dir * _player.playerMovementSO.dashPower;
         }
-        //_player.VelocitySetExtra(dashVector.x, dashVector.y);
-        DOTween.To(() => dashVector, x => _player.VelocitySetExtra(x.x, x.y), Vector2.zero, _player.playerMovementSO.dashContinueTime);
+        if (_player.playerMovementSO.dashEase == Ease.Unset)
+        {
+            _player.VelocitySetExtra(dashVector.x, dashVector.y);
+        }
+        else
+        {
+            DOTween.To(() => dashVector, x => _player.VelocitySetExtra(x.x, x.y), Vector2.zero, _player.playerMovementSO.dashContinueTime).SetEase(_player.playerMovementSO.dashEase);
+        }
+
+        CamManager.Instance?.CameraShake(0.2f, 5f, 3f);
         _player.AfterImageEnable(true);
         yield return new WaitForSeconds(_player.playerMovementSO.dashContinueTime);
         DashExit();
@@ -90,6 +100,7 @@ public class PlayerDash : PlayerAction, IPlayerEnableResetable
 
     public void DashExit()
     {
+        DOTween.Kill(this);
         _excuting = false;
         _player.ColliderSet(PlayerColliderType.Normal);
         _player.AfterImageEnable(false);

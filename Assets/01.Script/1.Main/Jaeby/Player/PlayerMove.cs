@@ -41,7 +41,11 @@ public class PlayerMove : PlayerAction
             amount *= _pushSlowSpeed;
         if (_player.playerBuff.BuffCheck(PlayerBuffType.Slow))
             amount *= _slowSpeed;
-        amount *= (_player.PlayerRenderer.Fliped ? -1f : 1f);
+
+        if (_player.PlayerAnimation.MoveFlipLock)
+            amount *= dir.x;
+        else
+            amount *= (_player.PlayerRenderer.Fliped ? -1f : 1f);
 
         if (_player.PlayerRenderer.GetHorizontalFlip())
             _player.VelocitySetMove(x: amount);

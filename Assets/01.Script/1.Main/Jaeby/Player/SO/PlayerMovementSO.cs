@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "SO/Player/Movement")]
@@ -16,9 +17,9 @@ public class PlayerMovementSO : ScriptableObject
     [Header("대쉬 관련")]
     public float dashPower = 8f;
     public float dashContinueTime = 0.2f;
-    public float slideContinueTime = 0.5f;
     public float dashChargeTime = 0.2f;
     public int dashCount = 1;
+    public Ease dashEase = Ease.Linear;
     [Header("벽 짚기 관련")]
     public Vector2 wallJumpPower = Vector2.zero;
     public float wallGrabJumpPower = 3f;
