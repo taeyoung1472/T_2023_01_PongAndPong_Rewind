@@ -5,6 +5,8 @@ public class PlayerMovementSO : ScriptableObject
 {
     [Header("이동 관련")]
     public float speed = 4f;
+    public float accelerationTime = 0.2f;
+    public float decelerationTime = 0.2f;
     [Header("점프 관련")]
     public float fallMultiplier = 2.5f;
     public float downGravityScale = 2f;

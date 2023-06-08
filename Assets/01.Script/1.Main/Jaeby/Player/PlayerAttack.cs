@@ -114,7 +114,7 @@ public class PlayerAttack : PlayerAction, IPlayerEnableResetable
 
         yield return new WaitForEndOfFrame();
 
-        Vector3 distance = target - _shootingPointTrm.position;
+        Vector3 distance = target - new Vector3(_player.transform.position.x, _shootingPointTrm.position.y, 0f);
         float angle = Mathf.Atan2(distance.y, distance.x) * Mathf.Rad2Deg;
         Quaternion rot = Quaternion.AngleAxis(angle, Vector3.forward);
 

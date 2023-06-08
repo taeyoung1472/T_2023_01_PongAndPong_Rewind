@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
@@ -74,7 +75,8 @@ public class PlayerDash : PlayerAction, IPlayerEnableResetable
             _player.GravityModule.UseGravity = false;
             dashVector = dir * _player.playerMovementSO.dashPower;
         }
-        _player.VelocitySetExtra(dashVector.x, dashVector.y);
+        //_player.VelocitySetExtra(dashVector.x, dashVector.y);
+        DOTween.To(() => dashVector, x => _player.VelocitySetExtra(x.x, x.y), Vector2.zero, _player.playerMovementSO.dashContinueTime);
         _player.AfterImageEnable(true);
         yield return new WaitForSeconds(_player.playerMovementSO.dashContinueTime);
         DashExit();
