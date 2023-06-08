@@ -43,7 +43,7 @@ public class PlayerMove : PlayerAction
             amount *= _slowSpeed;
 
         if (_player.PlayerAnimation.MoveFlipLock)
-            amount *= dir.x;
+            amount *= dir.x; // 회전해서 공격이 문제면 여기가 문제야
         else
             amount *= (_player.PlayerRenderer.Fliped ? -1f : 1f);
 
