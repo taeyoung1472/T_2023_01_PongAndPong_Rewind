@@ -16,6 +16,7 @@ public class EnemyDataSO : ScriptableObject
     public float _runSpeed = 5f;
     public float _walkSpeed = 3f;
     public float _rotationSpeed = 40f;
+    public float _jumpForce = 15f;
 
     [Header("Health")]
     public int health;

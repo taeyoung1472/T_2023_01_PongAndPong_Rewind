@@ -5,6 +5,7 @@ using Jinwoo.BehaviorTree;
 
 using static Jinwoo.BehaviorTree.NodeHelper;
 using UnityEditor;
+using UnityEngine.InputSystem;
 
 public class MeleeEnemy : EnemyAI
 {
@@ -19,6 +20,14 @@ public class MeleeEnemy : EnemyAI
         {
             ApplyDamage(40);
         }
+        if (Input.GetKeyDown(KeyCode.J) && IsGrounded())
+        {
+            JumpEnemy();
+        }
+    }
+    private void FixedUpdate()
+    {
+        
     }
 
 }

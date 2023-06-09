@@ -636,7 +636,7 @@ GameObject:
   - component: {fileID: 1861475219}
   - component: {fileID: 1861475218}
   - component: {fileID: 1861475217}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3506,6 +3506,7 @@ GameObject:
   - component: {fileID: 8378329448959111037}
   - component: {fileID: 8378329448968197637}
   - component: {fileID: 8378329448968197641}
+  - component: {fileID: 8378329448968197642}
   - component: {fileID: 8378329448968197640}
   - component: {fileID: 8378329448968197639}
   m_Layer: 0
@@ -4658,9 +4659,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8378329448958801633}
-  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 7.58, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 7.580001, y: 1.489, z: 0}
+  m_LocalScale: {x: 1.0000002, y: 1, z: 1.0000002}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8378329448959114993}
@@ -5330,6 +5331,20 @@ MonoBehaviour:
   _currentPatrolPos: {fileID: 0}
   eyePos: {fileID: 1878486661}
   _currentHealth: 0
+  myCol: {fileID: 8378329448968197639}
+--- !u!114 &8378329448968197642
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8378329448958801633}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2259e72df8a55414997bb1fd16630b1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _gravityScale: 7
 --- !u!4 &8519910122043071579
 Transform:
   m_ObjectHideFlags: 0

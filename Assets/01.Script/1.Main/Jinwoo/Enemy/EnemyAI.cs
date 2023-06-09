@@ -27,6 +27,9 @@ public class EnemyAI : MonoBehaviour, ICore
     [SerializeField]
     protected int _currentHealth = 0;
     private float curidleTime = 0f;
+    private float distToGround;
+    [SerializeField]
+    private Collider myCol;
 
     private bool isHit = false;
     private bool isDie = false;
@@ -46,14 +49,18 @@ public class EnemyAI : MonoBehaviour, ICore
     const string _dieAnimBoolName = "die";
     const string _hitAnimBoolName = "hit";
 
+    const string _jumpAnimTriggerName = "jump";
     #endregion
 
     protected virtual void Awake()
     {
         _animator = GetComponent<Animator>();
         _rigidbody = GetComponent<Rigidbody>();
+        myCol = GetComponent<Collider>();
 
         eyePos = transform.Find("EyePos");
+
+        distToGround = myCol.bounds.extents.y;
 
         _currentHealth = _enemyData.health;
         isHit = false;
@@ -226,6 +233,19 @@ public class EnemyAI : MonoBehaviour, ICore
 
         LookTarget(dir);
         _rigidbody.velocity = velocity;
+    }
+
+    public void JumpEnemy()
+    {
+        _animator.SetTrigger(_jumpAnimTriggerName);
+        _rigidbody.AddForce(Vector3.up * _enemyData._jumpForce, ForceMode.Impulse);
+        //_rigidbody.velocity = Vector3.up * _enemyData._jumpForce;
+    }
+    public bool IsGrounded()
+    {
+        bool result = Physics.Raycast(transform.position, -Vector3.up, distToGround + 0.1f, 1<< LayerMask.NameToLayer("Ground"));
+        Debug.Log("result : " + result + " : "+ distToGround);
+        return result;
     }
     #region Hit Node
 
@@ -480,6 +500,11 @@ public class EnemyAI : MonoBehaviour, ICore
 
         Handles.color = new Color(0f, 0f, 1f, 0.2f);
         Handles.DrawSolidArc(eyePos.position, Vector3.up, leftRayDirection, _enemyData.fieldOfView, _enemyData._meleeAttackRange);
+
+        //Handles.color = new Color(0f, 1f, 1f, 1f);
+        //Handles.DrawLine(transform.position, new Vector3(transform.position.x, distToGround + 0.1f, transform.position.z),1f);
+
+        Gizmos.DrawRay (new Vector3(transform.position.x, transform.position.y +distToGround + 0.1f, transform.position.z), -Vector3.up);
     }
 
 #endif

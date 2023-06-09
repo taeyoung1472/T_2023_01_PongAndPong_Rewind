@@ -26,7 +26,7 @@ public class StageManager : MonoSingleTon<StageManager>
     [HideInInspector] public bool isGameStart = false;
     [HideInInspector] public bool isDownButton = false;
     private float reStartCoolTime = 1f;
-    private float freelookCoolTime = 2f;
+    private float freelookCoolTime = 1f;
     private bool isRestartPossible = false;
     private bool inputLock = false;
     public bool InputLock { get => inputLock; set => inputLock = value; }
@@ -43,6 +43,9 @@ public class StageManager : MonoSingleTon<StageManager>
     {
         SpawnStage();
         isRestartPossible = false;
+
+        reStartCoolTime = 1f;
+        freelookCoolTime = 1f;
     }
     public void Update()
     {
