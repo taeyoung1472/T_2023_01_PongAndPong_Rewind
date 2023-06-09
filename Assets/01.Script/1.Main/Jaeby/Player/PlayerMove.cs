@@ -50,7 +50,7 @@ public class PlayerMove : PlayerAction
         if (_player.PlayerRenderer.GetHorizontalFlip())
             _player.VelocitySetMove(x: amount);
         else
-            _player.VelocitySetMove(y: amount);
+            _player.VelocitySetMove(y: -amount);
 
         _excuting = dir.sqrMagnitude > 0f;
         if (_excuting && _player.IsGrounded && _player.playerBuff.BuffCheck(PlayerBuffType.PushSlow) == false && _player.playerBuff.BuffCheck(PlayerBuffType.Slow) == false)

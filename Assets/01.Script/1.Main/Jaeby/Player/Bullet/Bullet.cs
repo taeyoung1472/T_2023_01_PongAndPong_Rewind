@@ -24,7 +24,7 @@ public class Bullet : PoolAbleObject
             _rigid = GetComponent<Rigidbody>();
         _rigid.velocity = transform.right * _speed;
         AttackCollider.Create(_destroyMask, ColliderType.PlayerBullet, transform, transform.position, transform.localScale.x, null, true, Callback);
-        StartCoroutine(LifeCoroutine(lifeTime));
+        StartCoroutine(LifeCoroutine(lifeTime));    
     }
 
     private IEnumerator LifeCoroutine(float lifeTime)

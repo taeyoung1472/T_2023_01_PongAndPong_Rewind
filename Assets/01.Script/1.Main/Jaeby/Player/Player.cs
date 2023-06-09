@@ -105,7 +105,7 @@ public class Player : MonoBehaviour
         _col = GetComponent<CapsuleCollider>();
 
         _playerAudio = transform.Find("AgentSound").GetComponent<PlayerAudio>();
-        _playerRenderer = transform.Find("AgentRenderer").GetComponent<PlayerRenderer>();;
+        _playerRenderer = transform.Find("AgentRenderer").GetComponent<PlayerRenderer>(); ;
         _playerAnimation = _playerRenderer.GetComponent<PlayerAnimation>();
         _animationIK = _playerRenderer.GetComponent<AnimationIK>();
     }
@@ -154,7 +154,9 @@ public class Player : MonoBehaviour
             ;
         if (_isGrounded == false)
         {
-            _characterMoveAmount += transform.up * GravityModule.GetGravity().y * (_playerMovementSO.fallMultiplier - 1) * Time.deltaTime;
+            // 중력 방향에 따라 다르게
+            _characterMoveAmount += transform.up * GravityModule.GetGravity().y * Time.deltaTime
+                * ((_rigid.velocity.y <= -0.5f) ? _playerMovementSO.fallMultiplier : _playerMovementSO.upMultiplier);
         }
         if (OnSlope())
         {
@@ -273,14 +275,14 @@ public class Player : MonoBehaviour
         Vector3 boxCenter = _col.bounds.center;
         Vector3 halfExtents = _col.bounds.extents;
         float maxDistance = 0f;
-        if (_playerRenderer.flipDirection == DirectionType.Left || _playerRenderer.flipDirection == DirectionType.Right)
+        if (_playerRenderer.GetHorizontalFlip())
         {
-            maxDistance = _col.bounds.extents.x;
+            maxDistance = _col.bounds.extents.y;
             halfExtents.y = _groundCheckRayLength;
         }
         else
         {
-            maxDistance = _col.bounds.extents.y;
+            maxDistance = _col.bounds.extents.x;
             halfExtents.y = _groundCheckRayLength;
         }
         _isGrounded = Physics.BoxCast(boxCenter, halfExtents, -transform.up, out _slopeHit, transform.rotation, maxDistance, _groundMask);

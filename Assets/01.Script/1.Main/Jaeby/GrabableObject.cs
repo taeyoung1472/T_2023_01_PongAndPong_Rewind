@@ -17,9 +17,14 @@ public class GrabableObject : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             //Debug.Log($"A : {other.transform.position.y} B : {myCol.bounds.center.y + (myCol.bounds.size.y / 2f) - 2.0f}");
-            if (other.transform.position.y < myCol.bounds.center.y + (myCol.bounds.size.y / 2f) - 2.0f)
+            float maxY = myCol.bounds.center.y + (myCol.bounds.size.y / 2f) - 2.0f;
+            if (other.transform.position.y <= maxY)
             {
                 other.GetComponent<Player>().GetPlayerAction<PlayerWallGrab>(PlayerActionType.WallGrab).WallEnter(gameObject, _wallPosition.position);
+            }
+            else
+            {
+                // 벽 올라가기
             }
         }
     }

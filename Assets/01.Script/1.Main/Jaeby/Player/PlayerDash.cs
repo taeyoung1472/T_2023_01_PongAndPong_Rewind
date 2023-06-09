@@ -86,7 +86,7 @@ public class PlayerDash : PlayerAction, IPlayerEnableResetable
             DOTween.To(() => dashVector, x => _player.VelocitySetExtra(x.x, x.y), Vector2.zero, _player.playerMovementSO.dashContinueTime).SetEase(_player.playerMovementSO.dashEase);
         }
 
-        CamManager.Instance?.CameraShake(0.2f, 5f, 3f);
+        CamManager.Instance?.CameraShake(0.2f, 2.5f, 1.5f);
         _player.AfterImageEnable(true);
         yield return new WaitForSeconds(_player.playerMovementSO.dashContinueTime);
         DashExit();

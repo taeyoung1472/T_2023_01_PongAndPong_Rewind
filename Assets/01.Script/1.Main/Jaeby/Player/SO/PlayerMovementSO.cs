@@ -10,6 +10,7 @@ public class PlayerMovementSO : ScriptableObject
     public float decelerationTime = 0.2f;
     [Header("점프 관련")]
     public float fallMultiplier = 2.5f;
+    public float upMultiplier = 2.5f;
     public float downGravityScale = 2f;
     public float jumpPower = 8f;
     public float jumpHoldTime = 0.5f;
