@@ -6,6 +6,7 @@ public class PlayerRenderer : MonoBehaviour
 {
     private bool _fliped = false;
     public bool Fliped => _fliped;
+    private bool _lastFliped = false;
 
     [SerializeField]
     private UnityEvent<bool> OnFliped = null;
@@ -31,6 +32,17 @@ public class PlayerRenderer : MonoBehaviour
     private void Awake()
     {
         _player = GetComponentInParent<Player>();
+    }
+
+    public bool GetHorizontalFlip()
+    {
+        return (_flipDirection == DirectionType.Up) || (_flipDirection == DirectionType.Down);
+    }
+
+    public void FlipSmoothSequence(DirectionType dirType)
+    {
+        _flipDirection = DirectionType.None;
+        FlipDirectionChange(dirType, false);
     }
 
     public void FlipDirectionChange(DirectionType dirType, bool forceFlip)
@@ -123,23 +135,19 @@ public class PlayerRenderer : MonoBehaviour
             _player.transform.rotation = Quaternion.Slerp(_player.transform.rotation, targetRotation, _rotationSpeed * Time.deltaTime);
         else
             _player.transform.rotation = targetRotation;
-        
+
         _fliped = flipDir == DirectionType.Left;
+
+        if (_lastFliped == _fliped)
+            return;
+        _lastFliped = _fliped;
         OnFliped?.Invoke(_fliped);
     }
 
     public void ForceFlip()
     {
-        // left : -90 right : 90
         Quaternion targetRotation = Quaternion.Euler(_player.transform.rotation.eulerAngles.x, _fliped ? 90f : -90f, _player.transform.rotation.eulerAngles.z); // ¹Ý´ë
         _player.transform.rotation = targetRotation;
-        /*Vector3 sc = transform.localScale;
-        sc.x = Mathf.Abs(sc.x);
-        if (_fliped == false)
-        {
-            sc.x *= -1f;
-        }
-        transform.localScale = sc;*/
         _fliped = !_fliped;
         OnFliped?.Invoke(_fliped);
     }
