@@ -21,6 +21,7 @@ public class TutorialManager : MonoSingleTon<TutorialManager>
 
     [SerializeField] private GameObject gameCam;
     [SerializeField] private GameObject tutoCam;
+    [SerializeField] private GameObject tutoFocusCam;
     [SerializeField] private PlayerInput playerInput;
 
     [Space(15)]
@@ -37,7 +38,14 @@ public class TutorialManager : MonoSingleTon<TutorialManager>
     [Header("³¡")]
     [SerializeField] private TextAnim_Tuto textAnim;
 
-    public void Start()
+    public void Play(TutorialInfo info)
+    {
+        CurTutoInfo = info;
+        Play();
+    }
+
+
+    public void Play()
     {
         if (curTutoInfo != null)
         {
@@ -48,22 +56,15 @@ public class TutorialManager : MonoSingleTon<TutorialManager>
             }
         }
     }
-
-    //private void Update()
-    //{
-    //    if (curTutorialState != TutorialState.None)
-    //    {
-    //        playerInput.enabled = false;
-    //    }
-    //    else
-    //    {
-    //        playerInput.enabled = true;
-    //    }
-    //}
+    public void Start()
+    {
+        Play();
+    }
 
     #region FSM
     public void ChangeState(TutorialState state)
     {
+        Debug.Log(state);
         curTutorialState = state;
         switch (curTutorialState)
         {
@@ -122,6 +123,7 @@ public class TutorialManager : MonoSingleTon<TutorialManager>
     public IEnumerator OnGame()
     {
         gameCam.gameObject.SetActive(true);
+        tutoFocusCam.SetActive(true);
         yield return new WaitForSeconds(1.5f);
         StageManager.stageDataSO = curTutoInfo.stageData;
         curTutorialState = TutorialState.End;
@@ -157,10 +159,9 @@ public class TutorialManager : MonoSingleTon<TutorialManager>
 
         curTutoInfo = null;
         curTutorialState = TutorialState.None;
-        tutoCam.SetActive(false);
         playerInput.enabled = true;
 
-        endTitlePanel.gameObject.SetActive(false);
+        GameManager.Instance.LoadMenu();
     }
 
     #endregion

@@ -27,6 +27,7 @@ public class LoadingSceneManager : MonoBehaviour
     public static void LoadScene(int sceneIndex)
     {
         if (isLoading) return;
+        //Debug.Log("&&& ·Îµùµù");
         isLoading = true;
         Time.timeScale = 1;
         nextScene = sceneIndex + 1;

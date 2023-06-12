@@ -40,6 +40,7 @@ public class SceneChangeCanvas : MonoBehaviour
     public void Start()
     {
         DontDestroyOnLoad(gameObject);
+        SetRect();
         StartCoroutine(ChangeVolume());
     }
 
@@ -80,6 +81,8 @@ public class SceneChangeCanvas : MonoBehaviour
 
     public static void Active(Action callbackAction = null)
     {
+        //Debug.Log("&&& ¿¢Æ¼ºê");
+        SetRect();
         isEndSequence = false;
         isFade = true;
         timer = 0;
@@ -96,6 +99,8 @@ public class SceneChangeCanvas : MonoBehaviour
     }
     public static void DeActive(Action callbackAction = null)
     {
+        //Debug.Log("&&& µð¿¢Æ¼ºê");
+        SetRect();
         isEndSequence = false;
         isFade = false;
         timer = 0;
@@ -115,5 +120,14 @@ public class SceneChangeCanvas : MonoBehaviour
                 rectList[i].anchoredPosition = new Vector2(-Screen.width, rectList[i].anchoredPosition.y);
             }
         });
+    }
+
+    private static void SetRect()
+    {
+        for (int i = 0; i < rectList.Count; i++)
+        {
+            rectList[i].sizeDelta = new Vector2(Screen.width, Screen.height * (1.0f / rectList.Count));
+            rectList[i].anchoredPosition = new Vector2(rectList[i].anchoredPosition.x, -(Screen.height * (1.0f / rectList.Count) * i));
+        }
     }
 }

@@ -24,6 +24,7 @@ public class MainMenuManager : MonoSingleTon<MainMenuManager>
 
     [Header("[Player]")]
     [SerializeField] private GameObject player;
+    [SerializeField] private Transform portalPlayerPostion;
     [SerializeField] private PlayerInput playerInput;
     [SerializeField] private Animator playerAnimator;
     [SerializeField] private Animator tabletAnimator;
@@ -32,6 +33,7 @@ public class MainMenuManager : MonoSingleTon<MainMenuManager>
     {
         if (isOpend)
         {
+            player.transform.SetPositionAndRotation(portalPlayerPostion.position, portalPlayerPostion.rotation);
             PlayGame();
             yield break;
         }
@@ -40,13 +42,6 @@ public class MainMenuManager : MonoSingleTon<MainMenuManager>
         yield return null;
 
         player.gameObject.SetActive(false);
-
-        yield return new WaitForSeconds(1.5f);
-        NotifyManager.Instance.Notify("안녕하세요 Rewind의 도움말 입니다!");
-        yield return new WaitForSeconds(1.5f);
-        NotifyManager.Instance.Notify("이 도움말 들은 게임의 중요한 정보를 전달 합니다!");
-        yield return new WaitForSeconds(1.5f);
-        NotifyManager.Instance.Notify("꼼꼼히 읽으시고 [ENTER]를 눌러 넘길수 있습니다!");
     }
 
     void Update()
