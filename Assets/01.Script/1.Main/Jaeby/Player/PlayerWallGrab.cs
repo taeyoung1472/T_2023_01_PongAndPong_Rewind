@@ -23,6 +23,7 @@ public class PlayerWallGrab : PlayerAction
             return;
 
         _player.PlayerRenderer.Flip(wallPosition - _player.transform.position, false);
+        _player.PlayerAnimation.WallClimbAnimation();
         bool gravity = _player.GravityModule.UseGravity;
         _player.PlayerInput.enabled = false;
         _player.GravityModule.UseGravity = false;
