@@ -31,12 +31,16 @@ public class PhoneCollection : MonoSingleTon<PhoneCollection>
             chObj.transform.GetChild(0). GetComponent<Button>().onClick.AddListener(() =>
             {
                 isActive = !isActive;
-
-                chObj.transform.GetChild(1).gameObject.SetActive(isActive);
-                LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)parentTrm);
+                chObj.transform.GetChild(0).GetChild(1).gameObject.SetActive(isActive);
             });
         }
     }
+
+    private void Update()
+    {
+        LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)parentTrm);
+    }
+
     public void OnCollectionMenu()
     {
         if (childObjs.Count < stageDatabase.worldList.Count)
