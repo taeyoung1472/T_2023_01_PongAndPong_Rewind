@@ -1,10 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.Playables;
 //using Cinemachine;
 using UnityEngine;
+using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class CutSceneManager : MonoSingleTon<CutSceneManager>
 {
@@ -48,7 +47,7 @@ public class CutSceneManager : MonoSingleTon<CutSceneManager>
 
     void Update()
     {
-        
+
         if (isAutoTalking)
         {
             curCool += Time.deltaTime;
@@ -71,7 +70,7 @@ public class CutSceneManager : MonoSingleTon<CutSceneManager>
         }
         else
         {
-                CheckAutoTalkSpeechBubble();
+            CheckAutoTalkSpeechBubble();
 
         }
     }
@@ -97,9 +96,9 @@ public class CutSceneManager : MonoSingleTon<CutSceneManager>
 
             UIGetter.Instance.PushUIs();
         }
-        else 
+        else
         {
-           
+
         }
     }
 
@@ -120,7 +119,7 @@ public class CutSceneManager : MonoSingleTon<CutSceneManager>
         {
             item.enabled = true;
         }
-        
+
     }
     public void PlayerDisableList()
     {
@@ -128,7 +127,7 @@ public class CutSceneManager : MonoSingleTon<CutSceneManager>
         {
             item.enabled = false;
         }
-        
+
     }
     public void PlayerTurn()
     {
