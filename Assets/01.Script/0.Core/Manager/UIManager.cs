@@ -28,9 +28,11 @@ public class UIManager : MonoSingleTon<UIManager>
 
     [SerializeField] private GameObject timerImg;
     [SerializeField] private GameObject pauseImg;
+
+    [SerializeField] private GameObject stageImg;
     [SerializeField] private GameObject collectionImg;
 
-   
+    [SerializeField] private GameObject[] setActiveFalseObjs;   
 
     private void Awake()
     {
@@ -95,11 +97,24 @@ public class UIManager : MonoSingleTon<UIManager>
     }
     public void PauseCollection()
     {
-        //pauseImg.SetActive(false);
+        for (int i = 0; i < setActiveFalseObjs.Length; i++)
+        {
+            setActiveFalseObjs[i].gameObject.SetActive(false);
+        }
+
         collectionImg.SetActive(true);
         PhoneCollection.Instance.OnCollectionMenu();
     }
+    public void PauseStage()
+    {
+        for (int i = 0; i < setActiveFalseObjs.Length; i++)
+        {
+            setActiveFalseObjs[i].gameObject.SetActive(false);
+        }
+        stageImg.SetActive(true);
 
+        PhoneStage.Instance.OnStageMenu();
+    }
     public void FastForwardTime()
     {
         if (!TimerManager.Instance.isOnTimer || TimerManager.Instance.isRewinding)
