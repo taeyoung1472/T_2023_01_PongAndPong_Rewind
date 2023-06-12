@@ -9660,6 +9660,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 564162494548461625}
+  - {fileID: 3335668289466988468}
   m_Father: {fileID: 6496248408959064200}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -9689,6 +9690,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _wallPosition: {fileID: 564162494548461625}
+  _climbPosition: {fileID: 3335668289466988468}
 --- !u!1 &792666618958246366
 GameObject:
   m_ObjectHideFlags: 0
@@ -48823,6 +48825,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _wallPosition: {fileID: 2403353924056875115}
+  _climbPosition: {fileID: 0}
 --- !u!1 &4559562082187751062
 GameObject:
   m_ObjectHideFlags: 0
@@ -57223,6 +57226,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8428014627439976891}
+  - {fileID: 6136396753514031681}
   m_Father: {fileID: 540518186548162344}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
@@ -57252,6 +57256,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _wallPosition: {fileID: 8428014627439976891}
+  _climbPosition: {fileID: 6136396753514031681}
 --- !u!1 &5516109557918858281
 GameObject:
   m_ObjectHideFlags: 0
@@ -88886,6 +88891,37 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 7021214658469335481, guid: 8696f09b8d491564aaf4679f9fa245cf, type: 3}
+--- !u!1 &8294161727010434101
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6136396753514031681}
+  m_Layer: 6
+  m_Name: ClimbPo
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6136396753514031681
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8294161727010434101}
+  m_LocalRotation: {x: -0, y: -1, z: -0, w: 0}
+  m_LocalPosition: {x: 0.708, y: 3.1599998, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7515859692217052710}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8296721800386408776
 GameObject:
   m_ObjectHideFlags: 0
@@ -94901,6 +94937,37 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 8622097003753166509, guid: bd8d818eb8b69544bab2b93e5d20f2fa, type: 3}
+--- !u!1 &8779236916362214324
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3335668289466988468}
+  m_Layer: 6
+  m_Name: ClimbPo
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3335668289466988468
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8779236916362214324}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.37, y: 4.66, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5629170976737069887}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8785831417952585509
 GameObject:
   m_ObjectHideFlags: 0
