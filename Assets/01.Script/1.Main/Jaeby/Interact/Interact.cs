@@ -49,7 +49,7 @@ public abstract class Interact : MonoBehaviour
     public void InteractEnd(bool interactExit)
     {
         if (interactExit)
-            _player.PlayerActionExit(PlayerActionType.Interact);
+            _player?.PlayerActionExit(PlayerActionType.Interact);
         OnInteractEnd?.Invoke();
         ChildInteractEnd();
     }
@@ -70,7 +70,8 @@ public abstract class Interact : MonoBehaviour
 
     public void InteractEnter()
     {
-        UIGetter.Instance.GetInteractUI(_interactUIPos.position, _interactSprite, KeyManager.keys[InputType.Interact]);
+        if (_interactUIPos != null)
+            UIGetter.Instance.GetInteractUI(_interactUIPos.position, _interactSprite, KeyManager.keys[InputType.Interact]);
         ChildInteractEnter();
     }
 

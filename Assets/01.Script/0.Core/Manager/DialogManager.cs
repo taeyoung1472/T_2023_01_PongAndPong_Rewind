@@ -9,6 +9,9 @@ using UnityEngine;
 public class DialogManager : MonoSingleTon<DialogManager>
 {
     [SerializeField]
+    private DialogInteract _dummyDialog = null;
+
+    [SerializeField]
     private Sprite _dialogOptionDefaultIcon = null;
 
     private Coroutine _dialogCoroutine = null;
@@ -46,6 +49,11 @@ public class DialogManager : MonoSingleTon<DialogManager>
     private void Start()
     {
         _sb = new StringBuilder();
+        if(_dummyDialog != null)
+        {
+            _dummyDialog.InteractStart(null);
+            DialogForceExit();
+        }
         DialogCanvasAnimation(false, false);
     }
 
@@ -123,6 +131,7 @@ public class DialogManager : MonoSingleTon<DialogManager>
     private IEnumerator DialogCoroutine(DialogInteract dialogInteract, DialogDataSO data, List<DialogOptionDataSO> dialogOptions, Action Callback = null)
     {
         _excuting = true;
+        _input = false;
         _sb.Clear();
         for (int i = 0; i < data.texts.Count; i++)
         {
