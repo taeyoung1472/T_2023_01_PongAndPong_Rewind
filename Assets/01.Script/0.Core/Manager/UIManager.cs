@@ -24,9 +24,13 @@ public class UIManager : MonoSingleTon<UIManager>
     private bool isPause = false;
 
     public bool IsPause => isPause;
+    [SerializeField] private FreeLookCamera freeLookCamera;
 
-    [SerializeField] private GameObject pauseImg;
     [SerializeField] private GameObject timerImg;
+    [SerializeField] private GameObject pauseImg;
+    [SerializeField] private GameObject collectionImg;
+
+   
 
     private void Awake()
     {
@@ -46,8 +50,10 @@ public class UIManager : MonoSingleTon<UIManager>
             {
                 isPause = true;
                 TimerManager.Instance.ChangeOnTimer(false);
+                timerImg.gameObject.SetActive(false);
                 pauseImg.gameObject.SetActive(true);
-                timerImg.gameObject.SetActive(true);
+                freeLookCamera.Rig.transform.position = new Vector3(0f, 3.35f, -13f);
+                freeLookCamera._isActivated = false;
                 Time.timeScale = 0f;
             }
             else if(!EndManager.Instance.IsEnd)
@@ -87,7 +93,13 @@ public class UIManager : MonoSingleTon<UIManager>
         LoadingSceneManager.LoadScene(0);
         Time.timeScale = 1;
     }
-    
+    public void PauseCollection()
+    {
+        //pauseImg.SetActive(false);
+        collectionImg.SetActive(true);
+        PhoneCollection.Instance.OnCollectionMenu();
+    }
+
     public void FastForwardTime()
     {
         if (!TimerManager.Instance.isOnTimer || TimerManager.Instance.isRewinding)
