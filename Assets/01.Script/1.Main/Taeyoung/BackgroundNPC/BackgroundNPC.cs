@@ -11,6 +11,7 @@ public class BackgroundNPC : MonoBehaviour
     {
         npcAnim = GetComponent<Animator>();
         npcAnim.SetTrigger(animateType.ToString());
+        npcAnim.SetFloat("Speed", Random.Range(0.8f, 1.2f));
     }
 
     public enum AnimateType
