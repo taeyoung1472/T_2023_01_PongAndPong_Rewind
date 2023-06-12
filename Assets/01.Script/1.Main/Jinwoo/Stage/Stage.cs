@@ -77,8 +77,13 @@ public class Stage : MonoBehaviour
 
             TimerManager.Instance.EndRewind();
         }
-        CollectionManager.Instance.SaveClearCollection();
-        ClearManager.Instance.SaveClearData();
-        EndManager.Instance.End();
+        if (CollectionManager.Instance)
+            CollectionManager.Instance.SaveClearCollection();
+
+        if (ClearManager.Instance)
+            ClearManager.Instance.SaveClearData();
+
+        if (EndManager.Instance)
+            EndManager.Instance.End();
     }
 }

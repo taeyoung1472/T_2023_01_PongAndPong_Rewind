@@ -29,6 +29,11 @@ public class GameManager : MonoSingleTon<GameManager>
         LoadingSceneManager.LoadScene(1);
     }
 
+    public void LoadTutoLab()
+    {
+        LoadingSceneManager.LoadScene(11);
+    }
+
     public void LoadNextStage()
     {
         StageManager.stageDataSO = StageManager.stageDataSO.nextStageData;
