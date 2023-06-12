@@ -26,6 +26,7 @@ public class UIManager : MonoSingleTon<UIManager>
     public bool IsPause => isPause;
 
     [SerializeField] private GameObject pauseImg;
+    [SerializeField] private GameObject timerImg;
 
     private void Awake()
     {
@@ -46,6 +47,7 @@ public class UIManager : MonoSingleTon<UIManager>
                 isPause = true;
                 TimerManager.Instance.ChangeOnTimer(false);
                 pauseImg.gameObject.SetActive(true);
+                timerImg.gameObject.SetActive(true);
                 Time.timeScale = 0f;
             }
             else if(!EndManager.Instance.IsEnd)

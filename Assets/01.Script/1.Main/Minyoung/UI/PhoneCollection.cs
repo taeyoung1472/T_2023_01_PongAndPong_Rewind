@@ -10,7 +10,6 @@ public class PhoneCollection : MonoSingleTon<PhoneCollection>
     public List<string> chapterNameList = new List<string>();
 
     [SerializeField] private StageDatabase stageDatabase;
-    [SerializeField] private TextMeshProUGUI mainText;
 
     [SerializeField] private Transform parentTrm;
     [SerializeField] private GameObject chapterCellPrefab;
