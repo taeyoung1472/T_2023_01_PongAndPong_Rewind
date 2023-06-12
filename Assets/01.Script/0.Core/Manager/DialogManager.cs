@@ -17,6 +17,7 @@ public class DialogManager : MonoSingleTon<DialogManager>
     private Coroutine _dialogCoroutine = null;
     private bool _excuting = false;
     private bool _input = false;
+    private bool _firstInputLock = false;
     private StringBuilder _sb = null;
 
     [SerializeField]
@@ -49,7 +50,7 @@ public class DialogManager : MonoSingleTon<DialogManager>
     private void Start()
     {
         _sb = new StringBuilder();
-        if(_dummyDialog != null)
+        if (_dummyDialog != null)
         {
             _dummyDialog.InteractStart(null);
             DialogForceExit();
@@ -63,7 +64,7 @@ public class DialogManager : MonoSingleTon<DialogManager>
         _dialogCanvas.blocksRaycasts = value;
 
         _dialogCanvas.DOKill();
-        if(smoothing)
+        if (smoothing)
         {
             _dialogCanvas.alpha = value ? 0f : 1f;
             _dialogCanvas.DOFade(value ? 1f : 0f, _dialogCanvasAnimationTime);
@@ -114,6 +115,7 @@ public class DialogManager : MonoSingleTon<DialogManager>
         _dialogText.SetText("");
         _excuting = false;
         _input = false;
+        _firstInputLock = false;
         _curNPCData = null;
         _curDialogInteract = null;
         DialogCanvasAnimation(false);
@@ -132,6 +134,7 @@ public class DialogManager : MonoSingleTon<DialogManager>
     {
         _excuting = true;
         _input = false;
+        _firstInputLock = true;
         _sb.Clear();
         for (int i = 0; i < data.texts.Count; i++)
         {
@@ -201,13 +204,19 @@ public class DialogManager : MonoSingleTon<DialogManager>
     {
         if (_excuting == false)
             return;
-        if(Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
             DialogForceExit();
         }
 
+        if (_firstInputLock)
+        {
+            _firstInputLock = false;
+            return;
+        }
         if (_input)
             return;
+
         if (Input.GetKeyDown(KeyManager.keys[InputType.Interact]) ||
             Input.GetKeyDown(KeyCode.Mouse0) ||
             Input.GetKeyDown(KeyCode.Return) ||

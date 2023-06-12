@@ -4,5 +4,6 @@ public enum NPCType
     None,
     Nomal,
     Portal,
-    Special
+    Special,
+    Construction
 }
