@@ -10,13 +10,12 @@ public class PhoneCollection : MonoSingleTon<PhoneCollection>
     public List<string> chapterNameList = new List<string>();
 
     [SerializeField] private StageDatabase stageDatabase;
-    [SerializeField] private TextMeshProUGUI mainText;
 
     [SerializeField] private Transform parentTrm;
     [SerializeField] private GameObject chapterCellPrefab;
+    private bool isActive = false;
 
     [SerializeField] private GameObject stageCellPrefab;
-
 
 
     void Start()
@@ -26,10 +25,21 @@ public class PhoneCollection : MonoSingleTon<PhoneCollection>
             GameObject chObj = Instantiate(chapterCellPrefab, parentTrm);
             for (int j = 0; j < stageDatabase.worldList[i].stageList.Count; j++)
             {
-                GameObject stObj = Instantiate(stageCellPrefab, chObj.transform);
+                GameObject stObj = Instantiate(stageCellPrefab, chObj.transform.GetChild(0).GetChild(1).GetComponent<Transform>());
             }
+            chObj.transform.GetChild(0). GetComponent<Button>().onClick.AddListener(() =>
+            {
+                isActive = !isActive;
+                chObj.transform.GetChild(0).GetChild(1).gameObject.SetActive(isActive);
+            });
         }
     }
+
+    private void Update()
+    {
+        LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)parentTrm);
+    }
+
     public void OnCollectionMenu()
     {
         if (childObjs.Count < stageDatabase.worldList.Count)
@@ -51,7 +61,7 @@ public class PhoneCollection : MonoSingleTon<PhoneCollection>
 
         for (int i = 0; i < parentTrm.childCount; i++)
         {
-           childObjs[i].transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().SetText($"{i + 1} ц╘ем{chapterNameList[i]}");
+            childObjs[i].transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().SetText($"{i + 1} ц╘ем{chapterNameList[i]}");
 
             foreach (var s in chapterList[i].stageCollectionDataList)
                 maxCnt += s.collectionBoolDataList.Count;
@@ -59,7 +69,7 @@ public class PhoneCollection : MonoSingleTon<PhoneCollection>
             foreach (var e in chapterList[i].stageCollectionDataList)
                 eatCnt += e.collectionBoolDataList.FindAll(x => x == true).Count;
 
-            childObjs[i].transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().SetText($"{eatCnt} / {maxCnt}");
+            childObjs[i].transform.GetChild(0).GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().SetText($"{eatCnt} / {maxCnt}");
 
             maxCnt = 0;
             eatCnt = 0;
