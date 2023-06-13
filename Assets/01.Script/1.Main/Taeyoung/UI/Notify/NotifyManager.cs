@@ -10,6 +10,7 @@ public class NotifyManager : MonoSingleTon<NotifyManager>
 
     VerticalLayoutGroup layoutGroup;
     Queue<Notify> notifyQueue = new();
+    public int notifyCount { get { return notifyQueue.Count; } }
 
     public void Update()
     {
@@ -22,8 +23,6 @@ public class NotifyManager : MonoSingleTon<NotifyManager>
 
     public void Notify(string text)
     {
-        return;
-
         Notify obj = Instantiate(notify, notifyParent);
         obj.gameObject.SetActive(true);
         obj.SetNotify(text);
