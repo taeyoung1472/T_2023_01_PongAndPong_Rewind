@@ -10,17 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5cbe73a46f0cabf4db90bffbbefd3dbf, type: 3}
-  m_Name: CommonEnemyDataSO
+  m_Name: MeleeEnemyDataSO
   m_EditorClassIdentifier: 
-  enemyName: CommonEnemy
+  enemyName: MeleeEnemy
+  _detectRange: 6
+  _meleeAttackRange: 2
+  fieldOfView: 180
+  _runSpeed: 5
+  _walkSpeed: 3
+  _rotationSpeed: 40
+  _jumpForce: 1200
+  health: 100
   targetLayer:
     serializedVersion: 2
     m_Bits: 256
-  walkSpeed: 3
-  runSpeed: 7
-  sightRange: 7
-  attackRange: 1.5
-  attackDelay: 2
-  attackDmg: 20
-  health: 100
+  idleTime: 1.5
   info: 

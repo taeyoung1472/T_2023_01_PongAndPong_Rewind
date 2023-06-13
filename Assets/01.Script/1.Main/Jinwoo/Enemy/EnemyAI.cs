@@ -6,61 +6,65 @@ using Jinwoo.BehaviorTree;
 using static Jinwoo.BehaviorTree.NodeHelper;
 using UnityEngine.UIElements;
 using UnityEditor;
+using UnityEditorInternal;
 
 [RequireComponent(typeof(Animator))]
 public class EnemyAI : MonoBehaviour, ICore
 {
-    [Header("Range")]
-    [SerializeField]
-    private float _detectRange = 10f;
-    [SerializeField]
-    private float _meleeAttackRange = 5f;
-    [SerializeField]
-    private float fieldOfView = 60f;
-
-    [Header("Movement")]
-    [SerializeField]
-    private float _runSpeed = 10f;
-    [SerializeField]
-    private float _walkSpeed = 10f;
-    [SerializeField]
-    private float _rotationSpeed = 20f;
+    #region 변수들
+    public EnemyDataSO _enemyData;
 
     [Header("PatrolPosition")]
     [SerializeField]
     private Transform[] _patrolPos = null;
     [SerializeField]
     private Transform _currentPatrolPos = null;
+    private int _currentPatrolPosIdx;
 
     [Header("Etc")]
     [SerializeField]
     private Transform eyePos = null;
     [SerializeField]
-    private LayerMask targetLayer; // 추적 대상 레이어
+    protected int _currentHealth = 0;
+    private float curidleTime = 0f;
+    private float distToGround;
     [SerializeField]
-    private Transform _originPos = null;
+    private Collider myCol;
 
+    private bool isHit = false;
+    private bool isDie = false;
 
     private BehaviorTreeRunner _BTRunner = null;
     private Transform _detectedPlayer = null;
+    private Vector3? _lastPlayerPos = null;
     private Animator _animator = null;
     private Rigidbody _rigidbody = null;
+
 
     const string _attackAnimStateName = "Attack";
     const string _attackAnimTriggerName = "attack";
 
     const string _walkAnimBoolName = "walk";
     const string _runAnimBoolName = "run";
+    const string _dieAnimBoolName = "die";
+    const string _hitAnimBoolName = "hit";
 
-    const string _lookAroundAnimStateName = "LookAround";
-    const string _lookAroundAnimTriggerName = "lookaround";
-    private void Awake()
+    const string _jumpAnimTriggerName = "jump";
+    #endregion
+
+    protected virtual void Awake()
     {
         _animator = GetComponent<Animator>();
         _rigidbody = GetComponent<Rigidbody>();
+        myCol = GetComponent<Collider>();
 
         eyePos = transform.Find("EyePos");
 
+        distToGround = myCol.bounds.extents.y;
+
+        _currentHealth = _enemyData.health;
+        isHit = false;
+        isDie = false;
         _BTRunner = new BehaviorTreeRunner(MakeNode());
         MakeNode();
 
@@ -71,7 +75,7 @@ public class EnemyAI : MonoBehaviour, ICore
     }
     private IEnumerator BTUpdate()
     {
-        while (true)
+        while (!isDie)
         {
             _BTRunner.Operate();
             yield return new WaitForSeconds(0.05f);
@@ -83,11 +87,21 @@ public class EnemyAI : MonoBehaviour, ICore
     {
         return Selector
             (
+                Sequence
+                (
+                    IfAction(CheckDie, DieAction)
+                ),
+                Sequence
+                (
+                    If(CheckHitting),
+                    IfAction(CheckHit, HitAction)
+
+                ),
                 //공격 시퀀스
                 Sequence
                 (
-                    If(CheckMeleeAttacking),
-                    IfAction(CheckEnemyWithinMeleeAttackRange, DoMeleeAttackAction)
+                    If(CheckAttacking),
+                    IfAction(CheckEnemyWithinAttackRange, DoAttackAction)
 
                 ),
                 //추격 시퀀스
@@ -96,18 +110,32 @@ public class EnemyAI : MonoBehaviour, ICore
                     If(CheckDetectEnemy),
                     IfAction(MoveToDetectEnemy, MoveToDetectEnemyAction)
                 ),
-                Sequence
+                // 패트롤과 아이들
+                Selector
                 (
-                    Action(SetCurPatPos),
-                    IfAction(CheckPatrolling, MovePatrolPosAction)
-                ),
 
-                //원래 지점으로 돌아가는 행동
-                IfAction(MoveToOriginPosition, MoveToOriginPositionAction)
+                    IfAction(MoveToLastPlayerPositon, MoveToLastPlayerPosAction),
+                    Sequence
+                    (
+                        IfAction(CheckIdleTime, IdleAction)
+                    ),
+                    Sequence
+                    (
+                        Action(SetCurPatPos),
+                        IfAction(CheckPatrolling, MovePatrolPosAction)
+                    )
+                    
+                )
+                
             );
     }
 
-
+    public void ApplyDamage(int damage)
+    {
+        _currentHealth -= damage;
+        if(_currentHealth > 0)
+            isHit = true;
+    }
     bool IsAnimationRunning(string stateName)
     {
         if (_animator != null)
@@ -130,7 +158,7 @@ public class EnemyAI : MonoBehaviour, ICore
 
         direction.y = eyePos.forward.y;
 
-        if (Vector3.Angle(direction, eyePos.forward) > fieldOfView * 0.5f)
+        if (Vector3.Angle(direction, eyePos.forward) > _enemyData.fieldOfView * 0.5f)
         {
             //시야각 안에 없다면 false
             return false;
@@ -138,7 +166,7 @@ public class EnemyAI : MonoBehaviour, ICore
 
         direction = target.position - eyePos.position;
 
-        if (Physics.Raycast(eyePos.position, direction, out hit, _detectRange))
+        if (Physics.Raycast(eyePos.position, direction, out hit, _enemyData._detectRange))
         {
             if (hit.transform == target)
             {
@@ -153,7 +181,7 @@ public class EnemyAI : MonoBehaviour, ICore
     private void LookTarget(Vector3 dir)
     {
         Quaternion q = Quaternion.LookRotation(dir);
-        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(dir), Time.deltaTime * _rotationSpeed);
+        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(dir), Time.deltaTime * _enemyData._rotationSpeed);
     }
 
     private void MoveEnemy(Transform targetPos, bool isWalk)
@@ -166,14 +194,38 @@ public class EnemyAI : MonoBehaviour, ICore
 
         if (isWalk)
         {
-            velocity *= _walkSpeed;
+            velocity *= _enemyData._walkSpeed;
 
             _animator.SetBool(_walkAnimBoolName, true);
             _animator.SetBool(_runAnimBoolName, false);
         }
         else
         {
-            velocity *= _runSpeed;
+            velocity *= _enemyData._runSpeed;
+
+            _animator.SetBool(_walkAnimBoolName, false);
+            _animator.SetBool(_runAnimBoolName, true);
+        }
+
+        LookTarget(dir);
+        _rigidbody.velocity = velocity;
+    }
+    private void MoveEnemy(Vector3 targetPos, bool isWalk)
+    {
+        Vector3 dir = (targetPos - transform.position).normalized;
+        dir.y = 0;
+        Vector3 velocity = new Vector3(dir.x, 0, dir.z);
+
+        if (isWalk)
+        {
+            velocity *= _enemyData._walkSpeed;
+
+            _animator.SetBool(_walkAnimBoolName, true);
+            _animator.SetBool(_runAnimBoolName, false);
+        }
+        else
+        {
+            velocity *= _enemyData._runSpeed;
 
             _animator.SetBool(_walkAnimBoolName, false);
             _animator.SetBool(_runAnimBoolName, true);
@@ -183,9 +235,74 @@ public class EnemyAI : MonoBehaviour, ICore
         _rigidbody.velocity = velocity;
     }
 
+    public void JumpEnemy()
+    {
+        _animator.SetTrigger(_jumpAnimTriggerName);
+        _rigidbody.AddForce(Vector3.up * _enemyData._jumpForce, ForceMode.Impulse);
+        //_rigidbody.velocity = Vector3.up * _enemyData._jumpForce;
+    }
+    public bool IsGrounded()
+    {
+        bool result = Physics.Raycast(transform.position, -Vector3.up, distToGround + 0.1f, 1<< LayerMask.NameToLayer("Ground"));
+        Debug.Log("result : " + result + " : "+ distToGround);
+        return result;
+    }
+    #region Hit Node
+
+    private INode.NodeState CheckHitting()
+    {
+        if (IsAnimationRunning("Hit"))
+        {
+            return INode.NodeState.Running;
+        }
+
+        return INode.NodeState.Success;
+    }
+    private INode.NodeState CheckHit()
+    {
+        if (isHit == true)
+        {
+            return INode.NodeState.Success;
+        }
+        else
+        {
+            return INode.NodeState.Failure;
+        }
+    }
+    protected virtual void HitAction()
+    {
+        _rigidbody.velocity = Vector3.zero;
+        isHit = false;
+        _animator.SetTrigger(_hitAnimBoolName);
+    }
+
+
+    #endregion
+    #region Die Node
+    private INode.NodeState CheckDie()
+    {
+        if (_currentHealth <= 0)
+        {
+            return INode.NodeState.Success;
+        }
+        else
+        {
+            return INode.NodeState.Failure;
+        }
+    }
+    protected virtual void DieAction()
+    {
+        _animator.SetTrigger(_dieAnimBoolName);
+        _rigidbody.velocity = Vector3.zero;
+        isDie = true;
+    }
+
+
+    #endregion
+
     #region Attack Node
 
-    INode.NodeState CheckMeleeAttacking()
+    protected virtual INode.NodeState CheckAttacking()
     {
         if (IsAnimationRunning(_attackAnimStateName))
         {
@@ -194,13 +311,13 @@ public class EnemyAI : MonoBehaviour, ICore
 
         return INode.NodeState.Success;
     }
-    INode.NodeState CheckEnemyWithinMeleeAttackRange()
+    protected virtual INode.NodeState CheckEnemyWithinAttackRange()
     {
         if (_detectedPlayer != null)
         {
             Vector3 distance = _detectedPlayer.position - transform.position;
             distance.y = 0f;
-            if (Vector3.SqrMagnitude(distance) < (_meleeAttackRange * _meleeAttackRange))
+            if (Vector3.SqrMagnitude(distance) < (_enemyData._meleeAttackRange * _enemyData._meleeAttackRange))
             {
                 return INode.NodeState.Success;
             }
@@ -209,7 +326,7 @@ public class EnemyAI : MonoBehaviour, ICore
         return INode.NodeState.Failure;
     }
 
-    private void DoMeleeAttackAction()
+    protected virtual void DoAttackAction()
     {
         if (_detectedPlayer != null)
         {
@@ -224,7 +341,7 @@ public class EnemyAI : MonoBehaviour, ICore
 
     private INode.NodeState CheckDetectEnemy()
     {
-        var overlapColliders = Physics.OverlapSphere(transform.position, _detectRange, targetLayer);
+        var overlapColliders = Physics.OverlapSphere(transform.position, _enemyData._detectRange, _enemyData.targetLayer);
         foreach (var collider in overlapColliders)
         {
             //true : 시야에 타겟이 들어옴 false : 시야에 타겟이 없음
@@ -236,12 +353,18 @@ public class EnemyAI : MonoBehaviour, ICore
             {
                 _detectedPlayer = livingEntity.transform;
 
+                _currentPatrolPos = null;
+
                 return INode.NodeState.Success;
             }
         }
+        if(_detectedPlayer != null )
+        {
+            _lastPlayerPos = _detectedPlayer.position;
+        }
 
         _detectedPlayer = null;
-
+        
         return INode.NodeState.Failure;
     }
 
@@ -250,7 +373,7 @@ public class EnemyAI : MonoBehaviour, ICore
         if (_detectedPlayer != null)
         {
             float distance = Vector3.SqrMagnitude(_detectedPlayer.position - transform.position);
-            if (distance < (_detectRange * _detectRange)) //아직 시야 범위 거리 안에 있음
+            if (distance < (_enemyData._detectRange * _enemyData._detectRange)) //아직 시야 범위 거리 안에 있음
             {
                 return INode.NodeState.Success;
             }
@@ -267,6 +390,31 @@ public class EnemyAI : MonoBehaviour, ICore
 
     #endregion
 
+    #region Move LastPlayer Position
+
+    private INode.NodeState MoveToLastPlayerPositon()
+    {
+        //포지션에 아직 도착 안함
+        if (_lastPlayerPos != null && Vector3.SqrMagnitude(_lastPlayerPos.Value - transform.position) > float.Epsilon + 1.2f) //부동소수점 오차 때문에 앱실론 사용
+        {
+            return INode.NodeState.Success;
+        }
+        else //원점에 도착
+        {
+            _animator.SetBool(_runAnimBoolName, false);
+            _lastPlayerPos = null;
+            return INode.NodeState.Failure;
+        }
+    }
+
+    private void MoveToLastPlayerPosAction()
+    {
+        MoveEnemy(_lastPlayerPos.Value, false);
+    }
+
+    #endregion
+
+
     #region RandomPatrol
 
     private INode.NodeState CheckPatrolling()
@@ -274,10 +422,9 @@ public class EnemyAI : MonoBehaviour, ICore
         if (_currentPatrolPos != null)
         {
             float distance = Vector3.SqrMagnitude(_currentPatrolPos.position - transform.position);
-            
+
             if (distance > (float.Epsilon * float.Epsilon + 1f)) //아직 도착 못함
             {
-                Debug.Log("Patrolling");
                 return INode.NodeState.Success;
             }
             else //도착
@@ -293,11 +440,14 @@ public class EnemyAI : MonoBehaviour, ICore
     }
     private void SetCurPatPos()
     {
-        if(_currentPatrolPos == null)
+        if (_currentPatrolPos == null)
         {
             int idx = Random.Range(0, _patrolPos.Length);
-            _currentPatrolPos = _patrolPos[idx];
-
+            if (idx != _currentPatrolPosIdx)
+            {
+                _currentPatrolPosIdx = idx;
+                _currentPatrolPos = _patrolPos[idx];
+            }
         }
     }
     private void MovePatrolPosAction()
@@ -306,65 +456,55 @@ public class EnemyAI : MonoBehaviour, ICore
     }
     #endregion
 
-    #region Move Origin Pos Node
-
-    private INode.NodeState MoveToOriginPosition()
-    {
-        //원점에 아직 도착 안함
-        if (Vector3.SqrMagnitude(_originPos.position - transform.position) > float.Epsilon * float.Epsilon + 1f) //부동소수점 오차 때문에 앱실론 사용
-        {
-            return INode.NodeState.Success;
-        }
-        else //원점에 도착
-        {
-            _animator.SetBool(_walkAnimBoolName, false);
-
-            return INode.NodeState.Failure;
-        }
-    }
-
-    private void MoveToOriginPositionAction()
-    {
-        MoveEnemy(_originPos, true);
-    }
-
-    #endregion
 
     #region Idle & Stop
-
-    INode.NodeState CheckLookingAround()
+    private INode.NodeState CheckIdleTime()
     {
-        if (IsAnimationRunning(_lookAroundAnimStateName))
+        if (curidleTime >= _enemyData.idleTime || _currentPatrolPos != null)
         {
-            return INode.NodeState.Running;
+            curidleTime = 0f;
+            return INode.NodeState.Failure;
         }
-
-        return INode.NodeState.Success;
+        else
+        {
+            curidleTime += 0.05f;
+            return INode.NodeState.Success;
+        }
     }
     private void IdleAction()
     {
         _animator.SetBool(_walkAnimBoolName, false);
         _animator.SetBool(_runAnimBoolName, false);
 
-        _animator.SetTrigger(_lookAroundAnimTriggerName);
+        //_animator.SetTrigger(_lookAroundAnimTriggerName);
 
         _rigidbody.velocity = Vector3.zero;
     }
 
     #endregion
 
+    #region Die
+
+
+    #endregion
+
 #if UNITY_EDITOR
 
-    private void OnDrawGizmosSelected()
+    private void OnDrawGizmos()
     {
 
-        var leftRayRotation = Quaternion.AngleAxis(-fieldOfView * 0.5f, Vector3.up);
+        var leftRayRotation = Quaternion.AngleAxis(-_enemyData.fieldOfView * 0.5f, Vector3.up);
         var leftRayDirection = leftRayRotation * transform.forward;
         Handles.color = new Color(1f, 1f, 1f, 0.2f);
-        Handles.DrawSolidArc(eyePos.position, Vector3.up, leftRayDirection, fieldOfView, _detectRange);
+        Handles.DrawSolidArc(eyePos.position, Vector3.up, leftRayDirection, _enemyData.fieldOfView, _enemyData._detectRange);
 
         Handles.color = new Color(0f, 0f, 1f, 0.2f);
-        Handles.DrawSolidArc(eyePos.position, Vector3.up, leftRayDirection, fieldOfView, _meleeAttackRange);
+        Handles.DrawSolidArc(eyePos.position, Vector3.up, leftRayDirection, _enemyData.fieldOfView, _enemyData._meleeAttackRange);
+
+        //Handles.color = new Color(0f, 1f, 1f, 1f);
+        //Handles.DrawLine(transform.position, new Vector3(transform.position.x, distToGround + 0.1f, transform.position.z),1f);
+
+        Gizmos.DrawRay (new Vector3(transform.position.x, transform.position.y +distToGround + 0.1f, transform.position.z), -Vector3.up);
     }
 
 #endif

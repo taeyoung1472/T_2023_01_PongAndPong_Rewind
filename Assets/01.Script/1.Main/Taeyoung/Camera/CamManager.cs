@@ -1,6 +1,7 @@
 using Cinemachine;
 using DG.Tweening;
 using System.Collections;
+using UniRx;
 using UnityEngine;
 
 public class CamManager : MonoSingleTon<CamManager>
@@ -43,9 +44,11 @@ public class CamManager : MonoSingleTon<CamManager>
 
     public void AddTargetGroup(Transform target, float weight = 1f, float radius = 3f)
     {
-        if (CinemachineTargetGroup.FindMember(target) > 0)
+        if (CinemachineTargetGroup == null || target == null)
             return;
 
+        if (CinemachineTargetGroup.FindMember(target) > -1)
+            return;
         CinemachineTargetGroup.AddMember(target, weight, radius);
     }
 
@@ -55,6 +58,14 @@ public class CamManager : MonoSingleTon<CamManager>
             return;
 
         CinemachineTargetGroup.RemoveMember(target);
+    }
+
+    public void TargetGroupReset()
+    {
+        if (CinemachineTargetGroup == null)
+            return;
+        foreach (var tg in CinemachineTargetGroup.m_Targets)
+            CinemachineTargetGroup.RemoveMember(tg.target);
     }
 
     public void GravityChangeCameraAnimation(Transform follow, DirectionType dirType, float power, float time)

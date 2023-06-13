@@ -18,15 +18,15 @@ public class StageManager : MonoSingleTon<StageManager>
     //[SerializeField] private PlayerRewind playerPrefab;
     //[SerializeField] private GameObject rewindPlayerPrefab;
 
-    private GameObject playerObj;
-    private GameObject rePlayerObj;
+    private GameObject playerObj; //처음 플레이하는 플레이어
+    private GameObject rePlayerObj; // 역행 때 조종하는 플레이어
 
     public Image fadeImg;
 
     [HideInInspector] public bool isGameStart = false;
     [HideInInspector] public bool isDownButton = false;
     private float reStartCoolTime = 1f;
-    private float freelookCoolTime = 2f;
+    private float freelookCoolTime = 1f;
     private bool isRestartPossible = false;
     private bool inputLock = false;
     public bool InputLock { get => inputLock; set => inputLock = value; }
@@ -43,6 +43,9 @@ public class StageManager : MonoSingleTon<StageManager>
     {
         SpawnStage();
         isRestartPossible = false;
+
+        reStartCoolTime = 1f;
+        freelookCoolTime = 1f;
     }
     public void Update()
     {
@@ -80,6 +83,11 @@ public class StageManager : MonoSingleTon<StageManager>
         }
 
     }
+
+    public void SetFreeLookCamInitPos(Transform camPos)
+    {
+        freeLookCam.InitPosCam(camPos);
+    }
     public void SetAreaPlay(bool isPlay)
     {
         curStage.curArea.IsAreaPlay = isPlay;
@@ -109,7 +117,6 @@ public class StageManager : MonoSingleTon<StageManager>
 
         AudioManager.PlayAudio(SoundType.OnGameStart);
         Debug.Log(isOn);
-
         
         if (isOn) //자유시점 온
         {
@@ -138,6 +145,7 @@ public class StageManager : MonoSingleTon<StageManager>
             curStage.ReStartArea(false);
         }
         freelookCoolTime = 2f;
+        CamManager.Instance?.TargetGroupReset();
     }
     public StageArea GetCurArea()
     {
@@ -202,29 +210,15 @@ public class StageManager : MonoSingleTon<StageManager>
     {
         if (rePlayerObj != null)
         {
+            rePlayerObj.GetComponent<Player>().DisableReset();
             PoolManager.Push(PoolType.RewindPlayer, rePlayerObj);
         }
         if (playerObj != null)
         {
+            playerObj.GetComponent<Player>().DisableReset();
             PoolManager.Push(PoolType.Player, playerObj);
         }
 
-
-        //playerObj.gameObject.SetActive(false);
-        //rePlayerObj.SetActive(false);
-
-
-        //if (isClear)
-        //{
-        //    playerObj.gameObject.SetActive(false);
-        //    rePlayerObj.SetActive(false);
-        //}
-        //else
-        //{
-        //    playerObj.gameObject.SetActive(false);
-        //    rePlayerObj.SetActive(false);
-
-        //}
     }
 
     public GameObject GetCurrentPlayer()

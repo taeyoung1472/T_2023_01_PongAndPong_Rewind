@@ -4,6 +4,7 @@ using UnityEngine.Events;
 using System.Linq;
 using System.IO;
 using System;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class Player : MonoBehaviour
 {
@@ -82,8 +83,6 @@ public class Player : MonoBehaviour
     #endregion
 
     #region 경사면 관련
-    [SerializeField]
-    private float _maxSlopeAngle = 10f;
     RaycastHit _slopeHit;
     #endregion
 
@@ -296,7 +295,7 @@ public class Player : MonoBehaviour
         if (_slopeHit.collider != null)
         {
             float angle = Vector3.Angle(transform.up, _slopeHit.normal);
-            return angle < _maxSlopeAngle && angle != 0 && _isGrounded
+            return angle < playerMovementSO.maxSlopeAngle && angle != 0 && _isGrounded
                  && PlayerActionCheck(PlayerActionType.Jump, PlayerActionType.Dash) == false;
         }
         return false;
@@ -365,6 +364,8 @@ public class Player : MonoBehaviour
 
         if (_playerRenderer != null)
             _playerRenderer.FlipDirectionChange(DirectionType.Down, true);
+
+        PlayerCameraControll(transform, null);
     }
 
     public void DisableReset()
@@ -418,5 +419,11 @@ public class Player : MonoBehaviour
             debugString += a.Key + "   " + a.Value + " ";
         Debug.Log("수집품 " + debugString);
 #endif
+    }
+
+    public void PlayerCameraControll(Transform enable, Transform disable)
+    {
+        CamManager.Instance.RemoveTargetGroup(disable);
+        CamManager.Instance.AddTargetGroup(enable);
     }
 }

@@ -63,6 +63,23 @@ public class PlayerAnimation : MonoBehaviour
         _animator.Update(0);
     }
 
+    public void WallClimbAnimation()
+    {
+        _animator.Rebind();
+        _animator.Play("WallClimb");
+        _animator.Update(0);
+    }
+
+    public void WallClimbAnimate()
+    {
+        _player.GetPlayerAction<PlayerWallGrab>(PlayerActionType.WallGrab).ClimbAnimate();
+    }
+
+    public void WallClimbEnd()
+    {
+        _player.GetPlayerAction<PlayerWallGrab>(PlayerActionType.WallGrab).WallClimbEnd();
+    }
+
     public void WallGrabAnimation(bool val)
     {
         if (val == false)

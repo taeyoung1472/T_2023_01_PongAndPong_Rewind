@@ -10,6 +10,6 @@ public enum IconType
     Secretary,
     Investor,
     Employee,
-
+    Construction,
 
 }
