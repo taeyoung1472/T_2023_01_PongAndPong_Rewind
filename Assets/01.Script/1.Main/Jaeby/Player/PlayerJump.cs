@@ -130,7 +130,6 @@ public class PlayerJump : PlayerAction, IPlayerEnableResetable
             _player.PlayerRenderer.ForceFlip();
             float originAngle = Vector2.Angle(Vector2.right, _player.playerMovementSO.wallJumpPower);
             Vector2 jumpDir = Quaternion.AngleAxis(originAngle, _player.transform.right * -1f) * _player.PlayerRenderer.Forward;
-            Debug.Log("มกวม Dir = " + jumpDir);
             _jumpCoroutine = StartCoroutine(JumpCoroutine(jumpDir, _player.playerMovementSO.wallGrabJumpPower, _player.playerMovementSO.jumpHoldTime));
             _moveLockCoroutine = StartCoroutine(MoveLockCoroutine());
             OnWallGrabJump?.Invoke();

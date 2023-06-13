@@ -419,4 +419,10 @@ public class Player : MonoBehaviour
         Debug.Log("¼öÁýÇ° " + debugString);
 #endif
     }
+
+    public void PlayerCameraControll(Transform enable, Transform disable)
+    {
+        CamManager.Instance.RemoveTargetGroup(disable);
+        CamManager.Instance.AddTargetGroup(enable);
+    }
 }

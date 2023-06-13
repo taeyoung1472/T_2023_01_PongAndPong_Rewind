@@ -43,9 +43,11 @@ public class CamManager : MonoSingleTon<CamManager>
 
     public void AddTargetGroup(Transform target, float weight = 1f, float radius = 3f)
     {
-        if (CinemachineTargetGroup.FindMember(target) > 0)
+        if (CinemachineTargetGroup == null)
             return;
 
+        if (CinemachineTargetGroup.FindMember(target) > 0)
+            return;
         CinemachineTargetGroup.AddMember(target, weight, radius);
     }
 
