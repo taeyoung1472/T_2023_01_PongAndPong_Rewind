@@ -9,12 +9,6 @@ public class PlayerWallGrab : PlayerAction, IPlayerDisableResetable
 {
     [SerializeField]
     private UnityEvent<bool> OnWallGrabed = null;
-    [SerializeField]
-    private float _wallgrabCooltime = 0.4f;
-    [SerializeField]
-    private float _climbAnimateTime = 0.5f;
-    [SerializeField]
-    private float _climbTrmAnimateTime = 0.8f;
     private Coroutine _wallGrabCoroutine = null;
 
     [SerializeField]
@@ -35,7 +29,7 @@ public class PlayerWallGrab : PlayerAction, IPlayerDisableResetable
         _endPosition = endPos;
         _player.PlayerCameraControll(_climbCameraTrm, _player.transform);
         _climbCameraTrm.transform.position = startPos;
-        _climbCameraTrm.DOMove(_endPosition, _climbTrmAnimateTime);
+        _climbCameraTrm.DOMove(_endPosition, _player.playerMovementSO.climbTrmAnimateTime);
         _player.ForceStop();
         _player.transform.position = startPos;
         _excuting = true;
@@ -51,7 +45,7 @@ public class PlayerWallGrab : PlayerAction, IPlayerDisableResetable
         if (_climbSeq != null)
             _climbSeq.Kill();
         _climbSeq = DOTween.Sequence();
-        _climbSeq.Append(_player.PlayerAnimation.transform.DOMoveX(_endPosition.x, _climbAnimateTime));
+        _climbSeq.Append(_player.PlayerAnimation.transform.DOMoveX(_endPosition.x, _player.playerMovementSO.climbAnimateTime));
     }
 
     public void WallClimbEnd()
@@ -97,7 +91,7 @@ public class PlayerWallGrab : PlayerAction, IPlayerDisableResetable
 
     private IEnumerator WallGrabCoroutine()
     {
-        yield return new WaitForSeconds(_wallgrabCooltime);
+        yield return new WaitForSeconds(_player.playerMovementSO.wallgrabCooltime);
         _player.PlayerActionLock(false, PlayerActionType.WallGrab, PlayerActionType.Move);
     }
 

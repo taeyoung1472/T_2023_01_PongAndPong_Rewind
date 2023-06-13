@@ -6,14 +6,7 @@ using UnityEngine.Events;
 public class PlayerMove : PlayerAction
 {
     [SerializeField]
-    private float _slowSpeed = 0.5f;
-    [SerializeField]
-    private float _pushSlowSpeed = 0.3f;
-
-    [SerializeField]
     private ParticleSystem _dustParticle = null;
-    [SerializeField]
-    private float _moveAudioCooltime = 0.1f;
     private Coroutine _moveAudioCoroutine = null;
 
     [SerializeField]
@@ -37,10 +30,7 @@ public class PlayerMove : PlayerAction
     public void Move(Vector2 dir)
     {
         float amount = _player.playerMovementSO.speed * _acelRatio;
-        if (_player.playerBuff.BuffCheck(PlayerBuffType.PushSlow))
-            amount *= _pushSlowSpeed;
-        if (_player.playerBuff.BuffCheck(PlayerBuffType.Slow))
-            amount *= _slowSpeed;
+        amount *= GetSlowRatio();
 
         if (_player.PlayerAnimation.MoveFlipLock)
             amount *= dir.x; // 회전해서 공격이 문제면 여기가 문제야
@@ -115,7 +105,17 @@ public class PlayerMove : PlayerAction
         while (true)
         {
             _player.playerAudio.MoveAudio();
-            yield return new WaitForSeconds(_moveAudioCooltime);
+            yield return new WaitForSeconds(_player.playerMovementSO.moveAudioCooltime);
         }
+    }
+
+    public float GetSlowRatio()
+    {
+        float ratio = 1f;
+        if (_player.playerBuff.BuffCheck(PlayerBuffType.PushSlow))
+            ratio *= _player.playerMovementSO.pushSlowSpeed;
+        if (_player.playerBuff.BuffCheck(PlayerBuffType.Slow))
+            ratio *= _player.playerMovementSO.slowSpeed;
+        return ratio;
     }
 }
