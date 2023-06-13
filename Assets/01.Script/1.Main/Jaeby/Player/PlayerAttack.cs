@@ -3,7 +3,6 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UIElements;
 using static Define;
-using static UnityEngine.Rendering.DebugUI.Table;
 
 public class PlayerAttack : PlayerAction, IPlayerEnableResetable
 {
@@ -19,8 +18,6 @@ public class PlayerAttack : PlayerAction, IPlayerEnableResetable
     private AttackState _attackState = AttackState.Melee;
     private Coroutine _attackDelayCo = null;
 
-    [SerializeField]
-    private float _meleeAttackResetTime = 0.5f;
     private Coroutine _meleeAttackResetCo = null;
 
     #region ½ºÀ§Äª
@@ -35,13 +32,7 @@ public class PlayerAttack : PlayerAction, IPlayerEnableResetable
     private Transform _shootingPointTrm = null;
     private Coroutine _flipLockCo = null;
     private Coroutine _iKEndAnimationCoroutine = null;
-    [SerializeField]
-    private float _flipLockTime = 0.4f;
-    [SerializeField]
-    private float _ikEndAnimationTime = 0.3f;
     private Transform _mousePositionTrm = null;
-    [SerializeField]
-    private float _ikCancelMaxAngle = 30f;
     private bool _observerStarting = false;
     #endregion
 
@@ -82,7 +73,7 @@ public class PlayerAttack : PlayerAction, IPlayerEnableResetable
 
     private IEnumerator MeleeAttackResetCoroutine()
     {
-        yield return new WaitForSeconds(_meleeAttackResetTime);
+        yield return new WaitForSeconds(_player.playerAttackSO.meleeAttackResetTime);
         _attackIndex = -1;
     }
 
@@ -114,7 +105,7 @@ public class PlayerAttack : PlayerAction, IPlayerEnableResetable
 
         yield return new WaitForEndOfFrame();
 
-        Vector3 distance = target - _shootingPointTrm.position;
+        Vector3 distance = target - new Vector3(_player.transform.position.x, _shootingPointTrm.position.y, 0f);
         float angle = Mathf.Atan2(distance.y, distance.x) * Mathf.Rad2Deg;
         Quaternion rot = Quaternion.AngleAxis(angle, Vector3.forward);
 
@@ -154,7 +145,7 @@ public class PlayerAttack : PlayerAction, IPlayerEnableResetable
     private bool AngleCheck()
     {
         float angle = Vector2.Angle((Vector2)(_mousePositionTrm.position - _player.transform.position), (Vector2)_player.transform.up);
-        if (angle < _ikCancelMaxAngle || angle > (180 - _ikCancelMaxAngle))
+        if (angle < _player.playerAttackSO.ikCancelMaxAngle || angle > (180 - _player.playerAttackSO.ikCancelMaxAngle))
         {
             return true;
         }
@@ -163,7 +154,7 @@ public class PlayerAttack : PlayerAction, IPlayerEnableResetable
 
     private IEnumerator FlipLockCoroutine()
     {
-        yield return new WaitForSeconds(_flipLockTime);
+        yield return new WaitForSeconds(_player.playerAttackSO.flipLockTime);
         EndIK();
     }
 
@@ -186,7 +177,7 @@ public class PlayerAttack : PlayerAction, IPlayerEnableResetable
         while (time >= 0f)
         {
             _player.animationIK.SetIKWeight(time);
-            time -= Time.deltaTime * (1 / _ikEndAnimationTime);
+            time -= Time.deltaTime * (1 / _player.playerAttackSO.ikEndAnimationTime);
             yield return null;
         }
         _player.animationIK.SetIKWeightZero();

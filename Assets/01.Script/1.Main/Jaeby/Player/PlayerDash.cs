@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
@@ -25,6 +26,8 @@ public class PlayerDash : PlayerAction, IPlayerEnableResetable
             (Mathf.Abs(dir.x) > 0f == false) ||
             _player.PlayerActionCheck(PlayerActionType.ObjectPush, PlayerActionType.WallGrab))
             return;
+
+        _player.PlayerRenderer.Flip(dir, false);
 
         bool slide = _player.IsGrounded;
 
@@ -74,7 +77,18 @@ public class PlayerDash : PlayerAction, IPlayerEnableResetable
             _player.GravityModule.UseGravity = false;
             dashVector = dir * _player.playerMovementSO.dashPower;
         }
-        _player.VelocitySetExtra(dashVector.x, dashVector.y);
+        dashVector *= _player.GetPlayerAction<PlayerMove>(PlayerActionType.Move).GetSlowRatio();
+
+        if (_player.playerMovementSO.dashEase == Ease.Unset)
+        {
+            _player.VelocitySetExtra(dashVector.x, dashVector.y);
+        }
+        else
+        {
+            DOTween.To(() => dashVector, x => _player.VelocitySetExtra(x.x, x.y), Vector2.zero, _player.playerMovementSO.dashContinueTime).SetEase(_player.playerMovementSO.dashEase);
+        }
+
+        CamManager.Instance?.CameraShake(_player.playerMovementSO.shakeTime, _player.playerMovementSO.shakeEmplitude, _player.playerMovementSO.shakeFre);
         _player.AfterImageEnable(true);
         yield return new WaitForSeconds(_player.playerMovementSO.dashContinueTime);
         DashExit();
@@ -88,6 +102,7 @@ public class PlayerDash : PlayerAction, IPlayerEnableResetable
 
     public void DashExit()
     {
+        DOTween.Kill(this);
         _excuting = false;
         _player.ColliderSet(PlayerColliderType.Normal);
         _player.AfterImageEnable(false);

@@ -50,8 +50,7 @@ public class PlayerInput : MonoBehaviour
             x++;
         if (Input.GetKey(KeyManager.keys[InputType.Left]))
             x--;
-        if (_player.playerBuff.BuffCheck(PlayerBuffType.Reverse) || _player.PlayerRenderer.flipDirection == DirectionType.Left
-            || _player.PlayerRenderer.flipDirection == DirectionType.Right)
+        if (_player.playerBuff.BuffCheck(PlayerBuffType.Reverse) || !_player.PlayerRenderer.GetHorizontalFlip())
         {
             x *= -1;
         }

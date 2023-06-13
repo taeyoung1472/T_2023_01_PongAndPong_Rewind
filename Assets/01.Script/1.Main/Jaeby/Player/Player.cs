@@ -4,6 +4,7 @@ using UnityEngine.Events;
 using System.Linq;
 using System.IO;
 using System;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class Player : MonoBehaviour
 {
@@ -82,8 +83,6 @@ public class Player : MonoBehaviour
     #endregion
 
     #region 경사면 관련
-    [SerializeField]
-    private float _maxSlopeAngle = 10f;
     RaycastHit _slopeHit;
     #endregion
 
@@ -105,7 +104,7 @@ public class Player : MonoBehaviour
         _col = GetComponent<CapsuleCollider>();
 
         _playerAudio = transform.Find("AgentSound").GetComponent<PlayerAudio>();
-        _playerRenderer = transform.Find("AgentRenderer").GetComponent<PlayerRenderer>();;
+        _playerRenderer = transform.Find("AgentRenderer").GetComponent<PlayerRenderer>(); ;
         _playerAnimation = _playerRenderer.GetComponent<PlayerAnimation>();
         _animationIK = _playerRenderer.GetComponent<AnimationIK>();
     }
@@ -154,7 +153,9 @@ public class Player : MonoBehaviour
             ;
         if (_isGrounded == false)
         {
-            _characterMoveAmount += transform.up * GravityModule.GetGravity().y * (_playerMovementSO.fallMultiplier - 1) * Time.deltaTime;
+            // 중력 방향에 따라 다르게
+            _characterMoveAmount += transform.up * GravityModule.GetGravity().y * Time.deltaTime
+                * ((_rigid.velocity.y <= -0.5f) ? _playerMovementSO.fallMultiplier : _playerMovementSO.upMultiplier);
         }
         if (OnSlope())
         {
@@ -273,14 +274,14 @@ public class Player : MonoBehaviour
         Vector3 boxCenter = _col.bounds.center;
         Vector3 halfExtents = _col.bounds.extents;
         float maxDistance = 0f;
-        if (_playerRenderer.flipDirection == DirectionType.Left || _playerRenderer.flipDirection == DirectionType.Right)
+        if (_playerRenderer.GetHorizontalFlip())
         {
-            maxDistance = _col.bounds.extents.x;
+            maxDistance = _col.bounds.extents.y;
             halfExtents.y = _groundCheckRayLength;
         }
         else
         {
-            maxDistance = _col.bounds.extents.y;
+            maxDistance = _col.bounds.extents.x;
             halfExtents.y = _groundCheckRayLength;
         }
         _isGrounded = Physics.BoxCast(boxCenter, halfExtents, -transform.up, out _slopeHit, transform.rotation, maxDistance, _groundMask);
@@ -294,7 +295,7 @@ public class Player : MonoBehaviour
         if (_slopeHit.collider != null)
         {
             float angle = Vector3.Angle(transform.up, _slopeHit.normal);
-            return angle < _maxSlopeAngle && angle != 0 && _isGrounded
+            return angle < playerMovementSO.maxSlopeAngle && angle != 0 && _isGrounded
                  && PlayerActionCheck(PlayerActionType.Jump, PlayerActionType.Dash) == false;
         }
         return false;
@@ -363,6 +364,8 @@ public class Player : MonoBehaviour
 
         if (_playerRenderer != null)
             _playerRenderer.FlipDirectionChange(DirectionType.Down, true);
+
+        PlayerCameraControll(transform, null);
     }
 
     public void DisableReset()
@@ -416,5 +419,11 @@ public class Player : MonoBehaviour
             debugString += a.Key + "   " + a.Value + " ";
         Debug.Log("수집품 " + debugString);
 #endif
+    }
+
+    public void PlayerCameraControll(Transform enable, Transform disable)
+    {
+        CamManager.Instance.RemoveTargetGroup(disable);
+        CamManager.Instance.AddTargetGroup(enable);
     }
 }

@@ -117,7 +117,6 @@ public class StageManager : MonoSingleTon<StageManager>
 
         AudioManager.PlayAudio(SoundType.OnGameStart);
         Debug.Log(isOn);
-
         
         if (isOn) //자유시점 온
         {
@@ -146,6 +145,7 @@ public class StageManager : MonoSingleTon<StageManager>
             curStage.ReStartArea(false);
         }
         freelookCoolTime = 2f;
+        CamManager.Instance?.TargetGroupReset();
     }
     public StageArea GetCurArea()
     {
@@ -210,10 +210,12 @@ public class StageManager : MonoSingleTon<StageManager>
     {
         if (rePlayerObj != null)
         {
+            rePlayerObj.GetComponent<Player>().DisableReset();
             PoolManager.Push(PoolType.RewindPlayer, rePlayerObj);
         }
         if (playerObj != null)
         {
+            playerObj.GetComponent<Player>().DisableReset();
             PoolManager.Push(PoolType.Player, playerObj);
         }
 

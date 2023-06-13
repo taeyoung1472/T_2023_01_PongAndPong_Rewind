@@ -92,8 +92,13 @@ public class Stage : MonoBehaviour
             TimerManager.Instance.EndRewind();
             //yield return new WaitForSeconds(.5f);
         }
-        CollectionManager.Instance.SaveClearCollection();
-        ClearManager.Instance.SaveClearData();
-        EndManager.Instance.End();
+        if (CollectionManager.Instance)
+            CollectionManager.Instance.SaveClearCollection();
+
+        if (ClearManager.Instance)
+            ClearManager.Instance.SaveClearData();
+
+        if (EndManager.Instance)
+            EndManager.Instance.End();
     }
 }
