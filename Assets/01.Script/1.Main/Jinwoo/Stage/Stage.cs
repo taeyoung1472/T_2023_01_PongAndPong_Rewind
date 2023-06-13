@@ -2,6 +2,7 @@ using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Stage : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class Stage : MonoBehaviour
     [SerializeField] private StageDataSO stageData;
 
     [HideInInspector] public StageArea curArea;
+
+    public UnityEvent stageEndEvent;
 
     public void Init()
     {
@@ -65,17 +68,29 @@ public class Stage : MonoBehaviour
     {
         for (int i = 0; i < stageAreaList.Count; i++)
         {
+            StageManager.Instance.InputLock = false;
             curArea = stageAreaList[i];
-            stageAreaList[i].EntryArea();
+            StageManager.Instance.SetFreeLookCamInitPos(curArea.freeLookCamPos);
+            if (i == 0)
+                stageAreaList[i].EntryArea();
+            else
+                stageAreaList[i].EntryArea(true);
             yield return new WaitUntil(() => stageAreaList[i].isAreaClear);
+
+            StageManager.Instance.InputLock = true;
             TimerManager.Instance.ChangeOnTimer(false);
 
-            StageManager.Instance.fadeImg.gameObject.SetActive(true);
-            EndManager.Instance.EndVolume();
-            yield return new WaitForSeconds(2f);
-            StageManager.Instance.fadeImg.gameObject.SetActive(false);
-
+            if(i == stageAreaList.Count - 1) //마지막 구역의 끝(스테이지 클리어 시)
+            {
+                StageManager.Instance.fadeImg.gameObject.SetActive(true);
+                EndManager.Instance.EndVolume();
+                yield return new WaitForSeconds(1.5f);
+                StageManager.Instance.fadeImg.gameObject.SetActive(false);
+                TimerManager.Instance.EndRewind();
+                break;
+            }
             TimerManager.Instance.EndRewind();
+            //yield return new WaitForSeconds(.5f);
         }
         CollectionManager.Instance.SaveClearCollection();
         ClearManager.Instance.SaveClearData();

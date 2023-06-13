@@ -18,8 +18,8 @@ public class StageManager : MonoSingleTon<StageManager>
     //[SerializeField] private PlayerRewind playerPrefab;
     //[SerializeField] private GameObject rewindPlayerPrefab;
 
-    private GameObject playerObj;
-    private GameObject rePlayerObj;
+    private GameObject playerObj; //처음 플레이하는 플레이어
+    private GameObject rePlayerObj; // 역행 때 조종하는 플레이어
 
     public Image fadeImg;
 
@@ -82,6 +82,11 @@ public class StageManager : MonoSingleTon<StageManager>
             OnFreeLookCam(!freeLookCam._isActivated);
         }
 
+    }
+
+    public void SetFreeLookCamInitPos(Transform camPos)
+    {
+        freeLookCam.InitPosCam(camPos);
     }
     public void SetAreaPlay(bool isPlay)
     {
@@ -212,22 +217,6 @@ public class StageManager : MonoSingleTon<StageManager>
             PoolManager.Push(PoolType.Player, playerObj);
         }
 
-
-        //playerObj.gameObject.SetActive(false);
-        //rePlayerObj.SetActive(false);
-
-
-        //if (isClear)
-        //{
-        //    playerObj.gameObject.SetActive(false);
-        //    rePlayerObj.SetActive(false);
-        //}
-        //else
-        //{
-        //    playerObj.gameObject.SetActive(false);
-        //    rePlayerObj.SetActive(false);
-
-        //}
     }
 
     public GameObject GetCurrentPlayer()

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
+using Cinemachine.Utility;
 /// <summary> 자유 시점 카메라 </summary>
 [DisallowMultipleComponent]
 public class FreeLookCamera : MonoBehaviour
@@ -64,10 +65,10 @@ public class FreeLookCamera : MonoBehaviour
     #region Unity Events
     private void Awake()
     {
+        ResetCamera = initPos;
         InitRig();
         InitTransform();
         cam = Camera.main;
-        ResetCamera = initPos;
     }
 
     private void Update()
@@ -112,6 +113,12 @@ public class FreeLookCamera : MonoBehaviour
     {
         transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y, 0f);
         transform.SetParent(_rig);
+    }
+
+    public void InitPosCam(Transform camPos)
+    {
+        ResetCamera = camPos.position;
+        centerX = camPos.position.x;
     }
 
     #endregion

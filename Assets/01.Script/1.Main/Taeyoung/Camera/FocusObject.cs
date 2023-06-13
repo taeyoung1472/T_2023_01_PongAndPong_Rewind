@@ -17,4 +17,5 @@ public class FocusObject : MonoBehaviour
 
         CamManager.Instance.RemoveTargetGroup(transform);
     }
+    
 }
