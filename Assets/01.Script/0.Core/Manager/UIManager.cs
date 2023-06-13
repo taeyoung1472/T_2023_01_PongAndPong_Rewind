@@ -29,8 +29,10 @@ public class UIManager : MonoSingleTon<UIManager>
     [SerializeField] private GameObject timerImg;
     [SerializeField] private GameObject pauseImg;
 
+    [SerializeField] private GameObject mainImg;
     [SerializeField] private GameObject stageImg;
     [SerializeField] private GameObject collectionImg;
+    [SerializeField] private GameObject gimmickImg;
 
     [SerializeField] private GameObject[] setActiveFalseObjs;   
 
@@ -78,7 +80,25 @@ public class UIManager : MonoSingleTon<UIManager>
 
         }
     }
+    public void HomeBtn()
+    {
+        SetUI();
+        mainImg.SetActive(true);
+    }
+    public void BackBtn()
+    {
+        SetUI();
+        mainImg.SetActive(true);
 
+        if (setActiveFalseObjs[3].activeSelf)
+        {
+            //�ӸӸӤä�
+        }
+        else
+        {
+            mainImg.SetActive(true);
+        }
+    }
     public void PauseResume()
     {
         isPause = false;
@@ -97,23 +117,28 @@ public class UIManager : MonoSingleTon<UIManager>
     }
     public void PauseCollection()
     {
-        for (int i = 0; i < setActiveFalseObjs.Length; i++)
-        {
-            setActiveFalseObjs[i].gameObject.SetActive(false);
-        }
-
+        SetUI();
         collectionImg.SetActive(true);
         PhoneCollection.Instance.OnCollectionMenu();
     }
     public void PauseStage()
     {
+        SetUI();
+        stageImg.SetActive(true);
+        PhoneStage.Instance.OnStageMenu();
+    }
+    public void PauseGimmick()
+    {
+        SetUI();
+        gimmickImg.SetActive(true);
+        PhoneGimmick.Instance.OnStageGimmick();
+    }
+    public void SetUI()
+    {
         for (int i = 0; i < setActiveFalseObjs.Length; i++)
         {
             setActiveFalseObjs[i].gameObject.SetActive(false);
         }
-        stageImg.SetActive(true);
-
-        PhoneStage.Instance.OnStageMenu();
     }
     public void FastForwardTime()
     {

@@ -15,22 +15,22 @@ public class GimmickIcon : MonoBehaviour, IPointerExitHandler, IPointerEnterHand
  
     public void OnPointerEnter(PointerEventData eventData)
     {
-        //PhoneStage.Instance.ExplainUI.gameObject.SetActive(true);
+        PhoneStage.Instance.ExplainUI.gameObject.SetActive(true);
 
-        //PhoneStage.Instance.ExplainUI.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = gimmickInfoSO.gimmickName;
-        //PhoneStage.Instance.ExplainUI.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = gimmickInfoSO.gimmickExplain;
+        PhoneStage.Instance.ExplainUI.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = gimmickInfoSO.gimmickName;
+        PhoneStage.Instance.ExplainUI.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = gimmickInfoSO.gimmickExplain;
 
-        Vector3 mousePos = Input.mousePosition;
-        mousePos.z = 0;
-        Debug.Log(mousePos);
-        PhoneStage.Instance.ExplainUI.anchoredPosition = mousePos;
-       
+        Vector2 pos = Camera.main.WorldToScreenPoint(eventData.position);
+        PhoneStage.Instance.ExplainUI.localPosition = pos;
+        Debug.Log(pos);
+
+
 
         Debug.Log("마우스올라감");
     }
     public void OnPointerExit(PointerEventData eventData)
     {
-        //PhoneStage.Instance.ExplainUI.gameObject.SetActive(false);
+        PhoneStage.Instance.ExplainUI.gameObject.SetActive(false);
 
     }
 }

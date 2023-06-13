@@ -14,7 +14,7 @@ public class StageDataSO : ScriptableObject
     public Sprite stageSprite;
     public Sprite closerStageSprite;
 
-    [HideInInspector] public int stageIndex;
+    public int stageIndex;
     public TutorialInfo tutorialInfo;
 
     public string chapterStageName;
