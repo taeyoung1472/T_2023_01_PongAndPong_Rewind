@@ -97,6 +97,12 @@ public class TrailParent : MonoBehaviour
             Debug.Log("리와인드 트레일 없음");
             return;
         }
+
+        if (_readyTrails.Count <= 0)
+        {
+            return;
+        }
+
         MeshTrailStruct trail = _readyTrails.Dequeue();
         TrackMotionTrailData trailData = _rewindTrails.Pop();
 

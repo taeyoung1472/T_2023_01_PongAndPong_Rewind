@@ -117,8 +117,11 @@ public class FreeLookCamera : MonoBehaviour
 
     public void InitPosCam(Transform camPos)
     {
-        ResetCamera = camPos.position;
-        centerX = camPos.position.x;
+        if(camPos != null)
+        {
+            ResetCamera = camPos.position;
+            centerX = camPos.position.x;
+        }
     }
 
     #endregion
