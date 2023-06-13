@@ -1,10 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.Events;
-using TMPro;
-using DigitalRuby.ThunderAndLightning;
-using System;
 
 public class TimerManager : MonoSingleTon<TimerManager>
 {
@@ -12,7 +8,7 @@ public class TimerManager : MonoSingleTon<TimerManager>
     public float CurrentTimer { get; set; }
 
 
-    private float rewindingTime = 0; 
+    private float rewindingTime = 0;
     public float RewindingTime
     {
         get
@@ -71,12 +67,21 @@ public class TimerManager : MonoSingleTon<TimerManager>
     {
         StartRewindTime();
     }
+    public void StopTime()
+    {
+        player = StageManager.Instance.GetCurrentPlayer().GetComponent<Player>();
+        Time.timeScale = 0f;
+        if (player != null)
+        {
+            player.PlayerInput.InputVectorReset();
+            player.PlayerInput.enabled = false;
+        }
+    }
     public void FastForwardTimeIntensity()
     {
         JinwooVolumeManager.Instance.EnableFastTimeEffect();
         player = StageManager.Instance.GetCurrentPlayer().GetComponent<Player>();
         Time.timeScale = 2f;
-        //fastTimeIntensity = 2f;
         if (player != null)
         {
             player.PlayerInput.InputVectorReset();
@@ -86,7 +91,6 @@ public class TimerManager : MonoSingleTon<TimerManager>
     public void ResetFastForwardTime()
     {
         JinwooVolumeManager.Instance.DisableFastTimeEffect();
-        //fastTimeIntensity = 1f;
         Time.timeScale = 1f;
         if (player != null)
         {
@@ -184,5 +188,5 @@ public class TimerManager : MonoSingleTon<TimerManager>
         RewindManager.Instance.StopRewindTimeBySeconds();
         StageManager.Instance.CurStage.curArea.ExitArea();
     }
-    
+
 }

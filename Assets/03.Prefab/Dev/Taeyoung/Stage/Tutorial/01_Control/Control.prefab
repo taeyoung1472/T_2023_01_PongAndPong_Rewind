@@ -46499,6 +46499,65 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   deployType: 1
   size: {x: 1, y: 0.15, z: 1}
+--- !u!1 &8175507829162404908
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2301816203856297160}
+  - component: {fileID: 5078463029686928353}
+  - component: {fileID: 8515618095925656080}
+  m_Layer: 0
+  m_Name: Notify
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2301816203856297160
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8175507829162404908}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 4.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4974757057658870984}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &5078463029686928353
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8175507829162404908}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 5, y: 5, z: 5}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &8515618095925656080
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8175507829162404908}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38c6a8151ba5a964caa79e1b04159842, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  notifyKey: OnPlay
 --- !u!1 &8181131050841004492
 GameObject:
   m_ObjectHideFlags: 0
@@ -53140,11 +53199,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5097872224309720775, guid: 98a194a0dcbc7d348bc98400ff9f8ed9, type: 3}
       propertyPath: isToggle
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5097872224309720775, guid: 98a194a0dcbc7d348bc98400ff9f8ed9, type: 3}
       propertyPath: origntToggleTime
-      value: 3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5097872224309720775, guid: 98a194a0dcbc7d348bc98400ff9f8ed9, type: 3}
       propertyPath: controlDataArr.Array.size
@@ -53588,6 +53647,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isLocked: 0
+  controlColor: {r: 0, g: 0, b: 0, a: 0}
   positiveMoveValue: {x: 0, y: -3.5, z: 0}
   negativeMoveValue: {x: 0, y: -3.5, z: 0}
   speed: 1

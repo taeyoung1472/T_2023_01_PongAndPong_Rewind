@@ -26,8 +26,8 @@ public class Notify : MonoBehaviour
         text.gameObject.SetActive(true);
         yield return null;
         content.anchoredPosition = new Vector2(content.sizeDelta.x * 1.5f, -content.sizeDelta.y);
-        DOTween.To(() => myRect.sizeDelta, x => myRect.sizeDelta = x, new Vector2(myRect.sizeDelta.x, 75), 0.4f);
-        DOTween.To(() => content.anchoredPosition, x => content.anchoredPosition = x, Vector2.zero, 0.75f);
+        DOTween.To(() => myRect.sizeDelta, x => myRect.sizeDelta = x, new Vector2(myRect.sizeDelta.x, 75), 0.4f).SetUpdate(true);
+        DOTween.To(() => content.anchoredPosition, x => content.anchoredPosition = x, Vector2.zero, 0.75f).SetUpdate(true);
     }
 
     public void Close()
@@ -35,7 +35,7 @@ public class Notify : MonoBehaviour
         Sequence seq = DOTween.Sequence();
 
         AudioManager.PlayAudio(SoundType.OnNotifyClose);
-        seq.Append(DOTween.To(() => content.anchoredPosition, x => content.anchoredPosition = x, new Vector2(content.sizeDelta.x * 1.5f, 0), 0.75f));
+        seq.Append(DOTween.To(() => content.anchoredPosition, x => content.anchoredPosition = x, new Vector2(content.sizeDelta.x * 1.5f, 0), 0.75f)).SetUpdate(true);
         seq.AppendCallback(() => Destroy(gameObject));
     }
 }
