@@ -15,8 +15,8 @@ public class PhoneStage : MonoSingleTon<PhoneStage>
 
     [SerializeField] private GameObject gimmickIcon;
 
-    [SerializeField] private GameObject explainUI;
-    public GameObject ExplainUI => explainUI;
+    [SerializeField] private RectTransform explainUI;
+    public RectTransform ExplainUI => explainUI;
     private void Start()
     {
         SetStageData();

@@ -12,24 +12,25 @@ public class GimmickIcon : MonoBehaviour, IPointerExitHandler, IPointerEnterHand
     //    get { return gimmickInfoSO; }
     //    set { gimmickInfoSO = value; }
     //}
-    private void Update()
-    {
-        //if (EventSystem.current.IsPointerOverGameObject() == true)
-        //{
-        //    PhoneStage.Instance.ExplainUI.SetActive(true);
-        //    PhoneStage.Instance.ExplainUI.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = gimmickInfoSO.gimmickName;
-        //    PhoneStage.Instance.ExplainUI.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = gimmickInfoSO.gimmickName;
-        //}
-    }
+ 
     public void OnPointerEnter(PointerEventData eventData)
     {
+        //PhoneStage.Instance.ExplainUI.gameObject.SetActive(true);
+
+        //PhoneStage.Instance.ExplainUI.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = gimmickInfoSO.gimmickName;
+        //PhoneStage.Instance.ExplainUI.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = gimmickInfoSO.gimmickExplain;
+
+        Vector3 mousePos = Input.mousePosition;
+        mousePos.z = 0;
+        Debug.Log(mousePos);
+        PhoneStage.Instance.ExplainUI.anchoredPosition = mousePos;
+       
+
         Debug.Log("마우스올라감");
     }
     public void OnPointerExit(PointerEventData eventData)
     {
-        Debug.Log("마우스내려감");
-
-        PhoneStage.Instance.ExplainUI.SetActive(false);
+        //PhoneStage.Instance.ExplainUI.gameObject.SetActive(false);
 
     }
 }
