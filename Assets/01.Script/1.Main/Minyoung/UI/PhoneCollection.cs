@@ -18,6 +18,7 @@ public class PhoneCollection : MonoSingleTon<PhoneCollection>
     [SerializeField] private GameObject stageCellPrefab;
 
 
+
     void Start()
     {
         for (int i = 0; i < stageDatabase.worldList.Count; i++)
