@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEditor.Rendering;
 using UnityEngine.Events;
+using DG.Tweening;
 
 public class UIManager : MonoSingleTon<UIManager>
 {
@@ -90,7 +91,7 @@ public class UIManager : MonoSingleTon<UIManager>
         SetUI();
         mainImg.SetActive(true);
 
-        if (setActiveFalseObjs[3].activeSelf)
+        if (setActiveFalseObjs[2].activeSelf)
         {
             //�ӸӸӤä�
         }
@@ -140,6 +141,14 @@ public class UIManager : MonoSingleTon<UIManager>
             setActiveFalseObjs[i].gameObject.SetActive(false);
         }
     }
+
+    public void PressDirector(GameObject obj)
+    {
+        obj.transform.DOScale(new Vector3(1.2f, 1.2f, 1.2f), 0.5f);
+
+
+    }
+
     public void FastForwardTime()
     {
         if (!TimerManager.Instance.isOnTimer || TimerManager.Instance.isRewinding)
