@@ -14,10 +14,13 @@ public class StageDataSO : ScriptableObject
     public Sprite stageSprite;
     public Sprite closerStageSprite;
 
-    [HideInInspector] public int stageIndex;
+    public int stageIndex;
     public TutorialInfo tutorialInfo;
 
     public string chapterStageName;
     //수집품
     public List<bool> stageCollection;
+
+    //폰 UI 때문에 필요함
+    public List<GimmickInfoSO> useGimmickStageList;
 }
