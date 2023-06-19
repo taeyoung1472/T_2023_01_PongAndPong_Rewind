@@ -129,7 +129,7 @@ public class LastNPCTalkCutScene : MonoSingleTon<LastNPCTalkCutScene>
     }
     public void NextCutScene()
     {
-        SceneManager.LoadScene("Lab");
+        SceneManager.LoadScene("NewLab");
     }
 
     public void ShowSpeechBubble(int npcNum)
