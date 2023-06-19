@@ -33,6 +33,7 @@ public class DialogInteract : Interact
             if (_dialogAnimator != null)
             {
                 _dialogAnimator.Play("DialogStart");
+                _dialogAnimator.Play("DialogStartUpBody");
                 _dialogAnimator.Update(0);
             }
         }
