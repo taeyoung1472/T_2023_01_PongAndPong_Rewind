@@ -35,7 +35,10 @@ public class UIManager : MonoSingleTon<UIManager>
     [SerializeField] private GameObject collectionImg;
     [SerializeField] private GameObject gimmickImg;
 
-    [SerializeField] private GameObject[] setActiveFalseObjs;   
+    [SerializeField] private GameObject[] setActiveFalseObjs;
+
+    [SerializeField] private TextMeshProUGUI dayText;
+    [SerializeField] private TextMeshProUGUI timeText;
 
     private void Awake()
     {
@@ -53,6 +56,8 @@ public class UIManager : MonoSingleTon<UIManager>
         {
             if (!isPause && !EndManager.Instance.IsEnd)
             {
+                SetDayText();
+
                 isPause = true;
                 TimerManager.Instance.ChangeOnTimer(false);
                 timerImg.gameObject.SetActive(false);
@@ -124,6 +129,7 @@ public class UIManager : MonoSingleTon<UIManager>
     }
     public void PauseStage()
     {
+
         SetUI();
         stageImg.SetActive(true);
         PhoneStage.Instance.OnStageMenu();
@@ -136,6 +142,7 @@ public class UIManager : MonoSingleTon<UIManager>
     }
     public void SetUI()
     {
+        SetDayText();
         for (int i = 0; i < setActiveFalseObjs.Length; i++)
         {
             setActiveFalseObjs[i].gameObject.SetActive(false);
@@ -149,6 +156,11 @@ public class UIManager : MonoSingleTon<UIManager>
 
     }
 
+    public void SetDayText()
+    { 
+        dayText.SetText(System.DateTime.Now.ToString(("MM\ndd")));
+        timeText.SetText(System.DateTime.Now.ToString(("yyyy-MM-dd")));
+    }
     public void FastForwardTime()
     {
         if (!TimerManager.Instance.isOnTimer || TimerManager.Instance.isRewinding)
