@@ -53,11 +53,11 @@ public class MadScientistCutScene : MonoSingleTon<MadScientistCutScene>
         madScientistText.gameObject.SetActive(false);
         isMadScientistStart = false;
 
-        FadeInOutManager.Instance.FadeIn(3f);
+        FadeInOutManager.Instance.FadeIn(2f);
         JinwooVolumeManager.Instance.DisableGlitch();
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(2f);
         JinwooVolumeManager.Instance.EndCinmaticBars();
-        FadeInOutManager.Instance.FadeOut(3f);
+        FadeInOutManager.Instance.FadeOut(2f);
 
         MonitorNPCTalk.Instance.StartMeeting();
         this.gameObject.SetActive(false);

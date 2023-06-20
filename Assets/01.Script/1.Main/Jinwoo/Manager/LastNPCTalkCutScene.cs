@@ -122,8 +122,8 @@ public class LastNPCTalkCutScene : MonoSingleTon<LastNPCTalkCutScene>
         AllClearText();
 
         isTalkStart = false;
-        FadeInOutManager.Instance.FadeIn(3f);
-        yield return new WaitForSeconds(3.4f);
+        FadeInOutManager.Instance.FadeIn(2f);
+        yield return new WaitForSeconds(2.1f);
         NextCutScene();
 
     }

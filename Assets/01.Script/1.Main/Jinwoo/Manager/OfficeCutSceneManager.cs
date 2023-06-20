@@ -164,7 +164,7 @@ public class OfficeCutSceneManager : MonoSingleTon<OfficeCutSceneManager>
         cellphoneText.gameObject.SetActive(false);
 
         isAnswerPhone = false;
-        FadeInOutManager.Instance.FadeIn(2.5f);
+        FadeInOutManager.Instance.FadeIn(2f);
 
         StartCoroutine(NextCutScene());
     }
