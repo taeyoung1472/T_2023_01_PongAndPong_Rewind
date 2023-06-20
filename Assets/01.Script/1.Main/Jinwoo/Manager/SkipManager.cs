@@ -36,6 +36,6 @@ public class SkipManager : MonoSingleTon<SkipManager>
     {
         FadeInOutManager.Instance.FadeIn(2f);
         yield return new WaitForSeconds(3.2f);
-        SceneManager.LoadScene("Lab");
+        SceneManager.LoadScene("NewLab");
     }
 }
