@@ -103,7 +103,7 @@ public class OfficeCutScene2 : MonoSingleTon<OfficeCutScene2>
     }
     IEnumerator CellPhoneRing()
     {
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(2f);
         exclamationMark.gameObject.SetActive(true);
         checkCol.SetActive(true);
     }
@@ -155,7 +155,7 @@ public class OfficeCutScene2 : MonoSingleTon<OfficeCutScene2>
     }
     public IEnumerator NextCutScene()
     {
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(2f);
         SceneManager.LoadScene(sceneName);
     }
     public void ShowSpeechBubble(bool isPlayer)

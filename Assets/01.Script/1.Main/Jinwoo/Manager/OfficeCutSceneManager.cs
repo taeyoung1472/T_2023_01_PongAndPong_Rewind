@@ -100,7 +100,7 @@ public class OfficeCutSceneManager : MonoSingleTon<OfficeCutSceneManager>
     }
     IEnumerator CellPhoneRing()
     {
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(1.5f);
         exclamationMark.gameObject.SetActive(true);
         checkCol.SetActive(true);
     }
