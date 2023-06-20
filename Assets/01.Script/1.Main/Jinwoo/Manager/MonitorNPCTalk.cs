@@ -128,9 +128,9 @@ public class MonitorNPCTalk : MonoSingleTon<MonitorNPCTalk>
     }
     public IEnumerator NextCutScene()
     {
-        FadeInOutManager.Instance.FadeIn(5f);
+        FadeInOutManager.Instance.FadeIn(2.5f);
         
-        yield return new WaitForSeconds(5.5f);
+        yield return new WaitForSeconds(2.8f);
         SceneManager.LoadScene("OfficeJinwoo2");
     }
 

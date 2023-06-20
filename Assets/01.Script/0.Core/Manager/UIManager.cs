@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEditor.Rendering;
 using UnityEngine.Events;
+using DG.Tweening;
 
 public class UIManager : MonoSingleTon<UIManager>
 {
@@ -28,9 +29,13 @@ public class UIManager : MonoSingleTon<UIManager>
 
     [SerializeField] private GameObject timerImg;
     [SerializeField] private GameObject pauseImg;
-    [SerializeField] private GameObject collectionImg;
 
-   
+    [SerializeField] private GameObject mainImg;
+    [SerializeField] private GameObject stageImg;
+    [SerializeField] private GameObject collectionImg;
+    [SerializeField] private GameObject gimmickImg;
+
+    [SerializeField] private GameObject[] setActiveFalseObjs;   
 
     private void Awake()
     {
@@ -76,7 +81,25 @@ public class UIManager : MonoSingleTon<UIManager>
 
         }
     }
+    public void HomeBtn()
+    {
+        SetUI();
+        mainImg.SetActive(true);
+    }
+    public void BackBtn()
+    {
+        SetUI();
+        mainImg.SetActive(true);
 
+        if (setActiveFalseObjs[2].activeSelf)
+        {
+            //�ӸӸӤä�
+        }
+        else
+        {
+            mainImg.SetActive(true);
+        }
+    }
     public void PauseResume()
     {
         isPause = false;
@@ -95,9 +118,35 @@ public class UIManager : MonoSingleTon<UIManager>
     }
     public void PauseCollection()
     {
-        //pauseImg.SetActive(false);
+        SetUI();
         collectionImg.SetActive(true);
         PhoneCollection.Instance.OnCollectionMenu();
+    }
+    public void PauseStage()
+    {
+        SetUI();
+        stageImg.SetActive(true);
+        PhoneStage.Instance.OnStageMenu();
+    }
+    public void PauseGimmick()
+    {
+        SetUI();
+        gimmickImg.SetActive(true);
+        PhoneGimmick.Instance.OnStageGimmick();
+    }
+    public void SetUI()
+    {
+        for (int i = 0; i < setActiveFalseObjs.Length; i++)
+        {
+            setActiveFalseObjs[i].gameObject.SetActive(false);
+        }
+    }
+
+    public void PressDirector(GameObject obj)
+    {
+        obj.transform.DOScale(new Vector3(1.2f, 1.2f, 1.2f), 0.5f);
+
+
     }
 
     public void FastForwardTime()

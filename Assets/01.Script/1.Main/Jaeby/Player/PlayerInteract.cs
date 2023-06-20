@@ -9,9 +9,9 @@ public class PlayerInteract : PlayerAction, IPlayerDisableResetable
         if(other.CompareTag("Interact"))
         {
             Interact interact = other.GetComponentInParent<Interact>();
-            if(interact != null)
+            if (interact != null)
             {
-                if (interact.Interactable == false)
+                if (interact.Interactable == false || _curInteract == interact)
                     return;
                 _curInteract?.InteractExit();
                 _curInteract = interact;
@@ -22,9 +22,12 @@ public class PlayerInteract : PlayerAction, IPlayerDisableResetable
 
     private void OnTriggerExit(Collider other)
     {
+        if (_curInteract == null)
+            return;
+
         if (other.CompareTag("Interact"))
         {
-            _curInteract?.InteractExit();
+            _curInteract.InteractExit();
             _curInteract = null;
         }
     }

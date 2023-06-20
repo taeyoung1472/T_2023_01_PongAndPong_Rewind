@@ -86,8 +86,8 @@ public class TalkBoyGuard : MonoSingleTon<TalkBoyGuard>
     }
     public IEnumerator NextCutScene()
     {
-        FadeInOutManager.Instance.FadeIn(5f);
-        yield return new WaitForSeconds(5.5f);
+        FadeInOutManager.Instance.FadeIn(2.5f);
+        yield return new WaitForSeconds(2.8f);
         SceneManager.LoadScene("MadScientistCutScene");
     }
 

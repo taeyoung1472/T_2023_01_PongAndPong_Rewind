@@ -8,12 +8,13 @@ public class DialogInteract : Interact
     [SerializeField]
     private List<DialogOptionDataSO> _dialogOptions = new List<DialogOptionDataSO>();
     private NPC _myNPC = null;
-    protected Animator _animator = null;
+
+    [SerializeField]
+    protected Animator _dialogAnimator = null;
 
     private void Start()
     {
         _myNPC ??= GetComponentInParent<NPC>();
-        _animator ??= GetComponentInParent<Animator>();
     }
 
     protected override void ChildInteractEnd()
@@ -29,10 +30,11 @@ public class DialogInteract : Interact
         InteractExit();
         if (DialogManager.Instance.DialogStart(_myNPC.npcData, this, _curDialogData, _dialogOptions, EndAction))
         {
-            if (_animator != null)
+            if (_dialogAnimator != null)
             {
-                _animator.Play("DialogStart");
-                _animator.Update(0);
+                _dialogAnimator.Play("DialogStart");
+                _dialogAnimator.Play("DialogStartUpBody");
+                _dialogAnimator.Update(0);
             }
         }
         else

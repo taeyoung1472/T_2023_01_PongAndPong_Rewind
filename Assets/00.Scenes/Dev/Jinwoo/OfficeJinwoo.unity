@@ -3253,52 +3253,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 115477878}
   m_CullTransparentMesh: 1
---- !u!1 &115827171
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 115827172}
-  - component: {fileID: 115827173}
-  m_Layer: 0
-  m_Name: SkipManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &115827172
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 115827171}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 643816831}
-  m_RootOrder: 18
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &115827173
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 115827171}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b049e1471a409204383c84136e605a45, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  skipImg: {fileID: 943574351}
-  isSkip: 0
 --- !u!1 &117630636
 GameObject:
   m_ObjectHideFlags: 0
@@ -10203,6 +10157,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0503f005bb617c74db67aaf7fc3a545b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _dummyDialog: {fileID: 0}
   _dialogOptionDefaultIcon: {fileID: 21300000, guid: f1d6982b036a7479f9f9c948c83eedbd, type: 3}
   _dialogCooltime: 0.5
   _dialogCanvasAnimationTime: 0.25
@@ -12049,7 +12004,7 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-  m_CustomBlends: {fileID: 11400000, guid: 21526ab85eaab7d4ba34113a05a37a8d, type: 2}
+  m_CustomBlends: {fileID: 11400000, guid: 1003a13f4727a6b4f9e4679ad4a17bd1, type: 2}
   m_CameraCutEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -16585,7 +16540,6 @@ Transform:
   - {fileID: 1532627218}
   - {fileID: 1009726382}
   - {fileID: 956695454}
-  - {fileID: 115827172}
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -37103,6 +37057,7 @@ MonoBehaviour:
   playerCam: {fileID: 398402672}
   tabletCam: {fileID: 0}
   player: {fileID: 0}
+  portalPlayerPostion: {fileID: 0}
   playerInput: {fileID: 0}
   playerAnimator: {fileID: 0}
   tabletAnimator: {fileID: 0}

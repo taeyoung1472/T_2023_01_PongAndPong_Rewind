@@ -180,7 +180,7 @@ public class NPCMeetingCutSceneManager : MonoSingleTon<NPCMeetingCutSceneManager
         AllClear();
 
         isMeetingStart = false;
-        FadeInOutManager.Instance.FadeIn(5f);
+        FadeInOutManager.Instance.FadeIn(2.5f);
 
         StartCoroutine(NextCutScene());
     }

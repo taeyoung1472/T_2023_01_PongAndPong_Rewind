@@ -35,7 +35,7 @@ public class SkipManager : MonoSingleTon<SkipManager>
     IEnumerator SkipCutScene()
     {
         FadeInOutManager.Instance.FadeIn(2f);
-        yield return new WaitForSeconds(3.2f);
-        SceneManager.LoadScene("NewLab");
+        yield return new WaitForSeconds(2.5f);
+        SceneManager.LoadScene("Lab");
     }
 }
