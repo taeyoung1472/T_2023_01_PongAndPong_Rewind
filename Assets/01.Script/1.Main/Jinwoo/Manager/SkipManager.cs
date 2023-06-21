@@ -28,14 +28,7 @@ public class SkipManager : MonoSingleTon<SkipManager>
         if (Input.GetKeyDown(KeyCode.Return) )
         {
             //skipImg.fillAmount += 0.5f * Time.deltaTime;
-            if (skipPanel.activeSelf)
-            {
-                SkipPanelOff();
-            }
-            else
-            {
-                SkipPanelOn();
-            }
+            SkipPanelOn();
 
         }
         //if (Input.GetKeyUp(KeyCode.Return))
@@ -57,6 +50,7 @@ public class SkipManager : MonoSingleTon<SkipManager>
     public void Skip()
     {
         isSkip = true;
+        SkipPanelOff();
         StartCoroutine(SkipCutScene());
     }
     public void NoSkip()
@@ -67,6 +61,6 @@ public class SkipManager : MonoSingleTon<SkipManager>
     {
         FadeInOutManager.Instance.FadeIn(2f);
         yield return new WaitForSeconds(2.5f);
-        SceneManager.LoadScene("Lab");
+        SceneManager.LoadScene("NewLab");
     }
 }
