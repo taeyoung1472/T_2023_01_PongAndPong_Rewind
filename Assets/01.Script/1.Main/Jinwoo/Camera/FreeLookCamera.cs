@@ -89,7 +89,7 @@ public class FreeLookCamera : MonoBehaviour
         _rig.position = new Vector3(
             Mathf.Clamp(_rig.position.x, centerX - offsetX * 0.5f, centerX + offsetX * 0.5f),
             Mathf.Clamp(_rig.position.y, centerY - offsetY * 0.5f, centerY + offsetY * 0.5f),
-            Mathf.Clamp(_rig.position.z, -offsetZ, 0));
+            Mathf.Clamp(_rig.position.z, -offsetZ, 10));
     }
     private void OnEnable()
     {
