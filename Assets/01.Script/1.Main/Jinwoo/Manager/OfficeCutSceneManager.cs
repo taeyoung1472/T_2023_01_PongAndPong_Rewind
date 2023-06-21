@@ -89,10 +89,9 @@ public class OfficeCutSceneManager : MonoSingleTon<OfficeCutSceneManager>
 
         player.transform.rotation = Quaternion.Euler(0, 90, 0);
 
-        player.Rigid.constraints = RigidbodyConstraints.FreezeAll;
+        //player.Rigid.constraints = RigidbodyConstraints.FreezeAll;
 
-        player.PlayerInput.InputVectorReset();
-        player.PlayerAnimation.MoveAnimation(Vector2.zero);
+        player.ForceStop();
 
         DisableList();
 
