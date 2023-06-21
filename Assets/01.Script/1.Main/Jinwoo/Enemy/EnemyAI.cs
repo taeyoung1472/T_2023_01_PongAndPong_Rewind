@@ -1,12 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using Jinwoo.BehaviorTree;
-
-using static Jinwoo.BehaviorTree.NodeHelper;
-using UnityEngine.UIElements;
+using System.Collections;
 using UnityEditor;
-using UnityEditorInternal;
+using UnityEngine;
+using static Jinwoo.BehaviorTree.NodeHelper;
 
 [RequireComponent(typeof(Animator))]
 public class EnemyAI : MonoBehaviour, ICore
@@ -124,16 +120,16 @@ public class EnemyAI : MonoBehaviour, ICore
                         Action(SetCurPatPos),
                         IfAction(CheckPatrolling, MovePatrolPosAction)
                     )
-                    
+
                 )
-                
+
             );
     }
 
     public void ApplyDamage(int damage)
     {
         _currentHealth -= damage;
-        if(_currentHealth > 0)
+        if (_currentHealth > 0)
             isHit = true;
     }
     bool IsAnimationRunning(string stateName)
@@ -186,7 +182,7 @@ public class EnemyAI : MonoBehaviour, ICore
 
     private void MoveEnemy(Transform targetPos, bool isWalk)
     {
-        
+
 
         Vector3 dir = (targetPos.position - transform.position).normalized;
         dir.y = 0;
@@ -243,8 +239,8 @@ public class EnemyAI : MonoBehaviour, ICore
     }
     public bool IsGrounded()
     {
-        bool result = Physics.Raycast(transform.position, -Vector3.up, distToGround + 0.1f, 1<< LayerMask.NameToLayer("Ground"));
-        Debug.Log("result : " + result + " : "+ distToGround);
+        bool result = Physics.Raycast(transform.position, -Vector3.up, distToGround + 0.1f, 1 << LayerMask.NameToLayer("Ground"));
+        Debug.Log("result : " + result + " : " + distToGround);
         return result;
     }
     #region Hit Node
@@ -358,13 +354,13 @@ public class EnemyAI : MonoBehaviour, ICore
                 return INode.NodeState.Success;
             }
         }
-        if(_detectedPlayer != null )
+        if (_detectedPlayer != null)
         {
             _lastPlayerPos = _detectedPlayer.position;
         }
 
         _detectedPlayer = null;
-        
+
         return INode.NodeState.Failure;
     }
 
@@ -385,7 +381,7 @@ public class EnemyAI : MonoBehaviour, ICore
 
     private void MoveToDetectEnemyAction()
     {
-        MoveEnemy(_detectedPlayer, false);        
+        MoveEnemy(_detectedPlayer, false);
     }
 
     #endregion
@@ -504,7 +500,7 @@ public class EnemyAI : MonoBehaviour, ICore
         //Handles.color = new Color(0f, 1f, 1f, 1f);
         //Handles.DrawLine(transform.position, new Vector3(transform.position.x, distToGround + 0.1f, transform.position.z),1f);
 
-        Gizmos.DrawRay (new Vector3(transform.position.x, transform.position.y +distToGround + 0.1f, transform.position.z), -Vector3.up);
+        Gizmos.DrawRay(new Vector3(transform.position.x, transform.position.y + distToGround + 0.1f, transform.position.z), -Vector3.up);
     }
 
 #endif

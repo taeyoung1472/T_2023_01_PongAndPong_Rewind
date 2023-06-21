@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Net;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -11,6 +12,7 @@ public class StageArea : MonoBehaviour
     [Header("코어 데이터")]
     [SerializeField] private Transform defaultPlayerSpawn;
     [SerializeField] private Transform rewindPlayerSpawn;
+    [SerializeField] private Transform endPoint;
     public Transform freeLookCamPos;
 
     public GameObject gameObjesddct;
@@ -23,6 +25,10 @@ public class StageArea : MonoBehaviour
     private void Start()
     {
         isAreaPlay = false;
+
+        defaultPlayerSpawn.gameObject.SetActive(false);
+        rewindPlayerSpawn.gameObject.SetActive(false);
+        endPoint.gameObject.SetActive(false);
     }
     public void InitArea()
     {
@@ -33,6 +39,11 @@ public class StageArea : MonoBehaviour
     }
     public void EntryArea(bool isGameStart = false)
     {
+        defaultPlayerSpawn.gameObject.SetActive(true);
+        rewindPlayerSpawn.gameObject.SetActive(true);
+        endPoint.gameObject.SetActive(true);
+
+
         //함수 실행 순서 매우 중요;
         IsAreaPlay = true;
 
@@ -53,6 +64,10 @@ public class StageArea : MonoBehaviour
 
     public void ExitArea()
     {
+        defaultPlayerSpawn.gameObject.SetActive(false);
+        rewindPlayerSpawn.gameObject.SetActive(false);
+        endPoint.gameObject.SetActive(false);
+
         IsAreaPlay = false;
         if (!isAreaClear) //클리어 못함
         {

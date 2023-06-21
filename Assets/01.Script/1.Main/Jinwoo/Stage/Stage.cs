@@ -74,7 +74,11 @@ public class Stage : MonoBehaviour
             if (i == 0)
                 stageAreaList[i].EntryArea();
             else
-                stageAreaList[i].EntryArea(true);
+            {
+                //stageAreaList[i].EntryArea(true);
+                StageManager.Instance.OnReStartArea();
+            }
+
             yield return new WaitUntil(() => stageAreaList[i].isAreaClear);
 
             StageManager.Instance.InputLock = true;

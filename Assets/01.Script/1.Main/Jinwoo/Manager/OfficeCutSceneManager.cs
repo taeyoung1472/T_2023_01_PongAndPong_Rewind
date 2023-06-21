@@ -100,7 +100,7 @@ public class OfficeCutSceneManager : MonoSingleTon<OfficeCutSceneManager>
     }
     IEnumerator CellPhoneRing()
     {
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(1.5f);
         exclamationMark.gameObject.SetActive(true);
         checkCol.SetActive(true);
     }
@@ -164,7 +164,7 @@ public class OfficeCutSceneManager : MonoSingleTon<OfficeCutSceneManager>
         cellphoneText.gameObject.SetActive(false);
 
         isAnswerPhone = false;
-        FadeInOutManager.Instance.FadeIn(2.5f);
+        FadeInOutManager.Instance.FadeIn(2f);
 
         StartCoroutine(NextCutScene());
     }

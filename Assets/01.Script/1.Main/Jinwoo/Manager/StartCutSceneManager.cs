@@ -130,9 +130,9 @@ public class StartCutSceneManager : MonoBehaviour
     IEnumerator EndFadeImg()
     {
         
-        fadeImg.DOFade(1, 2f);
-        images[images.Length-1].DOFade(0, 1.5f);
-        yield return new WaitForSeconds(2.5f);
+        fadeImg.DOFade(1, 1.8f);
+        images[images.Length-1].DOFade(0, 1.3f);
+        yield return new WaitForSeconds(2f);
         SceneManager.LoadScene("Lab Jinwoo");
         MainMenuManager.isOpend = true;
     }
