@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class SkipManager : MonoSingleTon<SkipManager>
 {
+    [SerializeField] private GameObject skipPanel;
     [SerializeField] private Image skipImg;
     public bool isSkip = false;
 
@@ -13,24 +14,54 @@ public class SkipManager : MonoSingleTon<SkipManager>
     {
         isSkip = false;
         skipImg.fillAmount = 0;
+        SkipPanelOff();
     }
     private void Update()
     {
-        if(skipImg.fillAmount >= 1f)
-        {
-            isSkip = true;
-            StartCoroutine(SkipCutScene());
-            return;   
-        }
+        //if(skipImg.fillAmount >= 1f)
+        //{
+        //    isSkip = true;
+        //    StartCoroutine(SkipCutScene());
+        //    return;   
+        //}
 
-        if (Input.GetKey(KeyCode.Return) )
+        if (Input.GetKeyDown(KeyCode.Return) )
         {
-            skipImg.fillAmount += 0.5f * Time.deltaTime;
+            //skipImg.fillAmount += 0.5f * Time.deltaTime;
+            if (skipPanel.activeSelf)
+            {
+                SkipPanelOff();
+            }
+            else
+            {
+                SkipPanelOn();
+            }
+
         }
-        if (Input.GetKeyUp(KeyCode.Return))
-        {
-            skipImg.fillAmount = 0f;
-        }
+        //if (Input.GetKeyUp(KeyCode.Return))
+        //{
+        //    skipImg.fillAmount = 0f;
+        //}
+    }
+    private void SkipPanelOn()
+    {
+        Time.timeScale = 0f;
+        skipPanel.SetActive(true);
+        
+    }
+    private void SkipPanelOff()
+    {
+        Time.timeScale = 1f;
+        skipPanel.SetActive(false);
+    }
+    public void Skip()
+    {
+        isSkip = true;
+        StartCoroutine(SkipCutScene());
+    }
+    public void NoSkip()
+    {
+        SkipPanelOff();
     }
     IEnumerator SkipCutScene()
     {
