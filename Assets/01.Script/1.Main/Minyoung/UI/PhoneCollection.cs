@@ -64,11 +64,11 @@ public class PhoneCollection : MonoSingleTon<PhoneCollection>
         {
             childObjs[i].transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().SetText($"{i + 1} ц╘ем{chapterNameList[i]}");
 
-            foreach (var s in chapterList[i].stageCollectionDataList)
-                maxCnt += s.collectionBoolDataList.Count;
+            //foreach (var s in chapterList[i].stageCollectionDataList)
+            //    maxCnt += s.collectionBoolDataList.Count;
 
-            foreach (var e in chapterList[i].stageCollectionDataList)
-                eatCnt += e.collectionBoolDataList.FindAll(x => x == true).Count;
+            //foreach (var e in chapterList[i].stageCollectionDataList)
+            //    eatCnt += e.collectionBoolDataList.FindAll(x => x == true).Count;
 
             childObjs[i].transform.GetChild(0).GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().SetText($"{eatCnt} / {maxCnt}");
 

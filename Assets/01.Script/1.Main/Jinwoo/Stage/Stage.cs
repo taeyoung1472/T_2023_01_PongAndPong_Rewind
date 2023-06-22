@@ -84,7 +84,11 @@ public class Stage : MonoBehaviour
             StageManager.Instance.InputLock = true;
             TimerManager.Instance.ChangeOnTimer(false);
 
-            if(i == stageAreaList.Count - 1) //마지막 구역의 끝(스테이지 클리어 시)
+            #region 수집품 저장
+            SaveDataManager.Instance.SaveCollectionJSON();
+            #endregion
+
+            if (i == stageAreaList.Count - 1) //마지막 구역의 끝(스테이지 클리어 시)
             {
                 StageManager.Instance.fadeImg.gameObject.SetActive(true);
                 EndManager.Instance.EndVolume();
