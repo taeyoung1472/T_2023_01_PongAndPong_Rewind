@@ -114,8 +114,8 @@ public class SaveDataManager : MonoSingleTon<SaveDataManager>
                         _allChapterDataBase.stageCollectionDataDic[stageDatabase.worldList[i].worldName].stageCollectionDataList[j] = new();
                     }
 
-                    _allChapterDataBase.stageCollectionDataDic[stageDatabase.worldList[i].worldName].stageCollectionDataList[j].collectionBoolDataList
-                       = stageDatabase.worldList[i].stageList[j].stageCollection;
+                    //_allChapterDataBase.stageCollectionDataDic[stageDatabase.worldList[i].worldName].stageCollectionDataList[j].collectionBoolDataList
+                    //   = stageDatabase.worldList[i].stageList[j].stageCollection;
                 }
             }
 

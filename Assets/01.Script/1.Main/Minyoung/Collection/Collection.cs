@@ -17,7 +17,7 @@ public class Collection : MonoBehaviour
             Player player = other.GetComponent<Player>();
             isEat = true;
             Instantiate(eatParticle, other.transform.position, Quaternion.identity);
-            StageManager.Instance.CurStageDataSO.stageCollection[index] = IsEat; //  .Add(IsEat);
+            //StageManager.Instance.CurStageDataSO.stageCollection[index] = IsEat; //  .Add(IsEat);
             gameObject.SetActive(false);
             AudioManager.PlayAudioRandPitch(SoundType.OnCollect);
         }

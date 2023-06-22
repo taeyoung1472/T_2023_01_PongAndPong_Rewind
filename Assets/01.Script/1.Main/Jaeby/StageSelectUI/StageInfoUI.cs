@@ -44,10 +44,10 @@ public class StageInfoUI : MonoBehaviour
         int colllectionCnt = 0;
         foreach (var item in data.stageCollection)
         {
-            if (item)
-            {
-                colllectionCnt++;
-            }
+            //if (item)
+            //{
+            //    colllectionCnt++;
+            //}
         }
 
         _collectionText.SetText("수집품 개수[" + colllectionCnt + "/" + data.stageCollection.Count + "]");

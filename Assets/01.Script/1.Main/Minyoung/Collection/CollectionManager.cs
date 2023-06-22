@@ -63,14 +63,19 @@ public class CollectionManager : MonoSingleTon<CollectionManager>
 
         for (int i = 0; i < StageManager.Instance.CurStageDataSO.stageCollection.Count; i++)
         {
-            if (StageManager.Instance.CurStageDataSO.stageCollection[i] == false)
+            if (collectionObj == null)
             {
-                collectionObj[i].gameObject.SetActive(true);
+                return;
             }
-            else
-            {
-                collectionObj[i].gameObject.SetActive(false);
-            }
+
+            //if (StageManager.Instance.CurStageDataSO.stageCollection[i] == false)
+            //{
+            //    collectionObj[i].gameObject.SetActive(true);
+            //}
+            //else
+            //{
+            //    collectionObj[i].gameObject.SetActive(false);
+            //}
         }
     }
     public void SetStageCollecitonSO()
@@ -79,18 +84,18 @@ public class CollectionManager : MonoSingleTon<CollectionManager>
         {
             for (int j = 0; j < stageDatabase.worldList[i].stageList.Count; j++) // 8 1 1
             {
-                stageDatabase.worldList[i].stageList[j].stageCollection =
-                    SaveDataManager.Instance.AllChapterDataBase.stageCollectionDataDic[StageManager.Instance.CurStageDataSO.chapterStageName].
-                    stageCollectionDataList[j].collectionBoolDataList;
+                //stageDatabase.worldList[i].stageList[j].stageCollection =
+                //    SaveDataManager.Instance.AllChapterDataBase.stageCollectionDataDic[StageManager.Instance.CurStageDataSO.chapterStageName].
+                //    stageCollectionDataList[j].collectionBoolDataList;
             }
         }
     }
 
     public void SaveClearCollection()
     {
-        SaveDataManager.Instance.AllChapterDataBase.stageCollectionDataDic[StageManager.Instance.CurStageDataSO.chapterStageName].
-            stageCollectionDataList[StageManager.Instance.CurStageDataSO.stageIndex].collectionBoolDataList
-            = StageManager.Instance.CurStageDataSO.stageCollection;
-        SaveDataManager.Instance.SaveCollectionJSON();
+        //SaveDataManager.Instance.AllChapterDataBase.stageCollectionDataDic[StageManager.Instance.CurStageDataSO.chapterStageName].
+        //    stageCollectionDataList[StageManager.Instance.CurStageDataSO.stageIndex].collectionBoolDataList
+        //    = StageManager.Instance.CurStageDataSO.stageCollection;
+        //SaveDataManager.Instance.SaveCollectionJSON();
     }
 }
