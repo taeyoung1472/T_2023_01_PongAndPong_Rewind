@@ -29,10 +29,6 @@ public class PlayerInput : MonoBehaviour
     {
         _player = GetComponent<Player>();
         KeyManager.LoadKey();
-
-        PlayerInteract playerInteract = _player.GetPlayerAction<PlayerInteract>(PlayerActionType.Interact);
-        if ((playerInteract?.TryInteract()).Value)
-            OnInteract?.Invoke();
     }
 
     private void Update()
