@@ -28,7 +28,16 @@ public class SlowGimmick : GimmickObject
         {
             return;
         }
-        CheckObj();
+      //  CheckObj();
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            Debug.Log("충돌함");
+            player = other.transform.GetComponent<Player>();
+            player.playerBuff.AddBuff(PlayerBuffType.Slow);
+        }
     }
     public void CheckObj()
     {
@@ -38,8 +47,10 @@ public class SlowGimmick : GimmickObject
         isCheck = Physics.BoxCast(boxcenter, halfextents, transform.up, out hit, transform.rotation, rayDistance);
         if (isCheck)
         {
-            if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Player"))
+            Debug.Log("충돌함");
+            if (hit.collider.gameObject.layer == 1 << LayerMask.NameToLayer("Player"))
             {
+                Debug.Log("플레이어와 닿음");
                 player = hit.transform.GetComponentInParent<Player>();
                 player.playerBuff.AddBuff(PlayerBuffType.Slow);
             }
