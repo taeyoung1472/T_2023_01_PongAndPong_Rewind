@@ -98,6 +98,8 @@ public class StageWorldUI : MonoBehaviour
     private void SetMapeActive()
     {
         SaveDataManager.Instance.LoadStageClearJSON();
+        SaveDataManager.Instance.LoadCollectionJSON();
+
         for (int i = 0; i < SaveDataManager.Instance.AllChapterClearDataBase.stageClearDataDic[_worldName].stageClearDataList.Count; i++)
         {
             if (SaveDataManager.Instance.AllChapterClearDataBase.stageClearDataDic[_worldName].stageClearDataList[i].stageClearBoolData)
@@ -106,8 +108,14 @@ public class StageWorldUI : MonoBehaviour
             }
         }
 
+     
         for (int i = 0; i < _stageTrms.Count; i++)
         {
+            if (clearCount == 0)
+            {
+                return;
+            }
+
             _stageTrms[i].gameObject.SetActive(i < clearCount);
         }
     }
