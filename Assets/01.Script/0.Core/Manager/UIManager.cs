@@ -40,6 +40,8 @@ public class UIManager : MonoSingleTon<UIManager>
     [SerializeField] private TextMeshProUGUI dayText;
     [SerializeField] private TextMeshProUGUI timeText;
 
+    [SerializeField] private GameObject currentOpenImg;
+    
     private void Awake()
     {
         TimerManager.Instance.OnTimeChange += OnTimeChange;
@@ -88,14 +90,15 @@ public class UIManager : MonoSingleTon<UIManager>
     }
     public void HomeBtn()
     {
-        SetUI();
+        SetDayText();
+        BackPressDirector(currentOpenImg.transform);
         mainImg.SetActive(true);
     }
     public void BackBtn()
     {
-        SetUI();
+        SetDayText();
         mainImg.SetActive(true);
-
+        BackPressDirector(currentOpenImg.transform);
         if (setActiveFalseObjs[2].activeSelf)
         {
             //�ӸӸӤä�
@@ -123,37 +126,45 @@ public class UIManager : MonoSingleTon<UIManager>
     }
     public void PauseCollection()
     {
-        SetUI();
-        collectionImg.SetActive(true);
+        PressDirector(collectionImg.transform);
         PhoneCollection.Instance.OnCollectionMenu();
     }
     public void PauseStage()
     {
-
-        SetUI();
-        stageImg.SetActive(true);
+        PressDirector(stageImg.transform);
         PhoneStage.Instance.OnStageMenu();
     }
+
+    
+
     public void PauseGimmick()
     {
-        SetUI();
-        gimmickImg.SetActive(true);
+        PressDirector(gimmickImg.transform);
         PhoneGimmick.Instance.OnStageGimmick();
     }
-    public void SetUI()
+   
+    public void PressDirector(Transform trm)
+    {
+        currentOpenImg = trm.gameObject;
+        trm.gameObject.SetActive(true);
+        trm.DOKill();
+        trm.localScale = Vector2.zero;
+        Sequence seq = DOTween.Sequence();
+        seq.Append(trm.DOScaleX(1f, 0.1f)).SetUpdate(true);
+        seq.Join(trm.DOScaleY(1f, 0.2f)).SetUpdate(true);
+    }
+    public void BackPressDirector(Transform trm)
     {
         SetDayText();
-        for (int i = 0; i < setActiveFalseObjs.Length; i++)
+        trm.DOKill();
+        trm.localScale = Vector2.one;
+        Sequence seq = DOTween.Sequence();
+        seq.Append(trm.DOScaleY(0f, 0.2f)).SetUpdate(true);
+        seq.Insert(0.1f, trm.DOScaleX(0f, 0.1f)).SetUpdate(true);
+        seq.AppendCallback(() =>
         {
-            setActiveFalseObjs[i].gameObject.SetActive(false);
-        }
-    }
-
-    public void PressDirector(GameObject obj)
-    {
-        obj.transform.DOScale(new Vector3(1.2f, 1.2f, 1.2f), 0.5f);
-
-
+            trm.gameObject.SetActive(false);
+        });
     }
 
     public void SetDayText()
