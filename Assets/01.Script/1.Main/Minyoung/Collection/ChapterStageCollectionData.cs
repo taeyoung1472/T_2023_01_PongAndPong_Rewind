@@ -5,6 +5,6 @@ using UnityEngine;
 [System.Serializable]
 public class ChapterStageCollectionData
 {
-    public List<StageCollectionData> stageCollectionDataList;
+    public List<StageCollectionData> stageCollectionValueList;
 }
                  

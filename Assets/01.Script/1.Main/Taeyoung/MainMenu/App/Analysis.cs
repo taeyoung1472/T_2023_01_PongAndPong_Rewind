@@ -127,13 +127,13 @@ public class Analysis : MonoBehaviour
         //_maxCount = _curData.rewardCount;
         ChapterStageCollectionData chapter = SaveDataManager.Instance.AllChapterDataBase.stageCollectionDataDic[_curData.worldName];
         _maxCount = 0;
-        foreach (var i in chapter.stageCollectionDataList)
-            _maxCount += i.collectionBoolDataList.Count;
-        fill.DashSize = background.DashSize = 1256f / _maxCount - background.DashSpacing;
+        //foreach (var i in chapter.stageCollectionDataList)
+        //    _maxCount += i.collectionBoolDataList.Count;
+        //fill.DashSize = background.DashSize = 1256f / _maxCount - background.DashSpacing;
 
-        _curCount = 0;
-        foreach (var i in chapter.stageCollectionDataList)
-            _curCount += i.collectionBoolDataList.FindAll(x => x == true).Count;
+        //_curCount = 0;
+        //foreach (var i in chapter.stageCollectionDataList)
+        //    _curCount += i.collectionBoolDataList.FindAll(x => x == true).Count;
 
         for (int i = 0; i < _curCollectObj.Count; i++)
             Destroy(_curCollectObj[i]);
