@@ -168,7 +168,7 @@ public class UIManager : MonoSingleTon<UIManager>
 
         if (isFastTime)
         {
-            fastTime = 2;
+            fastTime = 3;
             TimerManager.Instance.FastForwardTimeIntensity();
             fastTimeImg.gameObject.SetActive(true);
         }

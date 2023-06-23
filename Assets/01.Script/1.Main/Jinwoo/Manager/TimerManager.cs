@@ -81,7 +81,7 @@ public class TimerManager : MonoSingleTon<TimerManager>
     {
         JinwooVolumeManager.Instance.EnableFastTimeEffect();
         player = StageManager.Instance.GetCurrentPlayer().GetComponent<Player>();
-        Time.timeScale = 2f;
+        Time.timeScale = 3f;
         if (player != null)
         {
             player.PlayerInput.InputVectorReset();

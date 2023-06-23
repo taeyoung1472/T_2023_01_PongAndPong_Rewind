@@ -34,6 +34,12 @@ public class ThornGimmick : GimmickObject
         }
     }
 
+    public override void InitOnRestart()
+    {
+        base.InitOnRestart();
+        isDie = false;
+    }
+
     //private void FixedUpdate()
     //{
     //    Vector3 boxCenter = _col.bounds.center;
