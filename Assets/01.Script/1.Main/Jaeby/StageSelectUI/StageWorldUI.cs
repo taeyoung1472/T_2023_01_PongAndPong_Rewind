@@ -66,7 +66,10 @@ public class StageWorldUI : MonoBehaviour
 
         List<Vector2> pointList = anchored.ToList();
         int deleteCnt = _stages.Count - clearCount; //4 9
-        pointList.RemoveRange(clearCount, deleteCnt); //2부터 6개삭제
+        if (clearCount <= 0)
+        {
+            pointList.RemoveRange(clearCount, deleteCnt); //2부터 6개삭제
+        }
 
         Vector2[] pointArray = pointList.ToArray();
 
