@@ -71,8 +71,6 @@ public class UIManager : MonoSingleTon<UIManager>
             else if(!EndManager.Instance.IsEnd)
             {
                 PauseResume();
-                freeLookCamera._isActivated = true;
-                timerImg.gameObject.SetActive(true);
             }
         }
 
@@ -93,25 +91,27 @@ public class UIManager : MonoSingleTon<UIManager>
     public void HomeBtn()
     {
         SetDayText();
-        BackPressDirector(currentOpenImg.transform);
+        if (currentOpenImg != null)
+        {
+            BackPressDirector(currentOpenImg.transform);
+        }
         mainImg.SetActive(true);
     }
     public void BackBtn()
     {
         SetDayText();
         mainImg.SetActive(true);
-        BackPressDirector(currentOpenImg.transform);
-        if (setActiveFalseObjs[2].activeSelf)
+        if(currentOpenImg != null)
         {
-            //머머머ㅓㅁ
+            BackPressDirector(currentOpenImg.transform);
         }
-        else
-        {
-            mainImg.SetActive(true);
-        }
+        mainImg.SetActive(true);
     }
     public void PauseResume()
     {
+        freeLookCamera._isActivated = true;
+        timerImg.gameObject.SetActive(true);
+
         isPause = false;
         if (StageManager.Instance.GetAreaPlayCheck()) //게임 시작 도중이였을 때
         {
@@ -150,7 +150,7 @@ public class UIManager : MonoSingleTon<UIManager>
         currentOpenImg = trm.gameObject;
         trm.gameObject.SetActive(true);
         trm.DOKill();
-        trm.localScale = Vector2.zero;
+        trm.localScale = Vector3.zero + Vector3.forward * 1;
         Sequence seq = DOTween.Sequence();
         seq.Append(trm.DOScaleX(1f, 0.1f)).SetUpdate(true);
         seq.Join(trm.DOScaleY(1f, 0.2f)).SetUpdate(true);
