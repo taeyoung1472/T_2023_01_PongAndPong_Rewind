@@ -71,6 +71,8 @@ public class UIManager : MonoSingleTon<UIManager>
             else if(!EndManager.Instance.IsEnd)
             {
                 PauseResume();
+                freeLookCamera._isActivated = true;
+                timerImg.gameObject.SetActive(true);
             }
         }
 

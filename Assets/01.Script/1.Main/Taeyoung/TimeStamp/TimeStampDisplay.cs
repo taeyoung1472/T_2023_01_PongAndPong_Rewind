@@ -34,6 +34,9 @@ public class TimeStampDisplay : MonoBehaviour
 
     private void OnDestroy()
     {
-        TimerManager.Instance.OnTimeChange -= OnTimeChange;
+        if (TimerManager.Instance)
+        {
+            TimerManager.Instance.OnTimeChange -= OnTimeChange;
+        }
     }
 }
