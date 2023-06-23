@@ -33,6 +33,7 @@ public class EndManager : MonoSingleTon<EndManager>
 
     [SerializeField] private bool isCloser = false;
     [SerializeField] private UnityEvent onEnd;
+    [SerializeField] private GameObject EndingUI;
 
     public Volume volume;
     private LimitlessGlitch2 glitch2;
@@ -113,6 +114,11 @@ public class EndManager : MonoSingleTon<EndManager>
 
         nextStageBtn.interactable = StageManager.stageDataSO.nextStageData != null;
         nextStageBtn.onClick.AddListener(() => nextStageBtn.interactable = false);
+
+        if(StageManager.stageDataSO.nextStageData == null)
+        {
+            EndingUI.SetActive(true);
+        }
     }
     public void ReStart()
     {
