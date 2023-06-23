@@ -5455,7 +5455,6 @@ MonoBehaviour:
   _groundMask:
     serializedVersion: 2
     m_Bits: 32896
-  _maxSlopeAngle: 20
 --- !u!114 &6691628707489746802
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5499,12 +5498,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  _meleeAttackResetTime: 0.5
   _pistolObj: {fileID: 7986864027456876279}
   _shootingPointTrm: {fileID: 1862524172}
-  _flipLockTime: 0.4
-  _ikEndAnimationTime: 0.2
-  _ikCancelMaxAngle: 30
 --- !u!114 &2107113395
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5709,7 +5704,7 @@ MonoBehaviour:
   OnWallGrabJump:
     m_PersistentCalls:
       m_Calls: []
-  _upLayLength: 0.07
+  _upLayLength: 0.03
   _upLayerMask:
     serializedVersion: 2
     m_Bits: 192
@@ -5726,10 +5721,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _actionType: 1
-  _slowSpeed: 0.5
-  _pushSlowSpeed: 0.3
   _dustParticle: {fileID: 1138794599}
-  _moveAudioCooltime: 0.25
   OnMove:
     m_PersistentCalls:
       m_Calls:
@@ -5840,9 +5832,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  _wallgrabCooltime: 0.15
-  _climbAnimateTime: 0.7
-  _climbTrmAnimateTime: 0.8
   _climbCameraTrm: {fileID: 3507807885181313137}
 --- !u!114 &-6009568936688706850
 MonoBehaviour:

@@ -13,8 +13,9 @@ public class ThornGimmick : GimmickObject
     RaycastHit hit;
 
     public bool isDie;
-    public override void  Awake()
+    public override void Awake()
     {
+        base.Awake();
         Init();
     }
     public override void Init()
@@ -34,23 +35,14 @@ public class ThornGimmick : GimmickObject
         }
     }
 
-    //private void FixedUpdate()
-    //{
-    //    Vector3 boxCenter = _col.bounds.center;
-    //    Vector3 halfExtents = _col.bounds.extents;
-
-    //    isCheck = Physics.BoxCast(boxCenter, halfExtents, transform.up, out hit, transform.rotation, rayDistance);
-
-    //    if (isCheck)
-    //    {
-    //        if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Player"))
-    //        {
-    //            Player player = hit.collider.GetComponentInParent<Player>();
-    //            if (isDie)
-    //                return;
-    //            player.playerHP.Die();
-    //            isDie = true;
-    //        }
-    //    }
-    //}
+    public override void InitOnRestart()
+    {
+        base.InitOnRestart();
+        isDie = false;
+    }
+    public override void InitOnPlay()
+    {
+        base.InitOnPlay();
+        isDie = false;
+    }
 }

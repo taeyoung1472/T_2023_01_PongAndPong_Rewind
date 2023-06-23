@@ -25,8 +25,11 @@ public class ScaleGimmick : GimmickObject
     }
     private void Start()
     {
-        leftOriginPos = leftCol.transform.position;
-        rightOriginPos = rightCol.transform.position;
+        leftOriginPos = leftCol.transform.localPosition;
+        rightOriginPos = rightCol.transform.localPosition;
+
+        leftCol.transform.localPosition = leftOriginPos + new Vector3(0, leftOriginPos.y - totalLength / 2, 0);
+        rightCol.transform.localPosition = rightOriginPos + new Vector3(0, rightOriginPos.y - totalLength / 2, 0);
     }
     public void Update()
     {
@@ -72,9 +75,9 @@ public class ScaleGimmick : GimmickObject
             Debug.Log(leftLength);
             Debug.Log(rightLength);
         }
-        leftCol.transform.position = Vector3.Lerp(leftCol.transform.position, 
+        leftCol.transform.localPosition = Vector3.Lerp(leftCol.transform.localPosition, 
             leftOriginPos + new Vector3(0, leftOriginPos.y - leftLength, 0), Time.deltaTime);
-        rightCol.transform.position = Vector3.Lerp(rightCol.transform.position, rightOriginPos + new Vector3(0, rightOriginPos.y - rightLength, 0), Time.deltaTime);
+        rightCol.transform.localPosition = Vector3.Lerp(rightCol.transform.localPosition, rightOriginPos + new Vector3(0, rightOriginPos.y - rightLength, 0), Time.deltaTime);
     }
     private void OnCollisionEnter(Collision collision)
     {
