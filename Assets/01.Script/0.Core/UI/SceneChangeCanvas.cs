@@ -7,6 +7,7 @@ using UnityEngine;
 public class SceneChangeCanvas : MonoBehaviour
 {
     static Sequence loadingSeq = null;
+    static bool isFirst = true;
 
     static bool isEndSequence = true;
     static bool isFade = false;
@@ -27,6 +28,16 @@ public class SceneChangeCanvas : MonoBehaviour
             Destroy(gameObject);
         }
         hasInstance = true;
+
+        if (isFirst)
+        {
+            for (int i = 0; i < rectList.Count; i++)
+            {
+                rectList[i].sizeDelta = new Vector2(Screen.width, Screen.height * (1.0f / rectList.Count));
+                rectList[i].anchoredPosition = new Vector2(-Screen.width, -(Screen.height * (1.0f / rectList.Count) * i));
+            }
+            isFirst = false;
+        }
 
         if(rectList.Count == 0)
         {
