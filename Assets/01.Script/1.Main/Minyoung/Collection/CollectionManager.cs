@@ -83,17 +83,21 @@ public class CollectionManager : MonoSingleTon<CollectionManager>
     }
     public void SetStageCollecitonSO()
     {
-        for (int i = 0; i < stageDatabase.worldList.Count; i++)
+        for (int i = 0; i < stageDatabase.worldList.Count; i++) //i 챕터수
         {
-            for (int j = 0; j < stageDatabase.worldList[i].stageList.Count; j++)
+            for (int j = 0; j < stageDatabase.worldList[i].stageList.Count; j++) //스테이지 수
             {
-                for (int k = 0; i < stageDatabase.worldList[i].stageList[j].stageCollection.Count; i++)
+                ChapterStageCollectionData chapterData = SaveDataManager.Instance.AllChapterDataBase.stageCollectionDataDic
+                    [StageManager.Instance.CurStageDataSO.chapterStageName];
+
+            
+
+
+                for (int k = 0; k < stageDatabase.worldList[i].stageList[j].stageCollection.Count; k++) //스테이지의 존 수
                 {
                     stageDatabase.worldList[i].stageList[j].stageCollection[k].zone =
-    SaveDataManager.Instance.AllChapterDataBase.stageCollectionDataDic[StageManager.Instance.CurStageDataSO.chapterStageName].
-    stageCollectionValueList[j].stageDataList[k].zoneCollections.collectionBoolList;
+                    chapterData.stageCollectionValueList[j].stageDataList[k].zoneCollections.collectionBoolList;
                 }
-
             }
         }
     }
@@ -101,8 +105,10 @@ public class CollectionManager : MonoSingleTon<CollectionManager>
     public void SaveClearCollection()
     {
         //SaveDataManager.Instance.AllChapterDataBase.stageCollectionDataDic[StageManager.Instance.CurStageDataSO.chapterStageName].
-        //    stageCollectionDataList[StageManager.Instance.CurStageDataSO.stageIndex].collectionBoolDataList
+        //    stageCollectionValueList[StageManager.Instance.CurStageDataSO.stageIndex].stageDataList
         //    = StageManager.Instance.CurStageDataSO.stageCollection;
-        //SaveDataManager.Instance.SaveCollectionJSON();
+
+
+        SaveDataManager.Instance.SaveCollectionJSON();
     }
 }
