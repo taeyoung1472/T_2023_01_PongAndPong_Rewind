@@ -42,16 +42,26 @@ public class PhoneStage : MonoSingleTon<PhoneStage>
         SaveDataManager.Instance.LoadCollectionJSON();
         StageCollectionData stageCollectionData = SaveDataManager.Instance.AllChapterDataBase.stageCollectionDataDic[currentStageDataSO.chapterStageName].stageCollectionValueList[currentStageDataSO.stageIndex];
 
-        //int eatCnt = 0;
-        //foreach (var i in stageCollectionData.collectionBoolDataList)
-        //{
-        //    if (i == true)
-        //    {
-        //        eatCnt++;
-        //    }
-        //}
-        //int totalCnt = stageCollectionData.collectionBoolDataList.Count;
-        //collectionText.SetText($"{eatCnt}/{totalCnt}");
+
+            int eatCnt = 0;
+
+        for (int i = 0; i < stageCollectionData.stageDataList.Count; i++)
+        {
+            foreach (var a in stageCollectionData.stageDataList[i].zoneCollections.collectionBoolList)
+            {
+                if (a == true)
+                {
+                    eatCnt++;
+                }
+            }
+        }
+     
+
+        int totalCnt = stageCollectionData.stageDataList.Count;
+
+
+
+        collectionText.SetText($"{eatCnt}/{totalCnt}");
 
         if (parentTrm.childCount < currentStageDataSO.useGimmickStageList.Count)
         {

@@ -42,12 +42,16 @@ public class StageInfoUI : MonoBehaviour
 
 
         int colllectionCnt = 0;
-        foreach (var item in data.stageCollection)
+        for (int i = 0; i < data.stageCollection.Count; i++)
         {
-            //if (item)
-            //{
-            //    colllectionCnt++;
-            //}
+            foreach (var item in data.stageCollection[i].zone)
+            {
+                if (item)
+                {
+                    colllectionCnt++;
+
+                }
+            }
         }
 
         _collectionText.SetText("수집품 개수[" + colllectionCnt + "/" + data.stageCollection.Count + "]");
