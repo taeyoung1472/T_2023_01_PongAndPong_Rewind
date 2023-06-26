@@ -43,16 +43,12 @@ public class PhoneStage : MonoSingleTon<PhoneStage>
         StageCollectionData stageCollectionData = SaveDataManager.Instance.AllChapterDataBase.stageCollectionDataDic[currentStageDataSO.chapterStageName].stageCollectionValueList[currentStageDataSO.stageIndex];
 
 
-            int eatCnt = 0;
-
+        int eatCnt = 0;
         for (int i = 0; i < stageCollectionData.stageDataList.Count; i++)
         {
-            foreach (var a in stageCollectionData.stageDataList[i].zoneCollections.collectionBoolList)
+            foreach (var e in stageCollectionData.stageDataList)
             {
-                if (a == true)
-                {
-                    eatCnt++;
-                }
+                eatCnt += e.zoneCollections.collectionBoolList.FindAll(x => x == true).Count;
             }
         }
      
