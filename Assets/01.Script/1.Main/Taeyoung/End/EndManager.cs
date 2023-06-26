@@ -101,15 +101,19 @@ public class EndManager : MonoSingleTon<EndManager>
         isCloser = false;
         closerSpriteBtn.GetComponentInChildren<TextMeshProUGUI>().text = "∏ ";
         stageExplainImage.sprite = StageManager.stageDataSO.stageSprite;
-        int eatCollectionCnt = 0;
-        foreach (var item in StageManager.Instance.CurStageDataSO.stageCollection)
+
+        StageCollectionData stageCollectionData = SaveDataManager.Instance.AllChapterDataBase.stageCollectionDataDic
+            [StageManager.Instance.CurStageDataSO.chapterStageName].stageCollectionValueList[StageManager.Instance.CurStageDataSO.stageIndex];
+
+
+        int eatCnt = 0;
+
+        foreach (var e in stageCollectionData.stageDataList)
         {
-            //if (item)
-            //{
-            //    eatCollectionCnt++;
-            //}
+            eatCnt += e.zoneCollections.collectionBoolList.FindAll(x => x == true).Count;
         }
-        timePieceText.SetText("»πµÊ«— Ω√∞£¿« ¡∂∞¢" + eatCollectionCnt + "/" + StageManager.Instance.CurStageDataSO.stageCollection.Count);
+
+        timePieceText.SetText("»πµÊ«— Ω√∞£¿« ¡∂∞¢" + eatCnt + "/" + StageManager.Instance.CurStageDataSO.stageCollection.Count);
         currentStageNumberText.SetText(StageManager.stageDataSO.stageNumber.ToString());
 
         nextStageBtn.interactable = StageManager.stageDataSO.nextStageData != null;

@@ -65,17 +65,19 @@ public class PhoneCollection : MonoSingleTon<PhoneCollection>
             childObjs[i].transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().SetText($"{i + 1} ц╘ем{chapterNameList[i]}");
 
 
-
             foreach (var s in chapterList[i].stageCollectionValueList)
                 maxCnt += s.stageDataList.Count;
 
-            foreach (var e in chapterList[i].stageCollectionValueList)
-                eatCnt += e.stageDataList[i].zoneCollections.collectionBoolList.FindAll(x => x == true).Count;
+         //   ChapterStageCollectionData chapterStageCollection = SaveDataManager.Instance.AllChapterDataBase.stageCollectionDataDic[chapterNameList[i]].stageCollectionValueList[];
+
+            Debug.Log("maxcnt" + maxCnt);
 
             childObjs[i].transform.GetChild(0).GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().SetText($"{eatCnt} / {maxCnt}");
 
             maxCnt = 0;
             eatCnt = 0;
         }
+
+
     }
 }
