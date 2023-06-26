@@ -41,6 +41,14 @@ public class TalkBoyGuard : MonoSingleTon<TalkBoyGuard>
     }
     public void StartTalkBoyGuard()
     {
+        foreach (var npc in npcTexts)
+        {
+            if (npc.gameObject.activeSelf && npc.isAnim)
+            {
+                npc.isSkip = true;
+                return;
+            }
+        }
         CheckAutoTalkSpeechBubble();
         isMeetingStart = true;
     }
