@@ -19,8 +19,15 @@ public class StageDataSO : ScriptableObject
 
     public string chapterStageName;
     //수집품
-    public List<bool> stageCollection;
+    public List<BoolList> stageCollection; 
 
     //폰 UI 때문에 필요함
     public List<GimmickInfoSO> useGimmickStageList;
+
+}
+
+[System.Serializable]
+public class BoolList
+{
+    public List<bool> zone;
 }

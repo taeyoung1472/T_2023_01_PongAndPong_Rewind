@@ -40,17 +40,27 @@ public class PhoneStage : MonoSingleTon<PhoneStage>
         titleText.SetText($"{currentStageIndex + 1} 스테이지");
 
         SaveDataManager.Instance.LoadCollectionJSON();
-        StageCollectionData stageCollectionData = SaveDataManager.Instance.AllChapterDataBase.stageCollectionDataDic[currentStageDataSO.chapterStageName].stageCollectionDataList[currentStageDataSO.stageIndex];
+        StageCollectionData stageCollectionData = SaveDataManager.Instance.AllChapterDataBase.stageCollectionDataDic[currentStageDataSO.chapterStageName].stageCollectionValueList[currentStageDataSO.stageIndex];
 
-        int eatCnt = 0;
-        foreach (var i in stageCollectionData.collectionBoolDataList)
+
+            int eatCnt = 0;
+
+        for (int i = 0; i < stageCollectionData.stageDataList.Count; i++)
         {
-            if (i == true)
+            foreach (var a in stageCollectionData.stageDataList[i].zoneCollections.collectionBoolList)
             {
-                eatCnt++;
+                if (a == true)
+                {
+                    eatCnt++;
+                }
             }
         }
-        int totalCnt = stageCollectionData.collectionBoolDataList.Count;
+     
+
+        int totalCnt = stageCollectionData.stageDataList.Count;
+
+
+
         collectionText.SetText($"{eatCnt}/{totalCnt}");
 
         if (parentTrm.childCount < currentStageDataSO.useGimmickStageList.Count)

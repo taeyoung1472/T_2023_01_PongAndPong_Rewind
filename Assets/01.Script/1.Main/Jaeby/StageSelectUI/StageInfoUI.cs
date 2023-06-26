@@ -42,11 +42,15 @@ public class StageInfoUI : MonoBehaviour
 
 
         int colllectionCnt = 0;
-        foreach (var item in data.stageCollection)
+        for (int i = 0; i < data.stageCollection.Count; i++)
         {
-            if (item)
+            foreach (var item in data.stageCollection[i].zone)
             {
-                colllectionCnt++;
+                if (item)
+                {
+                    colllectionCnt++;
+
+                }
             }
         }
 

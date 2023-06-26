@@ -104,10 +104,10 @@ public class EndManager : MonoSingleTon<EndManager>
         int eatCollectionCnt = 0;
         foreach (var item in StageManager.Instance.CurStageDataSO.stageCollection)
         {
-            if (item)
-            {
-                eatCollectionCnt++;
-            }
+            //if (item)
+            //{
+            //    eatCollectionCnt++;
+            //}
         }
         timePieceText.SetText("»πµÊ«— Ω√∞£¿« ¡∂∞¢" + eatCollectionCnt + "/" + StageManager.Instance.CurStageDataSO.stageCollection.Count);
         currentStageNumberText.SetText(StageManager.stageDataSO.stageNumber.ToString());

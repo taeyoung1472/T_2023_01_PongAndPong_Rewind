@@ -7,9 +7,9 @@ public class SaveDataManager : MonoSingleTon<SaveDataManager>
     [SerializeField] StageDatabase stageDatabase;
 
     #region  콜렉션 관련 
-
-    public List<StageCollectionData> stageCollectionDataList;
-
+    public List<ZoneCollection> zoneCollectionsList;
+    //  public List<StageCollectionData> stageCollectionDataList;
+    
     private StageCollectionData _stageCollectionData;
     public StageCollectionData StageCollectionData => _stageCollectionData;
 
@@ -20,6 +20,14 @@ public class SaveDataManager : MonoSingleTon<SaveDataManager>
 
     private AllChapterDataBase _allChapterDataBase;
     public AllChapterDataBase AllChapterDataBase => _allChapterDataBase;
+
+
+    private ZoneCollection _zoneCollection;
+    public ZoneCollection ZoneCollection => _zoneCollection;
+
+    private AllZoneData _allZoneData;
+    public AllZoneData AllZoneData => _allZoneData;
+
     #endregion
 
     #region 스테이지 클리어 관련
@@ -52,11 +60,13 @@ public class SaveDataManager : MonoSingleTon<SaveDataManager>
         }
         else
         {
+
             if (_allChapterDataBase == null)
             {
                 _allChapterDataBase = new AllChapterDataBase();
             }
 
+            #region JSON 뼈대 딕셔너리 생성 및 데이터 삽입
             if (_allChapterDataBase.stageCollectionDataDic == null)
             {
                 for (int i = 0; i < stageDatabase.worldList.Count; i++)
@@ -65,59 +75,59 @@ public class SaveDataManager : MonoSingleTon<SaveDataManager>
                 }
             }
 
-            if (_chapterStageCollectionData == null)
-            {
-                _chapterStageCollectionData = new ChapterStageCollectionData();
-            }
-
-            if (_chapterStageCollectionData.stageCollectionDataList == null)
-            {
-                _chapterStageCollectionData.stageCollectionDataList = new();
-            }
-
-            for (int i = 0; i < stageDatabase.worldList.Count; i++)
-            {
-                for (int j = 0; j < stageDatabase.worldList[i].stageList.Count; j++)
-                {
-                    stageCollectionDataList.Add(new StageCollectionData());
-                }
-            }
-
-
             for (int i = 0; i < stageDatabase.worldList.Count; i++)
             {
                 //이름에 맞춰서, 스테이지 데이터 삽입
                 _allChapterDataBase.stageCollectionDataDic.Add(stageDatabase.worldList[i].worldName, new ChapterStageCollectionData());
             }
+            #endregion
 
-            //스테이지 갯수만큼 챕터 collectionBoolDataList를 만듬
-            for (int i = 0; i < stageDatabase.worldList.Count; i++) //3
+            for (int i = 0; i < stageDatabase.worldList.Count; i++) //i 챕터수
             {
-                for (int j = 0; j < stageDatabase.worldList[i].stageList.Count; j++)
+                for (int j = 0; j < stageDatabase.worldList[i].stageList.Count; j++) //스테이지 수
                 {
-                    if (_allChapterDataBase.stageCollectionDataDic[stageDatabase.worldList[i].worldName].stageCollectionDataList == null)
+                    ChapterStageCollectionData chapterData = _allChapterDataBase.stageCollectionDataDic[stageDatabase.worldList[i].worldName];
+
+                    #region JSON stageDataList 널체크 및 생성
+                    if (chapterData.stageCollectionValueList == null)
                     {
-                        _allChapterDataBase.stageCollectionDataDic[stageDatabase.worldList[i].worldName].stageCollectionDataList = new();
+                        chapterData.stageCollectionValueList = new List<StageCollectionData>();
                     }
-                    _allChapterDataBase.stageCollectionDataDic[stageDatabase.worldList[i].worldName].stageCollectionDataList.
-                        Add(_stageCollectionData);
+
+                    chapterData.stageCollectionValueList.Add(new StageCollectionData());
+                    #endregion
+
+                    for (int k = 0; k < stageDatabase.worldList[i].stageList[j].stageCollection.Count; k++) //스테이지의 존 수
+                    {
+                        #region JSON zoneCollections 널체크 및 생성
+                        if (chapterData.stageCollectionValueList[j].stageDataList == null)
+                        {
+                            chapterData.stageCollectionValueList[j].stageDataList = new List<AllZoneData>();
+                        }
+                        chapterData.stageCollectionValueList[j].stageDataList.Add(new AllZoneData());
+                        #endregion
+
+                        #region JSON collectionBoolList 생성
+                        if (chapterData.stageCollectionValueList[j].stageDataList[k].zoneCollections == null)
+                        {
+                            chapterData.stageCollectionValueList[j].stageDataList[k].zoneCollections = new ZoneCollection();
+                        }
+                        #endregion
+
+
+                        #region JSON 불배열 널체크 및 대입
+                        if (chapterData.stageCollectionValueList[j].stageDataList[k].zoneCollections.collectionBoolList == null)
+                        {
+                            chapterData.stageCollectionValueList[j].stageDataList[k].zoneCollections.collectionBoolList = new List<bool>();
+                        }
+
+                        chapterData.stageCollectionValueList[j].stageDataList[k].zoneCollections.collectionBoolList
+                            = stageDatabase.worldList[i].stageList[j].stageCollection[k].zone;
+                        #endregion
+                    }
                 }
             }
 
-
-            for (int i = 0; i < stageDatabase.worldList.Count; i++)
-            {
-                for (int j = 0; j < _allChapterDataBase.stageCollectionDataDic[stageDatabase.worldList[i].worldName].stageCollectionDataList.Count; j++)
-                {
-                    if (_allChapterDataBase.stageCollectionDataDic[stageDatabase.worldList[i].worldName].stageCollectionDataList[j] == null)
-                    {
-                        _allChapterDataBase.stageCollectionDataDic[stageDatabase.worldList[i].worldName].stageCollectionDataList[j] = new();
-                    }
-
-                    _allChapterDataBase.stageCollectionDataDic[stageDatabase.worldList[i].worldName].stageCollectionDataList[j].collectionBoolDataList
-                       = stageDatabase.worldList[i].stageList[j].stageCollection;
-                }
-            }
 
             File.WriteAllText(path, Newtonsoft.Json.JsonConvert.SerializeObject(_allChapterDataBase, Newtonsoft.Json.Formatting.Indented));
         }
@@ -130,6 +140,8 @@ public class SaveDataManager : MonoSingleTon<SaveDataManager>
 
         File.WriteAllText(path, json);
     }
+
+ 
 
     public void LoadStageClearJSON()
     {
