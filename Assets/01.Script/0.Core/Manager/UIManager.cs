@@ -41,6 +41,10 @@ public class UIManager : MonoSingleTon<UIManager>
     [SerializeField] private TextMeshProUGUI timeText;
 
     [SerializeField] private GameObject currentOpenImg;
+
+    [SerializeField] private AudioSource fastTimeAudio;
+
+    private float fastTimeAudioVolum = 0f;
     
     private void Awake()
     {
@@ -58,6 +62,8 @@ public class UIManager : MonoSingleTon<UIManager>
         {
             if (!isPause && !EndManager.Instance.IsEnd)
             {
+                fastTimeAudioVolum = fastTimeAudio.volume;
+                fastTimeAudio.volume = 0f;
                 SetDayText();
 
                 isPause = true;
@@ -109,6 +115,7 @@ public class UIManager : MonoSingleTon<UIManager>
     }
     public void PauseResume()
     {
+        fastTimeAudio.volume = fastTimeAudioVolum;
         freeLookCamera._isActivated = true;
         timerImg.gameObject.SetActive(true);
 
@@ -181,12 +188,14 @@ public class UIManager : MonoSingleTon<UIManager>
 
         if (isFastTime)
         {
+            fastTimeAudio.Play();
             fastTime = 3;
             TimerManager.Instance.FastForwardTimeIntensity();
             fastTimeImg.gameObject.SetActive(true);
         }
         else
         {
+            fastTimeAudio.Stop();
             fastTime = 1;
             TimerManager.Instance.ResetFastForwardTime();
             fastTimeImg.gameObject.SetActive(false);
