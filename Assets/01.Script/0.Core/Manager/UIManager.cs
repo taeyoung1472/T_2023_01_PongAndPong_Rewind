@@ -41,7 +41,9 @@ public class UIManager : MonoSingleTon<UIManager>
     [SerializeField] private TextMeshProUGUI timeText;
 
     [SerializeField] private GameObject currentOpenImg;
-    
+
+    [SerializeField] private AudioSource fastTimeAudio;
+    private float fastTimeAudioVolume = 0f;
     private void Awake()
     {
         TimerManager.Instance.OnTimeChange += OnTimeChange;
@@ -59,7 +61,13 @@ public class UIManager : MonoSingleTon<UIManager>
             if (!isPause && !EndManager.Instance.IsEnd)
             {
                 SetDayText();
-
+                if (isFastTime == true)
+                {
+                    JinwooVolumeManager.Instance.DisableFastTimeEffect();
+                    fastTimeAudioVolume = fastTimeAudio.volume;
+                    fastTimeAudio.volume = 0f;
+                }
+                
                 isPause = true;
                 TimerManager.Instance.ChangeOnTimer(false);
                 timerImg.gameObject.SetActive(false);
@@ -70,6 +78,11 @@ public class UIManager : MonoSingleTon<UIManager>
             }
             else if(!EndManager.Instance.IsEnd)
             {
+                if (isFastTime == true)
+                {
+                    JinwooVolumeManager.Instance.EnableFastTimeEffect();
+                    fastTimeAudio.volume = fastTimeAudioVolume;
+                }
                 PauseResume();
             }
         }
@@ -196,12 +209,14 @@ public class UIManager : MonoSingleTon<UIManager>
 
         if (isFastTime)
         {
+            fastTimeAudio.Play();
             fastTime = 3;
             TimerManager.Instance.FastForwardTimeIntensity();
             fastTimeImg.gameObject.SetActive(true);
         }
         else
         {
+            fastTimeAudio.Stop();
             fastTime = 1;
             TimerManager.Instance.ResetFastForwardTime();
             fastTimeImg.gameObject.SetActive(false);
