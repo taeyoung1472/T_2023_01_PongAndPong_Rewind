@@ -55417,6 +55417,8 @@ GameObject:
   - component: {fileID: 1506103876}
   - component: {fileID: 1506103879}
   - component: {fileID: 1506103877}
+  - component: {fileID: 1506103880}
+  - component: {fileID: 1506103881}
   m_Layer: 0
   m_Name: PhoneCam
   m_TagString: Untagged
@@ -55516,6 +55518,32 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+--- !u!114 &1506103880
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1506103875}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9239a2a2147bff547b32874c27bb4aa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parentCam: {fileID: 794831057}
+--- !u!114 &1506103881
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1506103875}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5eba10424519c2348967b95839501a5d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  phone: {fileID: 1496228552705244771}
 --- !u!1 &1514958386
 GameObject:
   m_ObjectHideFlags: 0
@@ -77612,7 +77640,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1496228552705244772}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -3.35, z: 13}
+  m_LocalPosition: {x: 0, y: 0, z: 7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -77924,7 +77952,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4669130113721780511}
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 3.4, z: -6.5}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 40, y: 1.6, z: 40}
   m_ConstrainProportionsScale: 1
   m_Children:
