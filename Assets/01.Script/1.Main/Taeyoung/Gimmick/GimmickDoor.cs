@@ -17,7 +17,7 @@ public class GimmickDoor : ControlAbleObjcet
             }
             else
             {
-                TimeStampManager.Instance.SetStamp(StampType.doorClose, controlColor);
+                //TimeStampManager.Instance.SetStamp(StampType.doorClose, controlColor);
             }
         }
         curControlType = controlType;
