@@ -65,15 +65,12 @@ public class PlayerObjectPush : PlayerAction
         {
             if (_player.PlayerActionCheck(PlayerActionType.Dash))
             {
-                Debug.Log("대시");
                 _pushingCollider.GetComponentInParent<Rigidbody>().mass = 90f;
             }
             else
             {
-                Debug.Log("아니");
                 _pushingCollider.GetComponentInParent<Rigidbody>().mass = 1f;
             }
-            Debug.Log(_pushingCollider.GetComponentInParent<Rigidbody>().mass);
         }
     }
 

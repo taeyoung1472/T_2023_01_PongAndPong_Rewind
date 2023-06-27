@@ -108,7 +108,6 @@ public class PlayerWallGrab : PlayerAction, IPlayerDisableResetable
 
     public void DisableReset()
     {
-        Debug.Log("¾ÆÀ×");
         _player.PlayerCameraControll(null, _climbCameraTrm);
         _player.PlayerCameraControll(null, _player.transform);
     }

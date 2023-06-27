@@ -194,8 +194,8 @@ public class StageManager : MonoSingleTon<StageManager>
         {
             //playerObj = Instantiate(playerPrefab, spawnPos.position, Quaternion.identity);
             playerObj = PoolManager.Pop(PoolType.Player);
-            if (rePlayerObj != null)
-                rePlayerObj.GetComponent<Player>().DisableReset();
+            //if (rePlayerObj != null)
+            //    rePlayerObj.GetComponent<Player>().DisableReset();
             playerObj.GetComponent<Player>().EnableReset();
             playerObj.transform.position = spawnPos.position;
             //TestParticleSpawn.Instance.playerPos = playerObj.transform;
@@ -203,8 +203,8 @@ public class StageManager : MonoSingleTon<StageManager>
         else
         {
             rePlayerObj = PoolManager.Pop(PoolType.RewindPlayer);
-            if (playerObj != null)
-                playerObj.GetComponent<Player>().DisableReset();
+            //if (playerObj != null)
+            //    playerObj.GetComponent<Player>().DisableReset();
             rePlayerObj.GetComponent<Player>().EnableReset();
             rePlayerObj.transform.position = spawnPos.position;
         }

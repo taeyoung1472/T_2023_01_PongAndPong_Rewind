@@ -125,6 +125,8 @@ public class UIManager : MonoSingleTon<UIManager>
 
 
         pauseImg.gameObject.SetActive(false);
+        timerImg.gameObject.SetActive(true);
+
         Time.timeScale = fastTime;
     }
 
@@ -205,7 +207,6 @@ public class UIManager : MonoSingleTon<UIManager>
             fastTimeImg.gameObject.SetActive(false);
 
         }
-        
         
         fastTimeText.SetText($"{fastTime}");
     }

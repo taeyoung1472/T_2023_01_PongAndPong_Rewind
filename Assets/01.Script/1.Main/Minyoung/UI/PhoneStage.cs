@@ -44,14 +44,12 @@ public class PhoneStage : MonoSingleTon<PhoneStage>
 
 
         int eatCnt = 0;
-        for (int i = 0; i < stageCollectionData.stageDataList.Count; i++)
+
+        foreach (var e in stageCollectionData.stageDataList)
         {
-            foreach (var e in stageCollectionData.stageDataList)
-            {
-                eatCnt += e.zoneCollections.collectionBoolList.FindAll(x => x == true).Count;
-            }
+            eatCnt += e.zoneCollections.collectionBoolList.FindAll(x => x == true).Count;
         }
-     
+
 
         int totalCnt = stageCollectionData.stageDataList.Count;
 

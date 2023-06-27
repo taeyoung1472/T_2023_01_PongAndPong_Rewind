@@ -9,41 +9,41 @@ public class SkipManager : MonoSingleTon<SkipManager>
     [SerializeField] private GameObject skipPanel;
     [SerializeField] private Image skipImg;
     public bool isSkip = false;
+    public bool isSkipPanelOn = false;
 
     private void Start()
     {
         isSkip = false;
+        isSkipPanelOn = false;
         skipImg.fillAmount = 0;
         SkipPanelOff();
     }
     private void Update()
     {
-        //if(skipImg.fillAmount >= 1f)
-        //{
-        //    isSkip = true;
-        //    StartCoroutine(SkipCutScene());
-        //    return;   
-        //}
 
         if (Input.GetKeyDown(KeyCode.Return) )
         {
-            //skipImg.fillAmount += 0.5f * Time.deltaTime;
             SkipPanelOn();
 
         }
-        //if (Input.GetKeyUp(KeyCode.Return))
-        //{
-        //    skipImg.fillAmount = 0f;
-        //}
+        if (isSkipPanelOn)
+        {
+            if(Input.GetKeyDown(KeyCode.Escape) )
+            {
+                SkipPanelOff();    
+            }
+        }
     }
     private void SkipPanelOn()
     {
+        isSkipPanelOn = true;
         Time.timeScale = 0f;
         skipPanel.SetActive(true);
         
     }
     private void SkipPanelOff()
     {
+        isSkipPanelOn = false;
         Time.timeScale = 1f;
         skipPanel.SetActive(false);
     }

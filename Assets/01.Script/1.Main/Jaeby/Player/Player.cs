@@ -342,8 +342,10 @@ public class Player : MonoBehaviour
                 height = 1.9f;
                 break;
             case PlayerColliderType.Dash:
-                center.y = 0.35f;
-                height = 0.8f;
+                //center.y = 0.35f;
+                //height = 0.8f;
+                center.y = 0.5f;
+                height = 1f;
                 break;
             default:
                 break;
@@ -355,6 +357,7 @@ public class Player : MonoBehaviour
 
     public void EnableReset()
     {
+        Debug.Log("내이름 " + gameObject.name + " 이네미블");
         for (int i = 0; i < _playerActions.Count; i++)
             _playerActions[i].ActionExit();
         for (int i = 0; i < _enableResetables.Count; i++)
@@ -368,6 +371,7 @@ public class Player : MonoBehaviour
 
     public void DisableReset()
     {
+        Debug.Log("내이름 " + gameObject.name + " 디세미븛");
         for (int i = 0; i < _disableResetables.Count; i++)
             _disableResetables[i].DisableReset();
     }

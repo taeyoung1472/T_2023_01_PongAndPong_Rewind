@@ -57,12 +57,13 @@ public class StartCutSceneManager : MonoBehaviour
     private void Update()
     {
         curCool += Time.deltaTime;
-        if(coolInput <= curCool)
+        if(coolInput <= curCool && !SkipManager.Instance.isSkipPanelOn)
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 if (idx >= 3)
                 {
+                    textAnim.isSkip = true;
                     StartCoroutine(EndFadeImg());
                     return;
                 }
@@ -72,7 +73,14 @@ public class StartCutSceneManager : MonoBehaviour
                 }
                 else
                 {
-                    ShowCut();
+                    if(textAnim.isAnim)
+                    {
+                        textAnim.isSkip = true;
+                    }
+                    else
+                    {
+                        ShowCut();
+                    }
                 }
                 curCool = 0;
             }
