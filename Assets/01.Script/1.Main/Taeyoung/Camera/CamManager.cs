@@ -50,14 +50,17 @@ public class CamManager : MonoSingleTon<CamManager>
         if (CinemachineTargetGroup.FindMember(target) > -1)
             return;
         CinemachineTargetGroup.AddMember(target, weight, radius);
+
+        //Debug.Log($"Add {target.name} {Time.time}");
     }
 
     public void RemoveTargetGroup(Transform target)
     {
-        if (CinemachineTargetGroup == null)
+        if (CinemachineTargetGroup == null || target == null)
             return;
 
         CinemachineTargetGroup.RemoveMember(target);
+        //Debug.Log($"Remove {target.name} {Time.time}");
     }
 
     public void TargetGroupReset()

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Net;
 using UnityEngine;
@@ -21,6 +22,9 @@ public class StageArea : MonoBehaviour
     public bool IsAreaPlay { get => isAreaPlay; set => isAreaPlay = value; }
 
     public UnityEvent areaEndEvent;
+
+    public Action OnEntryArea;
+    public Action OnExitArea;
 
     private void Start()
     {
@@ -54,6 +58,8 @@ public class StageArea : MonoBehaviour
         //Debug.Log("아리아엔트리");
         if(isGameStart)
             RewindManager.Instance.StartAreaPlay();
+
+        OnEntryArea?.Invoke();
     }
 
     public void Rewind()
@@ -64,6 +70,8 @@ public class StageArea : MonoBehaviour
 
     public void ExitArea()
     {
+        OnExitArea?.Invoke();
+
         defaultPlayerSpawn.gameObject.SetActive(false);
         rewindPlayerSpawn.gameObject.SetActive(false);
         endPoint.gameObject.SetActive(false);
