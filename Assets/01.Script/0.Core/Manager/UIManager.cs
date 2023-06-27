@@ -41,10 +41,6 @@ public class UIManager : MonoSingleTon<UIManager>
     [SerializeField] private TextMeshProUGUI timeText;
 
     [SerializeField] private GameObject currentOpenImg;
-
-    [SerializeField] private AudioSource fastTimeAudio;
-
-    private float fastTimeAudioVolum = 0f;
     
     private void Awake()
     {
@@ -62,16 +58,14 @@ public class UIManager : MonoSingleTon<UIManager>
         {
             if (!isPause && !EndManager.Instance.IsEnd)
             {
-                fastTimeAudioVolum = fastTimeAudio.volume;
-                fastTimeAudio.volume = 0f;
                 SetDayText();
 
                 isPause = true;
                 TimerManager.Instance.ChangeOnTimer(false);
                 timerImg.gameObject.SetActive(false);
                 pauseImg.gameObject.SetActive(true);
-                freeLookCamera.Rig.transform.position = new Vector3(0f, 3.35f, -13f);
-                freeLookCamera._isActivated = false;
+                //freeLookCamera.Rig.transform.position = new Vector3(0f, 3.35f, -13f);
+                //freeLookCamera._isActivated = false;
                 Time.timeScale = 0f;
             }
             else if(!EndManager.Instance.IsEnd)
@@ -115,21 +109,35 @@ public class UIManager : MonoSingleTon<UIManager>
     }
     public void PauseResume()
     {
-        fastTimeAudio.volume = fastTimeAudioVolum;
-        freeLookCamera._isActivated = true;
-        timerImg.gameObject.SetActive(true);
+        //freeLookCamera._isActivated = true;
+        //timerImg.gameObject.SetActive(true);
 
         isPause = false;
         if (StageManager.Instance.GetAreaPlayCheck()) //게임 시작 도중이였을 때
         {
             TimerManager.Instance.ChangeOnTimer(true);
         }
+
+        if (currentOpenImg != null)
+        {
+            currentOpenImg.SetActive(false);
+        }
+
+
         pauseImg.gameObject.SetActive(false);
+        timerImg.gameObject.SetActive(true);
+
         Time.timeScale = fastTime;
     }
 
     public void PauseMenu()
     {
+        pauseImg.SetActive(false);
+        if (currentOpenImg != null)
+        {
+            currentOpenImg.SetActive(false);
+        }
+
         LoadingSceneManager.LoadScene(0);
         Time.timeScale = 1;
     }
@@ -188,20 +196,17 @@ public class UIManager : MonoSingleTon<UIManager>
 
         if (isFastTime)
         {
-            fastTimeAudio.Play();
             fastTime = 3;
             TimerManager.Instance.FastForwardTimeIntensity();
             fastTimeImg.gameObject.SetActive(true);
         }
         else
         {
-            fastTimeAudio.Stop();
             fastTime = 1;
             TimerManager.Instance.ResetFastForwardTime();
             fastTimeImg.gameObject.SetActive(false);
 
         }
-        
         
         fastTimeText.SetText($"{fastTime}");
     }

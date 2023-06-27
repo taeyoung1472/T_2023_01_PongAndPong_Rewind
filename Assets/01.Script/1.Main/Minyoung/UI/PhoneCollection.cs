@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine.UI;
 public class PhoneCollection : MonoSingleTon<PhoneCollection>
 {
-    private List<ChapterStageCollectionData> chapterList = new List<ChapterStageCollectionData>();
+    [SerializeField] private List<ChapterStageCollectionData> chapterList = new List<ChapterStageCollectionData>();
     public List<GameObject> childObjs;
     public List<string> chapterNameList = new List<string>();
 
@@ -54,28 +54,45 @@ public class PhoneCollection : MonoSingleTon<PhoneCollection>
 
         foreach (var cn in SaveDataManager.Instance.AllChapterDataBase.stageCollectionDataDic)
         {
-            chapterNameList.Add(cn.Key);
-            chapterList.Add(SaveDataManager.Instance.AllChapterDataBase.stageCollectionDataDic[cn.Key]);
+            if (SaveDataManager.Instance.AllChapterDataBase.stageCollectionDataDic.Count > chapterNameList.Count)
+            {
+                chapterNameList.Add(cn.Key);
+                chapterList.Add(SaveDataManager.Instance.AllChapterDataBase.stageCollectionDataDic[cn.Key]);
+            }
         }
         int maxCnt = 0;
         int eatCnt = 0;
 
-        for (int i = 0; i < parentTrm.childCount; i++)
+        for (int i = 0; i < parentTrm.childCount - 1; i++)
+        {
+            ChapterStageCollectionData chapterStageCollectionData =
+               SaveDataManager.Instance.AllChapterDataBase.stageCollectionDataDic[chapterNameList[i]];
+
+            foreach (var e in chapterStageCollectionData.stageCollectionValueList[i].stageDataList)
+            {
+                eatCnt += e.zoneCollections.collectionBoolList.FindAll(x => x == true).Count;
+            }
+        }
+
+            for (int i = 0; i < parentTrm.childCount; i++)
         {
             childObjs[i].transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().SetText($"{i + 1} ц╘ем{chapterNameList[i]}");
-
 
 
             foreach (var s in chapterList[i].stageCollectionValueList)
                 maxCnt += s.stageDataList.Count;
 
-            foreach (var e in chapterList[i].stageCollectionValueList)
-                eatCnt += e.stageDataList[i].zoneCollections.collectionBoolList.FindAll(x => x == true).Count;
+           
+
+
+            Debug.Log("maxcnt" + eatCnt);
 
             childObjs[i].transform.GetChild(0).GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().SetText($"{eatCnt} / {maxCnt}");
 
             maxCnt = 0;
             eatCnt = 0;
         }
+
+
     }
 }
