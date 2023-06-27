@@ -30,6 +30,8 @@ public class StartCutSceneManager : MonoBehaviour
 
     [SerializeField] private float coolInput = 1f;
     private float curCool = 0f;
+
+    [SerializeField] private AudioSource bgmAudio;
     private void Awake()
     {
         textAnim = GetComponent<TextAnim>();
@@ -52,6 +54,8 @@ public class StartCutSceneManager : MonoBehaviour
         glitch1.active = true;
 
         StartCoroutine(StartFade());
+
+        
     }
 
     private void Update()
@@ -90,6 +94,8 @@ public class StartCutSceneManager : MonoBehaviour
     }
     IEnumerator MonitorOnStart()
     {
+        AudioManager.PlayAudio(SoundType.OnMonitor);
+
         jitter.enable.value = false;
         glitch1.enable.value = false;
 
@@ -103,6 +109,7 @@ public class StartCutSceneManager : MonoBehaviour
         monitor.materials[1].DOColor(monitorOn.color, 1f);
 
         yield return new WaitForSeconds(1f);
+        bgmAudio.Play();
         ShowCut();
     }
     public void ShowCut()
@@ -130,6 +137,7 @@ public class StartCutSceneManager : MonoBehaviour
         jitter.enable.value = true;
         glitch1.enable.value = true;
         yield return new WaitForSeconds(1f);
+        AudioManager.PlayAudio(SoundType.StartCutScene);
         textAnim.SetText(firsttext);
         textAnim.EndCheck();
 
@@ -137,7 +145,7 @@ public class StartCutSceneManager : MonoBehaviour
     }
     IEnumerator EndFadeImg()
     {
-        
+        bgmAudio.Stop();
         fadeImg.DOFade(1, 1.8f);
         images[images.Length-1].DOFade(0, 1.3f);
         yield return new WaitForSeconds(2f);
