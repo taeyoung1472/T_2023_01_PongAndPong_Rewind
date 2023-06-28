@@ -55,7 +55,9 @@ public class GrabableObject : MonoBehaviour
                 else
                     hitPosition = Vector3.zero;
 
-
+                //돼영아..처놀지 말고 개발하라고....
+                // 또 어디로 사라진거야!!!
+                //돼영아!!!!
                 Vector3 playerStartPosition = player.transform.position;
                 playerStartPosition.y = maxY - 1.65f;
                 player.GetPlayerAction<PlayerWallGrab>(PlayerActionType.WallGrab).WallClimb(playerStartPosition, hitPosition, _wallPosition.position);
