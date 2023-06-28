@@ -8,7 +8,7 @@ public class TalkBoyGuard : MonoSingleTon<TalkBoyGuard>
 {
     private bool isMeetingStart = false;
 
-    private float spacebarCoolTime = 1.5f;
+    [SerializeField] private float spacebarCoolTime = 0.2f;
     private float curCool = 0;
 
     [SerializeField] private int autoTalkingIndex = 1;
@@ -34,7 +34,7 @@ public class TalkBoyGuard : MonoSingleTon<TalkBoyGuard>
             curCool += Time.deltaTime;
             if (Input.GetKeyDown(KeyCode.Space) && spacebarCoolTime <= curCool)
             {
-                CheckAutoTalkSpeechBubble();
+                StartTalkBoyGuard();
                 curCool = 0;
             }
         }
@@ -43,7 +43,7 @@ public class TalkBoyGuard : MonoSingleTon<TalkBoyGuard>
     {
         foreach (var npc in npcTexts)
         {
-            if (npc.gameObject.activeSelf && npc.isAnim)
+            if (npc.isAnim)
             {
                 npc.isSkip = true;
                 return;
