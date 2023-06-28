@@ -26,8 +26,13 @@ public class StageArea : MonoBehaviour
     public Action OnEntryArea;
     public Action OnExitArea;
 
+    public Vector3 cmaInitPos;
+
+    private FreeLookCamera freeLookCamera;
+
     private void Start()
     {
+        freeLookCamera = FindObjectOfType<FreeLookCamera>();
         isAreaPlay = false;
 
         defaultPlayerSpawn.gameObject.SetActive(false);
@@ -60,6 +65,11 @@ public class StageArea : MonoBehaviour
             RewindManager.Instance.StartAreaPlay();
 
         OnEntryArea?.Invoke();
+        if(freeLookCamera == null)
+        {
+            freeLookCamera = FindObjectOfType<FreeLookCamera>();
+        }
+        freeLookCamera.initPos = cmaInitPos;
     }
 
     public void Rewind()

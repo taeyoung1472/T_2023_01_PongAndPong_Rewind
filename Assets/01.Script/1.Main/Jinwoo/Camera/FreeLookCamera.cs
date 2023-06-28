@@ -39,6 +39,7 @@ public class FreeLookCamera : MonoBehaviour
     public float centerY = 5;
 
     public Vector3 initPos;
+    //public Vector3 areaInitPos;
 
     #endregion
 
@@ -214,6 +215,7 @@ public class FreeLookCamera : MonoBehaviour
 
         if (state)
         {
+            SetPosition(initPos);
             cam.cullingMask = gameviewLayerMask | freeviewLayerMask;
         }
         else
@@ -223,5 +225,12 @@ public class FreeLookCamera : MonoBehaviour
         _isActivated = state;
     }
 
+    public void SetPosition(Vector3 pos)
+    {
+        if (_rig)
+        {
+            _rig.transform.position = pos;
+        }
+    }
     #endregion
 }
