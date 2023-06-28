@@ -32,7 +32,7 @@ public class MonitorNPCTalk : MonoSingleTon<MonitorNPCTalk>
             curCool += Time.deltaTime;
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                CheckAutoTalkSpeechBubble();
+                ShowText();
                 curCool = 0;
             }
         }
@@ -41,7 +41,7 @@ public class MonitorNPCTalk : MonoSingleTon<MonitorNPCTalk>
     {
         foreach (var npc in npcTexts)
         {
-            if (npc.gameObject.activeSelf && npc.isAnim)
+            if (npc.isAnim)
             {
                 npc.isSkip = true;
                 return;

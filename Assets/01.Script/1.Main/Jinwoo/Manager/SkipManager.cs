@@ -49,6 +49,7 @@ public class SkipManager : MonoSingleTon<SkipManager>
     }
     public void Skip()
     {
+        AudioManager.PlayAudio(SoundType.SkipSound);
         isSkip = true;
         SkipPanelOff();
         StartCoroutine(SkipCutScene());

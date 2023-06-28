@@ -10,7 +10,7 @@ public class MadScientistCutScene : MonoSingleTon<MadScientistCutScene>
 
     private bool isMadScientistStart = false;
 
-    private float spacebarCoolTime = 1.5f;
+    [SerializeField]private float spacebarCoolTime = .5f;
     private float curCool = 0;
 
     [SerializeField] private int autoTalkingIndex = 1;
@@ -42,7 +42,14 @@ public class MadScientistCutScene : MonoSingleTon<MadScientistCutScene>
             curCool += Time.deltaTime;
             if (Input.GetKeyDown(KeyCode.Space) && spacebarCoolTime <= curCool)
             {
-                CheckAutoTalkSpeechBubble();
+                if (madScientistText.isAnim)
+                {
+                    madScientistText.isSkip = true;
+                }
+                else
+                {
+                    CheckAutoTalkSpeechBubble();
+                }
                 curCool = 0;
             }
         }
@@ -64,6 +71,7 @@ public class MadScientistCutScene : MonoSingleTon<MadScientistCutScene>
     }
     public void CheckAutoTalkSpeechBubble()
     {
+        
         if (autoTalkingIndex >= 8)
         {
             StartCoroutine(EndMadAloneTalk());

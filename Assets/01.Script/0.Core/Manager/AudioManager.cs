@@ -66,4 +66,5 @@ public class AudioManager : MonoBehaviour
         AudioPoolObject obj = PoolManager.Pop(PoolType.Sound).GetComponent<AudioPoolObject>();
         obj.Play(clip, pitch + Random.Range(-randValue, randValue), volume, MixerDic[outputName]);
     }
+
 }

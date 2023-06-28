@@ -74,5 +74,9 @@ public enum SoundType
     OnOpenStageInfo = 703,
     OnCloseStageInfo = 704,
     OnNotifyOpen = 710,
-    OnNotifyClose = 711
+    OnNotifyClose = 711,
+
+    StartCutScene = 1000,
+    SkipSound = 1001,
+    OnMonitor = 1002,
 }
