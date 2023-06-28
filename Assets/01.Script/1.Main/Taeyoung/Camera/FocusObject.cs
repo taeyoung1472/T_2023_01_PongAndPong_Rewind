@@ -3,6 +3,7 @@ using UnityEngine;
 public class FocusObject : MonoBehaviour
 {
     [SerializeField] private StageArea myArea;
+    [SerializeField] private float focusWeight = 1;
 
     private void Awake()
     {
@@ -13,7 +14,7 @@ public class FocusObject : MonoBehaviour
                 if (CamManager.Instance == null)
                     return;
 
-                CamManager.Instance.AddTargetGroup(transform);
+                CamManager.Instance.AddTargetGroup(transform, focusWeight);
             };
 
             myArea.OnExitArea += () =>
