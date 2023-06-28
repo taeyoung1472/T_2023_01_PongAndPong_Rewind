@@ -91,17 +91,16 @@ public class CutSceneManager : MonoSingleTon<CutSceneManager>
 
             playerCutScene.Play();
 
-            cutsceneCheck[0].gameObject.SetActive(true);
-            cutsceneCheck[1].gameObject.SetActive(true);
-
             UIGetter.Instance.PushUIs();
         }
-        else
-        {
-
-        }
+        
     }
 
+    public void InteractiveColliderEnable()
+    {
+        cutsceneCheck[0].gameObject.SetActive(true);
+        cutsceneCheck[1].gameObject.SetActive(true);
+    }
     public void StartElevatorCutScene()
     {
         DisableCollider();
