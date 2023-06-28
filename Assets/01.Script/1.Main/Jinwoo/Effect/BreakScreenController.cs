@@ -20,6 +20,14 @@ public class BreakScreenController : MonoSingleTon<BreakScreenController>
     }
     public void StartBreakScreen()
     {
+        if (isBreaking)
+        {
+            Debug.Log("checkbreakscreen");
+            slicesPrefabs.InitPos();
+            isBreaking = false;
+            slicesPrefabs.gameObject.SetActive(false);
+            StopAllCoroutines();
+        }
         StartCoroutine(CourtineScreenShot());
     }
     private IEnumerator CourtineScreenShot()
@@ -43,9 +51,9 @@ public class BreakScreenController : MonoSingleTon<BreakScreenController>
 
         //블럭들 설정
         AudioManager.PlayAudioRandPitch(SoundType.OnReplayDisplay);
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.5f);
         slicesPrefabs.BreakScreen(slicesPrefabs.transform);
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(1f);
         slicesPrefabs.InitPos();
         isBreaking = false;
         slicesPrefabs.gameObject.SetActive(false);
