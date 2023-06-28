@@ -20,7 +20,7 @@ public class PhonePosition : MonoBehaviour
         float size = frustumHeight / phoneHeight;
         phone.transform.localScale = Vector3.one * size;
 
-        Debug.Log("Camera Frustum Height: " + frustumHeight);
+        //Debug.Log("Camera Frustum Height: " + frustumHeight);
     }
 
     private float CalculateFrustumHeight(float distanceFromCamera)

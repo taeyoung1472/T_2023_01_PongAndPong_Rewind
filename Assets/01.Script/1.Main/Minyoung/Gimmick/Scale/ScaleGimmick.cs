@@ -106,7 +106,7 @@ public class ScaleGimmick : GimmickObject
         float rightWeight = 0;
         foreach (var col in hitColliders)
         {
-            Debug.Log(col);
+            //Debug.Log(col);
 
             if (col.transform == null)
                 continue;
