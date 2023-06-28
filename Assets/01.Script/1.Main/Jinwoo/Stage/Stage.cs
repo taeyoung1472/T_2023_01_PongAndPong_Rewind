@@ -41,7 +41,7 @@ public class Stage : MonoBehaviour
         }
         yield return new WaitUntil(() => !BreakScreenController.Instance.isBreaking);
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(.5f);
 
 
 
