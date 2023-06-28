@@ -9,6 +9,7 @@ public class OfficeCutScene2 : MonoSingleTon<OfficeCutScene2>
 {
     [SerializeField] private CinemachineVirtualCamera playerCam;
     [SerializeField] private Player player;
+    [SerializeField] private GameObject playerCutScene;
 
     [SerializeField] private TextAnim playerText;
     [SerializeField] private TextAnim cellphoneText;
@@ -29,6 +30,8 @@ public class OfficeCutScene2 : MonoSingleTon<OfficeCutScene2>
 
     void Start()
     {
+        playerCutScene.SetActive(false);
+
         isAnswerPhone = false;
         autoTalkingIndex = 1;
 
@@ -90,11 +93,13 @@ public class OfficeCutScene2 : MonoSingleTon<OfficeCutScene2>
         FadeInOutManager.Instance.FadeIn(1f);
         FadeInOutManager.Instance.FadeOut(1f);
 
-        player.transform.rotation = Quaternion.Euler(0, 90, 0);
+        player.gameObject.SetActive(false);
+        playerCutScene.SetActive(true);
+        //player.transform.rotation = Quaternion.Euler(0, 90, 0);
 
         //player.Rigid.constraints = RigidbodyConstraints;
 
-        player.ForceStop();
+        //player.ForceStop();
 
         DisableList();
 
