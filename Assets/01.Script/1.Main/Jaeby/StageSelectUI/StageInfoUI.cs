@@ -40,21 +40,32 @@ public class StageInfoUI : MonoBehaviour
 
         SaveDataManager.Instance.LoadCollectionJSON();
 
+        StageCollectionData stageCollectionData = SaveDataManager.Instance.AllChapterDataBase.stageCollectionDataDic[data.chapterStageName].stageCollectionValueList[data.stageIndex];
 
-        int colllectionCnt = 0;
-        for (int i = 0; i < data.stageCollection.Count; i++)
+        int eatCnt = 0;
+
+        foreach (var e in stageCollectionData.stageDataList)
         {
-            foreach (var item in data.stageCollection[i].zone)
-            {
-                if (item)
-                {
-                    colllectionCnt++;
-
-                }
-            }
+            eatCnt += e.zoneCollections.collectionBoolList.FindAll(x => x == true).Count;
         }
 
-        _collectionText.SetText("수집품 개수[" + colllectionCnt + "/" + data.stageCollection.Count + "]");
+
+
+
+        //int colllectionCnt = 0;
+        //for (int i = 0; i < data.stageCollection.Count; i++)
+        //{
+        //    foreach (var item in data.stageCollection[i].zone)
+        //    {
+        //        if (item)
+        //        {
+        //            colllectionCnt++;
+
+        //        }
+        //    }
+        //}
+
+        _collectionText.SetText("수집품 개수[" + eatCnt + "/" + data.stageCollection.Count + "]");
 
         if (_animator == null)
             _animator = GetComponent<Animator>();
