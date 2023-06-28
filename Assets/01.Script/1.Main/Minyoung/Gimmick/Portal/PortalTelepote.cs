@@ -109,7 +109,7 @@ public class PortalTelepote : GimmickObject
             AudioManager.PlayAudioRandPitch(SoundType.OnPortal);
             Debug.Log(offset);
             playerIsOverlapping = false;
-            DeleteBuff();
+           // DeleteBuff();
         }
     }
     
@@ -135,7 +135,7 @@ public class PortalTelepote : GimmickObject
             if (cross >= 0f)
             {
                 playerIsOverlapping = true;
-                player.playerBuff.AddBuff(PlayerBuffType.Reverse);
+              //  player.playerBuff.AddBuff(PlayerBuffType.Reverse);
             }
         }
 
