@@ -9,6 +9,8 @@ public class MainMenuManager : MonoSingleTon<MainMenuManager>
     bool isActive = true;
     bool isWindowActive = false;
 
+    [SerializeField] private bool isOpenCheck;
+
     [Header("[RectTrans]")]
     [SerializeField] private RectTransform window;
     [SerializeField] private RectTransform content;
@@ -37,7 +39,10 @@ public class MainMenuManager : MonoSingleTon<MainMenuManager>
             PlayGame();
             yield break;
         }
-        isOpend = true;
+        if (isOpenCheck)
+        {
+            isOpend = true;
+        }
 
         yield return null;
 

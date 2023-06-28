@@ -150,6 +150,6 @@ public class StartCutSceneManager : MonoBehaviour
         images[images.Length-1].DOFade(0, 1.3f);
         yield return new WaitForSeconds(2f);
         SceneManager.LoadScene("Lab Jinwoo");
-        MainMenuManager.isOpend = true;
+        //MainMenuManager.isOpend = true;
     }
 }
