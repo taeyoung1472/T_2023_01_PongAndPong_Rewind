@@ -9,6 +9,7 @@ public class OfficeCutSceneManager : MonoSingleTon<OfficeCutSceneManager>
 {
     [SerializeField] private CinemachineVirtualCamera playerCam;
     [SerializeField] private Player player;
+    [SerializeField] private GameObject playerCutScene;
 
     [SerializeField] private TextAnim playerText;
     [SerializeField] private TextAnim cellphoneText;
@@ -26,6 +27,7 @@ public class OfficeCutSceneManager : MonoSingleTon<OfficeCutSceneManager>
     private float curCool = 0;
     void Start()
     {
+        playerCutScene.SetActive(false);
         isAnswerPhone = false;
         autoTalkingIndex = 1;
 
@@ -87,11 +89,8 @@ public class OfficeCutSceneManager : MonoSingleTon<OfficeCutSceneManager>
         FadeInOutManager.Instance.FadeIn(1f);
         FadeInOutManager.Instance.FadeOut(1f);
 
-        player.transform.rotation = Quaternion.Euler(0, 90, 0);
-
-        //player.Rigid.constraints = RigidbodyConstraints.FreezeAll;
-
-        player.ForceStop();
+        player.gameObject.SetActive(false);
+        playerCutScene.SetActive(true);
 
         DisableList();
 
