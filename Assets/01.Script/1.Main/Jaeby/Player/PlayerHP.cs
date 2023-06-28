@@ -36,6 +36,8 @@ public class PlayerHP : MonoBehaviour, IPlayerEnableResetable
         }
     }
 
+    public bool Died => _curHP <= 0;
+
     private void Start()
     {
         if(_meshRenderer != null)
@@ -50,9 +52,9 @@ public class PlayerHP : MonoBehaviour, IPlayerEnableResetable
     public void Die()
     {
         Debug.Log("»ç¸Á!!");
-        _player.ForceStop();
         _player.PlayerActionExit(_player.GetAllActionTypesArray());
         _player.PlayerActionLock(true, _player.GetAllActionTypesArray());
+        _player.ForceStop();
         _player.PlayerInput.enabled = false;
         _player.GravityModule.UseGravity = false;
         OnDie?.Invoke();
@@ -79,9 +81,6 @@ public class PlayerHP : MonoBehaviour, IPlayerEnableResetable
             return;
         StageManager.Instance.InputLock = false;
         StageManager.Instance.OnReStartArea();
-        _player.PlayerActionLock(false, _player.GetAllActionTypesArray());
-        _player.PlayerInput.enabled = true;
-        _player.GravityModule.UseGravity = true;
     }
 
     public void EnableReset()

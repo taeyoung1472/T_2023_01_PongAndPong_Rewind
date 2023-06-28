@@ -367,6 +367,10 @@ public class Player : MonoBehaviour
             _playerRenderer.FlipDirectionChange(DirectionType.Down, true);
 
         PlayerCameraControll(transform, null);
+
+        PlayerActionLock(false, GetAllActionTypesArray());
+        PlayerInput.enabled = true;
+        GravityModule.UseGravity = true;
     }
 
     public void DisableReset()
