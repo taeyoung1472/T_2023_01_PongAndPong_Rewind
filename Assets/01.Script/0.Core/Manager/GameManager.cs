@@ -30,4 +30,10 @@ public class GameManager : MonoSingleTon<GameManager>
     {
         LoadingSceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
+
+    public void OnApplicationQuit()
+    {
+        SaveDataManager.Instance.SaveCollectionJSON();
+        SaveDataManager.Instance.SaveStageClearJSON();
+    }
 }
