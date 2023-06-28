@@ -12638,10 +12638,10 @@ RectTransform:
   m_Father: {fileID: 606689721}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 395.875, y: -155.185}
+  m_SizeDelta: {x: 691.75, y: 150.37}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &470126008
 MonoBehaviour:
@@ -16096,10 +16096,10 @@ RectTransform:
   m_Father: {fileID: 1366916236}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 395.875, y: -165.185}
+  m_SizeDelta: {x: 791.75, y: 330.37}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &606689722
 MonoBehaviour:
@@ -34117,7 +34117,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -0.12, y: 0.04}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 791.75, y: 330.37}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!95 &1366916237
 Animator:
@@ -37452,8 +37452,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1493539844}
-  m_LocalRotation: {x: 0.18972714, y: -0.15492477, z: 0.030331828, w: 0.96906245}
-  m_LocalPosition: {x: 29.048931, y: 1.2606077, z: -1.6976906}
+  m_LocalRotation: {x: 0.052416302, y: 0.46292123, z: -0.027435541, w: 0.88442284}
+  m_LocalPosition: {x: 30.915077, y: 0.8761401, z: -1.5771971}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -38790,6 +38790,7 @@ MonoBehaviour:
   - {fileID: 5375796483555448324}
   - {fileID: 8039512545393282073}
   player: {fileID: 6691628707624568061}
+  playerParticle: {fileID: 1537207279}
   playerAnimator: {fileID: 6691628707499170612}
   talkAnimator: {fileID: 9100000, guid: 4ac81c31b27cbdf4d9ec8175374070a7, type: 2}
   autoTalkingIndex: 24
@@ -74385,19 +74386,7 @@ MonoBehaviour:
         m_CallState: 2
   OnAttack:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 6691628707624568058}
-        m_TargetAssemblyTypeName: PlayerAttack, Assembly-CSharp
-        m_MethodName: Attack
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   OnWeaponChange:
     m_PersistentCalls:
       m_Calls:

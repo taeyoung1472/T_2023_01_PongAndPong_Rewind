@@ -13,6 +13,7 @@ public class CutSceneManager : MonoSingleTon<CutSceneManager>
     [SerializeField] private List<MonoBehaviour> enableList;
 
     [SerializeField] private Player player;
+    [SerializeField] private ParticleSystem playerParticle;
     [SerializeField] private Animator playerAnimator;
     [SerializeField] private RuntimeAnimatorController talkAnimator;
 
@@ -104,6 +105,8 @@ public class CutSceneManager : MonoSingleTon<CutSceneManager>
     public void StartElevatorCutScene()
     {
         DisableCollider();
+        playerParticle.Stop();
+        playerParticle.gameObject.SetActive(false);
         elevatorCutScene.Play();
         player.PlayerActionExit(PlayerActionType.Move);
     }
