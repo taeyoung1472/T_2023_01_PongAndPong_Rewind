@@ -17,6 +17,8 @@ public class StageWorldUI : MonoBehaviour
 
     public RectTransform viewPort = null;
 
+    public Sprite chapterBackgroundSprite;
+
     [SerializeField] private List<StageUnitUI> _stages = new List<StageUnitUI>();
     private List<RectTransform> _stageTrms = new List<RectTransform>();
     private RectTransform _thisTrm = null;
