@@ -37,11 +37,11 @@ public class PortalTelepote : GimmickObject
         col = GetComponent<Collider>();
         if (isRight)
         {
-            crossTrm.position = transform.position + new Vector3(0.3f, 1.8f, 0);
+            crossTrm.position = transform.position + new Vector3(0.4f, 1.7f, 0);
         }
         else
         {
-            crossTrm.position = transform.position + new Vector3(-0.3f, 1.8f, 0);
+            crossTrm.position = transform.position + new Vector3(-0.4f, 1.7f, 0);
         }
     }
     public override void InitOnPlay()
@@ -144,10 +144,10 @@ public class PortalTelepote : GimmickObject
             Vector3 portalToPlayer = playerTrm.position - transform.position;
             Vector3 crossVec = Vector3.Cross(transform.forward, portalToPlayer);
             cross = crossVec.y;
-            if (cross >= 0f)
+            if (cross >= -0.2f)
             {
                 playerIsOverlapping = true;
-            Debug.Log("찍혀야됨외적이이상함");
+                  Debug.Log("찍혀야됨외적이이상함");
                 //  player.playerBuff.AddBuff(PlayerBuffType.Reverse);
             }
 
