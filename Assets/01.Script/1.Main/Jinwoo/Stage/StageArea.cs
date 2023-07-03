@@ -1,5 +1,6 @@
 using EPOOutline;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -55,17 +56,29 @@ public class StageArea : MonoBehaviour
     }
     public void FogOfAreaSetting(bool curArea)
     {
+        StartCoroutine(FogCoroutine(curArea));
+    }
+    private IEnumerator FogCoroutine(bool curArea)
+    {
+        yield return null;
         if (collectionMaterials == null)
-            return;
+        {
+            collectionMaterials = new List<Material>();
+            fogs = GetComponentsInChildren<ParticleSystem>().ToList().FindAll(x => x.name.Split(" ")[0] == "Fog");
+            GetComponentsInChildren<Collection>()
+                .ToList().ForEach(x => collectionMaterials.Add(x.GetComponent<MeshRenderer>().material));
+            linkPaths = GetComponentsInChildren<GimmickVisualLink>().ToList();
+            outlines = GetComponentsInChildren<Outlinable>().ToList();
+        }
         for (int i = 0; i < outlines.Count; i++)
-            outlines[i].gameObject.SetActive(curArea);
+            outlines[i].enabled = curArea;
         for (int i = 0; i < linkPaths.Count; i++)
             linkPaths[i].gameObject.SetActive(curArea);
 
         if (curArea)
         {
             for (int i = 0; i < fogs.Count; i++)
-                fogs[i].Stop();
+                fogs[i].Stop(false, ParticleSystemStopBehavior.StopEmitting);
             for (int i = 0; i < collectionMaterials.Count; i++)
             {
                 collectionMaterials[i].SetFloat("_BottomLine", 0.81f);
