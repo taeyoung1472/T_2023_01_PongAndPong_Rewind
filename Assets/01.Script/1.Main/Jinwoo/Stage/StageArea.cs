@@ -38,6 +38,8 @@ public class StageArea : MonoBehaviour
     private List<Outlinable> outlines = null;
     private List<Material> collectionMaterials = null;
 
+    private bool _settingEnded = false;
+
     private void Start()
     {
         freeLookCamera = FindObjectOfType<FreeLookCamera>();
@@ -53,6 +55,7 @@ public class StageArea : MonoBehaviour
             .ToList().ForEach(x => collectionMaterials.Add(x.GetComponent<MeshRenderer>().material));
         linkPaths = GetComponentsInChildren<GimmickVisualLink>().ToList();
         outlines = GetComponentsInChildren<Outlinable>().ToList();
+        _settingEnded = true;
     }
     public void FogOfAreaSetting(bool curArea)
     {
@@ -60,7 +63,8 @@ public class StageArea : MonoBehaviour
     }
     private IEnumerator FogCoroutine(bool curArea)
     {
-        yield return null;
+        yield return new WaitUntil(() => _settingEnded);
+        Debug.Log("Æ÷±×");
         if (collectionMaterials == null)
         {
             collectionMaterials = new List<Material>();
@@ -70,6 +74,7 @@ public class StageArea : MonoBehaviour
             linkPaths = GetComponentsInChildren<GimmickVisualLink>().ToList();
             outlines = GetComponentsInChildren<Outlinable>().ToList();
         }
+        Debug.Log(fogs.Count + " " + linkPaths.Count + " " + outlines.Count);
         for (int i = 0; i < outlines.Count; i++)
             outlines[i].enabled = curArea;
         for (int i = 0; i < linkPaths.Count; i++)
