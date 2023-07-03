@@ -47,7 +47,7 @@ public class StageArea : MonoBehaviour
         endPoint.gameObject.SetActive(false);
 
         collectionMaterials = new List<Material>();
-        fogs = GetComponentsInChildren<ParticleSystem>().ToList().FindAll(x => x.name == "fog");
+        fogs = GetComponentsInChildren<ParticleSystem>().ToList().FindAll(x => x.name.Split(" ")[0] == "Fog");
         GetComponentsInChildren<Collection>()
             .ToList().ForEach(x => collectionMaterials.Add(x.GetComponent<MeshRenderer>().material));
         linkPaths = GetComponentsInChildren<GimmickVisualLink>().ToList();
@@ -55,8 +55,10 @@ public class StageArea : MonoBehaviour
     }
     public void FogOfAreaSetting(bool curArea)
     {
+        if (collectionMaterials == null)
+            return;
         for (int i = 0; i < outlines.Count; i++)
-            outlines[i].enabled = curArea;
+            outlines[i].gameObject.SetActive(curArea);
         for (int i = 0; i < linkPaths.Count; i++)
             linkPaths[i].gameObject.SetActive(curArea);
 
