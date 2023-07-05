@@ -64,7 +64,6 @@ public class StageArea : MonoBehaviour
     private IEnumerator FogCoroutine(bool curArea)
     {
         yield return new WaitUntil(() => _settingEnded);
-        Debug.Log("Æ÷±×");
         if (collectionMaterials == null)
         {
             collectionMaterials = new List<Material>();
@@ -74,7 +73,6 @@ public class StageArea : MonoBehaviour
             linkPaths = GetComponentsInChildren<GimmickVisualLink>().ToList();
             outlines = GetComponentsInChildren<Outlinable>().ToList();
         }
-        Debug.Log(fogs.Count + " " + linkPaths.Count + " " + outlines.Count);
         for (int i = 0; i < outlines.Count; i++)
             outlines[i].enabled = curArea;
         for (int i = 0; i < linkPaths.Count; i++)
