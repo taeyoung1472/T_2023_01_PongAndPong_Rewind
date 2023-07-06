@@ -103,6 +103,7 @@ public class StageManager : MonoSingleTon<StageManager>
     public void OnReStartArea()
     {
         curStage.ReStartArea(true);
+        curStage.AreaFogSetting();
 
         UIManager.Instance.ResetFastForwardTime();
         TimerManager.Instance.ChangeOnTimer(false);
@@ -111,8 +112,6 @@ public class StageManager : MonoSingleTon<StageManager>
         reStartCoolTime = 1f;
 
         SaveDataManager.Instance.LoadCollectionJSON();
-
-
     }
     public void OnFreeLookCam(bool isOn)
     {

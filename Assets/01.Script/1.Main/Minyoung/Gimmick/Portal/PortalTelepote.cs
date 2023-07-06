@@ -13,7 +13,9 @@ public class PortalTelepote : GimmickObject
 
     public float cross;
     public Transform reciever;
-    public Transform objreciever;
+
+
+    public Transform crossTrm;
 
     #region ¹°Ã¼
     public bool objIsOverlapping = false;
@@ -28,10 +30,19 @@ public class PortalTelepote : GimmickObject
     {
         base.Awake();
         Init();
+
     }
     public override void Init()
     {
         col = GetComponent<Collider>();
+        if (isRight)
+        {
+            crossTrm.position = transform.position + new Vector3(0.4f, 1.7f, 0);
+        }
+        else
+        {
+            crossTrm.position = transform.position + new Vector3(-0.4f, 1.7f, 0);
+        }
     }
     public override void InitOnPlay()
     {
@@ -97,6 +108,7 @@ public class PortalTelepote : GimmickObject
     {
         if (playerIsOverlapping)
         {
+
             Vector3 offset = new Vector3(player.GetComponent<CapsuleCollider>().radius * 2.5f, 0, 0);
             if (isRight)
             {
@@ -132,16 +144,19 @@ public class PortalTelepote : GimmickObject
             Vector3 portalToPlayer = playerTrm.position - transform.position;
             Vector3 crossVec = Vector3.Cross(transform.forward, portalToPlayer);
             cross = crossVec.y;
-            if (cross >= 0f)
+            if (cross >= -0.2f)
             {
                 playerIsOverlapping = true;
-              //  player.playerBuff.AddBuff(PlayerBuffType.Reverse);
+                  Debug.Log("ÂïÇô¾ßµÊ¿ÜÀûÀÌÀÌ»óÇÔ");
+                //  player.playerBuff.AddBuff(PlayerBuffType.Reverse);
             }
+
+            Debug.Log("ÂïÇô¾ßµÊ");
         }
 
         if (other.gameObject.CompareTag("TelObj"))
         {
-            Vector3 objToPlayer = playerTrm.position - transform.position;
+            Vector3 objToPlayer = playerTrm.position - crossTrm.position; //transform.position;
             Vector3 crossVec = Vector3.Cross(transform.forward, objToPlayer);
             cross = crossVec.y;
             if (cross >= 0f)

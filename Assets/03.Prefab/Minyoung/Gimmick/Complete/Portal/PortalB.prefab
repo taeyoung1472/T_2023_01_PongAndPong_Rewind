@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1799809091384249810
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7398673010641753914}
+  m_Layer: 0
+  m_Name: crossTrm
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7398673010641753914
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1799809091384249810}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3304599691568180565}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3304599690691159612
 GameObject:
   m_ObjectHideFlags: 0
@@ -24422,6 +24453,7 @@ Transform:
   - {fileID: 3304599690910325515}
   - {fileID: 3304599692134425429}
   - {fileID: 3304599692448184434}
+  - {fileID: 7398673010641753914}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -24629,7 +24661,7 @@ MonoBehaviour:
   playerIsOverlapping: 0
   cross: 0
   reciever: {fileID: 0}
-  objreciever: {fileID: 0}
+  crossTrm: {fileID: 7398673010641753914}
   objIsOverlapping: 0
   telObjList: []
   isRight: 0

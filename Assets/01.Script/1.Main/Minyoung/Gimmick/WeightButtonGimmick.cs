@@ -45,7 +45,7 @@ public class WeightButtonGimmick : GimmickObject
         }
         foreach (var data in controlDataArr)
         {
-            GimmickVisualLink link = Instantiate(visualLinkPrefab);
+            GimmickVisualLink link = Instantiate(visualLinkPrefab, transform);
             link.Link(transform, data.target.transform, color);
         }
     }
