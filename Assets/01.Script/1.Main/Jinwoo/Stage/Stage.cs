@@ -112,7 +112,6 @@ public class Stage : MonoBehaviour
 
     public void AreaFogSetting()
     {
-        Debug.Log("fog");
         for (int i = 0; i < stageAreaList.Count; i++)
             stageAreaList[i].FogOfAreaSetting(stageAreaList[i] == curArea);
     }

@@ -15,7 +15,7 @@ public class PlayerAttack : PlayerAction, IPlayerEnableResetable
     private readonly int _maxAttackIndex = 2;
     private bool _delayLock = false;
 
-    private AttackState _attackState = AttackState.Melee;
+    private AttackState _attackState = AttackState.Range;
     private Coroutine _attackDelayCo = null;
 
     private Coroutine _meleeAttackResetCo = null;
@@ -35,11 +35,6 @@ public class PlayerAttack : PlayerAction, IPlayerEnableResetable
     private Transform _mousePositionTrm = null;
     private bool _observerStarting = false;
     #endregion
-
-    private void Start()
-    {
-        _pistolObj.SetActive(false);
-    }
 
     public void Attack()
     {
@@ -122,7 +117,7 @@ public class PlayerAttack : PlayerAction, IPlayerEnableResetable
         }
 
         Bullet bullet = PoolManager.Pop(PoolType.PlayerBullet).GetComponent<Bullet>();
-        bullet.GetComponent<Bullet>().Init(_shootingPointTrm.position, rot, _player.playerAttackSO.bulletSpeed, _player.playerAttackSO.rangeAttackPower);
+        bullet.GetComponent<Bullet>().Init(_shootingPointTrm.position, rot, _player.playerAttackSO.bulletSpeed, 0.2f, _player.playerAttackSO.rangeAttackPower);
         OnRangeAttack?.Invoke();
     }
 
@@ -273,6 +268,6 @@ public class PlayerAttack : PlayerAction, IPlayerEnableResetable
     public void EnableReset()
     {
         _pistolObj.SetActive(false);
-        WeaponSwitching(AttackState.Melee, true);
+        WeaponSwitching(AttackState.Range, true);
     }
 }

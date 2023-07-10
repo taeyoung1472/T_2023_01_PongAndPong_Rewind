@@ -29,6 +29,7 @@ public class UIManager : MonoSingleTon<UIManager>
 
     [SerializeField] private GameObject timerImg;
     [SerializeField] private GameObject pauseImg;
+    private bool pauseAnimating = false;
 
     [SerializeField] private GameObject mainImg;
     [SerializeField] private GameObject stageImg;
@@ -60,6 +61,9 @@ public class UIManager : MonoSingleTon<UIManager>
         {
             if (!isPause && !EndManager.Instance.IsEnd)
             {
+                if (pauseAnimating)
+                    return;
+
                 SetDayText();
                 if (isFastTime == true)
                 {
@@ -72,6 +76,11 @@ public class UIManager : MonoSingleTon<UIManager>
                 TimerManager.Instance.ChangeOnTimer(false);
                 timerImg.gameObject.SetActive(false);
                 pauseImg.gameObject.SetActive(true);
+                pauseImg.transform.DOKill();
+                pauseImg.transform.SetLocalPositionAndRotation
+                    (new Vector3(0f, -3f, 0f), Quaternion.Euler(0f, 20f, 90f));
+                Sequence seq = DOTween.Sequence();
+                seq.Append(pauseImg.transform.DORotate(new Vector3(0f, 0f, 0f), 0.5f)).SetUpdate(true);
                 //freeLookCamera.Rig.transform.position = new Vector3(0f, 3.35f, -13f);
                 //freeLookCamera._isActivated = false;
                 Time.timeScale = 0f;
@@ -122,6 +131,8 @@ public class UIManager : MonoSingleTon<UIManager>
     }
     public void PauseResume()
     {
+        if (pauseAnimating)
+            return;
         //freeLookCamera._isActivated = true;
         //timerImg.gameObject.SetActive(true);
 
@@ -136,8 +147,15 @@ public class UIManager : MonoSingleTon<UIManager>
             currentOpenImg.SetActive(false);
         }
 
+        Sequence seq = DOTween.Sequence();
+        pauseImg.transform.DOKill();
+        pauseAnimating = true;
+        seq.Append(pauseImg.transform.DOLocalMoveY(-9f, 0.5f)).SetUpdate(true);
+        seq.AppendCallback(() => { 
+            pauseImg.gameObject.SetActive(false); 
+            pauseAnimating = false; 
+        });
 
-        pauseImg.gameObject.SetActive(false);
         timerImg.gameObject.SetActive(true);
 
         Time.timeScale = fastTime;
