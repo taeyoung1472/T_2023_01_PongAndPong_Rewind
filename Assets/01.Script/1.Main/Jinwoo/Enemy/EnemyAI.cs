@@ -27,8 +27,8 @@ public class EnemyAI : MonoBehaviour, ICore
     [SerializeField]
     private Collider myCol;
 
-    private bool isHit = false;
-    private bool isDie = false;
+    public bool isHit = false;
+    public bool isDie = false;
 
     private BehaviorTreeRunner _BTRunner = null;
     private Transform _detectedPlayer = null;
