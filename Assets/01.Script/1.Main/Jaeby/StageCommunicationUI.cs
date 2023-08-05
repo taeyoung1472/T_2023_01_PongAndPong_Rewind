@@ -25,16 +25,19 @@ public class StageCommunicationUI : MonoBehaviour
 
     private IEnumerator CommunicationCoroutine()
     {
-        for(int i =0; i < _dataSO.communicationDatas.Count; i++)
+        for (int i = 0; i < _dataSO.communicationDatas.Count; i++)
         {
             if (_dataSO.communicationDatas[i].isReset)
             {
                 DestroyChildren(_parentTrm);
+                yield return new WaitForSeconds(_dataSO.animationTime * 1.2f);
             }
             CommunicationUIPrefab prefab = Instantiate(_prefab, _parentTrm);
             prefab.SetUI(_dataSO.communicationDatas[i].communicationSprite, _dataSO.communicationDatas[i].content);
+            prefab.AnimationUI(0f, 1f, _dataSO.animationTime);
             yield return new WaitForSeconds(_dataSO.communicationDatas[i].nextContentTime);
         }
+        DestroyChildren(_parentTrm);
     }
 
     private void DestroyChildren(Transform parent)
@@ -44,9 +47,11 @@ public class StageCommunicationUI : MonoBehaviour
         {
             children.Add(child.gameObject);
         }
-        for(int i = 0; i < children.Count; i++)
+        for (int i = 0; i < children.Count; i++)
         {
-            Destroy(children[i]);
+            children[i].transform.SetParent(transform);
+            GameObject childObj = children[i];
+            children[i].GetComponent<CommunicationUIPrefab>().AnimationUI(1f, 0f, _dataSO.animationTime, () => Destroy(childObj));
         }
     }
 }
