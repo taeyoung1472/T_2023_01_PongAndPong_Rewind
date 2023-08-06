@@ -11,5 +11,5 @@ public enum IconType
     Investor,
     Employee,
     Construction,
-
+    Elevator,
 }

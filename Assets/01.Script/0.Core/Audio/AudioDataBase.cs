@@ -79,4 +79,9 @@ public enum SoundType
     StartCutScene = 1000,
     SkipSound = 1001,
     OnMonitor = 1002,
+
+    OnElevatorOpen = 1100,
+    OnElevatorEnd = 1101,
+    OnElevatorFunc = 1102,
+    OnElevatorBtnClick = 1103,
 }
