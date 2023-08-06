@@ -17,6 +17,7 @@ public class CommunicationData
     // 얼굴 사진
     public Sprite communicationSprite = null;
     // 내용
+    [TextArea]
     public string content = "";
     // 이만큼 기다리고 다음 내용
     public float nextContentTime = 1f;
