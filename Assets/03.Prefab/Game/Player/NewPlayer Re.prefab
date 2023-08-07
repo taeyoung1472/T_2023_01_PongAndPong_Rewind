@@ -256,6 +256,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _originGravity: 0.8
   _maxGravityAcceleration: 0.1
+  _gravityAccelerationTime: 2
   _useGravity: 1
 --- !u!114 &3324924150839670046
 MonoBehaviour:
@@ -353,7 +354,6 @@ MonoBehaviour:
   _groundMask:
     serializedVersion: 2
     m_Bits: 128
-  _maxSlopeAngle: 10
 --- !u!114 &6691628707489746808
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -367,10 +367,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _actionType: 1
-  _slowSpeed: 0.5
-  _pushSlowSpeed: 0.3
   _dustParticle: {fileID: 7664316039463632065}
-  _moveAudioCooltime: 0.25
   OnMove:
     m_PersistentCalls:
       m_Calls: []
@@ -457,7 +454,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  _wallgrabCooltime: 0.4
+  _climbCameraTrm: {fileID: 0}
 --- !u!114 &6691628707489746802
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -503,9 +500,6 @@ MonoBehaviour:
         m_CallState: 2
   _pistolObj: {fileID: 0}
   _shootingPointTrm: {fileID: 0}
-  _flipLockTime: 0.4
-  _ikEndAnimationTime: 0.3
-  _ikCancelMaxAngle: 30
 --- !u!114 &6691628707489746807
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -801,6 +795,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcc49bd7f04dd7b4b9d023d360f8cd7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  myArea: {fileID: 0}
+  focusWeight: 1
 --- !u!114 &-6562397743991881828
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -817,7 +813,7 @@ MonoBehaviour:
   drawingMode: 1
   outlineLayer: 0
   outlineTargets:
-  - IsVisible: 1
+  - IsVisible: 0
     CutoutMask: 8
     edgeDilateAmount: 5
     frontEdgeDilateAmount: 5
@@ -833,7 +829,7 @@ MonoBehaviour:
     cutoutTextureName: 
     DilateRenderingMode: 0
     cutoutTextureIndex: 0
-  - IsVisible: 1
+  - IsVisible: 0
     CutoutMask: 8
     edgeDilateAmount: 5
     frontEdgeDilateAmount: 5
@@ -849,7 +845,7 @@ MonoBehaviour:
     cutoutTextureName: 
     DilateRenderingMode: 0
     cutoutTextureIndex: 0
-  - IsVisible: 1
+  - IsVisible: 0
     CutoutMask: 8
     edgeDilateAmount: 5
     frontEdgeDilateAmount: 5
@@ -865,7 +861,7 @@ MonoBehaviour:
     cutoutTextureName: 
     DilateRenderingMode: 0
     cutoutTextureIndex: 0
-  - IsVisible: 1
+  - IsVisible: 0
     CutoutMask: 8
     edgeDilateAmount: 5
     frontEdgeDilateAmount: 5
@@ -881,7 +877,7 @@ MonoBehaviour:
     cutoutTextureName: 
     DilateRenderingMode: 0
     cutoutTextureIndex: 0
-  - IsVisible: 1
+  - IsVisible: 0
     CutoutMask: 8
     edgeDilateAmount: 5
     frontEdgeDilateAmount: 5
@@ -901,7 +897,7 @@ MonoBehaviour:
   outlineParameters:
     enabled: 1
     color: {r: 0.5019608, g: 0.015686274, b: 1, a: 1}
-    dilateShift: 0.5
+    dilateShift: 0.25
     blurShift: 0
     fillPass:
       shader: {fileID: 0}
