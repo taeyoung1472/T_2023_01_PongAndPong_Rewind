@@ -14,10 +14,10 @@ public class AudioDBEditor : Editor
 
     public override void OnInspectorGUI()
     {
-        if (GUILayout.Button("Rename File"))
-        {
-            RenameFiles();
-        }
+        //if (GUILayout.Button("Rename File"))
+        //{
+        //    RenameFiles();
+        //}
         DrawDefaultInspector();
     }
 

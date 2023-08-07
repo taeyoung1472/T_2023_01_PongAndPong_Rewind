@@ -22,7 +22,7 @@ public class VoidObject : MonoBehaviour
 
     public void Update()
     {
-        if (EndManager.Instance.IsEnd)
+        if (EndManager.Instance && EndManager.Instance.IsEnd)
             return;
 
         transform.Rotate(rotVec * Time.deltaTime);
