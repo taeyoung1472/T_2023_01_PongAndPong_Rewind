@@ -8,6 +8,9 @@ using UnityEngine.UI;
 
 public class CommunicationUIPrefab : MonoBehaviour
 {
+    [SerializeField]
+    private Vector2 _textBoxExpendAmount = Vector2.zero;
+
     private CanvasGroup _canvasGroup = null;
     private Image _image = null;
     private TextMeshProUGUI _content = null;
@@ -24,7 +27,9 @@ public class CommunicationUIPrefab : MonoBehaviour
         _content.text = content;
         _content.ForceMeshUpdate();
         Vector2 textSize = _content.GetRenderedValues();
-        _textBox.rectTransform.sizeDelta = textSize;
+        Vector2 textBoxPosition = (Vector2)_content.rectTransform.localPosition + textSize * 0.5f;
+        _textBox.rectTransform.localPosition = textBoxPosition;
+        _textBox.rectTransform.sizeDelta = textSize + _textBoxExpendAmount;
         Vector2 anchoredPos = _content.rectTransform.anchoredPosition;
         anchoredPos.y += textSize.y;
         _content.rectTransform.anchoredPosition = anchoredPos;
