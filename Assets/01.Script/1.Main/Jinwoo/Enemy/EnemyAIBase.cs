@@ -6,7 +6,7 @@ using UnityEngine;
 using static Jinwoo.BehaviorTree.NodeHelper;
 
 [RequireComponent(typeof(Animator))]
-public class EnemyAI : MonoBehaviour, ICore
+public class EnemyAIBase : MonoBehaviour, ICore
 {
     #region 변수들
     public EnemyDataSO _enemyData;
@@ -38,7 +38,9 @@ public class EnemyAI : MonoBehaviour, ICore
     private Animator _animator = null;
     private Rigidbody _rigidbody = null;
 
+    private EnemyAnimationEvent _enemyAnim = null;
 
+    #endregion
     const string _attackAnimStateName = "Attack";
     const string _attackAnimTriggerName = "attack";
 
@@ -48,11 +50,10 @@ public class EnemyAI : MonoBehaviour, ICore
     const string _hitAnimBoolName = "hit";
 
     const string _jumpAnimTriggerName = "jump";
-    #endregion
 
     protected virtual void Awake()
     {
-        _animator = GetComponent<Animator>();
+        _enemyAnim.Init();
         _rigidbody = GetComponent<Rigidbody>();
         myCol = GetComponent<Collider>();
 
@@ -100,7 +101,7 @@ public class EnemyAI : MonoBehaviour, ICore
                 (
                     If(CheckAttacking),
                     IfAction(CheckEnemyWithinAttackRange, DoAttackAction)
-                    
+
                 ),
                 //추격 시퀀스
                 Sequence
@@ -142,7 +143,7 @@ public class EnemyAI : MonoBehaviour, ICore
             {
                 var normalizedTime = _animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
 
-                if(normalizedTime != 0 && normalizedTime < 1f)
+                if (normalizedTime != 0 && normalizedTime < 1f)
                     return true; //아직 애니메이션 진행중
             }
         }
@@ -393,7 +394,7 @@ public class EnemyAI : MonoBehaviour, ICore
 
     private void MoveToDetectEnemyAction()
     {
-        
+
         MoveEnemy(_detectedPlayer, false);
     }
 
@@ -499,7 +500,7 @@ public class EnemyAI : MonoBehaviour, ICore
 
 #if UNITY_EDITOR
 
-    private void OnDrawGizmos()
+    private void OnDrawGizmosSelected()
     {
 
         var leftRayRotation = Quaternion.AngleAxis(-_enemyData.fieldOfView * 0.5f, Vector3.up);
