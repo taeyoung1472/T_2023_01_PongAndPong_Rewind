@@ -186,15 +186,8 @@ public class Analysis : MonoBehaviour
         _countUpSeq.Append(DOTween.To(() => fill.AngRadiansEnd, x => fill.AngRadiansEnd = x, endRadius, _uiAnimationTime));
         _countUpSeq.AppendCallback(() =>
         {
-            string functionName = _curData.GetFunctionName(_curCount);
-            if (functionName != null)
-            {
-                if (PlayerPrefs.GetInt(functionName, 0) == 0)
-                {
-                    PlayerPrefs.SetInt(functionName, 1);
-                    FunctionManager.Instance.GetEvent(_curData.GetFunctionName(_curCount))?.Invoke();
-                }
-            }
+            //string functionName = _curData.GetFunctionName(_curCount);
+            //FunctionManager.Instance.GetFirstTimeFunction(functionName);
         });
     }
 }
