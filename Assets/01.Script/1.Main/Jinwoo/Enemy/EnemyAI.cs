@@ -1,5 +1,6 @@
 using Jinwoo.BehaviorTree;
 using System.Collections;
+using Unity.Collections.LowLevel.Unsafe;
 using UnityEditor;
 using UnityEngine;
 using static Jinwoo.BehaviorTree.NodeHelper;
@@ -27,8 +28,9 @@ public class EnemyAI : MonoBehaviour, ICore
     [SerializeField]
     private Collider myCol;
 
-    private bool isHit = false;
-    private bool isDie = false;
+    public bool isHit = false;
+    public bool isAttack = false;
+    public bool isDie = false;
 
     private BehaviorTreeRunner _BTRunner = null;
     private Transform _detectedPlayer = null;
@@ -98,7 +100,7 @@ public class EnemyAI : MonoBehaviour, ICore
                 (
                     If(CheckAttacking),
                     IfAction(CheckEnemyWithinAttackRange, DoAttackAction)
-
+                    
                 ),
                 //추격 시퀀스
                 Sequence
@@ -140,7 +142,8 @@ public class EnemyAI : MonoBehaviour, ICore
             {
                 var normalizedTime = _animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
 
-                return normalizedTime != 0 && normalizedTime < 1f; //아직 애니메이션 진행중
+                if(normalizedTime != 0 && normalizedTime < 1f)
+                    return true; //아직 애니메이션 진행중
             }
         }
         return false; //애니메이션 끝남
@@ -177,9 +180,12 @@ public class EnemyAI : MonoBehaviour, ICore
     private void LookTarget(Vector3 dir)
     {
         Quaternion q = Quaternion.LookRotation(dir);
-        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(dir), Time.deltaTime * _enemyData._rotationSpeed);
+        transform.rotation = Quaternion.Lerp(transform.rotation, q, Time.deltaTime * _enemyData._rotationSpeed);
     }
-
+    private void MoveStop()
+    {
+        _rigidbody.velocity = Vector3.zero;
+    }
     private void MoveEnemy(Transform targetPos, bool isWalk)
     {
 
@@ -202,7 +208,7 @@ public class EnemyAI : MonoBehaviour, ICore
             _animator.SetBool(_walkAnimBoolName, false);
             _animator.SetBool(_runAnimBoolName, true);
         }
-
+        Debug.Log("무브 에너미");
         LookTarget(dir);
         _rigidbody.velocity = velocity;
     }
@@ -226,7 +232,7 @@ public class EnemyAI : MonoBehaviour, ICore
             _animator.SetBool(_walkAnimBoolName, false);
             _animator.SetBool(_runAnimBoolName, true);
         }
-
+        Debug.Log("무브 에너미");
         LookTarget(dir);
         _rigidbody.velocity = velocity;
     }
@@ -302,9 +308,12 @@ public class EnemyAI : MonoBehaviour, ICore
     {
         if (IsAnimationRunning(_attackAnimStateName))
         {
+            Debug.Log("애니메이션 중");
             return INode.NodeState.Running;
         }
 
+        Debug.Log("애니메이션 완료");
+        isAttack = false;
         return INode.NodeState.Success;
     }
     protected virtual INode.NodeState CheckEnemyWithinAttackRange()
@@ -324,9 +333,12 @@ public class EnemyAI : MonoBehaviour, ICore
 
     protected virtual void DoAttackAction()
     {
-        if (_detectedPlayer != null)
+        if (_detectedPlayer != null && !isAttack)
         {
+            Debug.Log("애니메이션 실행");
+            MoveStop();
             _animator.SetTrigger(_attackAnimTriggerName);
+            isAttack = true;
         }
     }
 
@@ -381,6 +393,7 @@ public class EnemyAI : MonoBehaviour, ICore
 
     private void MoveToDetectEnemyAction()
     {
+        
         MoveEnemy(_detectedPlayer, false);
     }
 

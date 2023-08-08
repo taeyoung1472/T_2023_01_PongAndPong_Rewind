@@ -20,7 +20,6 @@ public class Stage : MonoBehaviour
         {
             area.isAreaClear = false;
         }
-
         StartCoroutine(StageCycle());
     }
 
@@ -70,6 +69,7 @@ public class Stage : MonoBehaviour
         {
             StageManager.Instance.InputLock = false;
             curArea = stageAreaList[i];
+            AreaFogSetting();
             StageManager.Instance.SetFreeLookCamInitPos(curArea.freeLookCamPos);
             if (i == 0)
                 stageAreaList[i].EntryArea();
@@ -108,5 +108,11 @@ public class Stage : MonoBehaviour
 
         if (EndManager.Instance)
             EndManager.Instance.End();
+    }
+
+    public void AreaFogSetting()
+    {
+        for (int i = 0; i < stageAreaList.Count; i++)
+            stageAreaList[i].FogOfAreaSetting(stageAreaList[i] == curArea);
     }
 }

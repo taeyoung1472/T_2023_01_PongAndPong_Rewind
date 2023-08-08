@@ -1,5 +1,8 @@
+using EPOOutline;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using UnityEngine;
 using UnityEngine.Events;
@@ -30,6 +33,13 @@ public class StageArea : MonoBehaviour
 
     private FreeLookCamera freeLookCamera;
 
+    private List<ParticleSystem> fogs = null;
+    private List<GimmickVisualLink> linkPaths = null;
+    private List<Outlinable> outlines = null;
+    private List<Material> collectionMaterials = null;
+
+    private bool _settingEnded = false;
+
     private void Start()
     {
         freeLookCamera = FindObjectOfType<FreeLookCamera>();
@@ -38,6 +48,56 @@ public class StageArea : MonoBehaviour
         defaultPlayerSpawn.gameObject.SetActive(false);
         rewindPlayerSpawn.gameObject.SetActive(false);
         endPoint.gameObject.SetActive(false);
+
+        collectionMaterials = new List<Material>();
+        fogs = GetComponentsInChildren<ParticleSystem>().ToList().FindAll(x => x.name.Split(" ")[0] == "Fog");
+        GetComponentsInChildren<Collection>()
+            .ToList().ForEach(x => collectionMaterials.Add(x.GetComponent<MeshRenderer>().material));
+        linkPaths = GetComponentsInChildren<GimmickVisualLink>().ToList();
+        outlines = GetComponentsInChildren<Outlinable>().ToList();
+        _settingEnded = true;
+    }
+    public void FogOfAreaSetting(bool curArea)
+    {
+        StartCoroutine(FogCoroutine(curArea));
+    }
+    private IEnumerator FogCoroutine(bool curArea)
+    {
+        yield return new WaitUntil(() => _settingEnded);
+        if (collectionMaterials == null)
+        {
+            collectionMaterials = new List<Material>();
+            fogs = GetComponentsInChildren<ParticleSystem>().ToList().FindAll(x => x.name.Split(" ")[0] == "Fog");
+            GetComponentsInChildren<Collection>()
+                .ToList().ForEach(x => collectionMaterials.Add(x.GetComponent<MeshRenderer>().material));
+            linkPaths = GetComponentsInChildren<GimmickVisualLink>().ToList();
+            outlines = GetComponentsInChildren<Outlinable>().ToList();
+        }
+        for (int i = 0; i < outlines.Count; i++)
+            outlines[i].enabled = curArea;
+        for (int i = 0; i < linkPaths.Count; i++)
+            linkPaths[i].gameObject.SetActive(curArea);
+
+        if (curArea)
+        {
+            for (int i = 0; i < fogs.Count; i++)
+                fogs[i].Stop(false, ParticleSystemStopBehavior.StopEmitting);
+            for (int i = 0; i < collectionMaterials.Count; i++)
+            {
+                collectionMaterials[i].SetFloat("_BottomLine", 0.81f);
+                collectionMaterials[i].SetFloat("_TopLine", 0.91f);
+            }
+        }
+        else
+        {
+            for (int i = 0; i < fogs.Count; i++)
+                fogs[i].Play();
+            for (int i = 0; i < collectionMaterials.Count; i++)
+            {
+                collectionMaterials[i].SetFloat("_BottomLine", 0f);
+                collectionMaterials[i].SetFloat("_TopLine", 0.577f);
+            }
+        }
     }
     public void InitArea()
     {
@@ -61,11 +121,11 @@ public class StageArea : MonoBehaviour
 
 
         //Debug.Log("아리아엔트리");
-        if(isGameStart)
+        if (isGameStart)
             RewindManager.Instance.StartAreaPlay();
 
         OnEntryArea?.Invoke();
-        if(freeLookCamera == null)
+        if (freeLookCamera == null)
         {
             freeLookCamera = FindObjectOfType<FreeLookCamera>();
         }
@@ -93,7 +153,7 @@ public class StageArea : MonoBehaviour
             EntryArea(true);
         }
         else //클리어 함
-        { 
+        {
             StageManager.Instance.InitPlayer(isAreaClear); //true
             areaEndEvent?.Invoke();
         }

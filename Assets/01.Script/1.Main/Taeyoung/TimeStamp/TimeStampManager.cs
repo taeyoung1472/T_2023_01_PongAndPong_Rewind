@@ -53,7 +53,7 @@ public class TimeStampManager : MonoSingleTon<TimeStampManager>
         if (RewindManager.Instance.IsBeingRewinded)
             return;
 
-        Debug.Log("しし");
+        //Debug.Log("しし");
         TimeStampDisplay display = Instantiate(displayPrefab, displayParent);
         display.GetComponent<RectTransform>().position = GetStampPosition();
         display.Set(data.sprite, backgroundColor, TimerManager.Instance.CurrentTimer);

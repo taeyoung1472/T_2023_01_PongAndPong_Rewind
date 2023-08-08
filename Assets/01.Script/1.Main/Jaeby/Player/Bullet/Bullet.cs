@@ -10,7 +10,7 @@ public class Bullet : PoolAbleObject
     private LayerMask _destroyMask = 0;
     private TrailRenderer _trailRenderer = null;
 
-    public void Init(Vector3 pos, Quaternion rot, float speed, int dmg, float lifeTime = 2f)
+    public void Init(Vector3 pos, Quaternion rot, float speed, float radius, int dmg, float lifeTime = 2f)
     {
         Transform effectTrm = PoolManager.Pop(PoolType.BulletEffect).transform;
         transform.SetPositionAndRotation(pos, rot);
@@ -23,8 +23,8 @@ public class Bullet : PoolAbleObject
         if (_rigid == null)
             _rigid = GetComponent<Rigidbody>();
         _rigid.velocity = transform.right * _speed;
-        AttackCollider.Create(_destroyMask, ColliderType.PlayerBullet, transform, transform.position, transform.localScale.x, null, true, Callback);
-        StartCoroutine(LifeCoroutine(lifeTime));    
+        AttackCollider.Create(_destroyMask, ColliderType.PlayerBullet, transform, transform.position, radius, null, true, Callback);
+        StartCoroutine(LifeCoroutine(lifeTime));
     }
 
     private IEnumerator LifeCoroutine(float lifeTime)
