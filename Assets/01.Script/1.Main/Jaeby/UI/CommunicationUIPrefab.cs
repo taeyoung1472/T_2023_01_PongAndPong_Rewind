@@ -15,6 +15,7 @@ public class CommunicationUIPrefab : MonoBehaviour
     private Image _image = null;
     private TextMeshProUGUI _content = null;
     private Image _textBox = null;
+    private Animator _faceImageAnimator = null;
     private Sequence _animationSeq = null;
     private Coroutine _textAnimationCoroutine = null;
 
@@ -42,6 +43,7 @@ public class CommunicationUIPrefab : MonoBehaviour
         _canvasGroup = GetComponent<CanvasGroup>();
         _content = GetComponentInChildren<TextMeshProUGUI>();
         _image = transform.Find("CharacterSprite").GetComponent<Image>();
+        _faceImageAnimator = _image.GetComponent<Animator>();
         _textBox = transform.Find("TextBox").GetComponent<Image>();
     }
 
@@ -71,6 +73,7 @@ public class CommunicationUIPrefab : MonoBehaviour
 
     private IEnumerator TextAnimationCoroutine(string endText)
     {
+        _faceImageAnimator.SetBool("Talk", true);
         string text = "";
         for(int i = 0; i < endText.Length; i++)
         {
@@ -86,5 +89,6 @@ public class CommunicationUIPrefab : MonoBehaviour
             _content.ForceMeshUpdate();
             yield return new WaitForSeconds(0.05f);
         }
+        _faceImageAnimator.SetBool("Talk", false);
     }
 }
