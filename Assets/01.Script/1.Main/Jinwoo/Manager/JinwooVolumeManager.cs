@@ -50,6 +50,11 @@ public class JinwooVolumeManager : MonoSingleTon<JinwooVolumeManager>
         glitch3.enable.value = false;
     }
 
+    public void DirectDisableCinematicBars()
+    {
+        cinematicBars.amount.value = 0.01f;
+        cinematicBars.enable.value = false;
+    }
     public void StartFadeInCinematicBars()
     {
         StartCoroutine(FadeInCinematicBars());

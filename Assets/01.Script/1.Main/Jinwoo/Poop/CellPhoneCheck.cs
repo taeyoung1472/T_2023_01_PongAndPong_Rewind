@@ -11,9 +11,12 @@ public class CellPhoneCheck : Interact
     protected override void ChildInteractStart()
     {
         Debug.Log("전화받음");
-        if (OfficeCutSceneManager.Instance != null)
-            OfficeCutSceneManager.Instance.AnswerCellPhone();
-        else if (OfficeCutScene2.Instance != null)
-            OfficeCutScene2.Instance.AnswerCellPhone();
+        if (OfficeManager.Instance != null)
+            OfficeManager.Instance.AnswerPhone();
+        //if (OfficeCutSceneManager.Instance != null)
+        //    OfficeCutSceneManager.Instance.AnswerCellPhone();
+        //else if (OfficeCutScene2.Instance != null)
+        //    OfficeCutScene2.Instance.AnswerCellPhone();
+
     }
 }

@@ -19,10 +19,19 @@ public class CutSceneCheck : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            playerCutScene.Play();
             cutSceneCheck.enabled = false;
+            StartCoroutine(PlayElevatorCutScene());
         }
     }
+    private IEnumerator PlayElevatorCutScene()
+    {
+        FadeInOutManager.Instance.FadeIn(0.25f);
+        yield return new WaitForSeconds(0.5f);
+        FadeInOutManager.Instance.FadeOut(0.25f);
+        UIGetter.Instance.PushUIs();
+        playerCutScene.Play();
+    }
+
     public void CheckAllTalkNPC()
     {
         int successNpc = 0;

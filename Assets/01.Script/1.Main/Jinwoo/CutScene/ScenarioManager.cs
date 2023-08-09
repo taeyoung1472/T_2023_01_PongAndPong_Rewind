@@ -11,7 +11,7 @@ public class TextNPCArrary
     public TextAnimCutScene[] npcTexts;
 }
 
-public class ScenarioManager : MonoBehaviour
+public class ScenarioManager : MonoSingleTon<ScenarioManager>
 {
     #region º¯¼öµé
     private bool isTalkStart = false;
@@ -29,6 +29,7 @@ public class ScenarioManager : MonoBehaviour
     [SerializeField] private TextAnim beforeDay;
 
     [SerializeField] private PlayableDirector labNpcTalk;
+    [SerializeField] private PlayableDirector officeCutScene1;
 
     #endregion
     public void StartAutoTalking()
@@ -80,7 +81,7 @@ public class ScenarioManager : MonoBehaviour
     }
     public void CheckAutoTalkSpeechBubble()
     {
-        if (autoTalkingIndex == autoTalkingTotalCnt)
+        if (autoTalkingIndex == autoTalkingTotalCnt+1)
         {
             StartCoroutine(EndTalk());
             return;
@@ -125,6 +126,16 @@ public class ScenarioManager : MonoBehaviour
             yield return new WaitForSeconds(.5f);
             JinwooVolumeManager.Instance.StartFadeOutCinematicBars(true);
             labNpcTalk.Play();
+        }
+        else if (talkNum == 2)
+        {
+            FadeInOutManager.Instance.FadeIn(1.5f);
+            yield return new WaitForSeconds(1f);
+            JinwooVolumeManager.Instance.DirectDisableCinematicBars();
+            yield return new WaitForSeconds(1f);
+            officeCutScene1.Play();
+            yield return new WaitForSeconds(1f);
+            FadeInOutManager.Instance.FadeOut(2f);
         }
 
     }
