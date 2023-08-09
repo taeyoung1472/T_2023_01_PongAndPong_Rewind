@@ -22,9 +22,6 @@ public class VoidObject : MonoBehaviour
 
     public void Update()
     {
-        if (EndManager.Instance.IsEnd)
-            return;
-
         transform.Rotate(rotVec * Time.deltaTime);
         transform.position = new Vector3(transform.position.x, originY + (moveYIntensity * Mathf.Sin(time * moveYFrequency)), transform.position.z);
         transform.localScale = originScale - originScale * (sizeIntensity * Mathf.Sin(time * sizeFrequency));

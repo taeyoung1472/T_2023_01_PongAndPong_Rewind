@@ -8,11 +8,13 @@ public class DesignDataSO : ScriptableObject
     public Sprite portalIcon = null;
     public Sprite traderIcon = null;
     public Sprite constructionIcon = null;
+    public Sprite elevatorIcon = null;
     [Header("색깔")]
     public Color nomalColor = Color.white;
     public Color portalColor = Color.white;
     public Color specialColor = Color.white;
     public Color constructionColor = Color.white;
+    public Color elevatorColor = Color.white;
 
     public Sprite GetIcon(IconType type)
     {
@@ -38,6 +40,8 @@ public class DesignDataSO : ScriptableObject
                 return researcherIcon;
             case IconType.Construction:
                 return constructionIcon;
+            case IconType.Elevator:
+                return elevatorIcon;
             default:
                 break;
         }
@@ -68,6 +72,8 @@ public class DesignDataSO : ScriptableObject
                 return "직원";
             case IconType.Construction:
                 return "공사 인력";
+            case IconType.Elevator:
+                return "엘리베이터";
             default:
                 break;
         }
@@ -88,6 +94,8 @@ public class DesignDataSO : ScriptableObject
                 return specialColor;
             case NPCType.Construction:
                 return constructionColor;
+            case NPCType.Elevator:
+                return elevatorColor;
             default:
                 break;
         }
