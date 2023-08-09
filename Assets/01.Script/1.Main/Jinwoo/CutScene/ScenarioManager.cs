@@ -28,6 +28,8 @@ public class ScenarioManager : MonoBehaviour
 
     [SerializeField] private TextAnim beforeDay;
 
+    [SerializeField] private PlayableDirector labNpcTalk;
+
     #endregion
     public void StartAutoTalking()
     {
@@ -65,11 +67,7 @@ public class ScenarioManager : MonoBehaviour
     }
     public void ShowText()
     {
-        if (autoTalkingIndex == autoTalkingTotalCnt)
-        {
-            StartCoroutine(EndTalk());
-            return;
-        }
+        
         foreach (var npc in npcTexts)
         {
             if (npc.gameObject.activeSelf && npc.isAnim)
@@ -82,6 +80,11 @@ public class ScenarioManager : MonoBehaviour
     }
     public void CheckAutoTalkSpeechBubble()
     {
+        if (autoTalkingIndex == autoTalkingTotalCnt)
+        {
+            StartCoroutine(EndTalk());
+            return;
+        }
         for (int i = 0; i < npcTexts.Length; i++) //대화 캐릭 몇명인지
         {
             for (int j = 0; j < npcTexts[i].TextData.cutSceneTexts.Length; j++) // 총 대화수에서 맞는 대화 출력
@@ -110,12 +113,18 @@ public class ScenarioManager : MonoBehaviour
         AllClearText();
 
         isTalkStart = false;
-        FadeInOutManager.Instance.FadeIn(2f);
-        yield return new WaitForSeconds(2.2f);
+        
         if (talkNum == 1)
         {
+            JinwooVolumeManager.Instance.StartFadeInCinematicBars();
+            yield return new WaitForSeconds(2f);
             beforeDay.gameObject.SetActive(true);
             beforeDay.EndCheck();
+            yield return new WaitForSeconds(3.5f);
+            beforeDay.gameObject.SetActive(false);
+            yield return new WaitForSeconds(.5f);
+            JinwooVolumeManager.Instance.StartFadeOutCinematicBars(true);
+            labNpcTalk.Play();
         }
 
     }
