@@ -49,7 +49,46 @@ public class JinwooVolumeManager : MonoSingleTon<JinwooVolumeManager>
         glitch2.enable.value = false;
         glitch3.enable.value = false;
     }
-    
+
+    public void DirectDisableCinematicBars()
+    {
+        cinematicBars.amount.value = 0.01f;
+        cinematicBars.enable.value = false;
+    }
+    public void StartFadeInCinematicBars()
+    {
+        StartCoroutine(FadeInCinematicBars());
+    }
+    public void StartFadeOutCinematicBars(bool isEnable = false)
+    {
+        StartCoroutine(FadeOutCinematicBars(isEnable));
+
+    }
+    public IEnumerator FadeInCinematicBars()
+    {
+        cinematicBars.enable.value = true;
+        cinematicBars.amount.value = 0.01f;
+        while (cinematicBars.amount.value < cinematicBars.amount.max)
+        {
+            cinematicBars.amount.value += 0.01f;
+            yield return new WaitForSeconds(0.02f);
+        }
+    }
+    public IEnumerator FadeOutCinematicBars(bool isEnable = false)
+    {
+        cinematicBars.enable.value = true;
+        cinematicBars.amount.value = 0.51f;
+        float minAmount = 0.01f;
+        if (isEnable)
+        {
+            minAmount = 0.15f;
+        }
+        while (cinematicBars.amount.value >= minAmount)
+        {
+            cinematicBars.amount.value -= 0.01f;
+            yield return new WaitForSeconds(0.02f);
+        }
+    }
     public void StartCinematicBars()
     {
         StartCoroutine(EnableCinematicBars());
