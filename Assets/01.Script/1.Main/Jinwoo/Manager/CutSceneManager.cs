@@ -24,7 +24,6 @@ public class CutSceneManager : MonoSingleTon<CutSceneManager>
     [SerializeField] private TextAnim playerTalktext;
     [SerializeField] private TextAnim npcTalktext;
 
-    private float spacebarCoolTime = 1f;
     private float curCool = 0;
 
     private int skipToggle;

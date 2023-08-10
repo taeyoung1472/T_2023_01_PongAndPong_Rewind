@@ -10,7 +10,6 @@ public class Meeting2CutSceneManager : MonoSingleTon<Meeting2CutSceneManager>
 
     private bool isMeetingStart = false;
 
-    private float spacebarCoolTime = 1.5f;
     private float curCool = 0;
 
     [SerializeField] private int autoTalkingIndex = 1;

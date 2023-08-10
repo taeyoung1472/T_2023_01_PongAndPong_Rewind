@@ -23,7 +23,6 @@ public class OfficeCutScene2 : MonoSingleTon<OfficeCutScene2>
 
     [SerializeField] private List<MonoBehaviour> enableList;
 
-    [SerializeField] private float spacebarCoolTime = 1.5f;
     private float curCool = 0;
 
     [SerializeField] private string sceneName;
