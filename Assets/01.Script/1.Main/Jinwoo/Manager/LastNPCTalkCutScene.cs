@@ -10,7 +10,6 @@ public class LastNPCTalkCutScene : MonoSingleTon<LastNPCTalkCutScene>
 {
     private bool isTalkStart = false;
 
-    private float spacebarCoolTime = 1.5f;
     private float curCool = 0;
 
     [SerializeField] private int autoTalkingIndex = 1;
