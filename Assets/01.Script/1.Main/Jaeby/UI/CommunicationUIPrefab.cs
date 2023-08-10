@@ -85,6 +85,7 @@ public class CommunicationUIPrefab : MonoBehaviour
             {
                 text += endText[i];
             }
+            AudioManager.PlayAudioRandPitch(SoundType.OnNPCSpeak);
             _content.text = text;
             _content.ForceMeshUpdate();
             yield return new WaitForSeconds(0.05f);
