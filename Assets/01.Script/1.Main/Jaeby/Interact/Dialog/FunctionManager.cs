@@ -9,6 +9,19 @@ public class FunctionManager : MonoSingleTon<FunctionManager>
     [SerializeField]
     private List<OptionEventData> optionEventDatas = new List<OptionEventData>();
 
+    public UnityEvent GetFirstTimeFunction(string key)
+    {
+        if (key != null)
+        {
+            if (PlayerPrefs.GetInt(key, 0) == 0)
+            {
+                PlayerPrefs.SetInt(key, 1);
+                return GetEvent(key);
+            }
+        }
+        return null;
+    }
+
     public UnityEvent GetEvent(string key)
     {
         if (key == null)
