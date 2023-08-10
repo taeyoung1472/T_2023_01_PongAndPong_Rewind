@@ -48,7 +48,6 @@ public class StageCommunicationUI : MonoBehaviour
             prefabPosition.y = _nextTextYPos;
             prefab.GetComponent<RectTransform>().anchoredPosition = prefabPosition;
             _nextTextYPos += prefab.GetTextHeight();
-            Debug.Log(_nextTextYPos);
             yield return new WaitForSeconds(_dataSO.communicationDatas[i].nextContentTime);
         }
         DestroyChildren(_parentTrm);
