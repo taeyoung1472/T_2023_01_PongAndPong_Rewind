@@ -10,7 +10,7 @@ public class ElevatorController : MonoSingleTon<ElevatorController>
 
     [SerializeField] private Transform player;
     [SerializeField] private List<Elevator> elevatorList = new();
-    private int myFloor;
+    private int myFloor = 2;
 
     public void UseElevator(int targetFloor)
     {
