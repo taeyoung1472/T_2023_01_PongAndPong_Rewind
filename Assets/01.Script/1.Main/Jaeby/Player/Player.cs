@@ -268,6 +268,9 @@ public class Player : MonoBehaviour
     #region 바닥 체크 및 경사
     private void GroundCheck()
     {
+        if (PlayerActionCheck(PlayerActionType.Dash))
+            return;
+
         bool lastGrounded = _isGrounded;
         Vector3 boxCenter = _col.bounds.center;
         Vector3 halfExtents = _col.bounds.extents;

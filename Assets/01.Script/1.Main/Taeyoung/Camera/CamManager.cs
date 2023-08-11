@@ -96,7 +96,7 @@ public class CamManager : MonoSingleTon<CamManager>
     {
         if(_vCamPerlin == null)
         {
-            Debug.LogWarning("_vCamPerlin 없음.");
+            //Debug.LogWarning("_vCamPerlin 없음.");
             return;
         }    
         if (_shakeCoroutine != null)
