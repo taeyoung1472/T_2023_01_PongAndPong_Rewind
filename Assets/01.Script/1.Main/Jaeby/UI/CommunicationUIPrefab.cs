@@ -14,8 +14,12 @@ public class CommunicationUIPrefab : MonoBehaviour
     private CanvasGroup _canvasGroup = null;
     private Image _image = null;
     private TextMeshProUGUI _content = null;
+    private string _contentText = "";
     private Image _textBox = null;
+
     private Animator _faceImageAnimator = null;
+    public Animator FaceImageAnimator => _faceImageAnimator;
+
     private Sequence _animationSeq = null;
     private Coroutine _textAnimationCoroutine = null;
 
@@ -25,7 +29,7 @@ public class CommunicationUIPrefab : MonoBehaviour
 
         _image.enabled = sprite != null;
         _image.sprite = sprite;
-        _content.text = content;
+        _content.text = _contentText = content;
         _content.ForceMeshUpdate();
         Vector2 textSize = _content.GetRenderedValues();
         Vector2 textBoxPosition = (Vector2)_content.rectTransform.localPosition + textSize * 0.5f;
@@ -35,7 +39,16 @@ public class CommunicationUIPrefab : MonoBehaviour
         anchoredPos.y += textSize.y;
         _content.rectTransform.anchoredPosition = anchoredPos;
         _content.text = "";
-        _textAnimationCoroutine = StartCoroutine(TextAnimationCoroutine(content));
+    }
+
+    public void StartTextAnimation(Animator targetAnimator)
+    {
+        _textAnimationCoroutine = StartCoroutine(TextAnimationCoroutine(targetAnimator, _contentText));
+    }
+
+    public float GetTextHeight()
+    {
+        return _content.rectTransform.anchoredPosition.y;
     }
 
     private void SettingComponent()
@@ -71,9 +84,9 @@ public class CommunicationUIPrefab : MonoBehaviour
         }
     }
 
-    private IEnumerator TextAnimationCoroutine(string endText)
+    private IEnumerator TextAnimationCoroutine(Animator targetAnimator, string endText)
     {
-        _faceImageAnimator.SetBool("Talk", true);
+        targetAnimator?.SetBool("Talk", true);
         string text = "";
         for(int i = 0; i < endText.Length; i++)
         {
@@ -90,6 +103,6 @@ public class CommunicationUIPrefab : MonoBehaviour
             _content.ForceMeshUpdate();
             yield return new WaitForSeconds(0.05f);
         }
-        _faceImageAnimator.SetBool("Talk", false);
+        targetAnimator?.SetBool("Talk", false);
     }
 }

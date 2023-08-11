@@ -81,8 +81,9 @@ public class UIManager : MonoSingleTon<UIManager>
                     (new Vector3(0f, -3f, 0f), Quaternion.Euler(0f, 20f, 90f));
                 Sequence seq = DOTween.Sequence();
                 seq.Append(pauseImg.transform.DORotate(new Vector3(0f, 0f, 0f), 0.5f)).SetUpdate(true);
-                //freeLookCamera.Rig.transform.position = new Vector3(0f, 3.35f, -13f);
-                //freeLookCamera._isActivated = false;
+
+                freeLookCamera._isCursorVisible = true;
+
                 Time.timeScale = 0f;
             }
             else if(!EndManager.Instance.IsEnd)
@@ -123,6 +124,14 @@ public class UIManager : MonoSingleTon<UIManager>
     {
         SetDayText();
         mainImg.SetActive(true);
+        Debug.Log(currentOpenImg);
+        if (currentOpenImg != setActiveFalseObjs[0] && currentOpenImg != setActiveFalseObjs[1] && currentOpenImg != setActiveFalseObjs[2])
+        {
+            BackPressDirector(currentOpenImg.transform);
+
+            setActiveFalseObjs[2].SetActive(true);  
+        }
+
         if(currentOpenImg != null)
         {
             BackPressDirector(currentOpenImg.transform);
@@ -135,6 +144,8 @@ public class UIManager : MonoSingleTon<UIManager>
             return;
         //freeLookCamera._isActivated = true;
         //timerImg.gameObject.SetActive(true);
+
+        freeLookCamera._isCursorVisible = false;
 
         isPause = false;
         if (StageManager.Instance.GetAreaPlayCheck()) //게임 시작 도중이였을 때
@@ -189,6 +200,7 @@ public class UIManager : MonoSingleTon<UIManager>
     {
         PressDirector(gimmickImg.transform);
         PhoneGimmick.Instance.OnStageGimmick();
+
     }
    
     public void PressDirector(Transform trm)
