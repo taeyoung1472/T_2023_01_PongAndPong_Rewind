@@ -15,15 +15,23 @@ public class EnviromentSoundField : MonoBehaviour
 
     public void Update()
     {
-        float dist = Mathf.Abs(transform.position.x - cameraTrans.position.x) * 2;
-
+        float distY = Mathf.Abs(transform.position.y - cameraTrans.position.y) * 2;
         float targetVolume = 0.0f;
-        if (dist < fieldSize.x)
-            targetVolume = 1.0f;
-        else if (dist < fieldSize.x + fieldSize.x * sizeFactor)
-            targetVolume = 1 - ((dist - fieldSize.x) / (fieldSize.x * sizeFactor));
-        else
+        if(distY > fieldSize.y)
+        {
             targetVolume = 0.0f;
+        }
+        else
+        {
+            float dist = Mathf.Abs(transform.position.x - cameraTrans.position.x) * 2;
+
+            if (dist < fieldSize.x)
+                targetVolume = 1.0f;
+            else if (dist < fieldSize.x + fieldSize.x * sizeFactor)
+                targetVolume = 1 - ((dist - fieldSize.x) / (fieldSize.x * sizeFactor));
+            else
+                targetVolume = 0.0f;
+        }
 
         foreach (var source in audioSourceArr)
         {
