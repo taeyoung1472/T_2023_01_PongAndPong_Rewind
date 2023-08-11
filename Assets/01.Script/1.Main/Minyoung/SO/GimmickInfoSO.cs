@@ -8,4 +8,7 @@ public class GimmickInfoSO : ScriptableObject
     public string gimmickName;
     public string gimmickExplain;
     public Sprite gimmickIcon;
+    public AnimationClip gimmickAnimClip;
+    public string animName;
+
 }
