@@ -54,7 +54,7 @@ public class PlayerHP : MonoBehaviour, IPlayerEnableResetable
             return;
         StageManager.Instance.InputLock = true;
         Instantiate(_dieParticlePrefab, _player.transform.position + _player.Col.center, _player.transform.rotation);
-        _player.PlayerRenderer.DissolveStart(new Vector3(0f, 1f, 0f));
+        _player.PlayerRenderer.dissolveAnimator.DissolveStart(0f, 0.3f, new Vector3(0f, 1f, 0f));
     }
 
     public void Restart()
@@ -75,6 +75,6 @@ public class PlayerHP : MonoBehaviour, IPlayerEnableResetable
             _hpSlider.minValue = 0;
             _hpSlider.maxValue = _player.playerHealthSO.maxHP;
         }
-        _player.PlayerRenderer.DissolveReset();
+        _player.PlayerRenderer.dissolveAnimator.DissolveReset();
     }
 }

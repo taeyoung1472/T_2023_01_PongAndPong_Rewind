@@ -5,6 +5,9 @@ using UnityEngine.Events;
 
 public class PlayerRenderer : MonoBehaviour
 {
+    private DissolveAnimator _dissolveAnimator = null;
+    public DissolveAnimator dissolveAnimator => _dissolveAnimator;
+
     private bool _fliped = false;
     public bool Fliped => _fliped;
     private bool _lastFliped = false;
@@ -28,20 +31,12 @@ public class PlayerRenderer : MonoBehaviour
     [SerializeField]
     private float _camShakePower = 5f;
 
-    [SerializeField]
-    private SkinnedMeshRenderer _meshRenderer = null;
-    [SerializeField]
-    private float _dissolveTime = 0.8f;
-    private List<Material> _materials = new List<Material>();
-    private Sequence _dissolSeq = null;
-
     public bool Fliping => _fliping;
 
     private void Awake()
     {
         _player = GetComponentInParent<Player>();
-        if (_meshRenderer != null)
-            _materials.AddRange(_meshRenderer.materials);
+        _dissolveAnimator = GetComponent<DissolveAnimator>();
     }
 
     public bool GetHorizontalFlip()
@@ -160,27 +155,5 @@ public class PlayerRenderer : MonoBehaviour
         _player.transform.rotation = targetRotation;
         _fliped = !_fliped;
         OnFliped?.Invoke(_fliped);
-    }
-
-    public void DissolveStart(Vector3 dissolveDirection)
-    {
-        if (_dissolSeq != null)
-            _dissolSeq.Kill();
-        _dissolSeq = DOTween.Sequence();
-        foreach (var mat in _materials)
-        {
-            mat.SetVector("_DissolveDirection", dissolveDirection);
-            _dissolSeq.Join(DOTween.To(() => 0f, x => mat.SetFloat("_Dissolve", x), 0.3f, _dissolveTime)).SetUpdate(true);
-        }
-    }
-
-    public void DissolveReset()
-    {
-        if (_dissolSeq != null)
-            _dissolSeq.Kill();
-        foreach (var mat in _materials)
-        {
-            mat.SetFloat("_Dissolve", 0f);
-        }
     }
 }
