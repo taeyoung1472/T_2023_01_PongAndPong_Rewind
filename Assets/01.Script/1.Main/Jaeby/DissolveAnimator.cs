@@ -15,6 +15,12 @@ public class DissolveAnimator : MonoBehaviour
     private List<Material> _materials = new List<Material>();
     private Sequence _dissolSeq = null;
 
+    [Header("테스트용")]
+    public float startVal = 0f;
+    public float endVal = 1f;
+    public float dissolveTime = 0.8f;
+    public Vector3 dir = Vector3.up;
+
     private void Awake()
     {
         if (_targetRenderers != null)
@@ -31,6 +37,12 @@ public class DissolveAnimator : MonoBehaviour
                 _materials.AddRange(_targetSkinRenderers[i].materials);
             }
         }
+    }
+
+    [ContextMenu("테스트 디졸브")]
+    public void TestDissolve()
+    {
+        DissolveStart(startVal, endVal, dir, dissolveTime);
     }
 
     /// <summary>
