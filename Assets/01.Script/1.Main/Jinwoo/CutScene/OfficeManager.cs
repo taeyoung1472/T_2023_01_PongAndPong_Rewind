@@ -67,4 +67,10 @@ public class OfficeManager : MonoSingleTon<OfficeManager>
         
 
     }
+
+    public void EndPhone()
+    {
+        playerTalk.SetActive(false);
+        talkCam.gameObject.SetActive(false);
+    }
 }

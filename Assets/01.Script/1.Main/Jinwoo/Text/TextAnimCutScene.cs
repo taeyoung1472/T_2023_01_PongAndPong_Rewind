@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-
-
+using Cinemachine;
 
 public class TextAnimCutScene : MonoBehaviour
 {
+    public CinemachineVirtualCamera npcCam;
     [SerializeField] private TextMeshProUGUI _textMeshPro;
 
     [SerializeField] private CutSceneTextAnimDataSO textData;

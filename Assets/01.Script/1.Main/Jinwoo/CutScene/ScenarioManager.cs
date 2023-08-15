@@ -30,6 +30,10 @@ public class ScenarioManager : MonoSingleTon<ScenarioManager>
 
     [SerializeField] private PlayableDirector labNpcTalk;
     [SerializeField] private PlayableDirector officeCutScene1;
+    [SerializeField] private PlayableDirector meetingCutScene;
+
+    [SerializeField] private GameObject meetingCam;
+    [SerializeField] private GameObject meetingNPC;
 
     #endregion
     public void StartAutoTalking()
@@ -115,7 +119,7 @@ public class ScenarioManager : MonoSingleTon<ScenarioManager>
 
         isTalkStart = false;
         
-        if (talkNum == 1)
+        if (talkNum == 1)// 첫엘베 끝나면
         {
             JinwooVolumeManager.Instance.StartFadeInCinematicBars();
             yield return new WaitForSeconds(2f);
@@ -127,7 +131,7 @@ public class ScenarioManager : MonoSingleTon<ScenarioManager>
             JinwooVolumeManager.Instance.StartFadeOutCinematicBars(true);
             labNpcTalk.Play();
         }
-        else if (talkNum == 2)
+        else if (talkNum == 2) //포탈회의 끝날때
         {
             FadeInOutManager.Instance.FadeIn(1.5f);
             yield return new WaitForSeconds(1f);
@@ -137,6 +141,30 @@ public class ScenarioManager : MonoSingleTon<ScenarioManager>
             yield return new WaitForSeconds(1f);
             FadeInOutManager.Instance.FadeOut(2f);
         }
+        else if(talkNum == 3) //첫번째 사무실 휴대폰 대화 끝나면
+        {
+            FadeInOutManager.Instance.FadeIn(1.5f);
+            yield return new WaitForSeconds(2f);
+            FadeInOutManager.Instance.FadeOut(2f);
+            meetingCam.SetActive(true);
+            meetingNPC.SetActive(true);
+
+            OfficeManager.Instance.EndPhone();
+            yield return new WaitForSeconds(1f);
+            StartAutoTalking();
+        }
+        else if(talkNum == 4) //회의실 대화 끝나면
+        {
+            FadeInOutManager.Instance.FadeIn(1f);
+            yield return new WaitForSeconds(1.5f);
+            meetingCutScene.Play();
+        }
+        else if(talkNum == 5)
+        {
+            FadeInOutManager.Instance.FadeIn(1.5f);
+            yield return new WaitForSeconds(2f);
+        }
+
 
     }
 
@@ -151,11 +179,17 @@ public class ScenarioManager : MonoSingleTon<ScenarioManager>
                 npcTexts[i].StopAnim();
                 npcTexts[i].EndCheck(autoTalkingIndex);
                 autoTalkingIndex++;
+
+                if(npcTexts[i].npcCam != null)
+                    npcTexts[i].npcCam.Priority += 2;
             }
             else
             {
                 npcTexts[i].ClearText();
                 npcTexts[i].gameObject.SetActive(false);
+
+                if (npcTexts[i].npcCam != null)
+                    npcTexts[i].npcCam.Priority = 10;
             }
         }
     }
