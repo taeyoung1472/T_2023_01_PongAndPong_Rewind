@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.UI;
-
+using TMPro;
 public class PhoneGimmick : MonoSingleTon<PhoneGimmick>
 {
     [SerializeField] private Transform parent;
@@ -11,6 +12,14 @@ public class PhoneGimmick : MonoSingleTon<PhoneGimmick>
     [SerializeField] private GameObject gimmickTem;
 
     [SerializeField] private GimmickEncyclopediaSO gimmickEncyclopediaSO;
+
+    public GameObject scrollview;
+    public GameObject backImage;
+    public GameObject gifMenu;
+
+    public Animator animator;
+    public TextMeshProUGUI gimmickName;
+    public TextMeshProUGUI gimmickExplain;
     public void Start()
     {
         CreateTem();   
@@ -22,12 +31,15 @@ public class PhoneGimmick : MonoSingleTon<PhoneGimmick>
             GameObject obj = Instantiate(gimmickTem, parent);
             obj.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = gimmickEncyclopediaSO.gimmickEncyclopedia[i].gimmickName;
             obj.transform.GetChild(1).GetComponent<Image>().sprite = gimmickEncyclopediaSO.gimmickEncyclopedia[i].gimmickIcon;
-
+            obj.GetComponent<GimmickInfoGIF>().gimmickSO = gimmickEncyclopediaSO.gimmickEncyclopedia[i];
         }
+
     }
     public void OnStageGimmick()
     {
-        
+        scrollview.SetActive(true);
+        backImage.SetActive(true);
+        gifMenu.SetActive(false);
     }
 
 }
