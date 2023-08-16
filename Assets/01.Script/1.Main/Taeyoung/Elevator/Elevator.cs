@@ -15,6 +15,8 @@ public class Elevator : MonoBehaviour
 
     public void Open(Action changePlayerPositionAction)
     {
+        FindObjectOfType<Player>().PlayerInput.enabled = false;
+
         Sequence seq = DOTween.Sequence();
 
         doorCam.gameObject.SetActive(true);

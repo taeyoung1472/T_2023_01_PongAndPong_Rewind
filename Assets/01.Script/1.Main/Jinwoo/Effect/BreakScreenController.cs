@@ -13,8 +13,6 @@ public class BreakScreenController : MonoSingleTon<BreakScreenController>
     {
         if (Input.GetKeyDown(KeyCode.O))
         {
-            //slices = Instantiate(slicesPrefabs, spawntrm);
-            //obj.SetActive(false);
             StartCoroutine(CourtineScreenShot());
         }
     }
