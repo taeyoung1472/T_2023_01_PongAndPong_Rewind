@@ -27,6 +27,6 @@ public class ElevatorController : MonoSingleTon<ElevatorController>
     public void DeActiveBlackPanel()
     {
         Debug.Log("Black Off");
-        blackPanel.DOColor(new Color(0, 0, 0, 0), 1f);
+        blackPanel.DOColor(new Color(0, 0, 0, 0), 1f).OnComplete(() => { FindObjectOfType<Player>().PlayerInput.enabled = true; });
     }
 }
