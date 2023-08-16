@@ -32,16 +32,17 @@ public class UIManager : MonoSingleTon<UIManager>
     private bool pauseAnimating = false;
 
     [SerializeField] private GameObject mainImg;
-    [SerializeField] private GameObject stageImg;
+    public GameObject stageImg;
+    [SerializeField] private GameObject settingImg;
     [SerializeField] private GameObject collectionImg;
-    [SerializeField] private GameObject gimmickImg;
+    public GameObject gimmickImg;
 
-    [SerializeField] private GameObject[] setActiveFalseObjs;
+   public GameObject[] setActiveFalseObjs;
 
     [SerializeField] private TextMeshProUGUI dayText;
     [SerializeField] private TextMeshProUGUI timeText;
 
-    [SerializeField] private GameObject currentOpenImg;
+    public GameObject currentOpenImg;
 
     [SerializeField] private AudioSource fastTimeAudio;
     private float fastTimeAudioVolume = 0f;
@@ -125,12 +126,9 @@ public class UIManager : MonoSingleTon<UIManager>
         SetDayText();
         mainImg.SetActive(true);
         Debug.Log(currentOpenImg);
-        if (currentOpenImg != setActiveFalseObjs[0] && currentOpenImg != setActiveFalseObjs[1] && currentOpenImg != setActiveFalseObjs[2])
-        {
-            BackPressDirector(currentOpenImg.transform);
+        BackPressDirector(currentOpenImg.transform);
 
-            setActiveFalseObjs[2].SetActive(true);  
-        }
+        setActiveFalseObjs[2].SetActive(true);  
 
         if(currentOpenImg != null)
         {
@@ -195,12 +193,15 @@ public class UIManager : MonoSingleTon<UIManager>
     }
 
     
+    public void PauseSetting()
+    {
+        PressDirector(settingImg.transform);
+    }
 
     public void PauseGimmick()
     {
         PressDirector(gimmickImg.transform);
         PhoneGimmick.Instance.OnStageGimmick();
-
     }
    
     public void PressDirector(Transform trm)
@@ -215,6 +216,8 @@ public class UIManager : MonoSingleTon<UIManager>
     }
     public void BackPressDirector(Transform trm)
     {
+        Debug.Log(currentOpenImg);
+
         SetDayText();
         trm.DOKill();
         trm.localScale = Vector2.one;
