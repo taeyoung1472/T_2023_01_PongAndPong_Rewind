@@ -1,9 +1,13 @@
 using DG.Tweening;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class PlayerRenderer : MonoBehaviour
 {
+    private DissolveAnimator _dissolveAnimator = null;
+    public DissolveAnimator dissolveAnimator => _dissolveAnimator;
+
     private bool _fliped = false;
     public bool Fliped => _fliped;
     private bool _lastFliped = false;
@@ -32,6 +36,7 @@ public class PlayerRenderer : MonoBehaviour
     private void Awake()
     {
         _player = GetComponentInParent<Player>();
+        _dissolveAnimator = GetComponent<DissolveAnimator>();
     }
 
     public bool GetHorizontalFlip()
@@ -151,7 +156,4 @@ public class PlayerRenderer : MonoBehaviour
         _fliped = !_fliped;
         OnFliped?.Invoke(_fliped);
     }
-
-
-
 }
