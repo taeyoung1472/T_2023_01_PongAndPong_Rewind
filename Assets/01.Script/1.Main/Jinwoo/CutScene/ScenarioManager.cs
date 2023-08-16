@@ -31,6 +31,7 @@ public class ScenarioManager : MonoSingleTon<ScenarioManager>
     [SerializeField] private PlayableDirector labNpcTalk;
     [SerializeField] private PlayableDirector officeCutScene1;
     [SerializeField] private PlayableDirector meetingCutScene;
+    [SerializeField] private PlayableDirector portalCutScene;
 
     [SerializeField] private GameObject meetingCam;
     [SerializeField] private GameObject meetingNPC;
@@ -159,11 +160,22 @@ public class ScenarioManager : MonoSingleTon<ScenarioManager>
             yield return new WaitForSeconds(1.5f);
             meetingCutScene.Play();
         }
-        else if(talkNum == 5)
+        else if(talkNum == 5) // 보안요원 대화 끝나면
         {
             FadeInOutManager.Instance.FadeIn(1.5f);
             yield return new WaitForSeconds(2f);
+            meetingCam.SetActive(false);
+            meetingNPC.SetActive(false);
+            FadeInOutManager.Instance.FadeOut(1f);
+            portalCutScene.Play();
         }
+        else if (talkNum == 6)
+        {
+            JinwooVolumeManager.Instance.StartFadeInCinematicBars();
+            yield return new WaitForSeconds(2f);
+            JinwooVolumeManager.Instance.StartFadeOutCinematicBars(false);
+        }
+
 
 
     }
