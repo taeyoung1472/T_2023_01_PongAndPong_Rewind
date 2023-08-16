@@ -10,11 +10,13 @@ public class LabCollectionObjCutScene : MonoBehaviour
     private PlayableDirector _cutSceneDirector = null;
     [SerializeField]
     private UnityEvent OnCutSceneStarted = null;
+    [SerializeField]
+    private WorldDataSO _targetWorld = null;
 
     private void Start()
     {
-        _cutSceneDirector = GetComponent<PlayableDirector>();
-        AttemptCutScene();
+        _cutSceneDirector = transform.Find("PlayableDirector").GetComponent<PlayableDirector>();
+        //AttemptCutScene();
     }
 
     [ContextMenu("함수 : ResetPlayedData")]
@@ -23,13 +25,22 @@ public class LabCollectionObjCutScene : MonoBehaviour
         PlayerPrefs.DeleteKey("LabCollectionObjCutScene");
     }
 
+    [ContextMenu("가보자")]
     private void AttemptCutScene()
     {
-        bool isAlreadyEnded = PlayerPrefs.GetInt("LabCollectionObjCutScene", 0) != 0;
-        if (SaveDataManager.Instance.AllChapterDataBase.stageCollectionDataDic["서부시대"]
-            .stageCollectionValueList.Count > 0 &&
-            isAlreadyEnded)
+        ResetPlayedData();
+        StageCollectionData stageCollectionData = SaveDataManager.Instance.AllChapterDataBase.stageCollectionDataDic[_targetWorld.worldName]
+            .stageCollectionValueList[_targetWorld.stageList[0].stageIndex];
+        int currentCollection = 0;
+        foreach (var e in stageCollectionData.stageDataList)
         {
+            currentCollection += e.zoneCollections.collectionBoolList.FindAll(x => x == true).Count;
+        }
+        bool isAlreadyEnded = (PlayerPrefs.GetInt("LabCollectionObjCutScene", 0)) == 0;
+
+        if (currentCollection > 0 && isAlreadyEnded)
+        {
+            Debug.Log("시작해본다");
             PlayerPrefs.SetInt("LabCollectionObjCutScene", 1);
             OnCutSceneStarted?.Invoke();
             _cutSceneDirector.Play();
