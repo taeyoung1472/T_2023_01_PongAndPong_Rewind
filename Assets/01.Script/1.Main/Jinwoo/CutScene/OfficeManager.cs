@@ -40,6 +40,7 @@ public class OfficeManager : MonoSingleTon<OfficeManager>
 
         player.PlayerInput.enabled = true;
         officeEnterCam.gameObject.SetActive(false);
+        playerCam.gameObject?.SetActive(true);
 
         //3초 뒤에 마크이미지 나오면서 휴대폰 울림
         yield return new WaitForSeconds(3f);
@@ -57,8 +58,6 @@ public class OfficeManager : MonoSingleTon<OfficeManager>
 
         //phoneTalk.Play();
         playerTalk.SetActive(true);
-        playerCam.Follow = null;
-        playerCam.LookAt = null;
         player.gameObject.SetActive(false);
 
         playerCam.gameObject.SetActive(false);

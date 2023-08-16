@@ -34,7 +34,8 @@ public class ScenarioManager : MonoSingleTon<ScenarioManager>
     [SerializeField] private PlayableDirector portalCutScene;
     [SerializeField] private PlayableDirector enterMadCutScene;
     [SerializeField] private PlayableDirector madCutScene;
-
+    [SerializeField] private PlayableDirector officeCutScene2;
+    [SerializeField] private PlayableDirector secondEleCutScene;
 
     [SerializeField] private GameObject meetingCam;
     [SerializeField] private GameObject meetingNPC;
@@ -181,10 +182,13 @@ public class ScenarioManager : MonoSingleTon<ScenarioManager>
                 FadeInOutManager.Instance.FadeIn(1.5f);
                 yield return new WaitForSeconds(2f);
                 FadeInOutManager.Instance.FadeOut(1.5f);
-                officeCutScene1.Play();
+                officeCutScene2.Play();
                 break;
-            case 9:
-
+            case 9://두번째 사무실 대화가 끝나면
+                FadeInOutManager.Instance.FadeIn(1.5f);
+                yield return new WaitForSeconds(2f);
+                FadeInOutManager.Instance.FadeOut(1.5f);
+                secondEleCutScene.Play();
                 break;
             default:
                 break;
