@@ -9,6 +9,6 @@ public class SettingValue
     public bool isMute;
     public float volume;
 
-    public float fpsLimit;
+    public int fpsLimitIndex;
     public bool isFullScreen;
 }

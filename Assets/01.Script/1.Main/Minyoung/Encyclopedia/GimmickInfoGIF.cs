@@ -24,6 +24,8 @@ public class GimmickInfoGIF : MonoBehaviour
 
     public void PushStageInfo()
     {
+
+        Debug.Log("Sしいしいいけしいげ");
         UIManager.Instance.BackPressDirector(UIManager.Instance.stageImg.transform);
         UIManager.Instance.PressDirector(UIManager.Instance.gimmickImg.transform);
 

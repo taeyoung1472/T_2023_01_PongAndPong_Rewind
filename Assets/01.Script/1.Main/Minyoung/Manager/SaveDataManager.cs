@@ -267,4 +267,12 @@ public class SaveDataManager : MonoSingleTon<SaveDataManager>
 
         File.WriteAllText(path, json);
     }
+    public void SettingJSON(bool isMute, float volume, bool isFullScreen, int index)
+    {
+        _settingValue.isMute = isMute;
+        _settingValue.volume = volume;
+        _settingValue.isFullScreen = isFullScreen;
+        _settingValue.fpsLimitIndex = index;
+
+    }
 }

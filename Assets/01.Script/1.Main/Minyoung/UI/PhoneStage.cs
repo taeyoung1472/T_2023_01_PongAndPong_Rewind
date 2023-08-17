@@ -55,7 +55,6 @@ public class PhoneStage : MonoSingleTon<PhoneStage>
         int totalCnt = stageCollectionData.stageDataList.Count;
 
 
-
         collectionText.SetText($"{eatCnt}/{totalCnt}");
 
         if (parentTrm.childCount < currentStageDataSO.useGimmickStageList.Count)
@@ -71,6 +70,7 @@ public class PhoneStage : MonoSingleTon<PhoneStage>
                 //obj.GetComponent<GimmickIcon>().gimmickInfoSO = currentStageDataSO.useGimmickStageList[i];
             }
         }
+            UIManager.Instance.gimmickImg.SetActive(false);
     }
 
 
