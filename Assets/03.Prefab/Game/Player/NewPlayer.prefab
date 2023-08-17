@@ -5433,7 +5433,6 @@ GameObject:
   - component: {fileID: 6691628707489746809}
   - component: {fileID: 6691628707489746801}
   - component: {fileID: 6691628707489746805}
-  - component: {fileID: 6691628707489746802}
   - component: {fileID: 2107113395}
   - component: {fileID: 6691628707489746803}
   - component: {fileID: 2107113391}
@@ -5571,51 +5570,6 @@ MonoBehaviour:
   _groundMask:
     serializedVersion: 2
     m_Bits: 32896
---- !u!114 &6691628707489746802
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6691628707489746810}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a3a6e7db70063be4da283feb4300a740, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _actionType: 5
-  OnMeleeAttack:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 6691628707631861949}
-        m_TargetAssemblyTypeName: PlayerAnimation, Assembly-CSharp
-        m_MethodName: MeleeAttackAnimation
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnRangeAttack:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 6691628707631861949}
-        m_TargetAssemblyTypeName: PlayerAnimation, Assembly-CSharp
-        m_MethodName: RangeAttackAnimation
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  _pistolObj: {fileID: 7986864027456876279}
-  _shootingPointTrm: {fileID: 1862524172}
 --- !u!114 &2107113395
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5676,8 +5630,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _hpSlider: {fileID: 0}
-  _meshRenderer: {fileID: 112894375679413401}
-  _dissolveTime: 0.8
   _dieParticlePrefab: {fileID: 3838935709508797743, guid: 2fee38d1b5cbc644695ab2e28de72dc5, type: 3}
   OnDie:
     m_PersistentCalls:
@@ -5769,19 +5721,7 @@ MonoBehaviour:
         m_CallState: 2
   OnAttack:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 6691628707489746802}
-        m_TargetAssemblyTypeName: PlayerAttack, Assembly-CSharp
-        m_MethodName: Attack
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   OnWeaponChange:
     m_PersistentCalls:
       m_Calls: []
@@ -6089,7 +6029,7 @@ MonoBehaviour:
     cutoutTextureName: 
     DilateRenderingMode: 0
     cutoutTextureIndex: 0
-  - IsVisible: 0
+  - IsVisible: 1
     CutoutMask: 8
     edgeDilateAmount: 5
     frontEdgeDilateAmount: 5
@@ -6105,7 +6045,7 @@ MonoBehaviour:
     cutoutTextureName: 
     DilateRenderingMode: 0
     cutoutTextureIndex: 0
-  - IsVisible: 0
+  - IsVisible: 1
     CutoutMask: 8
     edgeDilateAmount: 5
     frontEdgeDilateAmount: 5
@@ -6121,7 +6061,7 @@ MonoBehaviour:
     cutoutTextureName: 
     DilateRenderingMode: 0
     cutoutTextureIndex: 0
-  - IsVisible: 0
+  - IsVisible: 1
     CutoutMask: 8
     edgeDilateAmount: 5
     frontEdgeDilateAmount: 5
@@ -6137,7 +6077,7 @@ MonoBehaviour:
     cutoutTextureName: 
     DilateRenderingMode: 0
     cutoutTextureIndex: 0
-  - IsVisible: 0
+  - IsVisible: 1
     CutoutMask: 8
     edgeDilateAmount: 5
     frontEdgeDilateAmount: 5
@@ -6153,7 +6093,7 @@ MonoBehaviour:
     cutoutTextureName: 
     DilateRenderingMode: 0
     cutoutTextureIndex: 0
-  - IsVisible: 0
+  - IsVisible: 1
     CutoutMask: 8
     edgeDilateAmount: 5
     frontEdgeDilateAmount: 5
@@ -6240,6 +6180,7 @@ GameObject:
   - component: {fileID: 6691628707631861890}
   - component: {fileID: 6691628707631861948}
   - component: {fileID: 767614072}
+  - component: {fileID: 9029500305148828640}
   m_Layer: 0
   m_Name: AgentRenderer
   m_TagString: Untagged
@@ -6278,7 +6219,7 @@ MonoBehaviour:
   OnAttackStarted:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 6691628707489746802}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: PlayerAttack, Assembly-CSharp
         m_MethodName: AttackStart
         m_Mode: 1
@@ -6293,7 +6234,7 @@ MonoBehaviour:
   OnAttackEnded:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 6691628707489746802}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: PlayerAttack, Assembly-CSharp
         m_MethodName: AttackEnd
         m_Mode: 1
@@ -6375,6 +6316,26 @@ MonoBehaviour:
   handR: {fileID: 0}
   footL: {fileID: 0}
   footR: {fileID: 0}
+--- !u!114 &9029500305148828640
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6691628707631861922}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61e1385f0a99f0b4ebc00ae3c058695e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _targetRenderers: []
+  _targetSkinRenderers:
+  - {fileID: 112894375679413401}
+  _dissolveTime: 0.8
+  startVal: 0
+  endVal: 1
+  dissolveTime: 0.8
+  dir: {x: 0, y: 1, z: 0}
 --- !u!1 &6691628707846597019
 GameObject:
   m_ObjectHideFlags: 0
@@ -6623,6 +6584,10 @@ PrefabInstance:
     - target: {fileID: 5710882524681089668, guid: d4c00971c8036754cbcda3da87ea6e03, type: 3}
       propertyPath: m_Layer
       value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5710882524681089668, guid: d4c00971c8036754cbcda3da87ea6e03, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5710882524681318052, guid: d4c00971c8036754cbcda3da87ea6e03, type: 3}
       propertyPath: m_RootOrder

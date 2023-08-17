@@ -120,4 +120,9 @@ public class GravityInverseGimmick : ControlAbleObjcet
             beforeKey = item.Key;
         }
     }
+
+    public override void ResetObject()
+    {
+
+    }
 }

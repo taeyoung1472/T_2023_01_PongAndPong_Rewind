@@ -23,6 +23,8 @@ public class SceneChangeCanvas : MonoBehaviour
 
     public void Awake()
     {
+        DontDestroyOnLoad(gameObject);
+
         if (FindObjectsOfType<SceneChangeCanvas>().Length != 1 && !hasInstance)
         {
             Destroy(gameObject);
@@ -50,7 +52,6 @@ public class SceneChangeCanvas : MonoBehaviour
 
     public void Start()
     {
-        DontDestroyOnLoad(gameObject);
         SetRect();
         StartCoroutine(ChangeVolume());
     }
