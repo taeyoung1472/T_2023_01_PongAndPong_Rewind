@@ -40,9 +40,11 @@ public class OfficeManager : MonoSingleTon<OfficeManager>
 
         player.PlayerInput.enabled = true;
         officeEnterCam.gameObject.SetActive(false);
+        playerCam.gameObject?.SetActive(true);
 
         //3초 뒤에 마크이미지 나오면서 휴대폰 울림
         yield return new WaitForSeconds(3f);
+        AudioManager.PlayAudioRandPitch(SoundType.OnPhoneBell);
         markImg.gameObject.SetActive(true); 
         interactiveCheckCol.gameObject.SetActive(true);
     }
@@ -57,14 +59,21 @@ public class OfficeManager : MonoSingleTon<OfficeManager>
 
         //phoneTalk.Play();
         playerTalk.SetActive(true);
+        player.gameObject.SetActive(false);
+
         playerCam.Follow = null;
         playerCam.LookAt = null;
-        player.gameObject.SetActive(false);
 
         playerCam.gameObject.SetActive(false);
         talkCam.gameObject.SetActive(true);
         ScenarioManager.Instance.StartAutoTalking();
         
 
+    }
+
+    public void EndPhone()
+    {
+        playerTalk.SetActive(false);
+        talkCam.gameObject.SetActive(false);
     }
 }

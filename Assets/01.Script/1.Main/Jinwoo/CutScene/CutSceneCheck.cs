@@ -25,9 +25,9 @@ public class CutSceneCheck : MonoBehaviour
     }
     private IEnumerator PlayElevatorCutScene()
     {
-        FadeInOutManager.Instance.FadeIn(0.25f);
+        FadeInOutManager.Instance.FadeIn(0.5f);
         yield return new WaitForSeconds(0.5f);
-        FadeInOutManager.Instance.FadeOut(0.25f);
+        FadeInOutManager.Instance.FadeOut(0.5f);
         UIGetter.Instance.PushUIs();
         playerCutScene.Play();
     }
