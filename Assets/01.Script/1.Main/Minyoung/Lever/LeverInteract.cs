@@ -37,20 +37,20 @@ public class LeverInteract : Interact
         {
             control.target.ResetObject();
         }
-        popup.gameObject.SetActive(false);
+        //popup.gameObject.SetActive(false);
     }
 
     protected override void ChildInteractEnd()
     {
     }
 
-    private void Update()
-    {
-        if (popup != null && _player != null)
-        {
-            popup.gameObject.SetActive(Vector3.Distance(transform.position, _player.transform.position) <= 1.5f);
-        }
-    }
+    //private void Update()
+    //{
+    //    if (popup != null && _player != null)
+    //    {
+    //        popup.gameObject.SetActive(Vector3.Distance(transform.position, _player.transform.position) <= 1.5f);
+    //    }
+    //}
 
     protected override void ChildInteractStart()
     {
