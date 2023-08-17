@@ -1,11 +1,8 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UI.Extensions;
-using System.Linq;
-using Unity.VisualScripting;
-using System;
-using TMPro.Examples;
 
 public class StageWorldUI : MonoBehaviour
 {
@@ -113,7 +110,7 @@ public class StageWorldUI : MonoBehaviour
             }
         }
 
-     
+
         for (int i = 0; i < _stageTrms.Count; i++)
         {
             if (clearCount == 0)

@@ -34,6 +34,11 @@ public class MovingObjectGimmick : ControlAbleObjcet
 
     }
 
+    public override void ResetObject()
+    {
+
+    }
+
     public void Update()
     {
         if (isMoving)
