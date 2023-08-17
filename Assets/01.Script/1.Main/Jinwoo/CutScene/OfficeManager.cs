@@ -44,6 +44,7 @@ public class OfficeManager : MonoSingleTon<OfficeManager>
 
         //3초 뒤에 마크이미지 나오면서 휴대폰 울림
         yield return new WaitForSeconds(3f);
+        AudioManager.PlayAudioRandPitch(SoundType.OnPhoneBell);
         markImg.gameObject.SetActive(true); 
         interactiveCheckCol.gameObject.SetActive(true);
     }

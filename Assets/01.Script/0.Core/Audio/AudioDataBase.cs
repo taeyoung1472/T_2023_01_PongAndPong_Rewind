@@ -84,4 +84,6 @@ public enum SoundType
     OnElevatorEnd = 1101,
     OnElevatorFunc = 1102,
     OnElevatorBtnClick = 1103,
+
+    OnPhoneBell = 1200,
 }
