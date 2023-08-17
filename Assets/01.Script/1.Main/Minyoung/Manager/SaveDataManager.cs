@@ -6,6 +6,11 @@ public class SaveDataManager : MonoSingleTon<SaveDataManager>
 {
     [SerializeField] StageDatabase stageDatabase;
 
+    #region 
+    private SettingValue _settingValue;
+    public SettingValue SettingValue => _settingValue;
+    #endregion
+
     #region  콜렉션 관련 
     public List<ZoneCollection> zoneCollectionsList;
     //  public List<StageCollectionData> stageCollectionDataList;
@@ -49,6 +54,7 @@ public class SaveDataManager : MonoSingleTon<SaveDataManager>
     {
         LoadCollectionJSON();
         LoadStageClearJSON();
+        LoadSoundJSON();
     }
     public void LoadCollectionJSON()
     {
@@ -140,7 +146,6 @@ public class SaveDataManager : MonoSingleTon<SaveDataManager>
 
         File.WriteAllText(path, json);
     }
-
  
 
     public void LoadStageClearJSON()
@@ -225,6 +230,40 @@ public class SaveDataManager : MonoSingleTon<SaveDataManager>
     {
         string path = Application.dataPath + "/Save/StageClear.json";
         string json = Newtonsoft.Json.JsonConvert.SerializeObject(_allChapterClearDataBase);
+
+        File.WriteAllText(path, json);
+    }
+
+    public void LoadSoundJSON()
+    {
+        string path = Application.dataPath + "/Save/settingValue.json";
+
+        if (File.Exists(path))
+        {
+            string json = File.ReadAllText(path);
+            _settingValue = Newtonsoft.Json.JsonConvert.DeserializeObject<SettingValue>(json);
+
+          
+        }
+        else
+        {
+
+            if (_settingValue == null)
+            {
+                _settingValue = new();
+            }
+
+
+            File.WriteAllText(path, Newtonsoft.Json.JsonConvert.SerializeObject(_settingValue));
+
+          
+        }
+    }
+
+    public void SaveSoundJSON()
+    {
+        string path = Application.dataPath + "/Save/settingValue.json";
+        string json = Newtonsoft.Json.JsonConvert.SerializeObject(_settingValue);
 
         File.WriteAllText(path, json);
     }
