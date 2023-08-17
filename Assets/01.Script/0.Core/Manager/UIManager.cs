@@ -128,8 +128,6 @@ public class UIManager : MonoSingleTon<UIManager>
         Debug.Log(currentOpenImg);
         BackPressDirector(currentOpenImg.transform);
 
-        setActiveFalseObjs[2].SetActive(true);  
-
         if(currentOpenImg != null)
         {
             BackPressDirector(currentOpenImg.transform);
