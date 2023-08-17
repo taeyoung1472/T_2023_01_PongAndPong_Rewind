@@ -81,6 +81,7 @@ public class StageSelectUI : MonoBehaviour
         GridLayoutGroup gridGroup = _chapterScrollRect.content.GetComponent<GridLayoutGroup>();
         float padding = gridGroup.padding.left + gridGroup.spacing.x;
         float width = padding * 2 + gridGroup.cellSize.x * worlds.Count;
+        Debug.Log(width);
         _chapterScrollRect.content.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, width);
 
         List<StageWorldUI> newWorlds = new List<StageWorldUI>();

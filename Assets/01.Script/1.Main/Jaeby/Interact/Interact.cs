@@ -70,14 +70,20 @@ public abstract class Interact : MonoBehaviour
 
     public void InteractEnter()
     {
-        if (_interactUIPos != null)
-            UIGetter.Instance.GetInteractUI(_interactUIPos.position, _interactSprite, KeyManager.keys[InputType.Interact]);
-        ChildInteractEnter();
+        if (UIGetter.Instance)
+        {
+            if (_interactUIPos != null)
+                UIGetter.Instance.GetInteractUI(_interactUIPos.position, _interactSprite, KeyManager.keys[InputType.Interact]);
+            ChildInteractEnter();
+        }
     }
 
     public void InteractExit()
     {
-        UIGetter.Instance.PushUIs();
-        ChildInteractExit();
+        if (UIGetter.Instance)
+        {
+            UIGetter.Instance.PushUIs();
+            ChildInteractExit();
+        }
     }
 }
