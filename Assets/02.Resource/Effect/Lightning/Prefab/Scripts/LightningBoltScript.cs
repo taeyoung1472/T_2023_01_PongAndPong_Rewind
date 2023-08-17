@@ -253,7 +253,7 @@ namespace DigitalRuby.ThunderAndLightning
 
             if (Camera == null)
             {
-                UnityEngine.Debug.LogError("Camera not assigned to lightning script. Either set the camera or tag your camera as main camera.");
+                //UnityEngine.Debug.LogError("Camera not assigned to lightning script. Either set the camera or tag your camera as main camera.");
             }
 
 #endif

@@ -1,15 +1,11 @@
 using System.Collections.Generic;
 using System.IO;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class SaveDataManager : MonoSingleTon<SaveDataManager>
 {
     [SerializeField] StageDatabase stageDatabase;
-
-    #region 
-    private SettingValue _settingValue;
-    public SettingValue SettingValue => _settingValue;
-    #endregion
 
     #region  콜렉션 관련 
     public List<ZoneCollection> zoneCollectionsList;
@@ -54,7 +50,6 @@ public class SaveDataManager : MonoSingleTon<SaveDataManager>
     {
         LoadCollectionJSON();
         LoadStageClearJSON();
-        LoadSoundJSON();
     }
     public void LoadCollectionJSON()
     {
@@ -146,6 +141,7 @@ public class SaveDataManager : MonoSingleTon<SaveDataManager>
 
         File.WriteAllText(path, json);
     }
+
  
 
     public void LoadStageClearJSON()
@@ -234,45 +230,37 @@ public class SaveDataManager : MonoSingleTon<SaveDataManager>
         File.WriteAllText(path, json);
     }
 
-    public void LoadSoundJSON()
+    public int CurrentStageCollectionCount(string worldName, int index)
     {
-        string path = Application.dataPath + "/Save/settingValue.json";
+        int cnt = 0;
 
-        if (File.Exists(path))
+        for (int i = 0; i < index; i++)
         {
-            string json = File.ReadAllText(path);
-            _settingValue = Newtonsoft.Json.JsonConvert.DeserializeObject<SettingValue>(json);
+            StageCollectionData stageCollectionData = _allChapterDataBase.stageCollectionDataDic[worldName]
+           .stageCollectionValueList[i];
 
-          
-        }
-        else
-        {
-
-            if (_settingValue == null)
+            foreach (var e in stageCollectionData.stageDataList)
             {
-                _settingValue = new();
+                cnt += e.zoneCollections.collectionBoolList.FindAll(x => x == true).Count;
             }
 
-
-            File.WriteAllText(path, Newtonsoft.Json.JsonConvert.SerializeObject(_settingValue));
-
-          
         }
+
+
+        return cnt;
     }
-
-    public void SaveSoundJSON()
+    public int MaxStageCollectionCount(string worldName, int index)
     {
-        string path = Application.dataPath + "/Save/settingValue.json";
-        string json = Newtonsoft.Json.JsonConvert.SerializeObject(_settingValue);
+        int cnt = 0;
 
-        File.WriteAllText(path, json);
-    }
-    public void SettingJSON(bool isMute, float volume, bool isFullScreen, int index)
-    {
-        _settingValue.isMute = isMute;
-        _settingValue.volume = volume;
-        _settingValue.isFullScreen = isFullScreen;
-        _settingValue.fpsLimitIndex = index;
+        for (int i = 0; i < index; i++)
+        {
+            StageCollectionData stageCollectionData = _allChapterDataBase.stageCollectionDataDic[worldName]
+           .stageCollectionValueList[i];
 
+
+            cnt += stageCollectionData.stageDataList.Count;
+        }
+        return cnt;
     }
 }

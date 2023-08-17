@@ -23,6 +23,12 @@ public class GimmickDoor : ControlAbleObjcet
         curControlType = controlType;
     }
 
+    public override void ResetObject()
+    {
+        transform.localPosition = originPos;
+        curControlType = ControlType.None;
+    }
+
     private void Awake()
     {
         originPos = transform.localPosition;
@@ -46,6 +52,10 @@ public class GimmickDoor : ControlAbleObjcet
                 break;
         }
 
-        transform.localPosition = Vector3.Lerp(transform.localPosition, targetPos, Time.deltaTime * speed) ;
+        if (Vector3.Distance(transform.localPosition, targetPos) > 0.25f)
+        {
+            Vector3 dir = (targetPos - transform.localPosition).normalized;
+            transform.localPosition = transform.localPosition + dir * speed * Time.deltaTime;
+        }
     }
 }

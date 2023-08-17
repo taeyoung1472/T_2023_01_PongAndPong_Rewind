@@ -1,11 +1,9 @@
 using System.Collections.Generic;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UI.Extensions;
-using System.Linq;
-using Unity.VisualScripting;
-using System;
-using TMPro.Examples;
 
 public class StageWorldUI : MonoBehaviour
 {
@@ -90,9 +88,9 @@ public class StageWorldUI : MonoBehaviour
         {
             if (_stageTrms[i].gameObject.activeSelf == false)
             {
-                lastTrm = _stageTrms[i - 1];
                 break;
             }
+            lastTrm = _stageTrms[i];
         }
         GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, BOX_WIDTH + lastTrm.anchoredPosition.x);
     }
@@ -113,7 +111,7 @@ public class StageWorldUI : MonoBehaviour
             }
         }
 
-     
+
         for (int i = 0; i < _stageTrms.Count; i++)
         {
             if (clearCount == 0)

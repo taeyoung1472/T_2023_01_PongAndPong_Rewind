@@ -60,4 +60,9 @@ public class RotateMapGimmick : ControlAbleObjcet
         });
         Debug.Log("로테이트맵" + rotateVec);
     }
+
+    public override void ResetObject()
+    {
+
+    }
 }

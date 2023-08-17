@@ -1,16 +1,30 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class LeverInteract : Interact
 {
     [SerializeField] private ControlData[] controlDataArr;
+    [SerializeField] private GameObject popup;
+    [SerializeField] private Color color;
+    [SerializeField] private GimmickVisualLink visualLinkPrefab;
     private Animator _animator = null;
 
     public bool isPush = false;
 
     public DirectionType gravityChangeDir;
+
+    public void Start()
+    {
+        if (visualLinkPrefab != null)
+        {
+            foreach (var data in controlDataArr)
+            {
+                GimmickVisualLink link = Instantiate(visualLinkPrefab, transform);
+                link.Link(transform, data.target.transform, color);
+                data.target.controlColor = color;
+            }
+        }
+    }
+
     public override void InitOnPlay()
     {
         base.InitOnPlay();
@@ -18,15 +32,33 @@ public class LeverInteract : Interact
         if (_animator == null)
             _animator = GetComponent<Animator>();
         _animator.Play("Idle");
+
+        foreach (var control in controlDataArr)
+        {
+            control.target.ResetObject();
+        }
+        //popup.gameObject.SetActive(false);
     }
 
     protected override void ChildInteractEnd()
     {
     }
 
+    //private void Update()
+    //{
+    //    if (popup != null && _player != null)
+    //    {
+    //        popup.gameObject.SetActive(Vector3.Distance(transform.position, _player.transform.position) <= 1.5f);
+    //    }
+    //}
+
     protected override void ChildInteractStart()
     {
         _player.PlayerInput.enabled = true;
+
+        if (Vector3.Distance(transform.position, _player.transform.position) >= 1.5f)
+            return;
+
 
         foreach (var control in controlDataArr)
         {
@@ -36,8 +68,8 @@ public class LeverInteract : Interact
             }
         }
 
-        LeverAnimation(isPush);
         LeverPullAction();
+        LeverAnimation(isPush);
     }
     public void LeverPullAction()
     {
@@ -50,7 +82,7 @@ public class LeverInteract : Interact
             }
             else
             {
-                control.target.Control(control.isReverse ? ControlType.ReberseControl : ControlType.Control, false, _player, gravityChangeDir);
+                control.target.Control(ControlType.None, true, _player, gravityChangeDir);
             }
         }
     }
@@ -60,7 +92,7 @@ public class LeverInteract : Interact
         if (_animator == null)
             _animator = GetComponent<Animator>();
 
-      
+
 
         if (pull)
         {

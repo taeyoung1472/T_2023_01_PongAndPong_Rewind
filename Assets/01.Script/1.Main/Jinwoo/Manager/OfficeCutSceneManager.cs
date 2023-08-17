@@ -23,7 +23,6 @@ public class OfficeCutSceneManager : MonoSingleTon<OfficeCutSceneManager>
 
     [SerializeField] private List<MonoBehaviour> enableList;
 
-    [SerializeField] private float spacebarCoolTime = 1.5f;
     private float curCool = 0;
     void Start()
     {

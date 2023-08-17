@@ -36,4 +36,9 @@ public class ScaleObj : ControlAbleObjcet
         }
 
     }
+
+    public override void ResetObject()
+    {
+
+    }
 }
