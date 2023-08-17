@@ -12,11 +12,15 @@ public class LabCollectionObjCutScene : MonoBehaviour
     private UnityEvent OnCutSceneStarted = null;
     [SerializeField]
     private WorldDataSO _targetWorld = null;
+    [SerializeField]
+    private int _index = 1;
+    [SerializeField]
+    private LabCollectionObjController _labCollectionObjController = null;
 
     private void Start()
     {
         _cutSceneDirector = transform.Find("PlayableDirector").GetComponent<PlayableDirector>();
-        //AttemptCutScene();
+        AttemptCutScene();
     }
 
     [ContextMenu("함수 : ResetPlayedData")]
@@ -28,22 +32,20 @@ public class LabCollectionObjCutScene : MonoBehaviour
     [ContextMenu("가보자")]
     private void AttemptCutScene()
     {
-        ResetPlayedData();
-        StageCollectionData stageCollectionData = SaveDataManager.Instance.AllChapterDataBase.stageCollectionDataDic[_targetWorld.worldName]
-            .stageCollectionValueList[_targetWorld.stageList[0].stageIndex];
-        int currentCollection = 0;
-        foreach (var e in stageCollectionData.stageDataList)
-        {
-            currentCollection += e.zoneCollections.collectionBoolList.FindAll(x => x == true).Count;
-        }
         bool isAlreadyEnded = (PlayerPrefs.GetInt("LabCollectionObjCutScene", 0)) == 0;
-
-        if (currentCollection > 0 && isAlreadyEnded)
+        if (SaveDataManager.Instance.CurrentStageCollectionCount(_targetWorld.worldName, _index) > 0 && isAlreadyEnded)
         {
-            Debug.Log("시작해본다");
+            Debug.Log("LabCollectionObj 컷씬 시작");
             PlayerPrefs.SetInt("LabCollectionObjCutScene", 1);
             OnCutSceneStarted?.Invoke();
             _cutSceneDirector.Play();
+        }
+        else
+        {
+            if(_labCollectionObjController != null)
+            {
+                _labCollectionObjController.PercentSet();
+            }
         }
     }
 

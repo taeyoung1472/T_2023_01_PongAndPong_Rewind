@@ -13,6 +13,8 @@ public class LabCollectionObj : MonoBehaviour
     private float _textAnimatingTime = 5f;
     private DissolveAnimator _dissolveAnimator = null;
 
+    [SerializeField] private int index = 0;
+
     public void CollectPercentSet()
     {
         if (_myWorldData == null)
@@ -21,19 +23,24 @@ public class LabCollectionObj : MonoBehaviour
         if (_dissolveAnimator == null)
             _dissolveAnimator = GetComponent<DissolveAnimator>();
 
-        StageCollectionData stageCollectionData = SaveDataManager.Instance.AllChapterDataBase.stageCollectionDataDic[_myWorldData.worldName]
-            .stageCollectionValueList[_myWorldData.stageList[0].stageIndex];
 
-        int currentCollection = 0;
+        int currentCollection = SaveDataManager.Instance.CurrentStageCollectionCount(_myWorldData.worldName, index);
 
-        foreach (var e in stageCollectionData.stageDataList)
-        {
-            currentCollection += e.zoneCollections.collectionBoolList.FindAll(x => x == true).Count;
-        }
+        //StageCollectionData stageCollectionData = SaveDataManager.Instance.AllChapterDataBase.stageCollectionDataDic[_myWorldData.worldName]
+        //    .stageCollectionValueList[_myWorldData.stageList[0].stageIndex];
+        //StageCollectionData stageCollectionDatsa = SaveDataManager.Instance.AllChapterDataBase.stageCollectionDataDic[_myWorldData.worldName]
+        // .stageCollectionValueList[_myWorldData.stageList.Count];
+        //int currentCollection = 0;
 
-        int maxCollection = stageCollectionData.stageDataList.Count;
+        //foreach (var e in stageCollectionData.stageDataList)
+        //{
+        //    currentCollection += e.zoneCollections.collectionBoolList.FindAll(x => x == true).Count;
+        //}
 
-        //Debug.Log(_myWorldData.worldName + "  current : " + currentCollection + "  max : " + maxCollection);
+        int maxCollection = SaveDataManager.Instance.MaxStageCollectionCount(_myWorldData.worldName, index);
+        //int maxCollection = stageCollectionData.stageDataList.Count;
+
+        Debug.Log(_myWorldData.worldName + "  current : " + currentCollection + "  max : " + maxCollection);
         float ratio = ((float)currentCollection/ maxCollection);
         _dissolveAnimator.DissolveStart(_dissolveAnimator.GetDissolveRatio(), ratio, new Vector3(0f, 1f, 0f));
         TextAnimating((int)(ratio * 100f));

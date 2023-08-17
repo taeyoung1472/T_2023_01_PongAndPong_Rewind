@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class SaveDataManager : MonoSingleTon<SaveDataManager>
@@ -227,5 +228,39 @@ public class SaveDataManager : MonoSingleTon<SaveDataManager>
         string json = Newtonsoft.Json.JsonConvert.SerializeObject(_allChapterClearDataBase);
 
         File.WriteAllText(path, json);
+    }
+
+    public int CurrentStageCollectionCount(string worldName, int index)
+    {
+        int cnt = 0;
+
+        for (int i = 0; i < index; i++)
+        {
+            StageCollectionData stageCollectionData = _allChapterDataBase.stageCollectionDataDic[worldName]
+           .stageCollectionValueList[i];
+
+            foreach (var e in stageCollectionData.stageDataList)
+            {
+                cnt += e.zoneCollections.collectionBoolList.FindAll(x => x == true).Count;
+            }
+
+        }
+
+
+        return cnt;
+    }
+    public int MaxStageCollectionCount(string worldName, int index)
+    {
+        int cnt = 0;
+
+        for (int i = 0; i < index; i++)
+        {
+            StageCollectionData stageCollectionData = _allChapterDataBase.stageCollectionDataDic[worldName]
+           .stageCollectionValueList[i];
+
+
+            cnt += stageCollectionData.stageDataList.Count;
+        }
+        return cnt;
     }
 }

@@ -5,8 +5,11 @@ using UnityEngine;
 
 public class LabCollectionObjCutSceneTargetGroup : MonoBehaviour
 {
+    [SerializeField]
+    private float _weight = 2f;
+
     public void TargetWeightSet()
     {
-        GetComponent<CinemachineTargetGroup>().m_Targets[1].weight = 2.5f;
+        GetComponent<CinemachineTargetGroup>().m_Targets[1].weight = _weight;
     }
 }
