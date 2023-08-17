@@ -39,18 +39,7 @@ public class JinwooVolumeManager : MonoSingleTon<JinwooVolumeManager>
 
         barAmount = 0.15f;
     }
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.J))
-        {
-            StartMadGlitch(true);
-        }
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            StartMadGlitch(false);
-        }
-
-    }
+  
     public void EnableGlitch()
     {
         glitch1.enable.value = true;
@@ -179,7 +168,6 @@ public class JinwooVolumeManager : MonoSingleTon<JinwooVolumeManager>
                 glitch2.intensity.value -= 0.05f;
                 yield return new WaitForSeconds(0.01f);
             }
-            Debug.Log("glitchEnd");
         }
         else
         {
@@ -192,7 +180,6 @@ public class JinwooVolumeManager : MonoSingleTon<JinwooVolumeManager>
                 glitch2.intensity.value += 0.05f;
                 yield return new WaitForSeconds(0.01f);
             }
-            Debug.Log("glitchEnd");
             glitch2.enable.value = false;
         }
        

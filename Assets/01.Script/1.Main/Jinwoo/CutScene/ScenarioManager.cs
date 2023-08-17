@@ -42,7 +42,14 @@ public class ScenarioManager : MonoSingleTon<ScenarioManager>
     [SerializeField] private GameObject meetingCam;
     [SerializeField] private GameObject meetingNPC;
 
+    [SerializeField] private GameObject text;
     #endregion
+
+    private IEnumerator Start()
+    {
+        yield return new WaitForSeconds(7f);
+        text.SetActive(false);
+    }
     public void StartAutoTalking()
     {
         StartCoroutine(StartTalking());
@@ -70,7 +77,7 @@ public class ScenarioManager : MonoSingleTon<ScenarioManager>
         if (isTalkStart)
         {
             curCool += Time.deltaTime;
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(1))
             {
                 ShowText();
                 curCool = 0;
