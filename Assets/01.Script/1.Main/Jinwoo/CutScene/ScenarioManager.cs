@@ -154,6 +154,7 @@ public class ScenarioManager : MonoSingleTon<ScenarioManager>
                 FadeInOutManager.Instance.FadeOut(2f);
                 meetingCam.SetActive(true);
                 meetingNPC.SetActive(true);
+                BGMManager.Instance.BgSoundPlay(2);
 
                 OfficeManager.Instance.EndPhone();
                 yield return new WaitForSeconds(2f);
@@ -194,7 +195,9 @@ public class ScenarioManager : MonoSingleTon<ScenarioManager>
                 break;
             case 10: //마지막 엘베 대호 끝나면
                 FadeInOutManager.Instance.FadeIn(1.5f);
+
                 yield return new WaitForSeconds(2f);
+                BGMManager.Instance.StopBGM();
                 SceneManager.LoadScene("NewLab");
                 break;
             default:
