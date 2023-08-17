@@ -18,6 +18,21 @@ public class PlayerInteract : PlayerAction, IPlayerDisableResetable
                 _curInteract.InteractEnter();
             }
         }
+        if (other.CompareTag("AutoInteract"))
+        {
+            Interact interact = other.GetComponentInParent<Interact>();
+            if (interact != null)
+            {
+                if (interact.Interactable == false || _curInteract == interact)
+                    return;
+                _curInteract?.InteractExit();
+                _curInteract = interact;
+                _curInteract.InteractEnter();
+                TryInteract();
+            }
+            //Debug.Log("Ãæµ¿");
+            
+        }
     }
 
     private void OnTriggerExit(Collider other)

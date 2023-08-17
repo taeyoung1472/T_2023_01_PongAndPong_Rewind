@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Playables;
+using UnityEngine.SceneManagement;
+
 [Serializable]
 public class TextNPCArrary
 {
@@ -193,7 +195,7 @@ public class ScenarioManager : MonoSingleTon<ScenarioManager>
             case 10: //마지막 엘베 대호 끝나면
                 FadeInOutManager.Instance.FadeIn(1.5f);
                 yield return new WaitForSeconds(2f);
-                FadeInOutManager.Instance.FadeOut(1.5f);
+                SceneManager.LoadScene("NewLab");
                 break;
             default:
                 break;
