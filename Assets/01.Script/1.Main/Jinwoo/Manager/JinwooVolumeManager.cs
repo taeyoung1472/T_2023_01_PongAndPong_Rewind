@@ -17,6 +17,8 @@ public class JinwooVolumeManager : MonoSingleTon<JinwooVolumeManager>
     private TVEffect tvEffect;
 
     private float barAmount = 0.15f;
+
+    public float glitchintensity = 0f;
     private void Start()
     {
         volume.profile.TryGet(out cinematicBars);
@@ -47,6 +49,7 @@ public class JinwooVolumeManager : MonoSingleTon<JinwooVolumeManager>
         {
             StartMadGlitch(false);
         }
+
     }
     public void EnableGlitch()
     {
@@ -161,7 +164,6 @@ public class JinwooVolumeManager : MonoSingleTon<JinwooVolumeManager>
     }
     public void StartMadGlitch(bool isOn)
     {
-        StopAllCoroutines();
         StartCoroutine(Glitch2(isOn));
     }
     public IEnumerator Glitch2(bool isOn)
@@ -172,9 +174,12 @@ public class JinwooVolumeManager : MonoSingleTon<JinwooVolumeManager>
             glitch2.intensity.value = 1f;
             while (glitch2.intensity.value >= 0f)
             {
+                if (glitch2.intensity.value == 0f)
+                    break;
                 glitch2.intensity.value -= 0.05f;
-                yield return new WaitForSeconds(0.02f);
+                yield return new WaitForSeconds(0.01f);
             }
+            Debug.Log("glitchEnd");
         }
         else
         {
@@ -182,9 +187,12 @@ public class JinwooVolumeManager : MonoSingleTon<JinwooVolumeManager>
             glitch2.intensity.value = 0f;
             while (glitch2.intensity.value <= 1f)
             {
+                if (glitch2.intensity.value == 1f)
+                    break;
                 glitch2.intensity.value += 0.05f;
-                yield return new WaitForSeconds(0.02f);
+                yield return new WaitForSeconds(0.01f);
             }
+            Debug.Log("glitchEnd");
             glitch2.enable.value = false;
         }
        

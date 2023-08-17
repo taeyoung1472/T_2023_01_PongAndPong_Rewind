@@ -154,7 +154,7 @@ public class ScenarioManager : MonoSingleTon<ScenarioManager>
                 meetingNPC.SetActive(true);
 
                 OfficeManager.Instance.EndPhone();
-                yield return new WaitForSeconds(1f);
+                yield return new WaitForSeconds(2f);
                 StartAutoTalking();
                 break;
             case 4://회의실 대화 끝나면
@@ -189,6 +189,11 @@ public class ScenarioManager : MonoSingleTon<ScenarioManager>
                 yield return new WaitForSeconds(2f);
                 FadeInOutManager.Instance.FadeOut(1.5f);
                 secondEleCutScene.Play();
+                break;
+            case 10: //마지막 엘베 대호 끝나면
+                FadeInOutManager.Instance.FadeIn(1.5f);
+                yield return new WaitForSeconds(2f);
+                FadeInOutManager.Instance.FadeOut(1.5f);
                 break;
             default:
                 break;

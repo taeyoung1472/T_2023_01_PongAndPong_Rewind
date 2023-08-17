@@ -60,6 +60,9 @@ public class OfficeManager : MonoSingleTon<OfficeManager>
         playerTalk.SetActive(true);
         player.gameObject.SetActive(false);
 
+        playerCam.Follow = null;
+        playerCam.LookAt = null;
+
         playerCam.gameObject.SetActive(false);
         talkCam.gameObject.SetActive(true);
         ScenarioManager.Instance.StartAutoTalking();
