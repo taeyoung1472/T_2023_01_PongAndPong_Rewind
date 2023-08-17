@@ -45,6 +45,14 @@ public class DissolveAnimator : MonoBehaviour
         DissolveStart(startVal, endVal, dir, dissolveTime);
     }
 
+    public float GetDissolveRatio()
+    {
+        Material targetMat = _materials[0];
+        if (targetMat == null)
+            return 0f;
+        return targetMat.GetFloat("_Dissolve");
+    }
+
     /// <summary>
     /// 스크립트의 _dissolveTime 시간만큼 디졸브됩니다.
     /// </summary>
