@@ -37,31 +37,10 @@ public class SlowGimmick : GimmickObject
             Debug.Log("충돌함");
             player = other.transform.GetComponent<Player>();
             player.playerBuff.AddBuff(PlayerBuffType.Slow);
+            Debug.Log(player);
         }
     }
-    public void CheckObj()
-    {
-        Vector3 boxcenter = _col.bounds.center;
-        Vector3 halfextents = _col.bounds.extents;
-
-        isCheck = Physics.BoxCast(boxcenter, halfextents, transform.up, out hit, transform.rotation, rayDistance);
-        if (isCheck)
-        {
-            Debug.Log("충돌함");
-            if (hit.collider.gameObject.layer == 1 << LayerMask.NameToLayer("Player"))
-            {
-                Debug.Log("플레이어와 닿음");
-                player = hit.transform.GetComponentInParent<Player>();
-                player.playerBuff.AddBuff(PlayerBuffType.Slow);
-            }
-        }
-        else
-        {
-            
-        } 
-    }
-
-    private void OnCollisionExit(Collision collision)
+    private void OnTriggerExit(Collider other)
     {
         if (player != null)
         {
@@ -69,4 +48,34 @@ public class SlowGimmick : GimmickObject
             player = null;
         }
     }
+    //public void CheckObj()
+    //{
+    //    Vector3 boxcenter = _col.bounds.center;
+    //    Vector3 halfextents = _col.bounds.extents;
+
+    //    isCheck = Physics.BoxCast(boxcenter, halfextents, transform.up, out hit, transform.rotation, rayDistance);
+    //    if (isCheck)
+    //    {
+    //        Debug.Log("충돌함");
+    //        if (hit.collider.gameObject.layer == 1 << LayerMask.NameToLayer("Player"))
+    //        {
+    //            Debug.Log("플레이어와 닿음");
+    //            player = hit.transform.GetComponentInParent<Player>();
+    //            player.playerBuff.AddBuff(PlayerBuffType.Slow);
+    //    }
+    //        }
+    //    else
+    //    {
+    //            player.playerBuff.DeleteBuff(PlayerBuffType.Slow);
+    //    }
+    //}
+
+    //private void OnCollisionExit(Collision collision)
+    //{
+    //    if (player != null)
+    //    {
+    //        player.playerBuff.DeleteBuff(PlayerBuffType.Slow);
+    //        player = null;
+    //    }
+    //}
 }
