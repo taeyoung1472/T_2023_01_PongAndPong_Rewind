@@ -143,6 +143,8 @@ public class ButtonGimmick : GimmickObject
                 Control(false);
             }
         }
+
+
         if (toggleing == true && isToggle == true)
         {
             if (isActive == false)
@@ -157,6 +159,15 @@ public class ButtonGimmick : GimmickObject
                 toggleing = false;
             }
         }
+        else if (toggleing == false && isToggle == true)
+        {
+            if (toggleTime <= 0.0f)
+            {
+                SetSlider();
+            }
+        }
+
+       
     }
 
     public void OnTriggerEnter(Collider other)
