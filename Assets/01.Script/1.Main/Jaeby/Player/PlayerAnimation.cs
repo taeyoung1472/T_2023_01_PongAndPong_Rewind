@@ -84,11 +84,11 @@ public class PlayerAnimation : MonoBehaviour
     {
         if (val == false)
             return;
-        if (_player.PlayerActionCheck(PlayerActionType.Attack))
+        /*if (_player.PlayerActionCheck(PlayerActionType.Attack))
         {
             _player.PlayerActionExit(PlayerActionType.Attack);
             _animator.SetTrigger("AttackForceExit");
-        }
+        }*/
         _animator.SetTrigger("WallGrab");
         _animator.Update(0);
     }
