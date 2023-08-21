@@ -9,6 +9,7 @@ public class DeployHandler : MonoBehaviour
 {
     public DeployType deployType;
 
+    public bool isControlTransform = true;
     public Vector3 firstAxis = new Vector3(1, 0, 1);
     public Vector3 secondAxis = new Vector3(-1, 0, -1);
 
