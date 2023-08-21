@@ -7,11 +7,7 @@ using UnityEngine.EventSystems;
 public class GimmickIcon : MonoBehaviour, IPointerExitHandler, IPointerEnterHandler
 {
     public GimmickInfoSO gimmickInfoSO;
-    //public GimmickInfoSO GimmickInfoSO
-    //{
-    //    get { return gimmickInfoSO; }
-    //    set { gimmickInfoSO = value; }
-    //}
+
  
     public void OnPointerEnter(PointerEventData eventData)
     {

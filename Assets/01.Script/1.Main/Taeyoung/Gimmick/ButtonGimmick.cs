@@ -110,7 +110,7 @@ public class ButtonGimmick : GimmickObject
         foreach (var control in controlDataArr)
         {
             control.target.Control(ControlType.None, false, player, gravitChangeDirState);
-            CamManager.Instance.RemoveTargetGroup(control.target.transform);
+            //CamManager.Instance.RemoveTargetGroup(control.target.transform);
         }
     }
 
@@ -215,13 +215,13 @@ public class ButtonGimmick : GimmickObject
 
         foreach (var control in controlDataArr)
         {
-            if (!isCameraControlDisable)
-            {
-                if (controlType == ControlType.None)
-                    CamManager.Instance.RemoveTargetGroup(control.target.transform);
-                else
-                    CamManager.Instance.AddTargetGroup(control.target.transform);
-            }
+            //if (!isCameraControlDisable)
+            //{
+            //    if (controlType == ControlType.None)
+            //        //CamManager.Instance.RemoveTargetGroup(control.target.transform);
+            //    else
+            //        //CamManager.Instance.AddTargetGroup(control.target.transform);
+            //}
 
             if (isFunc)
                 controlType = control.isReverse ? ControlType.ReberseControl : ControlType.Control;

@@ -14,20 +14,23 @@ public class FPSLlmit : MonoBehaviour
 
     public TextMeshProUGUI fpsText;
 
-    private void Awake()
-    {
-        Application.targetFrameRate = fpsList[index];
-    }
+    FullScreenMode screenMode;
+
 
     public void Start()
     {
+
+        fpsText.text = SaveDataManager.Instance.SettingValue.fpsLimitIndex.ToString();
+        Application.targetFrameRate = int.Parse(fpsText.text);
+
+
+
         preBtn.onClick.AddListener(() =>
         {
             if (index != 0)
             {
                 index--;
                 fpsText.text = fpsList[index].ToString();
-                ApplyFPS();
             }
         });
         nextBtn.onClick.AddListener(() =>
@@ -41,12 +44,20 @@ public class FPSLlmit : MonoBehaviour
                 index++;
             }
             fpsText.text = fpsList[index].ToString();
-            ApplyFPS();
         });
     }
+    public void FullScreenBtn(bool isFull)
+    {
+        screenMode = isFull ? FullScreenMode.FullScreenWindow : FullScreenMode.Windowed;
+        Screen.SetResolution(1920, 1080, screenMode);
+    }
+
     public void ApplyFPS()
     {
         Application.targetFrameRate = int.Parse(fpsText.text);
+
+        SaveDataManager.Instance.SettingValue.fpsLimitIndex = int.Parse(fpsText.text); 
+        
         Debug.Log(Application.targetFrameRate);
     }
 

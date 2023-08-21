@@ -22,7 +22,7 @@ public class VideoOption : MonoBehaviour
     public TMP_Dropdown resolutionDropdown;
     private void Awake()
     {
-        InitUI();
+        //InitUI();
     }
     void Start()
     {
@@ -91,10 +91,15 @@ public class VideoOption : MonoBehaviour
     public void FullScreenBtn(bool isFull)
     {
         screenMode = isFull ? FullScreenMode.FullScreenWindow : FullScreenMode.Windowed;
-        currentModeText.text = isFull ? "FullScreen" : "Windowed";
-        Screen.SetResolution(resolutions[resolutionNum].width, resolutions[resolutionNum].height, screenMode);
+        Screen.SetResolution(1920, 1080, screenMode);
+
+        //currentModeText.text = isFull ? "FullScreen" : "Windowed";
+        //Screen.SetResolution(resolutions[resolutionNum].width, resolutions[resolutionNum].height, screenMode);
         //Screen.fullScreenMode.Equals(FullScreenMode.FullScreenWindow) ? true : false;
     }
+
+
+
     public void OKBtnClick()
     {
         Debug.Log("Àßºñ³¦");
