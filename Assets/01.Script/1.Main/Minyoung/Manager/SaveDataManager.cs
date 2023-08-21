@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Assertions.Must;
 
 public class SaveDataManager : MonoSingleTon<SaveDataManager>
 {
@@ -46,10 +47,14 @@ public class SaveDataManager : MonoSingleTon<SaveDataManager>
 
 
     #endregion
+
+    private SettingValue _settingValue;
+    public SettingValue SettingValue => _settingValue;
     private void Awake()
     {
         LoadCollectionJSON();
         LoadStageClearJSON();
+        LoadSoundJSON();
     }
     public void LoadCollectionJSON()
     {
@@ -263,4 +268,39 @@ public class SaveDataManager : MonoSingleTon<SaveDataManager>
         }
         return cnt;
     }
+
+
+    public void LoadSoundJSON()
+    {
+        string path = Application.dataPath + "/Save/SettingValue.json";
+        if (File.Exists(path))
+        {
+            string json = File.ReadAllText(path);
+            _settingValue = Newtonsoft.Json.JsonConvert.DeserializeObject<SettingValue>(json);
+        }
+        else
+        {
+            if (_settingValue == null)
+            {
+                _settingValue = new();
+            }
+            File.WriteAllText(path, Newtonsoft.Json.JsonConvert.SerializeObject(_settingValue));
+        }
+    }
+    public void SaveSoundJSON()
+    {
+        string path = Application.dataPath + "/Save/SettingValue.json";
+        string json = Newtonsoft.Json.JsonConvert.SerializeObject(_settingValue);
+
+        File.WriteAllText(path, json);
+    }
+
+    public void SettingJSON(bool isMute, float sound, bool isScreen, int index)
+    {
+        _settingValue.isMute = isMute;
+        _settingValue.volume = sound;
+        _settingValue.isFullScreen = isScreen;
+        _settingValue.fpsLimitIndex = index;
+    }
+
 }

@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using System.Linq;
+using UnityEditor;
 
 public class PhoneStage : MonoSingleTon<PhoneStage>
 {
@@ -54,7 +55,6 @@ public class PhoneStage : MonoSingleTon<PhoneStage>
         int totalCnt = stageCollectionData.stageDataList.Count;
 
 
-
         collectionText.SetText($"{eatCnt}/{totalCnt}");
 
         if (parentTrm.childCount < currentStageDataSO.useGimmickStageList.Count)
@@ -62,11 +62,16 @@ public class PhoneStage : MonoSingleTon<PhoneStage>
             for (int i = 0; i < currentStageDataSO.useGimmickStageList.Count; i++)
             {
                 GameObject obj = Instantiate(gimmickIcon, parentTrm);
-                obj.GetComponent<Image>().sprite = currentStageDataSO.useGimmickStageList[i].gimmickIcon;
-                obj.GetComponent<GimmickIcon>().gimmickInfoSO = currentStageDataSO.useGimmickStageList[i];
-            }
 
+                obj.GetComponent<Image>().sprite = currentStageDataSO.useGimmickStageList[i].gimmickIcon;
+
+                obj.GetComponent<GimmickInfoGIF>().gimmickSO = currentStageDataSO.useGimmickStageList[i];
+                obj.GetComponent<Button>().onClick.AddListener(() => obj.GetComponent<GimmickInfoGIF>().PushStageInfo());
+                //obj.GetComponent<GimmickIcon>().gimmickInfoSO = currentStageDataSO.useGimmickStageList[i];
+            }
         }
+            UIManager.Instance.gimmickImg.SetActive(false);
     }
+
 
 }

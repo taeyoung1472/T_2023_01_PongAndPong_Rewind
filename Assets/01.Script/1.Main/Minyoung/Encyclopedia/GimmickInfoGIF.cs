@@ -10,23 +10,43 @@ public class GimmickInfoGIF : MonoBehaviour
     public Button btn;
     public void PushBtn()
     {
+        Debug.Log("눌림");
+
         PhoneGimmick.Instance.scrollview.gameObject.SetActive(false);
         PhoneGimmick.Instance.backImage.gameObject.SetActive(false);
         PhoneGimmick.Instance.gifMenu.gameObject.SetActive(true);
 
-        Debug.Log(gimmickSO);
         PhoneGimmick.Instance.gimmickName.text = gimmickSO.gimmickName;
         PhoneGimmick.Instance.gimmickExplain.text = gimmickSO.gimmickExplain;
-        Debug.Log(PhoneGimmick.Instance.animator);
         PhoneGimmick.Instance.animator.Play(gimmickSO.animName);
-       
+
+    }
+
+    public void PushStageInfo()
+    {
+
+        Debug.Log("Sㅇㄴㅇㄴㄴㅁㅇㄴㅂ");
+        UIManager.Instance.BackPressDirector(UIManager.Instance.stageImg.transform);
+        UIManager.Instance.PressDirector(UIManager.Instance.gimmickImg.transform);
+
+       // UIManager.Instance.currentOpenImg = UIManager.Instance.gimmickImg;
+
+       // UIManager.Instance.setActiveFalseObjs[2].SetActive(true);
+        //UIManager.Instance.PressDirector(UIManager.Instance.setActiveFalseObjs[2].transform);
+
+        PhoneGimmick.Instance.scrollview.gameObject.SetActive(false);
+        PhoneGimmick.Instance.backImage.gameObject.SetActive(false);
+        PhoneGimmick.Instance.gifMenu.gameObject.SetActive(true);
+
+        PhoneGimmick.Instance.gimmickName.text = gimmickSO.gimmickName;
+        PhoneGimmick.Instance.gimmickExplain.text = gimmickSO.gimmickExplain;
+        PhoneGimmick.Instance.animator.Play(gimmickSO.animName);
+
 
     }
     void Start()
     {
         btn = transform.GetComponent<Button>();
-        Debug.Log("아아");
-
     }
 
     void Update()
