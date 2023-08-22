@@ -269,6 +269,20 @@ public class SaveDataManager : MonoSingleTon<SaveDataManager>
         return cnt;
     }
 
+    public bool IsClearPortal(string worldName, int index)
+    {
+        int currentCnt = CurrentStageCollectionCount(worldName, index);
+        int maxCnt = MaxStageCollectionCount(worldName, index);
+        if (currentCnt == maxCnt)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
 
     public void LoadSoundJSON()
     {
@@ -287,7 +301,8 @@ public class SaveDataManager : MonoSingleTon<SaveDataManager>
             File.WriteAllText(path, Newtonsoft.Json.JsonConvert.SerializeObject(_settingValue));
         }
     }
-    public void SaveSoundJSON()
+
+        public void SaveSoundJSON()
     {
         string path = Application.dataPath + "/Save/SettingValue.json";
         string json = Newtonsoft.Json.JsonConvert.SerializeObject(_settingValue);

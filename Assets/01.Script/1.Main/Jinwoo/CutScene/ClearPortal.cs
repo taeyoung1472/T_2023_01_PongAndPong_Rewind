@@ -18,7 +18,8 @@ public class ClearPortal : MonoBehaviour
     private void Start()
     {
         //AllCollectPiece();
-        isAllpiece = false;
+        //isAllpiece = false;
+
     }
 
     private void Update()
@@ -35,13 +36,14 @@ public class ClearPortal : MonoBehaviour
 
         if (isAllpiece) //좆ㅈ각 다 모음
         {
+
             completeCutscene.Play();
         }
         else //좆각 다 못 모음
         {
             notcompleteCutscene.Play();
-
         }
+
     }
 
     public void FocusCollection()
