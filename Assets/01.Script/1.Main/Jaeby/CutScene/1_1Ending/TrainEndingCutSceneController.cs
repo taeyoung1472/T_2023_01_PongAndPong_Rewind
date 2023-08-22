@@ -39,7 +39,7 @@ public class TrainEndingCutSceneController : MonoBehaviour
     [ContextMenu("테스트로 시작")]
     public void CutSceneStart()
     {
-        TimerManager.Instance.EndRewind();
+        //TimerManager.Instance.EndRewind();
         Dynamicbinding();
         _cutScene.Play();
     }
@@ -48,8 +48,6 @@ public class TrainEndingCutSceneController : MonoBehaviour
     {
         TrailManager.Instance.AddTrailObj(_trailableObj);
         _trailableObj.IsMotionTrail = true;
-        //_trailableObj.TrailEnable();
-        _particleSystem.gameObject.SetActive(true);
         _particleSystem.Play();
     }
 
