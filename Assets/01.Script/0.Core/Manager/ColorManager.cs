@@ -12,25 +12,25 @@ public static class ColorManager
         switch (codex)
         {
             case ColorCODEX.RED:
-                color.r = 255;
+                color.r = 1;
                 break;
             case ColorCODEX.BLUE:
-                color.b = 255;
+                color.b = 1;
                 break;
             case ColorCODEX.GREEN:
-                color.g = 255;
+                color.g = 1;
                 break;
             case ColorCODEX.YELLOW:
-                color.r = 255;
-                color.g = 255;
+                color.r = 1;
+                color.g = 1;
                 break;
             case ColorCODEX.MINT:
-                color.g = 255;
-                color.b = 255;
+                color.g = 1;
+                color.b = 1;
                 break;
             case ColorCODEX.PURPLE:
-                color.r = 128;
-                color.b = 255;
+                color.r = 0.5f;
+                color.b = 1;
                 break;
             case ColorCODEX.WHITE:
                 color = Color.white;

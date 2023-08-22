@@ -8,6 +8,7 @@ public class MainMenuManager : MonoSingleTon<MainMenuManager>
     public static bool isOpend;
     bool isActive = true;
     bool isWindowActive = false;
+    bool isFirstLabtob = true;
 
     [SerializeField] private bool isOpenCheck;
 
@@ -53,16 +54,20 @@ public class MainMenuManager : MonoSingleTon<MainMenuManager>
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
+            if (isFirstLabtob)
+            {
+                return;
+            }
             if (isActive)
             {
                 if (isWindowActive)
                 {
                     WindowClose();
                 }
-                //else
-                //{
-                //    PlayGame();
-                //}
+                else
+                {
+                    PlayGame();
+                }
             }
             else if (Define.player.PlayerActionCheck(PlayerActionType.Interact) == false)
             {
@@ -119,6 +124,8 @@ public class MainMenuManager : MonoSingleTon<MainMenuManager>
     }
     public void PlayGame()
     {
+        isFirstLabtob = false;
+
         menuCam.Priority = 0;
         playerCam.Priority = 1;
         player.SetActive(true);

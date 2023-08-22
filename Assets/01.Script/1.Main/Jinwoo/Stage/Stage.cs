@@ -76,7 +76,9 @@ public class Stage : MonoBehaviour
             else
             {
                 //stageAreaList[i].EntryArea(true);
-                StageManager.Instance.OnReStartArea();
+                curArea.SetFreeLookPos();
+                StageManager.Instance.OnFreeLookCam(true);
+                //StageManager.Instance.OnReStartArea();
             }
 
             yield return new WaitUntil(() => stageAreaList[i].isAreaClear);

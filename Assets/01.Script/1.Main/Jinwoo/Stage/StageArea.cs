@@ -105,13 +105,17 @@ public class StageArea : MonoBehaviour
         //여기서 순환 버퍼 거시기 해주면 될듯 (초기화)
         TimerManager.Instance.ChangeOnTimer(true);
     }
-    public void EntryArea(bool isGameStart = false)
+    public void SetFreeLookPos()
     {
         StageManager.Instance.FreeLookCam.offsetX = freeLoockCamLimit.x;
         StageManager.Instance.FreeLookCam.offsetY = freeLoockCamLimit.y;
         StageManager.Instance.FreeLookCam.centerX = freeLookCamPos.position.x;
         StageManager.Instance.FreeLookCam.centerY = freeLookCamPos.position.y;
         StageManager.Instance.FreeLookCam.initPos = freeLookCamPos.position + Vector3.forward * -18f;
+    }
+    public void EntryArea(bool isGameStart = false)
+    {
+        SetFreeLookPos();
 
         defaultPlayerSpawn.gameObject.SetActive(true);
         rewindPlayerSpawn.gameObject.SetActive(true);
@@ -155,12 +159,15 @@ public class StageArea : MonoBehaviour
         {
             StageManager.Instance.InitPlayer(isAreaClear); //false
             EntryArea(true);
-            StageManager.Instance.OnFreeLookCam(true);
         }
         else //클리어 함
         {
+
             StageManager.Instance.InitPlayer(isAreaClear); //true
             areaEndEvent?.Invoke();
+
+
+
         }
     }
 

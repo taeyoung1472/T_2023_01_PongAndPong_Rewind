@@ -112,6 +112,7 @@ public class StageManager : MonoSingleTon<StageManager>
         isRestartPossible = false;
         reStartCoolTime = 1f;
 
+        CamManager.Instance?.TargetGroupReset();
         SaveDataManager.Instance.LoadCollectionJSON();
     }
     public void OnFreeLookCam(bool isOn)

@@ -8,6 +8,7 @@ public class MovingObjectGimmick : ControlAbleObjcet
     [SerializeField] private Vector3 moveDir;
     [SerializeField] private float moveSpeed;
     [SerializeField] private Vector3 rotateDir;
+    [SerializeField] private StageArea myArea;
     private bool isMoving;
 
     Vector3 originPos;
@@ -17,12 +18,12 @@ public class MovingObjectGimmick : ControlAbleObjcet
     {
         originPos = transform.position;
         originRot = transform.rotation;
-        RewindManager.Instance.InitRewind += () =>
+        myArea.OnExitArea += () =>
         {
             transform.SetPositionAndRotation(originPos, originRot);
             this.enabled = false;
         };
-        RewindManager.Instance.InitPlay += () =>
+        myArea.OnEntryArea += () =>
         {
             isMoving = true;
             this.enabled = true;
