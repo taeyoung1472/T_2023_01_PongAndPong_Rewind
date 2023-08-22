@@ -2,10 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.UI;
-using TMPro;
-public class PhoneGimmick : MonoSingleTon<PhoneGimmick>
+
+public class A1 : MonoSingleTon<A1>
 {
     [SerializeField] private Transform parent;
 
@@ -13,16 +12,14 @@ public class PhoneGimmick : MonoSingleTon<PhoneGimmick>
 
     [SerializeField] private GimmickEncyclopediaSO gimmickEncyclopediaSO;
 
-    public GameObject scrollview;
-    public GameObject backImage;
-    public GameObject gifMenu;
-
     public Animator animator;
     public TextMeshProUGUI gimmickName;
     public TextMeshProUGUI gimmickExplain;
+
+
     public void Start()
     {
-        CreateTem();   
+        CreateTem();
     }
     public void CreateTem()
     {
@@ -34,11 +31,10 @@ public class PhoneGimmick : MonoSingleTon<PhoneGimmick>
             obj.GetComponent<GimmickInfoGIF>().gimmickSO = gimmickEncyclopediaSO.gimmickEncyclopedia[i];
         }
     }
-    public void OnStageGimmick()
+    public void OnGIF()
     {
-        scrollview.SetActive(true);
-        backImage.SetActive(true);
-        gifMenu.SetActive(false);
-    }
 
+        //gimmickName.text = 
+        //gimmickExplain.text = 
+    }
 }

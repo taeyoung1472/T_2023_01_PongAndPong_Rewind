@@ -198,7 +198,8 @@ public class UIManager : MonoSingleTon<UIManager>
 
     public void PauseGimmick()
     {
-        PressDirector(gimmickImg.transform);
+        Debug.Log("±‚πÕ√¢ø≠∏≤");
+        //PressDirector(gimmickImg.transform);
         PhoneGimmick.Instance.OnStageGimmick();
     }
    

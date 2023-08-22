@@ -6,8 +6,8 @@ using Random = UnityEngine.Random;
 
 public class ButtonGimmick : GimmickObject
 {
-    bool isActive = false;
-    bool isActivePlayer = false;
+ [SerializeField] private   bool isActive = false;
+    [SerializeField] private bool isActivePlayer = false;
     bool curActive;
 
     [SerializeField] private ControlData[] controlDataArr;
@@ -47,7 +47,7 @@ public class ButtonGimmick : GimmickObject
         {
             RewindManager.Instance.RestartPlay += () =>
             {
-                InitInfo();
+               // InitInfo();
             };
         }
 
@@ -119,6 +119,7 @@ public class ButtonGimmick : GimmickObject
     {
         if (isRewind)
             return;
+
         if (gravityButton)
             CheckGravityTimeDir();
 
@@ -137,31 +138,36 @@ public class ButtonGimmick : GimmickObject
 
         if (toggleing == true && isToggle == true)
         {
+            Control();
             if (isActive == false)
             {
-                Control();
                 toggleTime -= Time.deltaTime;
                 toggleSlider.value -= Time.deltaTime;
             }
+
             if (toggleTime <= 0.0f)
             {
                 Control(false);
                 toggleing = false;
             }
         }
-        else if (toggleing == false && isToggle == true)
-        {
-            if (toggleTime <= 0.0f)
-            {
-                SetSlider();
-            }
-        }
+        
 
-       
+        //else if (toggleing == false && isToggle == true)
+        //{
+        //    if (toggleTime <= 0.0f)
+        //    {
+        //        SetSlider();
+        //    }
+        //}
+
+
     }
 
     public void OnTriggerEnter(Collider other)
     {
+        if (isRewind)
+            return;
 
         if (other.gameObject.TryGetComponent<Player>(out Player player))
         {
@@ -191,6 +197,9 @@ public class ButtonGimmick : GimmickObject
 
     public void OnTriggerExit(Collider other)
     {
+        if (isRewind)
+            return;
+
         if (other.TryGetComponent<GimmickObject>(out GimmickObject gimmickObject))
         {
             isActive = false;

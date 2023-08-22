@@ -21,7 +21,12 @@ public class GimmickInfoGIF : MonoBehaviour
         PhoneGimmick.Instance.animator.Play(gimmickSO.animName);
 
     }
-
+    public void PushCoumpter()
+    {
+        A1.Instance.gimmickName.text = gimmickSO.gimmickName;
+        A1.Instance.gimmickExplain.text = gimmickSO.gimmickExplain;
+        A1.Instance.animator.Play(gimmickSO.animName);
+    }
     public void PushStageInfo()
     {
 
