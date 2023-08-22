@@ -1,6 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.Playables;
+using UnityEngine.UIElements;
 
 public class TalkingManager : MonoBehaviour
 {
@@ -15,6 +19,9 @@ public class TalkingManager : MonoBehaviour
 
     [SerializeField] private List<TextNPCArrary> list = new List<TextNPCArrary>();
     [SerializeField] private TextAnimCutScene[] npcTexts;
+
+
+    public UnityEvent focusCollection = new UnityEvent();
     public void StartAutoTalking()
     {
         StartCoroutine(StartTalking());
@@ -66,7 +73,7 @@ public class TalkingManager : MonoBehaviour
     {
         if (autoTalkingIndex == autoTalkingTotalCnt + 1)
         {
-            //StartCoroutine(EndTalk());
+            StartCoroutine(EndTalk());
             return;
         }
         for (int i = 0; i < npcTexts.Length; i++) //대화 캐릭 몇명인지
@@ -82,6 +89,21 @@ public class TalkingManager : MonoBehaviour
 
         }
 
+    }
+
+    private IEnumerator EndTalk()
+    {
+        yield return new WaitForSeconds(1f);
+        if (talkNum == 1) //조각 다 못모음
+        {
+            isTalkStart = false;
+            //focusPiece.Play();
+            focusCollection?.Invoke();
+        }
+        else if(talkNum == 2)//조각 다 모음
+        {
+
+        }
     }
 
     private void AllClearText()
