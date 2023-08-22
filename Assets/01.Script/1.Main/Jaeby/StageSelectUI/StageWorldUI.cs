@@ -119,7 +119,7 @@ public class StageWorldUI : MonoBehaviour
                 return;
             }
 
-            _stageTrms[i].gameObject.SetActive(i < clearCount);
+            _stageTrms[i].gameObject.SetActive(true);
         }
     }
 
