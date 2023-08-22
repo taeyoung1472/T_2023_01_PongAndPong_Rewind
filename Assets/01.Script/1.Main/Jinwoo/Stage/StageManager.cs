@@ -34,6 +34,7 @@ public class StageManager : MonoSingleTon<StageManager>
     [Header("카메라 관련")]
     [SerializeField]
     private FreeLookCamera freeLookCam;
+    public FreeLookCamera FreeLookCam { get => freeLookCam;}
 
     [Header("효과 관련")]
     [SerializeField]
@@ -111,6 +112,7 @@ public class StageManager : MonoSingleTon<StageManager>
         isRestartPossible = false;
         reStartCoolTime = 1f;
 
+        CamManager.Instance?.TargetGroupReset();
         SaveDataManager.Instance.LoadCollectionJSON();
     }
     public void OnFreeLookCam(bool isOn)

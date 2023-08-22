@@ -94,4 +94,12 @@ public class TextAnimCutScene : MonoBehaviour
         isAnim = false;
         isComplete = true;
     }
+
+    int num = 1;
+    public void CutSceneTextAnim()
+    {
+        StopAnim();
+        EndCheck(num++);
+    }
+    
 }

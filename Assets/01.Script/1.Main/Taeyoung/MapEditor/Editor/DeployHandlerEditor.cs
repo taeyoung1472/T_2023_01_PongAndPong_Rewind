@@ -108,17 +108,20 @@ public class DeployHandlerEditor : Editor
     {
         Vector3 center = (myScript.firstAxis + myScript.secondAxis) / 2;
 
-        switch (myScript.deployType)
+        if (myScript.isControlTransform)
         {
-            case DeployType.XY:
-                myScript.transform.position = new Vector3(center.x, center.y, myScript.transform.position.z);
-                break;
-            case DeployType.XZ:
-                myScript.transform.position = new Vector3(center.x, myScript.transform.position.y, center.z);
-                break;
-            case DeployType.YZ:
-                myScript.transform.position = new Vector3(myScript.transform.position.x, center.y, center.z);
-                break;
+            switch (myScript.deployType)
+            {
+                case DeployType.XY:
+                    myScript.transform.position = new Vector3(center.x, center.y, myScript.transform.position.z);
+                    break;
+                case DeployType.XZ:
+                    myScript.transform.position = new Vector3(center.x, myScript.transform.position.y, center.z);
+                    break;
+                case DeployType.YZ:
+                    myScript.transform.position = new Vector3(myScript.transform.position.x, center.y, center.z);
+                    break;
+            }
         }
 
         switch (myScript.deployType)

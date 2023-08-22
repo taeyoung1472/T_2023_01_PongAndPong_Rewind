@@ -18,6 +18,7 @@ public class StageArea : MonoBehaviour
     [SerializeField] private Transform rewindPlayerSpawn;
     [SerializeField] private Transform endPoint;
     public Transform freeLookCamPos;
+    public Vector2 freeLoockCamLimit;
 
     public GameObject gameObjesddct;
 
@@ -28,8 +29,6 @@ public class StageArea : MonoBehaviour
 
     public Action OnEntryArea;
     public Action OnExitArea;
-
-    public Vector3 cmaInitPos;
 
     private FreeLookCamera freeLookCamera;
 
@@ -106,8 +105,18 @@ public class StageArea : MonoBehaviour
         //여기서 순환 버퍼 거시기 해주면 될듯 (초기화)
         TimerManager.Instance.ChangeOnTimer(true);
     }
+    public void SetFreeLookPos()
+    {
+        StageManager.Instance.FreeLookCam.offsetX = freeLoockCamLimit.x;
+        StageManager.Instance.FreeLookCam.offsetY = freeLoockCamLimit.y;
+        StageManager.Instance.FreeLookCam.centerX = freeLookCamPos.position.x;
+        StageManager.Instance.FreeLookCam.centerY = freeLookCamPos.position.y;
+        StageManager.Instance.FreeLookCam.initPos = freeLookCamPos.position + Vector3.forward * -18f;
+    }
     public void EntryArea(bool isGameStart = false)
     {
+        SetFreeLookPos();
+
         defaultPlayerSpawn.gameObject.SetActive(true);
         rewindPlayerSpawn.gameObject.SetActive(true);
         endPoint.gameObject.SetActive(true);
@@ -129,7 +138,6 @@ public class StageArea : MonoBehaviour
         {
             freeLookCamera = FindObjectOfType<FreeLookCamera>();
         }
-        freeLookCamera.initPos = cmaInitPos;
     }
 
     public void Rewind()
@@ -154,8 +162,21 @@ public class StageArea : MonoBehaviour
         }
         else //클리어 함
         {
+
             StageManager.Instance.InitPlayer(isAreaClear); //true
             areaEndEvent?.Invoke();
+
+
+
         }
     }
+
+#if UNITY_EDITOR
+    public void OnDrawGizmos()
+    {
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireCube(freeLookCamPos.position, new Vector3(freeLoockCamLimit.x, freeLoockCamLimit.y, 4));
+        Gizmos.color = Color.white;
+    }
+#endif
 }

@@ -4,7 +4,7 @@ public class LeverInteract : Interact
 {
     [SerializeField] private ControlData[] controlDataArr;
     [SerializeField] private GameObject popup;
-    [SerializeField] private Color color;
+    [SerializeField] private ColorCODEX codex;
     [SerializeField] private GimmickVisualLink visualLinkPrefab;
     private Animator _animator = null;
 
@@ -19,8 +19,8 @@ public class LeverInteract : Interact
             foreach (var data in controlDataArr)
             {
                 GimmickVisualLink link = Instantiate(visualLinkPrefab, transform);
-                link.Link(transform, data.target.transform, color);
-                data.target.controlColor = color;
+                link.Link(transform, data.target.transform, ColorManager.GetColor(codex));
+                data.target.controlColor = ColorManager.GetColor(codex);
             }
         }
     }
