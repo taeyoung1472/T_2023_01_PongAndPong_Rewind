@@ -32,11 +32,15 @@ public class LabCollectionObjCutScene : MonoBehaviour
     [ContextMenu("°¡º¸ÀÚ")]
     private void AttemptCutScene()
     {
-        bool isAlreadyEnded = (PlayerPrefs.GetInt("LabCollectionObjCutScene", 0)) == 0;
-        if (SaveDataManager.Instance.CurrentStageCollectionCount(_targetWorld.worldName, _index) > 0 && isAlreadyEnded)
+        //bool isAlreadyEnded = (PlayerPrefs.GetInt("LabCollectionObjCutScene", 0)) == 0;
+        Player player = Utility.SearchByClass<Player>();
+        bool isAlreadyEnded = !player.playerJsonData.labCollectionCutScenePlayed;
+        bool enoughCount = SaveDataManager.Instance.CurrentStageCollectionCount(_targetWorld.worldName, _index) > 0;
+        if (enoughCount && isAlreadyEnded)
         {
+            player.LabCollectionCutScenePlayedSave(true);
             Debug.Log("LabCollectionObj ÄÆ¾À ½ÃÀÛ");
-            PlayerPrefs.SetInt("LabCollectionObjCutScene", 1);
+            //PlayerPrefs.SetInt("LabCollectionObjCutScene", 1);
             OnCutSceneStarted?.Invoke();
             _cutSceneDirector.Play();
         }
