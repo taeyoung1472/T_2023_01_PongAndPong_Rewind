@@ -20,6 +20,7 @@ public class TrainEndingCutSceneController : MonoBehaviour
 
     private void Start()
     {
+        CutSceneStart();
     }
 
     private void Dynamicbinding()
