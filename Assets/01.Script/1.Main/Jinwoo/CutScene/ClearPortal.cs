@@ -18,6 +18,7 @@ public class ClearPortal : MonoBehaviour
     private void Start()
     {
         //AllCollectPiece();
+        isAllpiece = false;
     }
 
     private void Update()
