@@ -18,6 +18,7 @@ public class StageArea : MonoBehaviour
     [SerializeField] private Transform rewindPlayerSpawn;
     [SerializeField] private Transform endPoint;
     public Transform freeLookCamPos;
+    public Vector2 freeLoockCamLimit;
 
     public GameObject gameObjesddct;
 
@@ -28,8 +29,6 @@ public class StageArea : MonoBehaviour
 
     public Action OnEntryArea;
     public Action OnExitArea;
-
-    public Vector3 cmaInitPos;
 
     private FreeLookCamera freeLookCamera;
 
@@ -108,6 +107,12 @@ public class StageArea : MonoBehaviour
     }
     public void EntryArea(bool isGameStart = false)
     {
+        StageManager.Instance.FreeLookCam.offsetX = freeLoockCamLimit.x;
+        StageManager.Instance.FreeLookCam.offsetY = freeLoockCamLimit.y;
+        StageManager.Instance.FreeLookCam.centerX = freeLookCamPos.position.x;
+        StageManager.Instance.FreeLookCam.centerY = freeLookCamPos.position.y;
+        StageManager.Instance.FreeLookCam.initPos = freeLookCamPos.position + Vector3.forward * -18f;
+
         defaultPlayerSpawn.gameObject.SetActive(true);
         rewindPlayerSpawn.gameObject.SetActive(true);
         endPoint.gameObject.SetActive(true);
@@ -129,7 +134,6 @@ public class StageArea : MonoBehaviour
         {
             freeLookCamera = FindObjectOfType<FreeLookCamera>();
         }
-        freeLookCamera.initPos = cmaInitPos;
     }
 
     public void Rewind()
@@ -151,6 +155,7 @@ public class StageArea : MonoBehaviour
         {
             StageManager.Instance.InitPlayer(isAreaClear); //false
             EntryArea(true);
+            StageManager.Instance.OnFreeLookCam(true);
         }
         else //클리어 함
         {
@@ -158,4 +163,13 @@ public class StageArea : MonoBehaviour
             areaEndEvent?.Invoke();
         }
     }
+
+#if UNITY_EDITOR
+    public void OnDrawGizmos()
+    {
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireCube(freeLookCamPos.position, new Vector3(freeLoockCamLimit.x, freeLoockCamLimit.y, 4));
+        Gizmos.color = Color.white;
+    }
+#endif
 }

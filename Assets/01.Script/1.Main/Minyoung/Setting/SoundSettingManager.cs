@@ -130,6 +130,7 @@ public class SoundSettingManager : MonoBehaviour
             AudioListener.volume = 1;
         }
 
+        Debug.Log(sound);
         if (sound == -40f) AudioManager.Mixer.SetFloat("Master", -80);
         else
         {

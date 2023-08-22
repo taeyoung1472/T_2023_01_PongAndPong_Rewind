@@ -48,7 +48,14 @@ public class CircularBuffer<T>
         }
         else
         {
-            dataArray[bufferCurrentPosition] = val;
+            try
+            {
+                dataArray[bufferCurrentPosition] = val;
+            }
+            catch
+            {
+
+            }
         }
     }
     /// <summary>

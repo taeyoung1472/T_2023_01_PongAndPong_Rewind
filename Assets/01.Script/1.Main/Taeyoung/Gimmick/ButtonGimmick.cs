@@ -12,7 +12,7 @@ public class ButtonGimmick : GimmickObject
 
     [SerializeField] private ControlData[] controlDataArr;
     [SerializeField] private GimmickVisualLink visualLinkPrefab;
-    [SerializeField] private Color color = Color.white;
+    [SerializeField] private ColorCODEX codex;
 
     [SerializeField] private bool isVisuaLinkDisable;
     [SerializeField] private bool isCameraControlDisable;
@@ -38,17 +38,6 @@ public class ButtonGimmick : GimmickObject
 
     #endregion
 
-    [ContextMenu("Gen Color")]
-    public void GenColor()
-    {
-        color = Random.ColorHSV();
-    }
-
-    public void Reset()
-    {
-        GenColor();
-    }
-
     public void Start()
     {
         animator = GetComponent<Animator>();
@@ -67,8 +56,9 @@ public class ButtonGimmick : GimmickObject
             foreach (var data in controlDataArr)
             {
                 GimmickVisualLink link = Instantiate(visualLinkPrefab, transform);
-                link.Link(transform, data.target.transform, color);
-                data.target.controlColor = color;
+                link.Link(transform, data.target.transform, ColorManager.GetColor(codex));
+                data.target.controlColor = ColorManager.GetColor(codex);
+                data.target.SetColor();
             }
         }
 

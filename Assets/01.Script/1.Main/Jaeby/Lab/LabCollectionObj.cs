@@ -42,7 +42,7 @@ public class LabCollectionObj : MonoBehaviour
 
         Debug.Log(_myWorldData.worldName + "  current : " + currentCollection + "  max : " + maxCollection);
         float ratio = ((float)currentCollection/ maxCollection);
-        _dissolveAnimator.DissolveStart(_dissolveAnimator.GetDissolveRatio(), ratio, new Vector3(0f, 1f, 0f));
+        _dissolveAnimator.DissolveStart(_dissolveAnimator.GetDissolveRatio(), ratio, new Vector3(0f, -1f, 0f));
         TextAnimating((int)(ratio * 100f));
     }
 

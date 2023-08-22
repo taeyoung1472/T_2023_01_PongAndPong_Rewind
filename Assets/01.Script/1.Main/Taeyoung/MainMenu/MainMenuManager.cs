@@ -59,10 +59,10 @@ public class MainMenuManager : MonoSingleTon<MainMenuManager>
                 {
                     WindowClose();
                 }
-                else
-                {
-                    PlayGame();
-                }
+                //else
+                //{
+                //    PlayGame();
+                //}
             }
             else if (Define.player.PlayerActionCheck(PlayerActionType.Interact) == false)
             {
