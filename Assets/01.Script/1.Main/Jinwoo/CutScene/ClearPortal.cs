@@ -17,7 +17,15 @@ public class ClearPortal : MonoBehaviour
 
     private void Start()
     {
-        AllCollectPiece();
+        //AllCollectPiece();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.U))
+        {
+            AllCollectPiece();
+        }
     }
     public void AllCollectPiece()
     {

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StageCommunicationUI : MonoBehaviour
+public class StageCommunicationUI : MonoSingleTon<StageCommunicationUI>
 {
     [SerializeField]
     private StageCommunicationSO _dataSO = null;
@@ -19,41 +19,48 @@ public class StageCommunicationUI : MonoBehaviour
         CommunicationStart();
     }
 
+    public void CommunicationStart(StageCommunicationSO dataSO)
+    {
+        if (dataSO == null)
+            return;
+        StartCoroutine(CommunicationCoroutine(dataSO));
+    }
+
     public void CommunicationStart()
     {
         if (_dataSO == null)
             return;
-        StartCoroutine(CommunicationCoroutine());
+        StartCoroutine(CommunicationCoroutine(_dataSO));
     }
 
-    private IEnumerator CommunicationCoroutine()
+    private IEnumerator CommunicationCoroutine(StageCommunicationSO dataSO)
     {
-        for (int i = 0; i < _dataSO.communicationDatas.Count; i++)
+        for (int i = 0; i < dataSO.communicationDatas.Count; i++)
         {
-            if (_dataSO.communicationDatas[i].isReset)
+            if (dataSO.communicationDatas[i].isReset)
             {
                 _nextTextYPos = 0f;
-                DestroyChildren(_parentTrm);
-                yield return new WaitForSeconds(_dataSO.animationTime * 1.2f);
+                DestroyChildren(_parentTrm, dataSO);
+                yield return new WaitForSeconds(dataSO.animationTime * 1.2f);
             }
             CommunicationUIPrefab prefab = Instantiate(_prefab, _parentTrm);
-            prefab.SetUI(_dataSO.communicationDatas[i].communicationSprite, _dataSO.communicationDatas[i].content);
-            if (_dataSO.communicationDatas[i].isReset || _currentTextAnimator == null)
+            prefab.SetUI(dataSO.communicationDatas[i].communicationSprite, dataSO.communicationDatas[i].content);
+            if (dataSO.communicationDatas[i].isReset || _currentTextAnimator == null)
             {
                 _currentTextAnimator = prefab.FaceImageAnimator;
             }
             prefab.StartTextAnimation(_currentTextAnimator);
-            prefab.AnimationUI(0f, 1f, _dataSO.animationTime);
+            prefab.AnimationUI(0f, 1f, dataSO.animationTime);
             Vector2 prefabPosition = prefab.GetComponent<RectTransform>().anchoredPosition;
             prefabPosition.y = _nextTextYPos;
             prefab.GetComponent<RectTransform>().anchoredPosition = prefabPosition;
             _nextTextYPos += prefab.GetTextHeight();
-            yield return new WaitForSeconds(_dataSO.communicationDatas[i].nextContentTime);
+            yield return new WaitForSeconds(dataSO.communicationDatas[i].nextContentTime);
         }
-        DestroyChildren(_parentTrm);
+        DestroyChildren(_parentTrm, dataSO);
     }
 
-    private void DestroyChildren(Transform parent)
+    private void DestroyChildren(Transform parent, StageCommunicationSO dataSO)
     {
         List<GameObject> children = new List<GameObject>();
         foreach (Transform child in parent)
@@ -64,7 +71,7 @@ public class StageCommunicationUI : MonoBehaviour
         {
             children[i].transform.SetParent(transform);
             GameObject childObj = children[i];
-            children[i].GetComponent<CommunicationUIPrefab>().AnimationUI(1f, 0f, _dataSO.animationTime, () => Destroy(childObj));
+            children[i].GetComponent<CommunicationUIPrefab>().AnimationUI(1f, 0f, dataSO.animationTime, () => Destroy(childObj));
         }
     }
 }
