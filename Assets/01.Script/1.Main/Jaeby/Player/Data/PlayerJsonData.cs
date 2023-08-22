@@ -5,4 +5,5 @@ public class PlayerJsonData
 {
     public int money = 10000;
     public Dictionary<string, int> collectDatas;
+    public bool labCollectionCutScenePlayed = false;
 }
