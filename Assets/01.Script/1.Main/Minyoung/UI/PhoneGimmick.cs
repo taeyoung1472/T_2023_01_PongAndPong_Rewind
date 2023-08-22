@@ -33,7 +33,6 @@ public class PhoneGimmick : MonoSingleTon<PhoneGimmick>
             obj.transform.GetChild(1).GetComponent<Image>().sprite = gimmickEncyclopediaSO.gimmickEncyclopedia[i].gimmickIcon;
             obj.GetComponent<GimmickInfoGIF>().gimmickSO = gimmickEncyclopediaSO.gimmickEncyclopedia[i];
         }
-
     }
     public void OnStageGimmick()
     {
