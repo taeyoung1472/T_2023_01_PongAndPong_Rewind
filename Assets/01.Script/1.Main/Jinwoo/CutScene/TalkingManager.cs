@@ -100,10 +100,7 @@ public class TalkingManager : MonoBehaviour
             //focusPiece.Play();
             focusCollection?.Invoke();
         }
-        else if(talkNum == 2)//조각 다 모음
-        {
-
-        }
+        
     }
 
     private void AllClearText()

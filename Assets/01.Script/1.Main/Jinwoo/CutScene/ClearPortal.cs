@@ -20,16 +20,27 @@ public class ClearPortal : MonoBehaviour
     [SerializeField] private PlayableDirector completeCutscene;
     [SerializeField] private PlayableDirector notcompleteCutscene;
 
+    public void Start()
+    {
+       // SaveDataManager.Instance.CurrentStageNameData.cutSceneDic[SaveDataManager.Instance.CurrentStageNameData.worldName];
+
+    }
     public void StartCutScene()
     {
         if (MainMenuManager.isOpend) //¸ÞÀÎ¸Þ´º ÀÌ¹Ì ¿­¸°°Ü
         {
-            //ÄÆ½Å ½ÇÇàÀÎÁö
-            if (isPortalCutscene)
+            if (SaveDataManager.Instance.IsThisChapterClear(SaveDataManager.Instance.CurrentStageNameData.worldName))
             {
-                Debug.Log("ÄÆ¾À ½ÇÇà");
-                CheckCollectPiece();
+                //ÄÆ½Å½ÇÇà
+                if (!SaveDataManager.Instance.CheckPlayCutScene((SaveDataManager.Instance.CurrentStageNameData.worldName)))
+                {
+                    SaveDataManager.Instance.CurrentStageNameData.cutSceneDic[SaveDataManager.Instance.CurrentStageNameData.worldName] = true;
+                    Debug.Log("ÄÆ¾À ½ÇÇà");
+                    CheckCollectPiece();
+                }
             }
+           
+            
         }
 
     }

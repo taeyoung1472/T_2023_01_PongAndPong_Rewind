@@ -8,4 +8,7 @@ public class CurrentStageNameData
     public string worldName;
     public int currentStageIndex;
     public int stageCnt;
+
+    public Dictionary<string, bool> cutSceneDic = new Dictionary<string, bool>();
+
 }
