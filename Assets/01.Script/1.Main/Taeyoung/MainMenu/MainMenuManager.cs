@@ -31,11 +31,13 @@ public class MainMenuManager : MonoSingleTon<MainMenuManager>
     [SerializeField] private PlayerInput playerInput;
     [SerializeField] private Animator playerAnimator;
     [SerializeField] private Animator tabletAnimator;
+    [SerializeField] private GameObject playerArrow;
 
     public IEnumerator Start()
     {
         if (isOpend)
         {
+            playerArrow.SetActive(false);
             player.transform.SetPositionAndRotation(portalPlayerPostion.position, portalPlayerPostion.rotation);
             PlayGame();
             yield break;
