@@ -27,6 +27,7 @@ public class ClearPortal : MonoBehaviour
             //ÄÆ½Å ½ÇÇàÀÎÁö
             if (isPortalCutscene)
             {
+                Debug.Log("ÄÆ¾À ½ÇÇà");
                 CheckCollectPiece();
             }
         }

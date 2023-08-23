@@ -37,9 +37,9 @@ public class MainMenuManager : MonoSingleTon<MainMenuManager>
     {
         if (isOpend)
         {
-            playerArrow.SetActive(false);
-            player.transform.SetPositionAndRotation(portalPlayerPostion.position, portalPlayerPostion.rotation);
-            PlayGame();
+            //playerArrow.SetActive(false);
+            //player.transform.SetPositionAndRotation(portalPlayerPostion.position, portalPlayerPostion.rotation);
+            //PlayGame();
             yield break;
         }
         if (isOpenCheck)
@@ -71,7 +71,7 @@ public class MainMenuManager : MonoSingleTon<MainMenuManager>
                     PlayGame();
                 }
             }
-            else if (Define.player.PlayerActionCheck(PlayerActionType.Interact) == false)
+            else if (player.GetComponent<Player>().PlayerActionCheck(PlayerActionType.Interact) == false)
             {
                 OpenMenu();
             }
@@ -132,10 +132,11 @@ public class MainMenuManager : MonoSingleTon<MainMenuManager>
         playerCam.Priority = 1;
         if(!ClearPortal.isPortalCutscene) //ÄÆ¾À½ÇÇà ¾ÈÇÒ¶§¸¸
         {
+            Debug.Log("???");
             player.SetActive(true);
             playerInput.enabled = true;
-
         }
+
 
         isActive = false;
         //playerAnimator.SetLayerWeight(2, 0);
