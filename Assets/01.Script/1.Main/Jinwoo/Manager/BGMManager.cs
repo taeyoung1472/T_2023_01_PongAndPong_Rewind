@@ -24,7 +24,11 @@ public class BGMManager : MonoSingleTon<BGMManager>
     }
     public void StopBGM()
     {
-        audioSource.Stop();
+        if(audioSource.isPlaying)
+        {
+            audioSource.Stop();
+
+        }
     }
 
 }

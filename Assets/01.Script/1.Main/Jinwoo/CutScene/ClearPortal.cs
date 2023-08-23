@@ -78,6 +78,7 @@ public class ClearPortal : MonoBehaviour
             item.SetActive(true);
         }
         _enableList[2].gameObject.transform.position = playerSpawnpos.position;
+        BGMManager.Instance.StopBGM();
         //keyDisplay.SetActive(true);
         //player.gameObject.SetActive(true);
         //playerCam.gameObject.SetActive(true);
