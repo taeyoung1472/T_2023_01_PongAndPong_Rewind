@@ -17,6 +17,7 @@ public class SceneChangeCanvas : MonoBehaviour
     static float timer;
 
     static List<RectTransform> rectList = new();
+    static CanvasGroup canvasGroup;
 
     const string SFX = "SFX";
     const string BGM = "BGM";
@@ -35,6 +36,11 @@ public class SceneChangeCanvas : MonoBehaviour
         {
             for (int i = 0; i < transform.childCount; i++)
             {
+                if(transform.GetChild(i).name == "Loading")
+                {
+                    canvasGroup = transform.GetChild(i).GetComponent<CanvasGroup>();
+                    continue;
+                }
                 rectList.Add(transform.GetChild(i).GetComponent<RectTransform>());
             }
         }
@@ -106,6 +112,7 @@ public class SceneChangeCanvas : MonoBehaviour
             loadingSeq.InsertCallback(i * 0.1f, () => AudioManager.PlayAudio(SoundType.OnSceneChange, 1 + i / 10f, 1, "Another"));
             loadingSeq.Insert(i * 0.1f, rectList[i].DOAnchorPosX(0, 0.3f)).SetEase(Ease.Linear);
         }
+        loadingSeq.Append(DOTween.To(() => canvasGroup.alpha, x => canvasGroup.alpha = x, 1, 0.2f));
         loadingSeq.AppendInterval(1.5f).SetUpdate(true);
         loadingSeq.AppendCallback(() => { callbackAction?.Invoke(); });
     }
@@ -119,6 +126,7 @@ public class SceneChangeCanvas : MonoBehaviour
 
         loadingSeq = DOTween.Sequence();
         loadingSeq.AppendCallback(() => { callbackAction?.Invoke(); });
+        loadingSeq.Append(DOTween.To(() => canvasGroup.alpha, x => canvasGroup.alpha = x, 0, 0.2f));
         for (int i = rectList.Count - 1; i >= 0; i--)
         {
             loadingSeq.InsertCallback(i * 0.1f, () => AudioManager.PlayAudio(SoundType.OnSceneChange, 1 + (i / 10f), 1, "Another"));

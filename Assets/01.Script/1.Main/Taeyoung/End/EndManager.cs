@@ -119,6 +119,11 @@ public class EndManager : MonoSingleTon<EndManager>
         nextStageBtn.interactable = StageManager.stageDataSO.nextStageData != null;
         nextStageBtn.onClick.AddListener(() => nextStageBtn.interactable = false);
 
+        if (StageManager.stageDataSO.isFirst)
+        {
+            LoadingSceneManager.LoadScene(0);
+            return;
+        }
         if(StageManager.stageDataSO.nextStageData == null)
         {
             LoadingSceneManager.LoadScene(3);
