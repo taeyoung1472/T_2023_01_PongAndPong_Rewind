@@ -145,6 +145,12 @@ public class StageSelectUI : MonoBehaviour
 
     public void WorldChange(StageWorldUI ui)
     {
+        Debug.Log("¿©±â´Ù");
+
+
+        SaveDataManager.Instance.SetStageInfo(ui.WorldName, ui.Stages.Count);
+        SaveDataManager.Instance.SaveStageInfoJSON();
+
         int index = _stageWorlds.FindIndex(x => x == ui);
         Debug.Log(index);
         WorldChange(index);

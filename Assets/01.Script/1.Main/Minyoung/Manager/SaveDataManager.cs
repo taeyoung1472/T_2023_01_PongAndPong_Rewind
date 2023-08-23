@@ -6,6 +6,9 @@ using UnityEngine.Assertions.Must;
 
 public class SaveDataManager : MonoSingleTon<SaveDataManager>
 {
+    private CurrentStageNameData _currentStageNameData;
+    public CurrentStageNameData CurrentStageNameData => _currentStageNameData;
+
     [SerializeField] StageDatabase stageDatabase;
 
     #region  콜렉션 관련 
@@ -55,6 +58,36 @@ public class SaveDataManager : MonoSingleTon<SaveDataManager>
         LoadCollectionJSON();
         LoadStageClearJSON();
         LoadSoundJSON();
+        LoadStageInfoJSON();
+    }
+    public void SetStageInfo(string name, int cnt)
+    {
+        _currentStageNameData.worldName = name;
+        _currentStageNameData.stageCnt = cnt;
+    }
+    public void LoadStageInfoJSON()
+    {
+        string path = Application.dataPath + "/Save/StageInfo.json";
+        if (File.Exists(path))
+        {
+            string json = File.ReadAllText(path);
+            _currentStageNameData = Newtonsoft.Json.JsonConvert.DeserializeObject<CurrentStageNameData>(json);
+        }
+        else
+        {
+            if (_currentStageNameData == null)
+            {
+                _currentStageNameData = new();
+            }
+            File.WriteAllText(path, Newtonsoft.Json.JsonConvert.SerializeObject(_currentStageNameData));
+        }
+    }
+    public void SaveStageInfoJSON()
+    {
+        string path = Application.dataPath + "/Save/StageInfo.json";
+        string json = Newtonsoft.Json.JsonConvert.SerializeObject(_currentStageNameData);
+
+        File.WriteAllText(path, json);
     }
     public void LoadCollectionJSON()
     {
