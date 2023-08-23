@@ -6,8 +6,10 @@ using UnityEngine.Playables;
 
 public class ClearPortal : MonoBehaviour
 {
-    public static bool isAllpiece = false;
+    public static bool isPortalCutscene = false;
+    [SerializeField] private bool isCheckCollection = false;
 
+    [SerializeField] private GameObject keyDisplay;
     [SerializeField] private Player player;
     [SerializeField] private Transform playerSpawnpos;
     [SerializeField] private CinemachineVirtualCamera playerCam;
@@ -19,6 +21,14 @@ public class ClearPortal : MonoBehaviour
     {
         //AllCollectPiece();
         //isAllpiece = false;
+        if (MainMenuManager.isOpend) //메인메뉴 이미 열린겨
+        {
+            //컷신 실행인지
+            if (isPortalCutscene)
+            {
+                CheckCollectPiece();
+            }
+        }
 
     }
 
@@ -26,17 +36,23 @@ public class ClearPortal : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.U))
         {
-            AllCollectPiece();
+            CheckCollectPiece();
         }
     }
-    public void AllCollectPiece()
+    public void CheckCollectPiece()
     {
+        isPortalCutscene = false;
+
+        keyDisplay.SetActive(false);
         player.gameObject.SetActive(false);
         playerCam.gameObject.SetActive(false);
 
         //ISCLEARPORTAL이 트루면 조각 다 모은거 폴스면 다 못모은거
-         SaveDataManager.Instance.IsClearPortal(SaveDataManager.Instance.CurrentStageNameData.worldName, SaveDataManager.Instance.CurrentStageNameData.stageCnt);
-        if (isAllpiece) //좆ㅈ각 다 모음
+        isCheckCollection = SaveDataManager.Instance.IsClearPortal(
+             SaveDataManager.Instance.CurrentStageNameData.worldName, 
+             SaveDataManager.Instance.CurrentStageNameData.stageCnt);
+        
+        if (isCheckCollection) //좆ㅈ각 다 모음
         {
             completeCutscene.Play();
         }
@@ -49,6 +65,7 @@ public class ClearPortal : MonoBehaviour
 
     public void FocusCollection()
     {
+        keyDisplay.SetActive(true);
         player.gameObject.SetActive(true);
         player.gameObject.transform.position = playerSpawnpos.position;
         playerCam.gameObject.SetActive(true);
