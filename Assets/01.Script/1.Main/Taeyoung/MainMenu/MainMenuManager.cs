@@ -37,9 +37,9 @@ public class MainMenuManager : MonoSingleTon<MainMenuManager>
     {
         if (isOpend)
         {
-            //playerArrow.SetActive(false);
-            //player.transform.SetPositionAndRotation(portalPlayerPostion.position, portalPlayerPostion.rotation);
-            //PlayGame();
+            playerArrow.SetActive(false);
+            player.transform.SetPositionAndRotation(portalPlayerPostion.position, portalPlayerPostion.rotation);
+            PlayGame();
             yield break;
         }
         if (isOpenCheck)
