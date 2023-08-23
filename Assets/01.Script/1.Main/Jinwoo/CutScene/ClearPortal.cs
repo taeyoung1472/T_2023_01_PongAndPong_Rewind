@@ -34,9 +34,10 @@ public class ClearPortal : MonoBehaviour
         player.gameObject.SetActive(false);
         playerCam.gameObject.SetActive(false);
 
+        //ISCLEARPORTAL이 트루면 조각 다 모은거 폴스면 다 못모은거
+         SaveDataManager.Instance.IsClearPortal(SaveDataManager.Instance.CurrentStageNameData.worldName, SaveDataManager.Instance.CurrentStageNameData.stageCnt);
         if (isAllpiece) //좆ㅈ각 다 모음
         {
-
             completeCutscene.Play();
         }
         else //좆각 다 못 모음
