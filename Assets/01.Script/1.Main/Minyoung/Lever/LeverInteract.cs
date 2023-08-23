@@ -21,6 +21,7 @@ public class LeverInteract : Interact
                 GimmickVisualLink link = Instantiate(visualLinkPrefab, transform);
                 link.Link(transform, data.target.transform, ColorManager.GetColor(codex));
                 data.target.controlColor = ColorManager.GetColor(codex);
+                data.target.SetColor();
             }
         }
     }
