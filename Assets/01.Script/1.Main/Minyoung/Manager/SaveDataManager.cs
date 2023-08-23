@@ -60,7 +60,7 @@ public class SaveDataManager : MonoSingleTon<SaveDataManager>
         LoadSoundJSON();
         LoadStageInfoJSON();
     }
-  
+
     public void SetStageInfo(string name, int cnt)
     {
         _currentStageNameData.worldName = name;
@@ -70,11 +70,11 @@ public class SaveDataManager : MonoSingleTon<SaveDataManager>
     {
         _currentStageNameData.stageCnt = cnt;
     }
-    
+
     public bool IsThisChapterClear(string worldName)
     {
         int cnt = 0;
-        List<StageClearData> chapterClearDatas =  _allChapterClearDataBase.stageClearDataDic[worldName].stageClearDataList;
+        List<StageClearData> chapterClearDatas = _allChapterClearDataBase.stageClearDataDic[worldName].stageClearDataList;
         foreach (var item in chapterClearDatas)
         {
             if (item.stageClearBoolData == true)
@@ -98,13 +98,13 @@ public class SaveDataManager : MonoSingleTon<SaveDataManager>
         {
             return true;
         }
-        else 
+        else
         {
             return false;
         }
 
-        }
-        public void LoadStageInfoJSON()
+    }
+    public void LoadStageInfoJSON()
     {
         string path = Application.dataPath + "/Save/StageInfo.json";
         if (File.Exists(path))
@@ -129,9 +129,9 @@ public class SaveDataManager : MonoSingleTon<SaveDataManager>
                 _currentStageNameData.cutSceneDic.Add(stageDatabase.worldList[i].worldName, false);
             }
 
-          
 
-         File.WriteAllText(path, Newtonsoft.Json.JsonConvert.SerializeObject(_currentStageNameData));
+
+            File.WriteAllText(path, Newtonsoft.Json.JsonConvert.SerializeObject(_currentStageNameData));
         }
     }
     public void SaveStageInfoJSON()
@@ -344,7 +344,7 @@ public class SaveDataManager : MonoSingleTon<SaveDataManager>
         return cnt;
     }
 
-    
+
     public int CurrentChapterCollectionCount(string worldName, int index)
     {
         int cnt = 0;
