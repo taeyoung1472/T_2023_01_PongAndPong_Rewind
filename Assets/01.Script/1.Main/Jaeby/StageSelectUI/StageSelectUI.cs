@@ -148,7 +148,7 @@ public class StageSelectUI : MonoBehaviour
         Debug.Log("¿©±â´Ù");
 
 
-        SaveDataManager.Instance.SetStageInfo(ui.WorldName, ui.Stages.Count);
+        //SSaveDataManager.Instance.SetStageInfo(ui.WorldName, ui.GetStageIndex(), ui.Stages.Count);
         SaveDataManager.Instance.SaveStageInfoJSON();
 
         int index = _stageWorlds.FindIndex(x => x == ui);
@@ -246,6 +246,11 @@ public class StageSelectUI : MonoBehaviour
 
     public void StageSelect(StageUnitUI ui)
     {
+        SaveDataManager.Instance.SetStageInfo(ui.StageDataSO.chapterStageName, ui.StageDataSO.stageIndex);
+        SaveDataManager.Instance.SaveStageInfoJSON();
+
+        Debug.Log(SaveDataManager.Instance.IsStageClearPortal(ui.StageDataSO.chapterStageName, ui.StageDataSO.stageIndex));
+
         if (_curStage == ui)
         {
             _stageInfoUI.UIOn(ui.StageDataSO);

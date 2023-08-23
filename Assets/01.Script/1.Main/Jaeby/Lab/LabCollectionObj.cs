@@ -24,7 +24,7 @@ public class LabCollectionObj : MonoBehaviour
             _dissolveAnimator = GetComponent<DissolveAnimator>();
 
 
-        int currentCollection = SaveDataManager.Instance.CurrentStageCollectionCount(_myWorldData.worldName, index);
+        int currentCollection = SaveDataManager.Instance.CurrentChapterCollectionCount(_myWorldData.worldName, index);
 
         //StageCollectionData stageCollectionData = SaveDataManager.Instance.AllChapterDataBase.stageCollectionDataDic[_myWorldData.worldName]
         //    .stageCollectionValueList[_myWorldData.stageList[0].stageIndex];
@@ -37,7 +37,7 @@ public class LabCollectionObj : MonoBehaviour
         //    currentCollection += e.zoneCollections.collectionBoolList.FindAll(x => x == true).Count;
         //}
 
-        int maxCollection = SaveDataManager.Instance.MaxStageCollectionCount(_myWorldData.worldName, index);
+        int maxCollection = SaveDataManager.Instance.MaxChapterCollectionCount(_myWorldData.worldName, index);
         //int maxCollection = stageCollectionData.stageDataList.Count;
 
         Debug.Log(_myWorldData.worldName + "  current : " + currentCollection + "  max : " + maxCollection);
