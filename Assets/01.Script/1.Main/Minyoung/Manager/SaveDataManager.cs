@@ -14,7 +14,7 @@ public class SaveDataManager : MonoSingleTon<SaveDataManager>
     #region  콜렉션 관련 
     public List<ZoneCollection> zoneCollectionsList;
     //  public List<StageCollectionData> stageCollectionDataList;
-    
+
     private StageCollectionData _stageCollectionData;
     public StageCollectionData StageCollectionData => _stageCollectionData;
 
@@ -63,7 +63,7 @@ public class SaveDataManager : MonoSingleTon<SaveDataManager>
     public void SetStageInfo(string name, int cnt)
     {
         _currentStageNameData.worldName = name;
-        _currentStageNameData.stageCnt = cnt;
+        _currentStageNameData.currentStageIndex = cnt;
     }
     public void LoadStageInfoJSON()
     {
@@ -180,7 +180,7 @@ public class SaveDataManager : MonoSingleTon<SaveDataManager>
         File.WriteAllText(path, json);
     }
 
- 
+
 
     public void LoadStageClearJSON()
     {
@@ -267,8 +267,32 @@ public class SaveDataManager : MonoSingleTon<SaveDataManager>
 
         File.WriteAllText(path, json);
     }
+    public int CurrentStageCollectionCount(string worldName, int stageIndex)
+    {
+        int cnt = 0;
 
-    public int CurrentStageCollectionCount(string worldName, int index)
+        StageCollectionData stageCollectionData = _allChapterDataBase.stageCollectionDataDic[worldName]
+        .stageCollectionValueList[stageIndex];
+
+        foreach (var e in stageCollectionData.stageDataList)
+        {
+            cnt += e.zoneCollections.collectionBoolList.FindAll(x => x == true).Count;
+        }
+        return cnt;
+    }
+    public int MaxStageCollectionCount(string worldName, int stageIndex)
+    {
+        int cnt = 0;
+
+        StageCollectionData stageCollectionData = _allChapterDataBase.stageCollectionDataDic[worldName]
+        .stageCollectionValueList[stageIndex];
+
+        cnt = stageCollectionData.stageDataList.Count;
+
+        return cnt;
+    }
+
+    public int CurrentChapterCollectionCount(string worldName, int index)
     {
         int cnt = 0;
 
@@ -287,7 +311,23 @@ public class SaveDataManager : MonoSingleTon<SaveDataManager>
 
         return cnt;
     }
-    public int MaxStageCollectionCount(string worldName, int index)
+
+    public bool IsStageClearPortal(string worldName, int index)
+    {
+        int currentCnt = CurrentStageCollectionCount(worldName, index);
+        int maxCnt = MaxStageCollectionCount(worldName, index);
+        if (currentCnt == maxCnt)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+
+    public int MaxChapterCollectionCount(string worldName, int index)
     {
         int cnt = 0;
 
@@ -302,10 +342,11 @@ public class SaveDataManager : MonoSingleTon<SaveDataManager>
         return cnt;
     }
 
-    public bool IsClearPortal(string worldName, int index)
+
+    public bool IsChapterClearPortal(string worldName, int index)
     {
-        int currentCnt = CurrentStageCollectionCount(worldName, index);
-        int maxCnt = MaxStageCollectionCount(worldName, index);
+        int currentCnt = CurrentChapterCollectionCount(worldName, index);
+        int maxCnt = MaxChapterCollectionCount(worldName, index);
         if (currentCnt == maxCnt)
         {
             return true;
@@ -335,7 +376,7 @@ public class SaveDataManager : MonoSingleTon<SaveDataManager>
         }
     }
 
-        public void SaveSoundJSON()
+    public void SaveSoundJSON()
     {
         string path = Application.dataPath + "/Save/SettingValue.json";
         string json = Newtonsoft.Json.JsonConvert.SerializeObject(_settingValue);

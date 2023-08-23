@@ -35,7 +35,7 @@ public class LabCollectionObjCutScene : MonoBehaviour
         //bool isAlreadyEnded = (PlayerPrefs.GetInt("LabCollectionObjCutScene", 0)) == 0;
         Player player = Utility.SearchByClass<Player>();
         bool isAlreadyEnded = !player.playerJsonData.labCollectionCutScenePlayed;
-        bool enoughCount = SaveDataManager.Instance.CurrentStageCollectionCount(_targetWorld.worldName, _index) > 0;
+        bool enoughCount = SaveDataManager.Instance.CurrentChapterCollectionCount(_targetWorld.worldName, _index) > 0;
         if (enoughCount && isAlreadyEnded)
         {
             player.LabCollectionCutScenePlayedSave(true);

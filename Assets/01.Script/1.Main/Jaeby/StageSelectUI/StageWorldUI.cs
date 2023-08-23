@@ -147,6 +147,16 @@ public class StageWorldUI : MonoBehaviour
         return _stages[index];
     }
 
+    public int GetStageIndex(StageUnitUI ui)
+    {
+        for(int i = 0; i < _stages.Count; i++)
+        {
+            if (_stages[i] == ui)
+                return i;
+        }
+        return 0;
+    }
+
     public void ResetWorld()
     {
         for (int i = 0; i < _stages.Count; i++)

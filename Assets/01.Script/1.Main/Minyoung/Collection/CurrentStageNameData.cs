@@ -6,5 +6,6 @@ using UnityEngine;
 public class CurrentStageNameData
 {
     public string worldName;
+    public int currentStageIndex;
     public int stageCnt;
 }
