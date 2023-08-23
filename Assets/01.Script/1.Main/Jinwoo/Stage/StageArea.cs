@@ -39,14 +39,17 @@ public class StageArea : MonoBehaviour
 
     private bool _settingEnded = false;
 
+    private void Awake()
+    {
+        defaultPlayerSpawn.gameObject.SetActive(false);
+        rewindPlayerSpawn.gameObject.SetActive(false);
+        endPoint.gameObject.SetActive(false);
+    }
+
     private void Start()
     {
         freeLookCamera = FindObjectOfType<FreeLookCamera>();
         isAreaPlay = false;
-
-        defaultPlayerSpawn.gameObject.SetActive(false);
-        rewindPlayerSpawn.gameObject.SetActive(false);
-        endPoint.gameObject.SetActive(false);
 
         collectionMaterials = new List<Material>();
         fogs = GetComponentsInChildren<ParticleSystem>().ToList().FindAll(x => x.name.Split(" ")[0] == "Fog");
@@ -112,14 +115,21 @@ public class StageArea : MonoBehaviour
         StageManager.Instance.FreeLookCam.centerX = freeLookCamPos.position.x;
         StageManager.Instance.FreeLookCam.centerY = freeLookCamPos.position.y;
         StageManager.Instance.FreeLookCam.initPos = freeLookCamPos.position + Vector3.forward * -18f;
+        WakeUp();
     }
+
+    public void WakeUp()
+    {
+        defaultPlayerSpawn.gameObject.SetActive(true);
+        rewindPlayerSpawn.gameObject.SetActive(true);
+        endPoint.gameObject.SetActive(true);
+    }
+
     public void EntryArea(bool isGameStart = false)
     {
         SetFreeLookPos();
 
-        defaultPlayerSpawn.gameObject.SetActive(true);
-        rewindPlayerSpawn.gameObject.SetActive(true);
-        endPoint.gameObject.SetActive(true);
+        WakeUp();
 
 
         //함수 실행 순서 매우 중요;
@@ -165,9 +175,6 @@ public class StageArea : MonoBehaviour
 
             StageManager.Instance.InitPlayer(isAreaClear); //true
             areaEndEvent?.Invoke();
-
-
-
         }
     }
 

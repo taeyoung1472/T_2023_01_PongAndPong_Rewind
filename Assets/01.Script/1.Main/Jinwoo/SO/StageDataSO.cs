@@ -9,6 +9,7 @@ public class StageDataSO : ScriptableObject
     [HideInInspector] public bool isClear = false;
     public Stage stagePrefab;
     public StageDataSO nextStageData;
+    public bool isFirst;
 
     //public string stageInfo;
     public Sprite stageSprite;
