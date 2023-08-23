@@ -121,7 +121,7 @@ public class EndManager : MonoSingleTon<EndManager>
 
         if(StageManager.stageDataSO.nextStageData == null)
         {
-            EndingUI.SetActive(true);
+            LoadingSceneManager.LoadScene(3);
         }
     }
     public void ReStart()

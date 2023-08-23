@@ -156,13 +156,13 @@ public class FreeLookCamera : MonoBehaviour
 
     private void CursorLock()
     {
-        if (Input.GetKeyDown(_cursorLock))
-        {
-            _isCursorVisible = !_isCursorVisible;
+        //if (Input.GetKeyDown(_cursorLock))
+        //{
+        //    _isCursorVisible = !_isCursorVisible;
 
-            Cursor.lockState = !_isCursorVisible ? CursorLockMode.Locked : CursorLockMode.None;
-            Cursor.visible = _isCursorVisible;
-        }
+        //    Cursor.lockState = !_isCursorVisible ? CursorLockMode.Locked : CursorLockMode.None;
+        //    Cursor.visible = _isCursorVisible;
+        //}
     }
 
     private void DragMouseMove()
