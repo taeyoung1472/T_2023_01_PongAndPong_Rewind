@@ -20,7 +20,7 @@ public class ClearPortal : MonoBehaviour
     [SerializeField] private PlayableDirector completeCutscene;
     [SerializeField] private PlayableDirector notcompleteCutscene;
 
-    private void Start()
+    public void StartCutScene()
     {
         if (MainMenuManager.isOpend) //메인메뉴 이미 열린겨
         {
@@ -54,12 +54,12 @@ public class ClearPortal : MonoBehaviour
         //player.gameObject.SetActive(false);
         //playerCam.gameObject.SetActive(false);
 
-        //ISCLEARPORTAL이 트루면 조각 다 모은거 폴스면 다 못모은거
+        //ISCLEARPORTAL이 트루면 조각 다 모은거, 폴스면 다 못모은거
         isCheckCollection = SaveDataManager.Instance.IsStageClearPortal(
             SaveDataManager.Instance.CurrentStageNameData.worldName,
             SaveDataManager.Instance.CurrentStageNameData.currentStageIndex);
 
-        if (isCheckCollection) //좆ㅈ각 다 모음
+        if (isCheckCollection == true) //좆ㅈ각 다 모음
         {
             completeCutscene.Play();
         }

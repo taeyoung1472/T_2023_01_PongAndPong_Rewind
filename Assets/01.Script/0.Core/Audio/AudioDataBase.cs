@@ -86,4 +86,6 @@ public enum SoundType
     OnElevatorBtnClick = 1103,
 
     OnPhoneBell = 1200,
+
+    OnPortalSound = 1300,
 }
