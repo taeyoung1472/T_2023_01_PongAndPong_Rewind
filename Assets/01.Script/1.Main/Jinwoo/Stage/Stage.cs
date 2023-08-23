@@ -72,7 +72,10 @@ public class Stage : MonoBehaviour
             AreaFogSetting();
             StageManager.Instance.SetFreeLookCamInitPos(curArea.freeLookCamPos);
             if (i == 0)
+            {
+                stageAreaList[i].SetFreeLookPos();
                 stageAreaList[i].EntryArea();
+            }
             else
             {
                 //stageAreaList[i].EntryArea(true);
