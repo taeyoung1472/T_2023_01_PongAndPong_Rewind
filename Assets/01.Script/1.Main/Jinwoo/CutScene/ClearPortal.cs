@@ -20,7 +20,7 @@ public class ClearPortal : MonoBehaviour
     [SerializeField] private PlayableDirector completeCutscene;
     [SerializeField] private PlayableDirector notcompleteCutscene;
 
-    private void Start()
+    public void StartCutScene()
     {
         if (MainMenuManager.isOpend) //메인메뉴 이미 열린겨
         {

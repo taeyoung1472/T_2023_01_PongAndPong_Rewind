@@ -2,6 +2,8 @@ using Cinemachine;
 using DG.Tweening;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.InputSystem.LowLevel;
 
 public class MainMenuManager : MonoSingleTon<MainMenuManager>
 {
@@ -33,6 +35,8 @@ public class MainMenuManager : MonoSingleTon<MainMenuManager>
     [SerializeField] private Animator tabletAnimator;
     [SerializeField] private GameObject playerArrow;
 
+    public UnityEvent startEvent;
+
     public IEnumerator Start()
     {
         if (isOpend)
@@ -40,6 +44,7 @@ public class MainMenuManager : MonoSingleTon<MainMenuManager>
             playerArrow.SetActive(false);
             player.transform.SetPositionAndRotation(portalPlayerPostion.position, portalPlayerPostion.rotation);
             PlayGame();
+            startEvent?.Invoke();
             yield break;
         }
         if (isOpenCheck)
