@@ -432,4 +432,10 @@ public class Player : MonoBehaviour
         CamManager.Instance.RemoveTargetGroup(disable);
         CamManager.Instance.AddTargetGroup(enable);
     }
+
+    public void LabCollectionCutScenePlayedSave(bool value)
+    {
+        _playerJsonData.labCollectionCutScenePlayed = value;
+        SaveJsonData();
+    }
 }

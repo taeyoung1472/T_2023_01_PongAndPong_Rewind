@@ -18,6 +18,9 @@ public class StageWorldUI : MonoBehaviour
     public Sprite chapterBackgroundSprite;
 
     [SerializeField] private List<StageUnitUI> _stages = new List<StageUnitUI>();
+    public List<StageUnitUI> Stages => _stages;
+
+
     private List<RectTransform> _stageTrms = new List<RectTransform>();
     private RectTransform _thisTrm = null;
     private UILineRenderer _uiLineRenderer = null;
@@ -142,6 +145,16 @@ public class StageWorldUI : MonoBehaviour
     {
         index = Mathf.Clamp(index, 0, _stages.Count - 1);
         return _stages[index];
+    }
+
+    public int GetStageIndex(StageUnitUI ui)
+    {
+        for(int i = 0; i < _stages.Count; i++)
+        {
+            if (_stages[i] == ui)
+                return i;
+        }
+        return 0;
     }
 
     public void ResetWorld()

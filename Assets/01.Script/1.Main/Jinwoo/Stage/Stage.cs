@@ -97,6 +97,8 @@ public class Stage : MonoBehaviour
                 yield return new WaitForSeconds(1.5f);
                 StageManager.Instance.fadeImg.gameObject.SetActive(false);
                 TimerManager.Instance.EndRewind();
+
+                ClearPortal.isPortalCutscene = true;
                 break;
             }
             TimerManager.Instance.EndRewind();
