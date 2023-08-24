@@ -9,6 +9,7 @@ public class MovePlatform : GimmickObject
 {
     [SerializeField, Header("nullÀÌ¸é root")]
     private Transform _parentTrm = null;
+    public Transform ParentTrm { get => _parentTrm; set => _parentTrm = value; }    
 
     private List<GameObject> _objList = new List<GameObject>();
 
