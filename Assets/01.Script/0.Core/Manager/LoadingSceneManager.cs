@@ -30,7 +30,7 @@ public class LoadingSceneManager : MonoBehaviour
         //Debug.Log("&&& ·Îµùµù");
         isLoading = true;
         Time.timeScale = 1;
-        nextScene = sceneIndex + 1;
+        nextScene = sceneIndex + 2;
         SceneChangeCanvas.Active(() =>
         {
             SceneManager.LoadScene("Loading");
