@@ -38,25 +38,23 @@ public class GimmickDoor : ControlAbleObjcet
         curControlType = ControlType.None;
     }
 
-    private void Awake()
+    public void Awake()
     {
         originPos = transform.localPosition;
         RewindManager.Instance.InitPlay += () => this.enabled = true;
         RewindManager.Instance.InitRewind += () => this.enabled = false;
     }
 
-    private void OnValidate()
+    public void OnValidate()
     {
         if (arrow)
         {
             arrow.transform.position = transform.position + new Vector3(0, 0, -2.25f);
-            arrow.transform.parent = transform.parent;
             arrow.transform.eulerAngles = new Vector3(0, 0, Mathf.Atan2(positiveMoveValue.y, positiveMoveValue.x) * Mathf.Rad2Deg);
-            arrow.gameObject.name = name + "_Arrow";
         }
     }
 
-    private void Update()
+    public void Update()
     {
         Vector3 targetPos = Vector3.zero;
         switch (curControlType)
