@@ -101,7 +101,6 @@ public class Stage : MonoBehaviour
                 StageManager.Instance.fadeImg.gameObject.SetActive(false);
                 TimerManager.Instance.EndRewind();
 
-                ClearPortal.isPortalCutscene = true;
                 break;
             }
             TimerManager.Instance.EndRewind();
