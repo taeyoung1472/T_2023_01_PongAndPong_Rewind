@@ -68,8 +68,6 @@ public class GravityInverseGimmick : ControlAbleObjcet
                 break;
             case ControlType.None:
                 break;
-            case ControlType.ReberseControl:
-                break;
         }
     }
     private void Awake()

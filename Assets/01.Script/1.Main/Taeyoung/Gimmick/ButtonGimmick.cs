@@ -2,64 +2,44 @@ using System;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
-using Random = UnityEngine.Random;
 
 public class ButtonGimmick : GimmickObject
 {
- [SerializeField] private   bool isActive = false;
-    [SerializeField] private bool isActivePlayer = false;
-    bool curActive;
+    private bool isActive = false;
+    private bool isActivePlayer = false;
+    private bool curActive;
 
+    [Header("[주요 필드]")]
     [SerializeField] private ControlData[] controlDataArr;
-    [SerializeField] private GimmickVisualLink visualLinkPrefab;
     [SerializeField] private ColorCODEX codex;
 
-    [SerializeField] private bool isVisuaLinkDisable;
-    [SerializeField] private bool isCameraControlDisable;
-
     #region 토글
+    [Header("[토글]")]
     [SerializeField] private bool isToggle;
     [SerializeField] private float toggleTime;
-    [SerializeField] private float origntToggleTime;
-    [SerializeField] private bool toggleing;
+    private bool toggleing;
+    private float origntToggleTime;
+    private float timer = 0f;
+    private Slider toggleSlider = null;
     #endregion
 
-    private Animator animator;
-
+    [Header("[중력 관련]")]
     [SerializeField] private bool gravityButton;
     public DirectionType gravitChangeDirState;
     private GravityInverseGimmick gravityInverseGimmick;
 
-    private float timer = 0f;
     [SerializeField] private DirectionType preDirType;
-
-    #region 토글 슬라이더 관련
-    private Slider toggleSlider = null;
-
-    #endregion
 
     public void Start()
     {
-        animator = GetComponent<Animator>();
         toggleSlider = GetComponentInChildren<Slider>();
         SetSlider();
         if (RewindManager.Instance)
         {
             RewindManager.Instance.RestartPlay += () =>
             {
-               // InitInfo();
-            };
-        }
 
-        if (!isVisuaLinkDisable)
-        {
-            foreach (var data in controlDataArr)
-            {
-                GimmickVisualLink link = Instantiate(visualLinkPrefab, transform);
-                link.Link(transform, data.target.transform, ColorManager.GetColor(codex));
-                data.target.controlColor = ColorManager.GetColor(codex);
-                data.target.SetColor();
-            }
+            };
         }
 
         if (gravityButton)
@@ -100,7 +80,6 @@ public class ButtonGimmick : GimmickObject
         foreach (var control in controlDataArr)
         {
             control.target.Control(ControlType.None, false, player, gravitChangeDirState);
-            //CamManager.Instance.RemoveTargetGroup(control.target.transform);
         }
     }
 
@@ -151,17 +130,6 @@ public class ButtonGimmick : GimmickObject
                 toggleing = false;
             }
         }
-        
-
-        //else if (toggleing == false && isToggle == true)
-        //{
-        //    if (toggleTime <= 0.0f)
-        //    {
-        //        SetSlider();
-        //    }
-        //}
-
-
     }
 
     public void OnTriggerEnter(Collider other)
@@ -225,24 +193,11 @@ public class ButtonGimmick : GimmickObject
 
         foreach (var control in controlDataArr)
         {
-            //if (!isCameraControlDisable)
-            //{
-            //    if (controlType == ControlType.None)
-            //        //CamManager.Instance.RemoveTargetGroup(control.target.transform);
-            //    else
-            //        //CamManager.Instance.AddTargetGroup(control.target.transform);
-            //}
-
             if (isFunc)
-                controlType = control.isReverse ? ControlType.ReberseControl : ControlType.Control;
+                controlType = ControlType.Control;
 
             control.target.Control(controlType, control.isLever, player, gravitChangeDirState);
         }
-
-        if (controlType == ControlType.None)
-            animator.SetBool("IsActive", false);
-        else
-            animator.SetBool("IsActive", true);
     }
 
 #if UNITY_EDITOR
@@ -250,10 +205,10 @@ public class ButtonGimmick : GimmickObject
     {
         foreach (var control in controlDataArr)
         {
-            if (control == null)
+            if (control.target == null)
                 continue;
 
-            Handles.color = control.isReverse ? Color.red : Color.blue;
+            Handles.color = Color.blue;
             Handles.DrawLine(transform.position, control.target.transform.position, 10);
         }
     }
@@ -267,7 +222,5 @@ public class ButtonGimmick : GimmickObject
 public class ControlData
 {
     public ControlAbleObjcet target;
-    public bool isReverse = true;
     public bool isLever = false;
-    public bool isLocked = false;
 }

@@ -79,7 +79,7 @@ public class LeverInteract : Interact
         {
             if (isPush)
             {
-                control.target.Control(control.isReverse ? ControlType.ReberseControl : ControlType.Control, true, _player, gravityChangeDir);
+                control.target.Control(ControlType.Control, true, _player, gravityChangeDir);
             }
             else
             {
