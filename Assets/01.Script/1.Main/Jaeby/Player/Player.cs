@@ -150,7 +150,7 @@ public class Player : MonoBehaviour
     {
         Vector3 boxCenter = _col.bounds.center;
         Vector3 halfExtents = _col.bounds.extents;
-        bool isDetect = Physics.BoxCast(boxCenter, halfExtents * 0.8f, transform.forward, transform.rotation, 0.1f, _wallMask);
+        bool isDetect = Physics.BoxCast(boxCenter, halfExtents * 0.5f, transform.forward, transform.rotation, 0.1f, _wallMask);
         if (isDetect)
         {
             Debug.Log(isDetect + "   ");
