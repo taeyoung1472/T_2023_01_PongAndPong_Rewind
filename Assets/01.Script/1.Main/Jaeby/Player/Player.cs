@@ -75,6 +75,8 @@ public class Player : MonoBehaviour
     [SerializeField]
     private float _groundCheckRayLength = 0.225f;
     [SerializeField]
+    private LayerMask _wallMask = 0;
+    [SerializeField]
     private LayerMask _groundMask = 0;
     private bool _isGrounded = false;
     public bool IsGrounded { get => _isGrounded; set => _isGrounded = value; }
@@ -146,6 +148,21 @@ public class Player : MonoBehaviour
 
     private void Move()
     {
+        Vector3 boxCenter = _col.bounds.center;
+        Vector3 halfExtents = _col.bounds.extents;
+        bool isDetect = Physics.BoxCast(boxCenter, halfExtents * 0.8f, transform.forward, transform.rotation, 0.1f, _wallMask);
+        if (isDetect)
+        {
+            Debug.Log(isDetect + "   ");
+            if(_playerRenderer.GetHorizontalFlip())
+            {
+                _moveAmount.x = 0f;
+            }
+            else
+            {
+                _moveAmount.y = 0f;
+            }
+        }
         _characterMoveAmount = ((_moveAmount + _extraMoveAmount) +
             ((_isGrounded == false && _gravityModule.UseGravity) ? _gravityModule.GetGravity() : Vector3.zero))
             ;
