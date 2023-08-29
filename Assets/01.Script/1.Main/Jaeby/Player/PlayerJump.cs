@@ -58,7 +58,6 @@ public class PlayerJump : PlayerAction, IPlayerEnableResetable
         {
             Debug.Log("¸Ó¸® ²Ç");
             ActionExit();
-            _player.PlayerAnimation.Rebind();
             _player.PlayerAnimation.FallOrIdleAnimation(_player.IsGrounded);
         }
     }

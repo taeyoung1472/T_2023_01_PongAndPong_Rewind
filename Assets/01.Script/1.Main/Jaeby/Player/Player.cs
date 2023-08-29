@@ -153,7 +153,7 @@ public class Player : MonoBehaviour
         {
             // 중력 방향에 따라 다르게
             _characterMoveAmount += transform.up * GravityModule.GetGravity().y * Time.deltaTime
-                * ((_rigid.velocity.y <= -0.5f) ? _playerMovementSO.fallMultiplier : _playerMovementSO.upMultiplier);
+                * ((_rigid.velocity.y <= -0.05f) ? _playerMovementSO.fallMultiplier : _playerMovementSO.upMultiplier);
         }
         if (OnSlope())
         {
@@ -282,9 +282,11 @@ public class Player : MonoBehaviour
             maxDistance = _col.bounds.extents.x;
             halfExtents.y = _groundCheckRayLength;
         }
-        _isGrounded = Physics.BoxCast(boxCenter, halfExtents, -transform.up, out _slopeHit, transform.rotation, maxDistance, _groundMask);
+        _isGrounded = Physics.BoxCast(boxCenter, halfExtents * 0.8f, -transform.up, out _slopeHit, transform.rotation, maxDistance, _groundMask);
+        //_isGrounded = Physics.Raycast(transform.position, transform.up * -1f, _groundCheckRayLength, _groundMask);
         if (lastGrounded == _isGrounded)
             return;
+
         OnIsGrounded?.Invoke(_isGrounded);
     }
 
