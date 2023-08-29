@@ -69,7 +69,6 @@ public class WeightButtonGimmick : GimmickObject
                 {
                     control.target.Control(ControlType.Control, false, player, gravitChangeDirState);
                 }
-                CamManager.Instance.AddTargetGroup(control.target.transform);
             }
         }
         else

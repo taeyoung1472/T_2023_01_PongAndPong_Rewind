@@ -1,7 +1,6 @@
 using System;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class ButtonGimmick : GimmickObject
 {
@@ -13,54 +12,25 @@ public class ButtonGimmick : GimmickObject
     [SerializeField] private ControlData[] controlDataArr;
     [SerializeField] private ColorCODEX codex;
 
-    #region 토글
-    [Header("[토글]")]
-    [SerializeField] private bool isToggle;
-    [SerializeField] private float toggleTime;
-    private bool toggleing;
-    private float origntToggleTime;
-    private float timer = 0f;
-    private Slider toggleSlider = null;
-    #endregion
-
     [Header("[중력 관련]")]
     [SerializeField] private bool gravityButton;
     public DirectionType gravitChangeDirState;
     private GravityInverseGimmick gravityInverseGimmick;
+    private float timer = 0f;
 
     [SerializeField] private DirectionType preDirType;
 
     public void Start()
     {
-        toggleSlider = GetComponentInChildren<Slider>();
-        SetSlider();
-        if (RewindManager.Instance)
-        {
-            RewindManager.Instance.RestartPlay += () =>
-            {
-
-            };
-        }
-
         if (gravityButton)
         {
             gravityInverseGimmick = FindObjectOfType<GravityInverseGimmick>();
         }
     }
-    private void SetSlider()
-    {
-        toggleSlider.maxValue = origntToggleTime;
-        toggleSlider.value = toggleSlider.maxValue;
 
-        if (isToggle == false)
-        {
-            toggleSlider.gameObject.SetActive(false);
-        }
-    }
     private void InitInfo()
     {
         Control(false);
-        SetSlider();
         foreach (var control in controlDataArr)
         {
             control.target.isLocked = false;
@@ -68,13 +38,10 @@ public class ButtonGimmick : GimmickObject
         }
         timer = 0;
         isActive = false;
-
     }
     public override void InitOnPlay()
     {
         base.InitOnPlay();
-        toggleing = false;
-        toggleTime = origntToggleTime;
         timer = 0;
         InitInfo();
         foreach (var control in controlDataArr)
@@ -91,7 +58,6 @@ public class ButtonGimmick : GimmickObject
             gravityInverseGimmick.dirChangeDic.Add(timer, gravitChangeDirState);
             Debug.Log("딕셔너리에 추가됨");
             preDirType = gravitChangeDirState;
-
         }
     }
     public void Update()
@@ -102,33 +68,13 @@ public class ButtonGimmick : GimmickObject
         if (gravityButton)
             CheckGravityTimeDir();
 
-        if (!isToggle)
-        {
-            if (isActive)
-            {
-                Control();
-            }
-            else
-            {
-                Control(false);
-            }
-        }
-
-
-        if (toggleing == true && isToggle == true)
+        if (isActive)
         {
             Control();
-            if (isActive == false)
-            {
-                toggleTime -= Time.deltaTime;
-                toggleSlider.value -= Time.deltaTime;
-            }
-
-            if (toggleTime <= 0.0f)
-            {
-                Control(false);
-                toggleing = false;
-            }
+        }
+        else
+        {
+            Control(false);
         }
     }
 
@@ -140,9 +86,6 @@ public class ButtonGimmick : GimmickObject
         if (other.gameObject.TryGetComponent<Player>(out Player player))
         {
             isActivePlayer = true;
-            toggleing = true;
-            toggleTime = origntToggleTime;
-            SetSlider();
 
             if (this.player == null)
             {
@@ -155,11 +98,7 @@ public class ButtonGimmick : GimmickObject
         {
             Debug.Log(gimmickObject);
 
-            SetSlider();
-
             isActive = true;
-            toggleing = true;
-            toggleTime = origntToggleTime;
         }
     }
 

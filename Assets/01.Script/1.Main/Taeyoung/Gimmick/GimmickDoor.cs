@@ -52,7 +52,7 @@ public class GimmickDoor : ControlAbleObjcet
 
     public void OnValidate()
     {
-        if (arrow)
+        if (arrow && doorCenter)
         {
             arrow.transform.position = doorCenter.position + new Vector3(0, 0, -2.25f);
             arrow.transform.eulerAngles = new Vector3(0, 0, Mathf.Atan2(moveValue.y, moveValue.x) * Mathf.Rad2Deg);
