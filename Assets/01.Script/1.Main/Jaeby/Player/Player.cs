@@ -153,7 +153,6 @@ public class Player : MonoBehaviour
         bool isDetect = Physics.BoxCast(boxCenter, halfExtents * 0.5f, transform.forward, transform.rotation, 0.1f, _wallMask);
         if (isDetect)
         {
-            Debug.Log(isDetect + "   ");
             if(_playerRenderer.GetHorizontalFlip())
             {
                 _moveAmount.x = 0f;
