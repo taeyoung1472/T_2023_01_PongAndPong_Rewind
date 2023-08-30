@@ -6,30 +6,19 @@ using UnityEngine;
 public class PushableObject : MonoBehaviour
 {
     private Player _player = null;
+    [SerializeField]
     private Rigidbody _rigid = null;
-    private float _myMass = 1f;
-    private float _curMass = 1f;
 
     private bool _pushing = false;
 
     private void Start()
     {
         _rigid = transform.parent.GetComponent<Rigidbody>();
-        _myMass = _rigid.mass;
-        _curMass = _myMass;
     }
 
     private void Update()
     {
         MassChange();
-        CalculatePush();
-    }
-
-    private void CalculatePush()
-    {
-        if (_pushing == false)
-            return;
-        _rigid.MovePosition(transform.position + _player.PlayerRenderer.Forward * _curMass * Time.deltaTime);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -40,6 +29,21 @@ public class PushableObject : MonoBehaviour
         _player = other.GetComponent<Player>();
         _pushing = true;
         other.GetComponent<Player>().GetPlayerAction<PlayerObjectPush>(PlayerActionType.ObjectPush).PushStart(gameObject);
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.CompareTag("Player") == false || _player == null)
+            return;
+
+        if(_player.GetPlayerAction<PlayerObjectPush>(PlayerActionType.ObjectPush).IsObjExit(gameObject))
+        {
+            _player.GetPlayerAction<PlayerObjectPush>(PlayerActionType.ObjectPush).PushEnd(gameObject);
+        }
+        else
+        {
+            _player.GetPlayerAction<PlayerObjectPush>(PlayerActionType.ObjectPush).PushStart(gameObject);
+        }
     }
 
     private void OnTriggerExit(Collider other)
@@ -53,15 +57,15 @@ public class PushableObject : MonoBehaviour
 
     private void MassChange()
     {
-        if (_pushing == false)
+        if (_pushing == false || _rigid == null)
             return;
-        if (_player.PlayerActionCheck(PlayerActionType.Dash))
+        if (_player.PlayerActionCheck(PlayerActionType.Dash, PlayerActionType.Jump))
         {
-            _curMass = 0f;
+            _rigid.mass = 90f;
         }
         else
         {
-            _curMass = _myMass;
+            _rigid.mass = 0f;
         }
     }
 }

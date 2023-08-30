@@ -35,7 +35,6 @@ public class PlayerObjectPush : PlayerAction
 
     private void Update()
     {
-        ObjExitCheck();
         Sound();
     }
 
@@ -67,14 +66,9 @@ public class PlayerObjectPush : PlayerAction
         _excuting = false;
     }
 
-    private void ObjExitCheck()
+    public bool IsObjExit(GameObject targetObj )
     {
-        if (_pushingCollider == null)
-            return;
-        if (Vector3.Dot(_pushingCollider.transform.position - _player.transform.position, _player.PlayerRenderer.Forward) < 0f)
-        {
-            PushEnd();
-        }
+        return Vector3.Dot(targetObj.transform.position - _player.transform.position, _player.PlayerRenderer.Forward) < 0f;
     }
 
     public void PushStart(GameObject other)
