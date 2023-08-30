@@ -11,6 +11,7 @@ public class ButtonGimmick : GimmickObject
     [Header("[ÁÖ¿ä ÇÊµå]")]
     [SerializeField] private ControlData[] controlDataArr;
     [SerializeField] private ColorCODEX codex;
+    private GimmickVisualLink[] visualLinks;
 
     [Header("[Áß·Â °ü·Ã]")]
     [SerializeField] private bool gravityButton;
@@ -22,6 +23,12 @@ public class ButtonGimmick : GimmickObject
 
     public void Start()
     {
+        visualLinks = GetComponentsInChildren<GimmickVisualLink>();
+        foreach (var link in visualLinks)
+        {
+            link.color = ColorManager.GetColor(codex);
+        }
+
         if (gravityButton)
         {
             gravityInverseGimmick = FindObjectOfType<GravityInverseGimmick>();
@@ -56,7 +63,6 @@ public class ButtonGimmick : GimmickObject
         if (isActivePlayer && preDirType != gravitChangeDirState)
         {
             gravityInverseGimmick.dirChangeDic.Add(timer, gravitChangeDirState);
-            Debug.Log("µñ¼Å³Ê¸®¿¡ Ãß°¡µÊ");
             preDirType = gravitChangeDirState;
         }
     }
@@ -90,14 +96,11 @@ public class ButtonGimmick : GimmickObject
             if (this.player == null)
             {
                 this.player = player;
-                Debug.Log(player);
             }
         }
 
         if (other.TryGetComponent<GimmickObject>(out GimmickObject gimmickObject))
         {
-            Debug.Log(gimmickObject);
-
             isActive = true;
         }
     }
@@ -125,7 +128,6 @@ public class ButtonGimmick : GimmickObject
 
         if (isFunc != curActive)
         {
-            Debug.Log(curActive);
             AudioManager.PlayAudio(SoundType.OnActiveButton);
             curActive = isFunc;
         }
@@ -136,6 +138,11 @@ public class ButtonGimmick : GimmickObject
                 controlType = ControlType.Control;
 
             control.target.Control(controlType, control.isLever, player, gravitChangeDirState);
+        }
+
+        foreach (var link in visualLinks)
+        {
+            link.Active(controlType == ControlType.Control);
         }
     }
 
@@ -152,6 +159,7 @@ public class ButtonGimmick : GimmickObject
         }
     }
 #endif
+
     public override void Init()
     {
     }
