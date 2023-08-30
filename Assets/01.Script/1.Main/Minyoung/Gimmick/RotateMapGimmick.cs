@@ -39,8 +39,6 @@ public class RotateMapGimmick : ControlAbleObjcet
                 }
 
                 break;
-            case ControlType.ReberseControl:
-                break;
         }
         curControlType = controlType;
 

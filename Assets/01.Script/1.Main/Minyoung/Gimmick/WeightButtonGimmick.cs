@@ -43,11 +43,6 @@ public class WeightButtonGimmick : GimmickObject
                 }
             };
         }
-        foreach (var data in controlDataArr)
-        {
-            GimmickVisualLink link = Instantiate(visualLinkPrefab, transform);
-            link.Link(transform, data.target.transform, color);
-        }
     }
 
     void Update()
@@ -63,13 +58,12 @@ public class WeightButtonGimmick : GimmickObject
             {
                 if (control.isLever)
                 {
-                    control.target.Control(control.isReverse ? ControlType.ReberseControl : ControlType.Control, true, player, gravitChangeDirState);
+                    control.target.Control(ControlType.Control, true, player, gravitChangeDirState);
                 }
                 else
                 {
-                    control.target.Control(control.isReverse ? ControlType.ReberseControl : ControlType.Control, false, player, gravitChangeDirState);
+                    control.target.Control(ControlType.Control, false, player, gravitChangeDirState);
                 }
-                CamManager.Instance.AddTargetGroup(control.target.transform);
             }
         }
         else

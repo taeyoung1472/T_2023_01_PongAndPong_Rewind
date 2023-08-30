@@ -2,7 +2,7 @@ using UnityEngine;
 public abstract class GimmickObject : MonoBehaviour
 {
     public Player player { get; set; }
-    public bool isRewind = false;
+    [HideInInspector] public bool isRewind = false;
     public abstract void Init();
     public virtual void InitOnRewind() 
     {

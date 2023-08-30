@@ -1,108 +1,91 @@
+using DG.Tweening;
+using UnityEditor;
 using UnityEngine;
 
-public class LeverInteract : Interact
+public class LeverInteract : GimmickObject
 {
+    [Header("[주요 필드]")]
     [SerializeField] private ControlData[] controlDataArr;
-    [SerializeField] private GameObject popup;
     [SerializeField] private ColorCODEX codex;
-    [SerializeField] private GimmickVisualLink visualLinkPrefab;
-    private Animator _animator = null;
+    private Transform handle;
+    private LayerMask playerLayer;
 
-    public bool isPush = false;
-
+    [Header("[중력 관련]")]
+    private bool isPush = false;
     public DirectionType gravityChangeDir;
 
-    public void Start()
+    private void Start()
     {
-        if (visualLinkPrefab != null)
-        {
-            foreach (var data in controlDataArr)
-            {
-                GimmickVisualLink link = Instantiate(visualLinkPrefab, transform);
-                link.Link(transform, data.target.transform, ColorManager.GetColor(codex));
-                data.target.controlColor = ColorManager.GetColor(codex);
-                data.target.SetColor();
-            }
-        }
+        playerLayer = 1 << LayerMask.NameToLayer("Player");
+        handle = transform.Find("Handle");
     }
 
     public override void InitOnPlay()
     {
         base.InitOnPlay();
         isPush = false;
-        if (_animator == null)
-            _animator = GetComponent<Animator>();
-        _animator.Play("Idle");
 
         foreach (var control in controlDataArr)
         {
             control.target.ResetObject();
         }
-        //popup.gameObject.SetActive(false);
     }
 
-    protected override void ChildInteractEnd()
+    private void Update()
     {
-    }
-
-    //private void Update()
-    //{
-    //    if (popup != null && _player != null)
-    //    {
-    //        popup.gameObject.SetActive(Vector3.Distance(transform.position, _player.transform.position) <= 1.5f);
-    //    }
-    //}
-
-    protected override void ChildInteractStart()
-    {
-        _player.PlayerInput.enabled = true;
-
-        if (Vector3.Distance(transform.position, _player.transform.position) >= 1.5f)
-            return;
-
-
-        foreach (var control in controlDataArr)
+        if (Input.GetKeyDown(KeyCode.F))
         {
-            if (control.target.isLocked)
+            Collider[] cols = Physics.OverlapBox(transform.position + new Vector3(0, 0.5f, 0), new Vector3(1, 0.5f, 1), Quaternion.identity, playerLayer);
+            Debug.Log(cols.Length);
+            if (cols.Length > 0)
             {
+                LeverPullAction();
                 return;
             }
         }
-
-        LeverPullAction();
-        LeverAnimation(isPush);
     }
+
     public void LeverPullAction()
     {
-        isPush = !isPush; //처음에 ispush트루
+        isPush = !isPush;
         foreach (var control in controlDataArr)
         {
             if (isPush)
             {
-                control.target.Control(control.isReverse ? ControlType.ReberseControl : ControlType.Control, true, _player, gravityChangeDir);
+                control.target.Control(ControlType.Control, true, player, gravityChangeDir);
             }
             else
             {
-                control.target.Control(ControlType.None, true, _player, gravityChangeDir);
+                control.target.Control(ControlType.None, true, player, gravityChangeDir);
             }
         }
-    }
 
-    public void LeverAnimation(bool pull)
-    {
-        if (_animator == null)
-            _animator = GetComponent<Animator>();
-
-
-
-        if (pull)
+        if (isPush)
         {
-            _animator.Play("LeverPull");
+            handle.DOLocalRotate(new Vector3(130, -90, 0), 0.6f);
         }
         else
         {
-            _animator.Play("LeverPush");
+            handle.DOLocalRotate(new Vector3(50, -90, 0), 0.6f);
         }
     }
 
+    public override void Init()
+    {
+
+    }
+
+#if UNITY_EDITOR
+    private void OnDrawGizmosSelected()
+    {
+        foreach (var control in controlDataArr)
+        {
+            if (control.target == null)
+                continue;
+
+            Handles.color = Color.blue;
+            Handles.DrawLine(transform.position, control.target.transform.position, 10);
+        }
+    }
+#endif
 }
