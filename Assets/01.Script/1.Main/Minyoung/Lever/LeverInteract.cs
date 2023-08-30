@@ -1,4 +1,5 @@
 using DG.Tweening;
+using EPOOutline;
 using UnityEditor;
 using UnityEngine;
 
@@ -22,6 +23,11 @@ public class LeverInteract : GimmickObject
         {
             link.color = ColorManager.GetColor(codex);
         }
+        foreach (var control in controlDataArr)
+        {
+            control.target.GetComponent<Outlinable>().OutlineParameters.Color = ColorManager.GetColor(codex);
+        }
+        GetComponent<Outlinable>().OutlineParameters.Color = ColorManager.GetColor(codex);
 
         playerLayer = 1 << LayerMask.NameToLayer("Player");
         handle = transform.Find("Handle");
