@@ -7,6 +7,7 @@ public class LeverInteract : GimmickObject
     [Header("[주요 필드]")]
     [SerializeField] private ControlData[] controlDataArr;
     [SerializeField] private ColorCODEX codex;
+    private GimmickVisualLink[] visualLinks;
     private Transform handle;
     private LayerMask playerLayer;
 
@@ -14,8 +15,14 @@ public class LeverInteract : GimmickObject
     private bool isPush = false;
     public DirectionType gravityChangeDir;
 
-    private void Start()
+    public void Start()
     {
+        visualLinks = GetComponentsInChildren<GimmickVisualLink>();
+        foreach (var link in visualLinks)
+        {
+            link.color = ColorManager.GetColor(codex);
+        }
+
         playerLayer = 1 << LayerMask.NameToLayer("Player");
         handle = transform.Find("Handle");
     }
@@ -67,6 +74,11 @@ public class LeverInteract : GimmickObject
         else
         {
             handle.DOLocalRotate(new Vector3(50, -90, 0), 0.6f);
+        }
+
+        foreach (var link in visualLinks)
+        {
+            link.Active(isPush);
         }
     }
 
