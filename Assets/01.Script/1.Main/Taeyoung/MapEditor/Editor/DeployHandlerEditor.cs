@@ -5,34 +5,10 @@ using UnityEngine;
 public class DeployHandlerEditor : Editor
 {
     private DeployHandler myScript;
-    //private GUIStyle boldLabelStyle = new();
-
-    //SerializedProperty centerXProperty;
-    //SerializedProperty centerYProperty;
-
-    //SerializedProperty decalCenterXProperty;
-    //SerializedProperty decalCenterYProperty;
-
-    //SerializedProperty decalRotXProperty;
-    //SerializedProperty decalRotYProperty;
-    //SerializedProperty decalRotZProperty;
 
     private void OnEnable()
     {
         myScript = target as DeployHandler;
-
-        //boldLabelStyle = new GUIStyle(EditorStyles.label);
-        //boldLabelStyle.fontStyle = FontStyle.Bold;
-
-        //centerXProperty = serializedObject.FindProperty(nameof(myScript.centerX));
-        //centerYProperty = serializedObject.FindProperty(nameof(myScript.centerY));
-
-        //decalCenterXProperty = serializedObject.FindProperty(nameof(myScript.centerX_decal));
-        //decalCenterYProperty = serializedObject.FindProperty(nameof(myScript.centerY_decal));
-
-        //decalRotXProperty = serializedObject.FindProperty(nameof(myScript.rotX));
-        //decalRotYProperty = serializedObject.FindProperty(nameof(myScript.rotY));
-        //decalRotZProperty = serializedObject.FindProperty(nameof(myScript.rotZ));
     }
 
     public override void OnInspectorGUI()
