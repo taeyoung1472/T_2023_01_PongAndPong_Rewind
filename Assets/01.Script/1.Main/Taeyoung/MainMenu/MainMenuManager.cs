@@ -1,9 +1,7 @@
 using Cinemachine;
 using DG.Tweening;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.InputSystem.LowLevel;
 
 public class MainMenuManager : MonoSingleTon<MainMenuManager>
 {
@@ -37,24 +35,19 @@ public class MainMenuManager : MonoSingleTon<MainMenuManager>
 
     public UnityEvent startEvent;
 
-    public IEnumerator Start()
+    public void Start()
     {
         if (isOpend)
         {
             playerArrow.SetActive(false);
             player.transform.SetPositionAndRotation(portalPlayerPostion.position, portalPlayerPostion.rotation);
-            PlayGame();
-            startEvent?.Invoke();
-            yield break;
         }
         if (isOpenCheck)
         {
             isOpend = true;
         }
-
-        yield return null;
-
-        player.gameObject.SetActive(false);
+        PlayGame();
+        startEvent?.Invoke();
     }
 
     void Update()
@@ -135,11 +128,12 @@ public class MainMenuManager : MonoSingleTon<MainMenuManager>
 
         menuCam.Priority = 0;
         playerCam.Priority = 1;
-
-        Debug.Log("???");
-        player.SetActive(true);
-        playerInput.enabled = true;
-        
+        if (!ClearPortal.isPortalCutscene) //ÄÆ¾À½ÇÇà ¾ÈÇÒ¶§¸¸
+        {
+            Debug.Log("???");
+            player.SetActive(true);
+            playerInput.enabled = true;
+        }
 
 
         isActive = false;

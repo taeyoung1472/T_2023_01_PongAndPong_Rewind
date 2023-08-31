@@ -77,10 +77,14 @@ public class GimmickDoor : ControlAbleObjcet
                 break;
         }
 
-        if (Vector3.Distance(transform.localPosition, targetPos) > 0.25f)
+        if (Mathf.Abs(Vector3.Distance(transform.localPosition, targetPos)) > 0.1f)
         {
             Vector3 dir = (targetPos - transform.localPosition).normalized;
             transform.localPosition = transform.localPosition + dir * speed * Time.deltaTime;
+        }
+        else
+        {
+            transform.localPosition = targetPos;
         }
     }
 }

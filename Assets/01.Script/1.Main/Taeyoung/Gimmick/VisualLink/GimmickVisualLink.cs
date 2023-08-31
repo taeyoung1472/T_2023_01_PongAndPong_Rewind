@@ -1,5 +1,3 @@
-using DigitalRuby.ThunderAndLightning;
-using EPOOutline;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,9 +11,10 @@ public class GimmickVisualLink : MonoBehaviour
     private float worldZ = 1.9f;
 
     #region RunTime
-    private void Awake()
+    public void Awake()
     {
         lineMaterial = linkRenderer.materials[0];
+        Active(false);
     }
 
     public void Active(bool isActive)
