@@ -33,6 +33,8 @@ public class ButtonGimmick : GimmickObject
         foreach (var control in controlDataArr)
         {
             control.target.GetComponent<Outlinable>().OutlineParameters.Color = ColorManager.GetColor(codex);
+            control.target.controlColor = ColorManager.GetColor(codex);
+            control.target.SetColor();
         }
         GetComponent<Outlinable>().OutlineParameters.Color = ColorManager.GetColor(codex);
 
