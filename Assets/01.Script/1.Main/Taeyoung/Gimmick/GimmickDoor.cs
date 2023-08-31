@@ -12,6 +12,7 @@ public class GimmickDoor : ControlAbleObjcet
     [SerializeField] private Transform doorCenter;
     [SerializeField] private List<Transform> arrowList = new();
     private Vector3 originPos;
+    private bool isControlEnd = true;
 
     public override void Control(ControlType controlType, bool isLever, Player player, DirectionType dirType)
     {
@@ -19,11 +20,8 @@ public class GimmickDoor : ControlAbleObjcet
         {
             if(controlType != ControlType.None)
             {
+                isControlEnd = false;
                 TimeStampManager.Instance.SetStamp(StampType.doorOpen, controlColor);
-            }
-            else
-            {
-                //TimeStampManager.Instance.SetStamp(StampType.doorClose, controlColor);
             }
         }
         curControlType = controlType;
@@ -77,10 +75,20 @@ public class GimmickDoor : ControlAbleObjcet
                 break;
         }
 
-        if (Vector3.Distance(transform.localPosition, targetPos) > 0.25f)
+        if (Mathf.Abs(Vector3.Distance(transform.localPosition, targetPos)) > 0.1f)
         {
             Vector3 dir = (targetPos - transform.localPosition).normalized;
             transform.localPosition = transform.localPosition + dir * speed * Time.deltaTime;
+        }
+        else
+        {
+            if (!isControlEnd)
+            {
+                TimeStampManager.Instance.SetStamp(StampType.doorOpen, controlColor);
+                isControlEnd = true;
+            }
+
+            transform.localPosition = targetPos;
         }
     }
 }

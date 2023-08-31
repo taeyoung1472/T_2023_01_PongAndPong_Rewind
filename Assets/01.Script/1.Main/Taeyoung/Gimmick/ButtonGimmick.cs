@@ -1,3 +1,4 @@
+using EPOOutline;
 using System;
 using UnityEditor;
 using UnityEngine;
@@ -28,6 +29,14 @@ public class ButtonGimmick : GimmickObject
         {
             link.color = ColorManager.GetColor(codex);
         }
+
+        foreach (var control in controlDataArr)
+        {
+            control.target.GetComponent<Outlinable>().OutlineParameters.Color = ColorManager.GetColor(codex);
+            control.target.controlColor = ColorManager.GetColor(codex);
+            control.target.SetColor();
+        }
+        GetComponent<Outlinable>().OutlineParameters.Color = ColorManager.GetColor(codex);
 
         if (gravityButton)
         {
@@ -74,6 +83,7 @@ public class ButtonGimmick : GimmickObject
         if (gravityButton)
             CheckGravityTimeDir();
 
+        CheckActive();
         if (isActive)
         {
             Control();
@@ -84,39 +94,30 @@ public class ButtonGimmick : GimmickObject
         }
     }
 
-    public void OnTriggerEnter(Collider other)
+    private void CheckActive()
     {
         if (isRewind)
             return;
 
-        if (other.gameObject.TryGetComponent<Player>(out Player player))
-        {
-            isActivePlayer = true;
+        isActive = false;
 
-            if (this.player == null)
+        Collider[] cols = Physics.OverlapBox(transform.position + new Vector3(0, 0.5f, 0), new Vector3(1, 0.5f, 1f));
+        foreach (var col in cols)
+        {
+            if (col.gameObject.TryGetComponent<Player>(out Player player))
             {
-                this.player = player;
+                isActivePlayer = true;
+
+                if (this.player == null)
+                {
+                    this.player = player;
+                }
             }
-        }
 
-        if (other.TryGetComponent<GimmickObject>(out GimmickObject gimmickObject))
-        {
-            isActive = true;
-        }
-    }
-
-    public void OnTriggerExit(Collider other)
-    {
-        if (isRewind)
-            return;
-
-        if (other.TryGetComponent<GimmickObject>(out GimmickObject gimmickObject))
-        {
-            isActive = false;
-        }
-        if (other.gameObject.TryGetComponent<Player>(out Player player))
-        {
-            isActivePlayer = false;
+            if (col.TryGetComponent<GimmickObject>(out GimmickObject gimmickObject))
+            {
+                isActive = true;
+            }
         }
     }
 

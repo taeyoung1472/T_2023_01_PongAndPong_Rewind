@@ -1,18 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ThornGimmick : GimmickObject
 {
-    private Collider _col;
-
     public bool isCheck = false;
-
-    [SerializeField] private float rayDistance = 0.5f;
-
-    RaycastHit hit;
-
     public bool isDie;
+
     public override void Awake()
     {
         base.Awake();
@@ -20,7 +12,7 @@ public class ThornGimmick : GimmickObject
     }
     public override void Init()
     {
-        _col = GetComponent<BoxCollider>();
+
     }
 
     private void OnTriggerEnter(Collider other)

@@ -50,10 +50,11 @@ public class TimeStampManager : MonoSingleTon<TimeStampManager>
 
     private void DisplayStamp(StampData data, Color backgroundColor)
     {
+        Debug.Log("¿Ö ÀÛµ¿ ¾ÈÇÔ");
         if (RewindManager.Instance.IsBeingRewinded)
             return;
+        Debug.Log("¾¾´í");
 
-        //Debug.Log("¤·¤·");
         TimeStampDisplay display = Instantiate(displayPrefab, displayParent);
         display.GetComponent<RectTransform>().position = GetStampPosition();
         display.Set(data.sprite, backgroundColor, TimerManager.Instance.CurrentTimer);
