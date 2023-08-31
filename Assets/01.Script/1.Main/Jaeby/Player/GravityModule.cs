@@ -35,7 +35,8 @@ public class GravityModule : MonoBehaviour, IPlayerEnableResetable, IPlayerDisab
     {
         if (_useGravity && _isMovePlatform == false)
         {
-            return _gravityDir * (_gravityScale + _curGravityAcceleration);
+            float fallSpeedMultiplier = _gravityScale + _curGravityAcceleration;
+            return _gravityDir * fallSpeedMultiplier;
         }
         else
         {

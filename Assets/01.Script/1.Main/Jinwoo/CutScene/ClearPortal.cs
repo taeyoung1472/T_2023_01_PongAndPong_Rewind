@@ -6,7 +6,6 @@ using UnityEngine.Playables;
 
 public class ClearPortal : MonoBehaviour
 {
-    public static bool isPortalCutscene = false;
     [SerializeField] private bool isCheckCollection = false;
 
     //[SerializeField] private GameObject playerSpawner;
@@ -20,16 +19,30 @@ public class ClearPortal : MonoBehaviour
     [SerializeField] private PlayableDirector completeCutscene;
     [SerializeField] private PlayableDirector notcompleteCutscene;
 
+
+    [SerializeField] private LabCollectionObjController labCollection;
+
+    public void Start()
+    {
+       // SaveDataManager.Instance.CurrentStageNameData.cutSceneDic[SaveDataManager.Instance.CurrentStageNameData.worldName];
+
+    }
     public void StartCutScene()
     {
         if (MainMenuManager.isOpend) //메인메뉴 이미 열린겨
         {
-            //컷신 실행인지
-            if (isPortalCutscene)
+            if (SaveDataManager.Instance.IsThisChapterClear(SaveDataManager.Instance.CurrentStageNameData.worldName))
             {
-                Debug.Log("컷씬 실행");
-                CheckCollectPiece();
+                //컷신실행
+                if (!SaveDataManager.Instance.CheckPlayCutScene((SaveDataManager.Instance.CurrentStageNameData.worldName)))
+                {
+                    SaveDataManager.Instance.CurrentStageNameData.cutSceneDic[SaveDataManager.Instance.CurrentStageNameData.worldName] = true;
+                    Debug.Log("컷씬 실행");
+                    CheckCollectPiece();
+                }
             }
+           
+            
         }
 
     }
@@ -57,7 +70,7 @@ public class ClearPortal : MonoBehaviour
         //ISCLEARPORTAL이 트루면 조각 다 모은거, 폴스면 다 못모은거
         isCheckCollection = SaveDataManager.Instance.IsStageClearPortal(
             SaveDataManager.Instance.CurrentStageNameData.worldName,
-            SaveDataManager.Instance.CurrentStageNameData.currentStageIndex);
+            SaveDataManager.Instance.CurrentStageNameData.stageCnt);
 
         if (isCheckCollection == true) //좆ㅈ각 다 모음
         {
@@ -72,7 +85,6 @@ public class ClearPortal : MonoBehaviour
 
     public void FocusCollection()
     {
-        isPortalCutscene = false;
 
         foreach (var item in _enableList)
         {
@@ -80,6 +92,7 @@ public class ClearPortal : MonoBehaviour
         }
         _enableList[2].gameObject.transform.position = playerSpawnpos.position;
         BGMManager.Instance.StopBGM();
+        labCollection.PercentSet();
         //keyDisplay.SetActive(true);
         //player.gameObject.SetActive(true);
         //playerCam.gameObject.SetActive(true);

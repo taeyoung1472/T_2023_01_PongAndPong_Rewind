@@ -18,32 +18,25 @@ public class LabCollectionObj : MonoBehaviour
     public void CollectPercentSet()
     {
         if (_myWorldData == null)
+        {
+            _percentText.SetText("0%");
             return;
+        }
 
         if (_dissolveAnimator == null)
             _dissolveAnimator = GetComponent<DissolveAnimator>();
 
 
         int currentCollection = SaveDataManager.Instance.CurrentChapterCollectionCount(_myWorldData.worldName, index);
-
-        //StageCollectionData stageCollectionData = SaveDataManager.Instance.AllChapterDataBase.stageCollectionDataDic[_myWorldData.worldName]
-        //    .stageCollectionValueList[_myWorldData.stageList[0].stageIndex];
-        //StageCollectionData stageCollectionDatsa = SaveDataManager.Instance.AllChapterDataBase.stageCollectionDataDic[_myWorldData.worldName]
-        // .stageCollectionValueList[_myWorldData.stageList.Count];
-        //int currentCollection = 0;
-
-        //foreach (var e in stageCollectionData.stageDataList)
-        //{
-        //    currentCollection += e.zoneCollections.collectionBoolList.FindAll(x => x == true).Count;
-        //}
-
         int maxCollection = SaveDataManager.Instance.MaxChapterCollectionCount(_myWorldData.worldName, index);
-        //int maxCollection = stageCollectionData.stageDataList.Count;
 
         Debug.Log(_myWorldData.worldName + "  current : " + currentCollection + "  max : " + maxCollection);
-        float ratio = ((float)currentCollection/ maxCollection);
-        _dissolveAnimator.DissolveStart(_dissolveAnimator.GetDissolveRatio(), ratio, new Vector3(0f, -1f, 0f));
-        TextAnimating((int)(ratio * 100f));
+        if((maxCollection + currentCollection) > 0)
+        {
+            float ratio = ((float)currentCollection / maxCollection);
+            _dissolveAnimator.DissolveStart(_dissolveAnimator.GetDissolveRatio(), ratio, new Vector3(0f, -1f, 0f));
+            TextAnimating((int)(ratio * 100f));
+        }
     }
 
     private void TextAnimating(int endVal)
