@@ -1,11 +1,10 @@
 using DG.Tweening;
 using Shapes;
-using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
-using System.Linq;
 using static Define;
 using Random = UnityEngine.Random;
 
@@ -21,8 +20,8 @@ public class Analysis : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _collcetObjectNameText = null;
     [SerializeField] private TextMeshProUGUI _worldNameText = null;
 
-    [SerializeField]
-    private DirectorContainer _directorContainer = null;
+    //[SerializeField]
+    //private DirectorContainer _directorContainer = null;
     [SerializeField]
     private Transform _collectObjParent = null;
     [SerializeField]
