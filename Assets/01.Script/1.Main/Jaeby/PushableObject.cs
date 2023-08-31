@@ -48,11 +48,11 @@ public class PushableObject : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player") == false)
+        if (other.CompareTag("Player") == false || _player == null)
             return;
 
         _pushing = false;
-        other.GetComponent<Player>().GetPlayerAction<PlayerObjectPush>(PlayerActionType.ObjectPush).PushEnd(gameObject);
+        _player.GetPlayerAction<PlayerObjectPush>(PlayerActionType.ObjectPush).PushEnd(gameObject);
     }
 
     private void MassChange()
@@ -65,7 +65,7 @@ public class PushableObject : MonoBehaviour
         }
         else
         {
-            _rigid.mass = 0f;
+            _rigid.mass = 1f;
         }
     }
 }
