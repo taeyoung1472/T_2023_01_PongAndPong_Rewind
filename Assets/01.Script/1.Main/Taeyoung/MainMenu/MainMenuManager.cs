@@ -128,13 +128,14 @@ public class MainMenuManager : MonoSingleTon<MainMenuManager>
 
         menuCam.Priority = 0;
         playerCam.Priority = 1;
-        if (!ClearPortal.isPortalCutscene) //ÄÆ¾À½ÇÇà ¾ÈÇÒ¶§¸¸
-        {
-            Debug.Log("???");
-            player.SetActive(true);
-            playerInput.enabled = true;
-        }
-
+        //if (!ClearPortal.isPortalCutscene) //ÄÆ¾À½ÇÇà ¾ÈÇÒ¶§¸¸
+        //{
+        //    Debug.Log("???");
+        //    player.SetActive(true);
+        //    playerInput.enabled = true;
+        //}
+        player.SetActive(true);
+        playerInput.enabled = true;
 
         isActive = false;
         //playerAnimator.SetLayerWeight(2, 0);
