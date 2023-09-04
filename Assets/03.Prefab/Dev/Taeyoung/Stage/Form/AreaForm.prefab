@@ -57,11 +57,11 @@ MonoBehaviour:
   rewindPlayerSpawn: {fileID: 840894042316610144}
   endPoint: {fileID: 8771501563197194625}
   freeLookCamPos: {fileID: 4344556788583670233}
+  freeLoockCamLimit: {x: 0, y: 0}
   gameObjesddct: {fileID: 0}
   areaEndEvent:
     m_PersistentCalls:
       m_Calls: []
-  cmaInitPos: {x: 0, y: 0, z: 0}
 --- !u!1 &1944096350377894794
 GameObject:
   m_ObjectHideFlags: 0
@@ -252,6 +252,7 @@ GameObject:
   - component: {fileID: 6422978443653512042}
   - component: {fileID: 2079165004551979730}
   - component: {fileID: 7922580469420578659}
+  - component: {fileID: 5223031926140445264}
   m_Layer: 29
   m_Name: EndPoint
   m_TagString: Untagged
@@ -315,6 +316,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b616ea904e63904cb726b44d35fbd45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &5223031926140445264
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2474668593907503817}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcc49bd7f04dd7b4b9d023d360f8cd7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myArea: {fileID: 955054101896190960}
+  focusWeight: 1
 --- !u!1 &3380830179443027699
 GameObject:
   m_ObjectHideFlags: 0
@@ -445,6 +460,7 @@ GameObject:
   m_Component:
   - component: {fileID: 840894042316610144}
   - component: {fileID: 7273913924591404297}
+  - component: {fileID: 6553359155024302153}
   m_Layer: 29
   m_Name: RewindSpawnPos
   m_TagString: Untagged
@@ -482,6 +498,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerType: 1
+--- !u!114 &6553359155024302153
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4712873220797918781}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcc49bd7f04dd7b4b9d023d360f8cd7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myArea: {fileID: 955054101896190960}
+  focusWeight: 1
 --- !u!1 &6717387392903172475
 GameObject:
   m_ObjectHideFlags: 0
@@ -523,6 +553,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4332109281197077628}
   - component: {fileID: 5451235636839427951}
+  - component: {fileID: 3128161891895529317}
   m_Layer: 29
   m_Name: DefaultSpawnPos
   m_TagString: Untagged
@@ -560,6 +591,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerType: 0
+--- !u!114 &3128161891895529317
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7155977829506149848}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcc49bd7f04dd7b4b9d023d360f8cd7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myArea: {fileID: 955054101896190960}
+  focusWeight: 1
 --- !u!1 &7174968475502256857
 GameObject:
   m_ObjectHideFlags: 0
@@ -946,6 +991,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4344556788583670233}
+  - component: {fileID: 870469225570136889}
   m_Layer: 0
   m_Name: Center
   m_TagString: Untagged
@@ -968,6 +1014,20 @@ Transform:
   m_Father: {fileID: 1015904160337665885}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &870469225570136889
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8094422905140258491}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcc49bd7f04dd7b4b9d023d360f8cd7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myArea: {fileID: 955054101896190960}
+  focusWeight: 1
 --- !u!1 &8670449613991080916
 GameObject:
   m_ObjectHideFlags: 0

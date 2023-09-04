@@ -1,12 +1,18 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GimmickDoor : ControlAbleObjcet
 {
-    [SerializeField] private Vector3 positiveMoveValue;
-    [SerializeField] private Vector3 negativeMoveValue;
+    [Header("[이동 변수]")]
+    [SerializeField] private Vector3 moveValue;
     [SerializeField] private float speed = 1;
+
+    [Header("[정보 전달]")]
     [SerializeField] private Transform arrow;
+    [SerializeField] private Transform doorCenter;
+    [SerializeField] private List<Transform> arrowList = new();
     private Vector3 originPos;
+    private bool isControlEnd = true;
 
     public override void Control(ControlType controlType, bool isLever, Player player, DirectionType dirType)
     {
@@ -14,11 +20,8 @@ public class GimmickDoor : ControlAbleObjcet
         {
             if(controlType != ControlType.None)
             {
+                isControlEnd = false;
                 TimeStampManager.Instance.SetStamp(StampType.doorOpen, controlColor);
-            }
-            else
-            {
-                //TimeStampManager.Instance.SetStamp(StampType.doorClose, controlColor);
             }
         }
         curControlType = controlType;
@@ -47,10 +50,15 @@ public class GimmickDoor : ControlAbleObjcet
 
     public void OnValidate()
     {
-        if (arrow)
+        if (arrow && doorCenter)
         {
-            arrow.transform.position = transform.position + new Vector3(0, 0, -2.25f);
-            arrow.transform.eulerAngles = new Vector3(0, 0, Mathf.Atan2(positiveMoveValue.y, positiveMoveValue.x) * Mathf.Rad2Deg);
+            arrow.transform.position = doorCenter.position + new Vector3(0, 0, -2.25f);
+            arrow.transform.eulerAngles = new Vector3(0, 0, Mathf.Atan2(moveValue.y, moveValue.x) * Mathf.Rad2Deg);
+
+            foreach (var arrow in arrowList)
+            {
+                arrow.localEulerAngles = new Vector3(arrow.localEulerAngles.x, arrow.localEulerAngles.y, Mathf.Atan2(moveValue.y, moveValue.x) * Mathf.Rad2Deg);
+            }
         }
     }
 
@@ -60,20 +68,27 @@ public class GimmickDoor : ControlAbleObjcet
         switch (curControlType)
         {
             case ControlType.Control:
-                targetPos = originPos + positiveMoveValue;
+                targetPos = originPos + moveValue;
                 break;
             case ControlType.None:
                 targetPos = originPos;
                 break;
-            case ControlType.ReberseControl:
-                targetPos = originPos + negativeMoveValue;
-                break;
         }
 
-        if (Vector3.Distance(transform.localPosition, targetPos) > 0.25f)
+        if (Mathf.Abs(Vector3.Distance(transform.localPosition, targetPos)) > 0.1f)
         {
             Vector3 dir = (targetPos - transform.localPosition).normalized;
             transform.localPosition = transform.localPosition + dir * speed * Time.deltaTime;
+        }
+        else
+        {
+            if (!isControlEnd)
+            {
+                TimeStampManager.Instance.SetStamp(StampType.doorOpen, controlColor);
+                isControlEnd = true;
+            }
+
+            transform.localPosition = targetPos;
         }
     }
 }

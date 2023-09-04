@@ -1,10 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.UI;
-using TMPro;
 public class PhoneGimmick : MonoSingleTon<PhoneGimmick>
 {
     [SerializeField] private Transform parent;
@@ -22,7 +18,7 @@ public class PhoneGimmick : MonoSingleTon<PhoneGimmick>
     public TextMeshProUGUI gimmickExplain;
     public void Start()
     {
-        CreateTem();   
+        CreateTem();
     }
     public void CreateTem()
     {

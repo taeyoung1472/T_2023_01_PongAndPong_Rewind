@@ -1,18 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SlowGimmick : GimmickObject
 {
-    private Collider _col = null;
-
-    [SerializeField] private float rayDistance = 1f;
-
-    [SerializeField] private float slowSpeed = 0.5f;
-
     public bool isCheck = false;
 
-    RaycastHit hit;
     public override void Awake()
     {
         base.Awake();
@@ -20,7 +11,7 @@ public class SlowGimmick : GimmickObject
     }
     public override void Init()
     {
-        _col = GetComponent<Collider>();
+
     }
     private void FixedUpdate()
     {
@@ -28,7 +19,6 @@ public class SlowGimmick : GimmickObject
         {
             return;
         }
-      //  CheckObj();
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -48,34 +38,4 @@ public class SlowGimmick : GimmickObject
             player = null;
         }
     }
-    //public void CheckObj()
-    //{
-    //    Vector3 boxcenter = _col.bounds.center;
-    //    Vector3 halfextents = _col.bounds.extents;
-
-    //    isCheck = Physics.BoxCast(boxcenter, halfextents, transform.up, out hit, transform.rotation, rayDistance);
-    //    if (isCheck)
-    //    {
-    //        Debug.Log("충돌함");
-    //        if (hit.collider.gameObject.layer == 1 << LayerMask.NameToLayer("Player"))
-    //        {
-    //            Debug.Log("플레이어와 닿음");
-    //            player = hit.transform.GetComponentInParent<Player>();
-    //            player.playerBuff.AddBuff(PlayerBuffType.Slow);
-    //    }
-    //        }
-    //    else
-    //    {
-    //            player.playerBuff.DeleteBuff(PlayerBuffType.Slow);
-    //    }
-    //}
-
-    //private void OnCollisionExit(Collision collision)
-    //{
-    //    if (player != null)
-    //    {
-    //        player.playerBuff.DeleteBuff(PlayerBuffType.Slow);
-    //        player = null;
-    //    }
-    //}
 }

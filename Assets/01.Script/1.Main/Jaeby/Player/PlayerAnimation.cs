@@ -53,7 +53,7 @@ public class PlayerAnimation : MonoBehaviour
     public void JumpAnimation()
     {
         _animator.Rebind();
-        _animator.Play("PlayerJump");
+        _animator.SetTrigger("Jump");
         _animator.Update(0);
     }
 
@@ -114,7 +114,7 @@ public class PlayerAnimation : MonoBehaviour
         }
         else
         {
-            _animator.Play("PlayerFall");
+            _animator.CrossFade("PlayerFall", 0.2f);
             _animator.Update(0);
         }
     }

@@ -35,8 +35,6 @@ public class PlayerObjectPush : PlayerAction
 
     private void Update()
     {
-        MassChange();
-        ObjExitCheck();
         Sound();
     }
 
@@ -59,21 +57,6 @@ public class PlayerObjectPush : PlayerAction
         }
     }
 
-    private void MassChange()
-    {
-        if (_pushingCollider != null)
-        {
-            if (_player.PlayerActionCheck(PlayerActionType.Dash))
-            {
-                _pushingCollider.GetComponentInParent<Rigidbody>().mass = 90f;
-            }
-            else
-            {
-                _pushingCollider.GetComponentInParent<Rigidbody>().mass = 1f;
-            }
-        }
-    }
-
     private void PushEnd()
     {
         isPushing = false;
@@ -83,14 +66,9 @@ public class PlayerObjectPush : PlayerAction
         _excuting = false;
     }
 
-    private void ObjExitCheck()
+    public bool IsObjExit(GameObject targetObj )
     {
-        if (_pushingCollider == null)
-            return;
-        if (Vector3.Dot(_pushingCollider.transform.position - _player.transform.position, _player.PlayerRenderer.Forward) < 0f)
-        {
-            PushEnd();
-        }
+        return Vector3.Dot(targetObj.transform.position - _player.transform.position, _player.PlayerRenderer.Forward) < 0f;
     }
 
     public void PushStart(GameObject other)
@@ -104,7 +82,6 @@ public class PlayerObjectPush : PlayerAction
             return;
 
         _pushingCollider = other.transform.gameObject;
-        MassChange();
         Debug.Log("오브젝트 밀기 시작");
         OnEnterCollider?.Invoke();
         _excuting = true;
@@ -114,7 +91,6 @@ public class PlayerObjectPush : PlayerAction
     {
         if (other.CompareTag("PushTrigger") == false || _pushingCollider == null)
             return;
-        MassChange();
         PushEnd();
     }
 

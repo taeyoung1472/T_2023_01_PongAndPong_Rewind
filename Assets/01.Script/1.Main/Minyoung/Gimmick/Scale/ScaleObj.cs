@@ -31,8 +31,6 @@ public class ScaleObj : ControlAbleObjcet
             case ControlType.None:
                 rb.useGravity = false;
                 break;
-            case ControlType.ReberseControl:
-                break;
         }
 
     }
