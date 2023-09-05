@@ -39,6 +39,8 @@ public class PlayerRenderer : MonoBehaviour
     private Sequence _autoRotateSeq = null;
     private float _autoRotateTimer = 0f;
     private bool _autoRotating = false;
+    private bool _isMoving = false;
+    private bool _autoRotateLastFliped = false;
 
     public bool Fliping => _fliping;
 
@@ -51,7 +53,7 @@ public class PlayerRenderer : MonoBehaviour
     private void Update()
     {
         _autoRotateTimer += Time.deltaTime;
-        if(_autoRotateTimer > _autoRotateDelay)
+        if (_autoRotateTimer > _autoRotateDelay)
         {
             AutoRotate();
         }
@@ -59,10 +61,16 @@ public class PlayerRenderer : MonoBehaviour
 
     private void AutoRotate()
     {
-        if (_fliping || _autoRotating)
+        if (_fliping || _autoRotating || _isMoving || _autoRotateLastFliped == _fliped)
             return;
+        Debug.Log("Auto");
+        _autoRotateLastFliped = _fliped;
         _autoRotating = true;
-
+        if (_autoRotateSeq != null)
+            _autoRotateSeq.Kill();
+        _autoRotateSeq = DOTween.Sequence();
+        _autoRotateSeq.Append(_player.transform.DORotate(GetTargetRotation().eulerAngles, _autoRotateTime, RotateMode.Fast));
+        _autoRotateSeq.AppendCallback(() => _autoRotating = false);
     }
 
     public bool GetHorizontalFlip()
@@ -156,8 +164,16 @@ public class PlayerRenderer : MonoBehaviour
 
     public void Flip(Vector2 dir, bool smoothing = true)
     {
+        _isMoving = dir.x > 0f;
         if (dir.x == 0f || _fliping)
             return;
+
+        if (_autoRotateSeq != null)
+        {
+            _autoRotateSeq.Kill();
+            _autoRotating = false;
+        }
+        _autoRotateTimer = 0f;
 
         DirectionType flipDir = DirectionType.None;
         if (dir.x > 0f)
@@ -184,6 +200,12 @@ public class PlayerRenderer : MonoBehaviour
 
     public void ForceFlip()
     {
+        if (_autoRotateSeq != null)
+        {
+            _autoRotateSeq.Kill();
+            _autoRotating = false;
+        }
+
         Quaternion targetRotation = Quaternion.Euler(_player.transform.rotation.eulerAngles.x, _fliped ? 90f : -90f, _player.transform.rotation.eulerAngles.z); // ¹Ý´ë
         _player.transform.rotation = targetRotation;
         _fliped = !_fliped;
