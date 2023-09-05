@@ -81,14 +81,23 @@ public class StageManager : MonoSingleTon<StageManager>
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.R) && isRestartPossible && !freeLookCam._isActivated &&
-            !BreakScreenController.Instance.isBreaking && !EndManager.Instance.IsEnd && !inputLock)
+        if (Input.GetKeyDown(KeyCode.R) && isRestartPossible && !freeLookCam._isActivated 
+            &&!BreakScreenController.Instance.isBreaking && !EndManager.Instance.IsEnd && !inputLock)
         {
+            if (IsPauseTime)
+            {
+                PauseTimeInGame();
+            }
             OnReStartArea();
         }
 
-        if (Input.GetKeyDown(KeyCode.T) && isRestartPossible && !isDownButton && !EndManager.Instance.IsEnd && !inputLock)
+        if (Input.GetKeyDown(KeyCode.T) && isRestartPossible && !isDownButton
+            && !EndManager.Instance.IsEnd && !inputLock)
         {
+            if (IsPauseTime)
+            {
+                PauseTimeInGame();
+            }
             isDownButton = true;
             GlitchManager.Instance.CoroutineColorDrift();
             OnFreeLookCam(!freeLookCam._isActivated);
@@ -102,7 +111,7 @@ public class StageManager : MonoSingleTon<StageManager>
     }
     public void PauseTimeInGame()
     {
-        AudioManager.PlayAudio(SoundType.OnGameStart);
+        AudioManager.PlayAudio(SoundType.OnPause);
         pauseIcon.SetActive(!isPauseTime);
         if (isPauseTime) //일시정지 풀기
         {

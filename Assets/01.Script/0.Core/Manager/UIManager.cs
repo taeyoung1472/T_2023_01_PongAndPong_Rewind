@@ -100,7 +100,8 @@ public class UIManager : MonoSingleTon<UIManager>
             }
         }
 
-        if(Input.GetKeyDown(KeyCode.Q) && !isPause && !EndManager.Instance.IsEnd)
+        if(Input.GetKeyDown(KeyCode.Q) && !isPause && !TimerManager.Instance.isRewinding
+            && !EndManager.Instance.IsEnd && !StageManager.Instance.IsPauseTime)
         {
             if(isFastTime)
             {
@@ -112,6 +113,11 @@ public class UIManager : MonoSingleTon<UIManager>
                 FastForwardTime();
             }
 
+        }
+
+        if (TimerManager.Instance.isRewinding && isFastTime)
+        {
+            ResetFastForwardTime();
         }
     }
     public void HomeBtn()
@@ -167,7 +173,11 @@ public class UIManager : MonoSingleTon<UIManager>
 
         timerImg.gameObject.SetActive(true);
 
-        Time.timeScale = fastTime;
+
+        if (!StageManager.Instance.IsPauseTime)
+        {
+            Time.timeScale = fastTime;
+        }
     }
 
     public void PauseMenu()
