@@ -1,4 +1,5 @@
 using DG.Tweening;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -31,12 +32,44 @@ public class PlayerRenderer : MonoBehaviour
     [SerializeField]
     private float _camShakePower = 5f;
 
+    [SerializeField]
+    private float _autoRotateDelay = 0.2f;
+    [SerializeField]
+    private float _autoRotateTime = 0.3f;
+    private Sequence _autoRotateSeq = null;
+    private float _autoRotateTimer = 0f;
+    private bool _autoRotating = false;
+    private bool _isMoving = false;
+    private bool _autoRotateLastFliped = false;
+
     public bool Fliping => _fliping;
 
     private void Awake()
     {
         _player = GetComponentInParent<Player>();
         _dissolveAnimator = GetComponent<DissolveAnimator>();
+    }
+
+    private void Update()
+    {
+        _autoRotateTimer += Time.deltaTime;
+        if (_autoRotateTimer > _autoRotateDelay)
+        {
+            AutoRotate();
+        }
+    }
+
+    private void AutoRotate()
+    {
+        if (_fliping || _autoRotating || _isMoving || _autoRotateLastFliped == _fliped)
+            return;
+        _autoRotateLastFliped = _fliped;
+        _autoRotating = true;
+        if (_autoRotateSeq != null)
+            _autoRotateSeq.Kill();
+        _autoRotateSeq = DOTween.Sequence();
+        _autoRotateSeq.Append(_player.transform.DORotate(GetTargetRotation().eulerAngles, _autoRotateTime, RotateMode.Fast));
+        _autoRotateSeq.AppendCallback(() => _autoRotating = false);
     }
 
     public bool GetHorizontalFlip()
@@ -110,10 +143,36 @@ public class PlayerRenderer : MonoBehaviour
         return rot;
     }
 
+    public Quaternion GetTargetRotation()
+    {
+        Quaternion targetRotation = Quaternion.identity;
+        if (_flipDirection == DirectionType.Left)
+        {
+            targetRotation = Quaternion.Euler(_fliped ? -90f : 90f, 180f, 90f); //플레이어 로테이션을 돌린다 
+        }
+        else if (_flipDirection == DirectionType.Right)
+        {
+            targetRotation = Quaternion.Euler(_fliped ? -90f : 90f, 0f, 90f); //플레이어 로테이션을 돌린다 
+        }
+        else
+        {
+            targetRotation = Quaternion.Euler(_player.transform.rotation.eulerAngles.x, _fliped ? -90f : 90f, _player.transform.rotation.eulerAngles.z); //플레이어 로테이션을 돌린다 
+        }
+        return targetRotation;
+    }
+
     public void Flip(Vector2 dir, bool smoothing = true)
     {
-        if (dir.x == 0f /*|| _fliping*/)
+        _isMoving = dir.x > 0f;
+        if (dir.x == 0f || _fliping)
             return;
+
+        if (_autoRotateSeq != null)
+        {
+            _autoRotateSeq.Kill();
+            _autoRotating = false;
+        }
+        _autoRotateTimer = 0f;
 
         DirectionType flipDir = DirectionType.None;
         if (dir.x > 0f)
@@ -122,26 +181,15 @@ public class PlayerRenderer : MonoBehaviour
             flipDir = DirectionType.Left;
         else
             flipDir = _fliped ? DirectionType.Left : DirectionType.Right;
+        _fliped = flipDir == DirectionType.Left;
 
-        Quaternion targetRotation = Quaternion.identity;
-        if (_flipDirection == DirectionType.Left)
-        {
-            targetRotation = Quaternion.Euler((flipDir == DirectionType.Left) ? -90f : 90f, 180f, 90f); //플레이어 로테이션을 돌린다 
-        }
-        else if (_flipDirection == DirectionType.Right)
-        {
-            targetRotation = Quaternion.Euler((flipDir == DirectionType.Left) ? -90f : 90f, 0f, 90f); //플레이어 로테이션을 돌린다 
-        }
-        else
-        {
-            targetRotation = Quaternion.Euler(_player.transform.rotation.eulerAngles.x, (flipDir == DirectionType.Left) ? -90f : 90f, _player.transform.rotation.eulerAngles.z); //플레이어 로테이션을 돌린다 
-        }
+        Quaternion targetRotation = GetTargetRotation();
+
         if (smoothing)
             _player.transform.rotation = Quaternion.Slerp(_player.transform.rotation, targetRotation, _rotationSpeed * Time.deltaTime);
         else
             _player.transform.rotation = targetRotation;
 
-        _fliped = flipDir == DirectionType.Left;
 
         if (_lastFliped == _fliped)
             return;
@@ -151,6 +199,12 @@ public class PlayerRenderer : MonoBehaviour
 
     public void ForceFlip()
     {
+        if (_autoRotateSeq != null)
+        {
+            _autoRotateSeq.Kill();
+            _autoRotating = false;
+        }
+
         Quaternion targetRotation = Quaternion.Euler(_player.transform.rotation.eulerAngles.x, _fliped ? 90f : -90f, _player.transform.rotation.eulerAngles.z); // 반대
         _player.transform.rotation = targetRotation;
         _fliped = !_fliped;

@@ -45,14 +45,14 @@ public class PlayerAnimation : MonoBehaviour
 
     public void DieAnimation()
     {
-        _animator.Rebind();
+        Rebind();
         _animator.Play("PlayerDie");
         _animator.Update(0);
     }
 
     public void JumpAnimation()
     {
-        _animator.Rebind();
+        Rebind();
         _animator.SetTrigger("Jump");
         _animator.Update(0);
     }
@@ -65,7 +65,7 @@ public class PlayerAnimation : MonoBehaviour
 
     public void WallClimbAnimation()
     {
-        _animator.Rebind();
+        Rebind();
         _animator.Play("WallClimb");
         _animator.Update(0);
     }
@@ -101,8 +101,10 @@ public class PlayerAnimation : MonoBehaviour
 
     public void Rebind()
     {
+        bool push = _animator.GetBool("ObjectPush");
         if (gameObject.activeSelf)
             _animator.Rebind();
+        ObjectPushAnimation(push);
     }
 
     public void FallOrIdleAnimation(bool isGround)
