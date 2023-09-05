@@ -19,6 +19,8 @@ public class UIManager : MonoSingleTon<UIManager>
     [SerializeField] private bool isFastTime = false;
     [SerializeField] private TextMeshProUGUI fastTimeText;
     private int fastTime = 1;
+    public int FastTime { get => fastTime; }
+    public bool IsFastTime { get => isFastTime; }
 
     private float totalTIme { get { return RewindManager.Instance.howManySecondsToTrack; } }
 
@@ -261,5 +263,19 @@ public class UIManager : MonoSingleTon<UIManager>
     {
         isFastTime = false;
         FastForwardTime();
+    }
+
+    public void OnOffImg(bool isOn)
+    {
+        if (isOn)
+        {
+            fastTimeAudio?.Play();
+            fastTimeImg.gameObject.SetActive(true);
+        }
+        else
+        {
+            fastTimeAudio?.Stop();
+            fastTimeImg.gameObject.SetActive(false);
+        }
     }
 }
