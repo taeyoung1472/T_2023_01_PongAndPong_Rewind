@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -112,6 +113,7 @@ public class Player : MonoBehaviour
     private void FixedUpdate()
     {
         GroundCheck();
+        SetGroundDistance();
         Move();
     }
 
@@ -153,7 +155,7 @@ public class Player : MonoBehaviour
         bool isDetect = Physics.BoxCast(boxCenter, halfExtents * 0.5f, transform.forward, transform.rotation, 0.1f, _wallMask);
         if (isDetect)
         {
-            if(_playerRenderer.GetHorizontalFlip())
+            if (_playerRenderer.GetHorizontalFlip())
             {
                 _moveAmount.x = 0f;
             }
@@ -282,6 +284,21 @@ public class Player : MonoBehaviour
     }
     #endregion
     #region 바닥 체크 및 경사
+
+    private void SetGroundDistance()
+    {
+        RaycastHit hit;
+        Vector3 boxCenter = _col.bounds.center;
+        Vector3 halfExtents = _col.bounds.extents;
+        if (_playerRenderer.GetHorizontalFlip())
+            halfExtents.y = _groundCheckRayLength;
+        else
+            halfExtents.y = _groundCheckRayLength;
+        Physics.BoxCast(boxCenter, halfExtents * 0.8f, -transform.up, out hit, transform.rotation, Mathf.Infinity, _groundMask);
+        if (hit.collider != null)
+            _playerAnimation.SetGroundDistance(hit.distance);
+    }
+
     private void GroundCheck()
     {
         bool lastGrounded = _isGrounded;

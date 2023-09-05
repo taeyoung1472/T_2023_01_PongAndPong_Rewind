@@ -80,6 +80,11 @@ public class PlayerAnimation : MonoBehaviour
         _player.GetPlayerAction<PlayerWallGrab>(PlayerActionType.WallGrab).WallClimbEnd();
     }
 
+    public void SetGroundDistance(float value)
+    {
+        _animator.SetFloat("GroundDistance", value);
+    }
+
     public void WallGrabAnimation(bool val)
     {
         if (val == false)
