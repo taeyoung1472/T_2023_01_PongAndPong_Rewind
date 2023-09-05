@@ -63,7 +63,6 @@ public class PlayerRenderer : MonoBehaviour
     {
         if (_fliping || _autoRotating || _isMoving || _autoRotateLastFliped == _fliped)
             return;
-        Debug.Log("Auto");
         _autoRotateLastFliped = _fliped;
         _autoRotating = true;
         if (_autoRotateSeq != null)
