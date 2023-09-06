@@ -38,6 +38,7 @@ public class PlayerJump : PlayerAction, IPlayerEnableResetable
         {
             _jumpKeyUped = false;
             _jumpInputTime = 0f;
+            Debug.Log("End1");
             JumpEnd();
         }
     }
@@ -78,22 +79,16 @@ public class PlayerJump : PlayerAction, IPlayerEnableResetable
     }
     public void ForceJump(Vector2 dir, float jumpPower, float jumpHoldTime)
     {
-        _jumpEndCheck = false;
-        _excuting = true;
-        if (_jumpCoroutine != null)
-            StopCoroutine(_jumpCoroutine);
-        if (_moveLockCoroutine != null)
-        {
-            StopCoroutine(_moveLockCoroutine);
-            _player.PlayerActionLock(false, PlayerActionType.Move);
-        }
-        _player.VeloCityResetImm(y: true);
-
-        _jumpCoroutine = StartCoroutine(JumpCoroutine(dir, jumpPower, jumpHoldTime));
-        OnJump?.Invoke();
+        MoreJump(1);
+        JumpStart(dir, jumpPower, jumpHoldTime);
     }
 
-    public void JumpStart()
+    public void JumpWithInput()
+    {
+        JumpStart(_player.transform.up, _player.playerMovementSO.jumpPower, _player.playerMovementSO.jumpHoldTime);
+    }
+
+    public void JumpStart(Vector2 dir, float jumpPower, float jumpHoldTime)
     {
         if (_locked)
             return;
@@ -135,7 +130,7 @@ public class PlayerJump : PlayerAction, IPlayerEnableResetable
         else
         {
             _player.VeloCityResetImm(y: true);
-            _jumpCoroutine = StartCoroutine(JumpCoroutine(_player.transform.up, _player.playerMovementSO.jumpPower, _player.playerMovementSO.jumpHoldTime));
+            _jumpCoroutine = StartCoroutine(JumpCoroutine(dir,jumpPower,jumpHoldTime));
         }
     }
 

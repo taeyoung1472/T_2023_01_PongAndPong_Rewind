@@ -170,8 +170,9 @@ public class Player : MonoBehaviour
         if (_isGrounded == false)
         {
             // 중력 방향에 따라 다르게
+            float gravityMultiflier = (_rigid.velocity.y <= -0.05f) ? _playerMovementSO.fallMultiplier : _playerMovementSO.upMultiplier;
             _characterMoveAmount += transform.up * GravityModule.GetGravity().y * Time.deltaTime
-                * ((_rigid.velocity.y <= -0.05f) ? _playerMovementSO.fallMultiplier : _playerMovementSO.upMultiplier);
+                * gravityMultiflier;
         }
         if (OnSlope())
         {
