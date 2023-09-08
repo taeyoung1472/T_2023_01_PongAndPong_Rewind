@@ -4,4 +4,5 @@ public enum WorldType
     Easy = 1,
     Normal,
     Hard,
+    Tutorial,
 }
