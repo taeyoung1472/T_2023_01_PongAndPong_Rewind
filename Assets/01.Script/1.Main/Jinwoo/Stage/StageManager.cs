@@ -1,5 +1,6 @@
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 public class StageManager : MonoSingleTon<StageManager>
 {
@@ -29,6 +30,11 @@ public class StageManager : MonoSingleTon<StageManager>
     private float freelookCoolTime = 1f;
     private bool isRestartPossible = false;
     private bool inputLock = false;
+
+    private bool isPauseTime = false;
+    public bool IsPauseTime { get => isPauseTime; set => isPauseTime = value; }
+    [SerializeField] private GameObject pauseIcon;
+
     public bool InputLock { get => inputLock; set => inputLock = value; }
 
     [Header("카메라 관련")]
@@ -40,13 +46,18 @@ public class StageManager : MonoSingleTon<StageManager>
     [SerializeField]
     private ShockWaveController shockWave;
 
+
     private void Awake()
     {
         SpawnStage();
         isRestartPossible = false;
+        isPauseTime = false;
 
         reStartCoolTime = 1f;
         freelookCoolTime = 1f;
+
+        pauseIcon.SetActive(isPauseTime);
+
     }
     public void Update()
     {
@@ -70,21 +81,58 @@ public class StageManager : MonoSingleTon<StageManager>
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.R) && isRestartPossible && !freeLookCam._isActivated &&
-            !BreakScreenController.Instance.isBreaking && !EndManager.Instance.IsEnd && !inputLock)
+        if (Input.GetKeyDown(KeyCode.R) && isRestartPossible && !freeLookCam._isActivated 
+            &&!BreakScreenController.Instance.isBreaking && !EndManager.Instance.IsEnd && !inputLock)
         {
+            if (IsPauseTime)
+            {
+                PauseTimeInGame();
+            }
             OnReStartArea();
         }
 
-        if (Input.GetKeyDown(KeyCode.T) && isRestartPossible && !isDownButton && !EndManager.Instance.IsEnd && !inputLock)
+        if (Input.GetKeyDown(KeyCode.T) && isRestartPossible && !isDownButton
+            && !EndManager.Instance.IsEnd && !inputLock)
         {
+            if (IsPauseTime)
+            {
+                PauseTimeInGame();
+            }
             isDownButton = true;
             GlitchManager.Instance.CoroutineColorDrift();
             OnFreeLookCam(!freeLookCam._isActivated);
         }
+        if (Input.GetKeyDown(KeyCode.Tab) && !EndManager.Instance.IsEnd
+            && !inputLock && !BreakScreenController.Instance.isBreaking && !freeLookCam._isActivated )
+        {
+            PauseTimeInGame();
+        }
 
     }
+    public void PauseTimeInGame()
+    {
+        AudioManager.PlayAudio(SoundType.OnPause);
+        pauseIcon.SetActive(!isPauseTime);
+        if (isPauseTime) //일시정지 풀기
+        {
+            isPauseTime = false;
 
+            if(UIManager.Instance.IsFastTime)
+                UIManager.Instance.OnOffImg(true);
+
+
+            Time.timeScale = UIManager.Instance.FastTime;
+
+        }
+        else //일시정지 온
+        {
+            isPauseTime = true;
+            UIManager.Instance.OnOffImg(false);
+
+            Time.timeScale = 0;
+            
+        }
+    }
     public void SetFreeLookCamInitPos(Transform camPos)
     {
         freeLookCam.InitPosCam(camPos);

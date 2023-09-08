@@ -88,4 +88,6 @@ public enum SoundType
     OnPhoneBell = 1200,
 
     OnPortalSound = 1300,
+
+    OnPause = 1400,
 }

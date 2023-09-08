@@ -11,10 +11,10 @@ public class BreakScreenController : MonoSingleTon<BreakScreenController>
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.O))
-        {
-            StartCoroutine(CourtineScreenShot());
-        }
+        //if (Input.GetKeyDown(KeyCode.O))
+        //{
+        //    StartCoroutine(CourtineScreenShot());
+        //}
     }
     public void StartBreakScreen()
     {
