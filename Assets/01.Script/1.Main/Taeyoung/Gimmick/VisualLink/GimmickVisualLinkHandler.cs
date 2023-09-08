@@ -1,7 +1,8 @@
 using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(GimmickVisualLink)), CanEditMultipleObjects]
+#if UNITY_EDITOR
+[CustomEditor(typeof(GimmickVisualLink))]
 public class GimmickVisualLinkHandler : Editor
 {
     private GimmickVisualLink myScript;
@@ -43,3 +44,4 @@ public class GimmickVisualLinkHandler : Editor
         myScript.Generate();
     }
 }
+#endif

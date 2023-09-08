@@ -84,7 +84,7 @@ public class GimmickDoor : ControlAbleObjcet
         {
             if (!isControlEnd)
             {
-                TimeStampManager.Instance.SetStamp(StampType.doorOpen, controlColor);
+                //TimeStampManager.Instance.SetStamp(StampType.doorOpen, controlColor);
                 isControlEnd = true;
             }
 
