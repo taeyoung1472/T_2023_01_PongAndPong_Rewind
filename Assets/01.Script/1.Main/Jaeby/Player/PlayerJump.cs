@@ -80,6 +80,7 @@ public class PlayerJump : PlayerAction, IPlayerEnableResetable
     public void ForceJump(Vector2 dir, float jumpPower, float jumpHoldTime)
     {
         MoreJump(1);
+        _player.GravityModule.GravityAccelReset();
         JumpStart(dir, jumpPower, jumpHoldTime);
     }
 

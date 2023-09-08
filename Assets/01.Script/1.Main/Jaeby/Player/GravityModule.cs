@@ -35,6 +35,7 @@ public class GravityModule : MonoBehaviour, IPlayerEnableResetable, IPlayerDisab
     {
         if (_useGravity && _isMovePlatform == false)
         {
+            _curGravityAcceleration = 0f;
             float fallSpeedMultiplier = _gravityScale + _curGravityAcceleration;
             return _gravityDir * fallSpeedMultiplier;
         }
@@ -42,6 +43,14 @@ public class GravityModule : MonoBehaviour, IPlayerEnableResetable, IPlayerDisab
         {
             return Vector3.zero;
         }
+    }
+
+    public void GravityAccelReset()
+    {
+        if (_accelCo != null)
+            StopCoroutine(_accelCo);
+        _curGravityAcceleration = 0f;
+        _accelCo = StartCoroutine(AccelerationCoroutine());
     }
 
     public void OnGrounded(bool val)
