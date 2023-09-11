@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using UnityEngine;
 
 public class CollectionManager : MonoSingleTon<CollectionManager>
@@ -89,12 +90,15 @@ public class CollectionManager : MonoSingleTon<CollectionManager>
             {
                 ChapterStageCollectionData chapterData = SaveDataManager.Instance.AllChapterDataBase.stageCollectionDataDic
                     [StageManager.Instance.CurStageDataSO.chapterStageName];
-
             
 
 
                 for (int k = 0; k < stageDatabase.worldList[i].stageList[j].stageCollection.Count; k++) //스테이지의 존 수
                 {
+                    
+                    
+                  //  Debug.Log(chapterData.stageCollectionValueList[j].stageDataList[k].zoneCollections.collectionBoolList);
+
                     stageDatabase.worldList[i].stageList[j].stageCollection[k].zone =
                     chapterData.stageCollectionValueList[j].stageDataList[k].zoneCollections.collectionBoolList;
                 }
