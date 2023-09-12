@@ -62,6 +62,7 @@ public class CollectionManager : MonoSingleTon<CollectionManager>
     }
     public void SetCollectionActive()
     {
+        return;
         if (StageManager.Instance.CurStageDataSO == null)
         {
             return;
@@ -84,6 +85,7 @@ public class CollectionManager : MonoSingleTon<CollectionManager>
     }
     public void SetStageCollecitonSO()
     {
+        return;
         for (int i = 0; i < stageDatabase.worldList.Count; i++) //i 챕터수
         {
             for (int j = 0; j < stageDatabase.worldList[i].stageList.Count; j++) //스테이지 수
