@@ -84,6 +84,7 @@ public class Stage : MonoBehaviour
                 //StageManager.Instance.OnReStartArea();
             }
 
+
             yield return new WaitUntil(() => stageAreaList[i].isAreaClear);
 
             StageManager.Instance.InputLock = true;
