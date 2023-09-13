@@ -4,31 +4,16 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Rendering;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 public class EndManager : MonoSingleTon<EndManager>
 {
-    #region NextStage UI
-    [SerializeField] private GameObject nextStagePanel;
-    public GameObject NextStagePanel => nextStagePanel;
-
-    [SerializeField] private Image nextStageExplainImage;
-    [SerializeField] private Button nextCloserSpriteBtn;
-    #endregion
 
     #region ±×³É ²¢À»¶§ UI
     [SerializeField] private GameObject endPanel;
     public GameObject EndPanel => endPanel;
 
-    [SerializeField] private Button closerSpriteBtn;
-    [SerializeField] private Button nextStageBtn;
-
-    //[SerializeField] private TextMeshProUGUI resultText;
-    //[SerializeField] private TextMeshProUGUI timeCrackText;
     [SerializeField] private TextMeshProUGUI timePieceText;
     [SerializeField] private TextMeshProUGUI currentStageNumberText;
-    [SerializeField] private Image stageExplainImage;
     #endregion
 
     [SerializeField] private bool isCloser = false;
@@ -49,21 +34,6 @@ public class EndManager : MonoSingleTon<EndManager>
 
         glitch2.enable.value = false;
         blur.intensity.value = 0f;
-
-        closerSpriteBtn.onClick.AddListener(() =>
-        {
-            isCloser = !isCloser;
-            closerSpriteBtn.GetComponentInChildren<TextMeshProUGUI>().text = (isCloser) ? "¾àµµ" : "¸Ê";
-            stageExplainImage.sprite = (isCloser) ? StageManager.stageDataSO.closerStageSprite : StageManager.stageDataSO.stageSprite;
-        });
-
-
-        nextCloserSpriteBtn.onClick.AddListener(() =>
-        {
-            isCloser = !isCloser;
-            nextCloserSpriteBtn.GetComponentInChildren<TextMeshProUGUI>().text = (isCloser) ? "¾àµµ" : "¸Ê";
-            nextStageExplainImage.sprite = (isCloser) ? StageManager.stageDataSO.nextStageData.closerStageSprite : StageManager.stageDataSO.nextStageData.stageSprite;
-        });
     }
 
     public void EndVolume()
@@ -88,19 +58,16 @@ public class EndManager : MonoSingleTon<EndManager>
     }
     public void End()
     {
-        if(!isEnd)
+        if (!isEnd)
         {
             AudioManager.PlayAudio(SoundType.OnStageClear);
         }
 
         isEnd = true;
         onEnd?.Invoke();
-        nextStagePanel.SetActive(false);
         endPanel.SetActive(true);
 
         isCloser = false;
-        closerSpriteBtn.GetComponentInChildren<TextMeshProUGUI>().text = "¸Ê";
-        stageExplainImage.sprite = StageManager.stageDataSO.stageSprite;
 
         StageCollectionData stageCollectionData = SaveDataManager.Instance.AllChapterDataBase.stageCollectionDataDic
             [StageManager.Instance.CurStageDataSO.chapterStageName].stageCollectionValueList[StageManager.Instance.CurStageDataSO.stageIndex];
@@ -114,17 +81,14 @@ public class EndManager : MonoSingleTon<EndManager>
         }
 
         timePieceText.SetText("È¹µæÇÑ ½Ã°£ÀÇ Á¶°¢" + eatCnt + "/" + StageManager.Instance.CurStageDataSO.stageCollection.Count);
-        currentStageNumberText.SetText(StageManager.stageDataSO.stageNumber.ToString());
-
-        nextStageBtn.interactable = StageManager.stageDataSO.nextStageData != null;
-        nextStageBtn.onClick.AddListener(() => nextStageBtn.interactable = false);
+        currentStageNumberText.SetText("½ºÅ×ÀÌÁö " +  StageManager.stageDataSO.stageNumber.ToString());
 
         if (StageManager.stageDataSO.isFirst)
         {
             LoadingSceneManager.LoadScene(0);
             return;
         }
-        if(StageManager.stageDataSO.nextStageData == null)
+        if (StageManager.stageDataSO.nextStageData == null)
         {
             LoadingSceneManager.LoadScene(3);
         }
@@ -134,21 +98,11 @@ public class EndManager : MonoSingleTon<EndManager>
         blur.intensity.value = 0f;
         LoadingSceneManager.LoadScene(1);
     }
-    public void NextStage()
-    {
-        endPanel.SetActive(false);
-        nextStagePanel.SetActive(true);
-
-        isCloser = false;
-        nextCloserSpriteBtn.GetComponentInChildren<TextMeshProUGUI>().text = "¸Ê";
-        nextStageExplainImage.sprite = StageManager.stageDataSO.nextStageData.stageSprite;
-    }
 
     public void JoinStage()
     {
         blur.intensity.value = 0f;
         endPanel.SetActive(false);
-        nextStagePanel.SetActive(false);
         GameManager.Instance.LoadNextStage();
     }
 }

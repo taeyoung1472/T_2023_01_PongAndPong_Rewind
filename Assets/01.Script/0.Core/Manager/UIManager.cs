@@ -83,7 +83,7 @@ public class UIManager : MonoSingleTon<UIManager>
                 pauseImg.transform.SetLocalPositionAndRotation
                     (new Vector3(0f, -3f, 0f), Quaternion.Euler(0f, 20f, 90f));
                 Sequence seq = DOTween.Sequence();
-                seq.Append(pauseImg.transform.DORotate(new Vector3(0f, 0f, 0f), 0.5f)).SetUpdate(true);
+                seq.Append(pauseImg.transform.DOLocalRotate(new Vector3(0f, 0f, 0f), 0.5f)).SetUpdate(true);
 
                 freeLookCamera._isCursorVisible = true;
 
