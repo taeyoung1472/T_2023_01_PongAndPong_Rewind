@@ -321,6 +321,11 @@ public class SaveDataManager : MonoSingleTon<SaveDataManager>
     }
     public int CurrentStageCollectionCount(string worldName, int stageIndex)
     {
+        if(stageIndex == 0)
+        {
+            return 0;
+        }
+
         int cnt = 0;
 
         StageCollectionData stageCollectionData = _allChapterDataBase.stageCollectionDataDic[worldName]
