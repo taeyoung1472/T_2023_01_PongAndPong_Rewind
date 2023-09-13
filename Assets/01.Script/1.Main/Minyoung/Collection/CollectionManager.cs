@@ -12,6 +12,9 @@ public class CollectionManager : MonoSingleTon<CollectionManager>
     public List<Collection> collectionObj;
 
     [SerializeField] private StageDatabase stageDatabase;
+
+    private bool _isTutorialStage = false;
+
     private void Awake()
     {
     }
@@ -62,7 +65,12 @@ public class CollectionManager : MonoSingleTon<CollectionManager>
     }
     public void SetCollectionActive()
     {
-        return;
+        _isTutorialStage = FindObjectOfType<TutorialManager>() != null;
+        if (_isTutorialStage)
+        {
+            return;
+        }
+
         if (StageManager.Instance.CurStageDataSO == null)
         {
             return;
@@ -85,24 +93,24 @@ public class CollectionManager : MonoSingleTon<CollectionManager>
     }
     public void SetStageCollecitonSO()
     {
-        return;
+        _isTutorialStage = FindObjectOfType<TutorialManager>() != null;
+        if (_isTutorialStage)
+        {
+            return;
+        }
+
         for (int i = 0; i < stageDatabase.worldList.Count; i++) //i 챕터수
         {
             for (int j = 0; j < stageDatabase.worldList[i].stageList.Count; j++) //스테이지 수
             {
                 ChapterStageCollectionData chapterData = SaveDataManager.Instance.AllChapterDataBase.stageCollectionDataDic
                     [StageManager.Instance.CurStageDataSO.chapterStageName];
-            
+
 
 
                 for (int k = 0; k < stageDatabase.worldList[i].stageList[j].stageCollection.Count; k++) //스테이지의 존 수
                 {
-                    
-                    
-                  //  Debug.Log(chapterData.stageCollectionValueList[j].stageDataList[k].zoneCollections.collectionBoolList);
-
-                    stageDatabase.worldList[i].stageList[j].stageCollection[k].zone =
-                    chapterData.stageCollectionValueList[j].stageDataList[k].zoneCollections.collectionBoolList;
+                    stageDatabase.worldList[i].stageList[j].stageCollection[k].zone = chapterData.stageCollectionValueList[j].stageDataList[k].zoneCollections.collectionBoolList;
                 }
             }
         }
