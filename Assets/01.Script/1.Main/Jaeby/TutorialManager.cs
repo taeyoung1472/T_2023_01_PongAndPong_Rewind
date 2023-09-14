@@ -2,21 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TutorialManager : MonoBehaviour
+public class TutorialManager : MonoSingleTon<TutorialManager>
 {
     [SerializeField]
     private List<StageCommunicationSO> _dialogs = new List<StageCommunicationSO>();
     private int _index = 0;
 
+    public bool isTutorialStage = true;
+
     private void Start()
     {
-        StageManager.Instance.GetCurArea().areaEndEvent.AddListener(DialogChange);
+        isTutorialStage = true;
+        //StageManager.Instance.GetCurArea().areaEndEvent.AddListener(DialogChange);
     }
 
-    private void DialogChange()
+
+
+    public void DialogChange()
     {
         _index++;
-        if(_index < _dialogs.Count)
+        if(_index <= _dialogs.Count)
         {
             StageCommunicationUI.Instance.CommunicationStart(_dialogs[_index]);
         }

@@ -13,6 +13,8 @@ public class StageCommunicationUI : MonoSingleTon<StageCommunicationUI>
     private Animator _currentTextAnimator = null;
     private float _nextTextYPos = 0f;
 
+    private Coroutine _curCommuCoroutine = null;
+
     private void Start()
     {
         _parentTrm = transform.Find("ParentTrm");
@@ -23,18 +25,27 @@ public class StageCommunicationUI : MonoSingleTon<StageCommunicationUI>
     {
         if (dataSO == null)
             return;
-        StartCoroutine(CommunicationCoroutine(dataSO));
+        if(_curCommuCoroutine != null)
+        {
+            StopCoroutine(_curCommuCoroutine);
+        }
+        _curCommuCoroutine = StartCoroutine(CommunicationCoroutine(dataSO));
     }
 
     public void CommunicationStart()
     {
         if (_dataSO == null)
             return;
-        StartCoroutine(CommunicationCoroutine(_dataSO));
+        if (_curCommuCoroutine != null)
+        {
+            StopCoroutine(_curCommuCoroutine);
+        }
+        _curCommuCoroutine = StartCoroutine(CommunicationCoroutine(_dataSO));
     }
 
     private IEnumerator CommunicationCoroutine(StageCommunicationSO dataSO)
     {
+        DestroyChildren(_parentTrm, dataSO);
         for (int i = 0; i < dataSO.communicationDatas.Count; i++)
         {
             if (dataSO.communicationDatas[i].isReset)
