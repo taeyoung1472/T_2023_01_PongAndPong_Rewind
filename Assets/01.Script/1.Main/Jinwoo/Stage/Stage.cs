@@ -1,6 +1,7 @@
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -69,6 +70,13 @@ public class Stage : MonoBehaviour
         {
             StageManager.Instance.InputLock = false;
             curArea = stageAreaList[i];
+
+            if(TutorialManager.Instance != null)
+            {
+                if(TutorialManager.Instance.isTutorialStage)
+                    curArea.areaEndEvent.AddListener(TutorialManager.Instance.DialogChange);
+            }
+
             AreaFogSetting();
             StageManager.Instance.SetFreeLookCamInitPos(curArea.freeLookCamPos);
             if (i == 0)
