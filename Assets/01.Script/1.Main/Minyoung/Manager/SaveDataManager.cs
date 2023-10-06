@@ -276,6 +276,11 @@ public class SaveDataManager : MonoSingleTon<SaveDataManager>
             //    }
             //}
 
+            if (true)
+            {
+
+            }
+
             for (int i = 0; i < stageDatabase.worldList.Count; i++)
             {
                 //이름에 맞춰서, 스테이지 클리어 데이터 삽입
@@ -296,6 +301,11 @@ public class SaveDataManager : MonoSingleTon<SaveDataManager>
 
             for (int i = 0; i < stageDatabase.worldList.Count; i++)
             {
+                if (stageDatabase.worldList[i].stageList == null)
+                {
+                    return;
+                }
+
                 for (int j = 0; j < _allChapterClearDataBase.stageClearDataDic[stageDatabase.worldList[i].worldName].stageClearDataList.Count; j++)
                 {
                     if (_allChapterClearDataBase.stageClearDataDic[stageDatabase.worldList[i].worldName].stageClearDataList[j] == null)
@@ -331,6 +341,14 @@ public class SaveDataManager : MonoSingleTon<SaveDataManager>
         StageCollectionData stageCollectionData = _allChapterDataBase.stageCollectionDataDic[worldName]
         .stageCollectionValueList[stageIndex];
 
+
+        if (stageCollectionData == null)
+        {
+            Debug.Log("스테이지없음");
+            return 0;
+        }
+
+
         foreach (var e in stageCollectionData.stageDataList)
         {
             cnt += e.zoneCollections.collectionBoolList.FindAll(x => x == true).Count;
@@ -341,10 +359,22 @@ public class SaveDataManager : MonoSingleTon<SaveDataManager>
     {
         int cnt = 0;
 
+     
         StageCollectionData stageCollectionData = _allChapterDataBase.stageCollectionDataDic[worldName]
         .stageCollectionValueList[stageIndex];
 
+        if (stageCollectionData.stageDataList == null)
+        {
+            Debug.Log("스테이지수집품없음");
+
+            return 0;
+        }
+
+
+
         cnt = stageCollectionData.stageDataList.Count;
+
+
 
         return cnt;
     }
@@ -358,6 +388,12 @@ public class SaveDataManager : MonoSingleTon<SaveDataManager>
         {
             StageCollectionData stageCollectionData = _allChapterDataBase.stageCollectionDataDic[worldName]
            .stageCollectionValueList[i];
+
+            if (stageCollectionData == null)
+            {
+                Debug.Log("스테이지없음");
+                return 0;
+            }
 
             foreach (var e in stageCollectionData.stageDataList)
             {
@@ -373,7 +409,11 @@ public class SaveDataManager : MonoSingleTon<SaveDataManager>
     public bool IsStageClearPortal(string worldName, int index)
     {
         int currentCnt = CurrentStageCollectionCount(worldName, index);
+        Debug.Log(currentCnt);
+
         int maxCnt = MaxStageCollectionCount(worldName, index);
+        Debug.Log(maxCnt);
+
         if (currentCnt == maxCnt)
         {
             return true;
@@ -394,6 +434,13 @@ public class SaveDataManager : MonoSingleTon<SaveDataManager>
             StageCollectionData stageCollectionData = _allChapterDataBase.stageCollectionDataDic[worldName]
            .stageCollectionValueList[i];
 
+            if (stageCollectionData.stageDataList == null)
+            {
+                Debug.Log("스테이지수집품없음");
+
+                return 0;
+            }
+
 
             cnt += stageCollectionData.stageDataList.Count;
         }
@@ -409,7 +456,11 @@ public class SaveDataManager : MonoSingleTon<SaveDataManager>
     public bool IsChapterClearPortal(string worldName, int index)
     {
         int currentCnt = CurrentChapterCollectionCount(worldName, index);
+        Debug.Log("현재 " + currentCnt);
         int maxCnt = MaxChapterCollectionCount(worldName, index);
+        Debug.Log("맥스" + maxCnt);
+
+
         if (currentCnt == maxCnt)
         {
             return true;

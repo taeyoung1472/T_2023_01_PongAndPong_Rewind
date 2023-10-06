@@ -6,6 +6,7 @@ using UnityEngine.Events;
 public class MainMenuManager : MonoSingleTon<MainMenuManager>
 {
     public static bool isOpend;
+    public static bool isPlayEventCheck  = false;
     bool isActive = true;
     bool isWindowActive = false;
     bool isFirstLabtob = true;
@@ -42,13 +43,20 @@ public class MainMenuManager : MonoSingleTon<MainMenuManager>
             playerArrow.SetActive(false);
             player.transform.SetPositionAndRotation(portalPlayerPostion.position, portalPlayerPostion.rotation);
         }
+
+        
         if (isOpenCheck)
         {
             isOpend = true;
         }
         PlayGame();
-        startEvent?.Invoke();
+        if (MainMenuManager.isPlayEventCheck)
+        {
+            startEvent?.Invoke();
+        }
+
     }
+
 
     void Update()
     {

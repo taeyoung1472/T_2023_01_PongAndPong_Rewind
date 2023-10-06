@@ -21,9 +21,13 @@ public class TutorialManager : MonoSingleTon<TutorialManager>
     public void DialogChange()
     {
         _index++;
-        if(_index <= _dialogs.Count)
+        if(_index < _dialogs.Count)
         {
             StageCommunicationUI.Instance.CommunicationStart(_dialogs[_index]);
         }
+        //if(_index >= _dialogs.Count - 1)
+        //{
+        //    MainMenuManager.isPlayEventCheck = false;
+        //}
     }
 }

@@ -69,16 +69,10 @@ public class EndManager : MonoSingleTon<EndManager>
 
         isCloser = false;
 
-        StageCollectionData stageCollectionData = SaveDataManager.Instance.AllChapterDataBase.stageCollectionDataDic
-            [StageManager.Instance.CurStageDataSO.chapterStageName].stageCollectionValueList[StageManager.Instance.CurStageDataSO.stageIndex];
+        SaveDataManager.Instance.LoadCollectionJSON();
 
-
-        int eatCnt = 0;
-
-        foreach (var e in stageCollectionData.stageDataList)
-        {
-            eatCnt += e.zoneCollections.collectionBoolList.FindAll(x => x == true).Count;
-        }
+        int eatCnt =
+        SaveDataManager.Instance.MaxStageCollectionCount(StageManager.Instance.CurStageDataSO.chapterStageName, StageManager.Instance.CurStageDataSO.stageIndex);
 
         timePieceText.SetText("획득한 시간의 조각" + eatCnt + "/" + StageManager.Instance.CurStageDataSO.stageCollection.Count);
         currentStageNumberText.SetText("스테이지 " +  StageManager.stageDataSO.stageNumber.ToString());

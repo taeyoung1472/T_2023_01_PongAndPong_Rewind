@@ -40,14 +40,14 @@ public class StageInfoUI : MonoBehaviour
 
         SaveDataManager.Instance.LoadCollectionJSON();
 
-        StageCollectionData stageCollectionData = SaveDataManager.Instance.AllChapterDataBase.stageCollectionDataDic[data.chapterStageName].stageCollectionValueList[data.stageIndex];
+        //StageCollectionData stageCollectionData = SaveDataManager.Instance.AllChapterDataBase.stageCollectionDataDic[data.chapterStageName].stageCollectionValueList[data.stageIndex];
 
-        int eatCnt = 0;
+        int eatCnt = SaveDataManager.Instance.MaxStageCollectionCount(data.chapterStageName, data.stageIndex);
 
-        foreach (var e in stageCollectionData.stageDataList)
-        {
-            eatCnt += e.zoneCollections.collectionBoolList.FindAll(x => x == true).Count;
-        }
+        //foreach (var e in stageCollectionData.stageDataList)
+        //{
+        //    eatCnt += e.zoneCollections.collectionBoolList.FindAll(x => x == true).Count;
+        //}
 
 
 

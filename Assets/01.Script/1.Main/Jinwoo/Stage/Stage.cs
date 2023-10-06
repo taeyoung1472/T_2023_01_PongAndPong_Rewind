@@ -76,6 +76,7 @@ public class Stage : MonoBehaviour
                 if(TutorialManager.Instance.isTutorialStage)
                     curArea.areaEndEvent.AddListener(TutorialManager.Instance.DialogChange);
             }
+            
 
             AreaFogSetting();
             StageManager.Instance.SetFreeLookCamInitPos(curArea.freeLookCamPos);
@@ -104,6 +105,11 @@ public class Stage : MonoBehaviour
 
             if (i == stageAreaList.Count - 1) //마지막 구역의 끝(스테이지 클리어 시)
             {
+                if(TutorialManager.Instance == null)
+                    MainMenuManager.isPlayEventCheck = true;
+                else
+                    MainMenuManager.isPlayEventCheck = false;
+
                 StageManager.Instance.fadeImg.gameObject.SetActive(true);
                 EndManager.Instance.EndVolume();
                 yield return new WaitForSeconds(1.5f);

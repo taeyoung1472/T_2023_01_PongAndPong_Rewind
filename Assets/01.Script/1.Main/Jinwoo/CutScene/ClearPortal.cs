@@ -29,7 +29,11 @@ public class ClearPortal : MonoBehaviour
     }
     public void StartCutScene()
     {
-        if (MainMenuManager.isOpend) //메인메뉴 이미 열린겨
+        if (!MainMenuManager.isPlayEventCheck)
+        {
+            return;
+        }
+        if (MainMenuManager.isOpend ) //메인메뉴 이미 열린겨
         {
             if (SaveDataManager.Instance.IsThisChapterClear(SaveDataManager.Instance.CurrentStageNameData.worldName))
             {
@@ -39,6 +43,7 @@ public class ClearPortal : MonoBehaviour
                     SaveDataManager.Instance.CurrentStageNameData.cutSceneDic[SaveDataManager.Instance.CurrentStageNameData.worldName] = true;
                     Debug.Log("컷씬 실행");
                     CheckCollectPiece();
+                    MainMenuManager.isPlayEventCheck = false;
                 }
             }
            
@@ -68,9 +73,10 @@ public class ClearPortal : MonoBehaviour
         //playerCam.gameObject.SetActive(false);
 
         //ISCLEARPORTAL이 트루면 조각 다 모은거, 폴스면 다 못모은거
-        isCheckCollection = SaveDataManager.Instance.IsStageClearPortal(
+
+        isCheckCollection = SaveDataManager.Instance.IsChapterClearPortal(
             SaveDataManager.Instance.CurrentStageNameData.worldName,
-            SaveDataManager.Instance.CurrentStageNameData.stageCnt);
+            SaveDataManager.Instance.CurrentStageNameData.stageCnt - 1);
 
         if (isCheckCollection == true) //좆ㅈ각 다 모음
         {

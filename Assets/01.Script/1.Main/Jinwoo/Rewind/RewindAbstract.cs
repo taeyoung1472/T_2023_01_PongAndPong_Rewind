@@ -171,8 +171,6 @@ public abstract class RewindAbstract : MonoBehaviour
         {
             AnimatorStateInfo animatorInfo = animator.GetCurrentAnimatorStateInfo(i);
             AnimatorTransitionInfo animatorTransitionInfo = animator.GetAnimatorTransitionInfo(i);
-            //Debug.Log(animatorTransitionInfo.normalizedTime + " : normalizedTime" + animatorTransitionInfo.duration +"<>"+ animatorTransitionInfo.durationUnit);
-
 
             AnimationValues valuesToWrite;
             valuesToWrite.animationStateTime = animatorInfo.normalizedTime;
@@ -190,25 +188,12 @@ public abstract class RewindAbstract : MonoBehaviour
     protected void RestoreAnimator(float seconds)
     {
         animator.speed = 0;
-        //bool isFix = false;
-        
-        for(int i=0;i<animator.layerCount;i++)
+
+        for (int i = 0; i < animator.layerCount; i++)
         {
             AnimationValues readValues = trackedAnimationTimes[i].ReadFromBuffer(seconds);
             animator.Play(readValues.animationHash, i, readValues.animationStateTime);
-            //if (readValues.animatorTransitionType == 0 && !isFix)
-            //{
-            //    Debug.Log("Fixed");
-            //    isFix = true;
-            //    animator.CrossFade(readValues.animationHash, readValues.animationTransition, i);
-            //}
-            //else
-            //{
-            //    Debug.Log("Not Fixed");
-            //    isFix = false;
-            //    animator.Play(readValues.animationHash, i, readValues.animationStateTime);
-            //}
-        }         
+        }
     }
     #endregion
 
